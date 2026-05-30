@@ -370,6 +370,10 @@ class Chatbot_Api_Handler {
 		$session = (string) $request->get_header( 'x-chat-session-id' );
 		$base    = ! empty( $settings['internal_chat_base_url'] ) ? untrailingslashit( (string) $settings['internal_chat_base_url'] ) : '';
 
+		if ( '' !== $base && self::is_public_loop_url( $base ) ) {
+			$base = '';
+		}
+
 		if ( '' === $base ) {
 			$internal = new WP_REST_Request( 'POST', '/chatbot-plugin/v1/chat' );
 			$internal->set_body( $request->get_body() );
@@ -415,12 +419,40 @@ class Chatbot_Api_Handler {
 		}
 
 		$status = (int) wp_remote_retrieve_response_code( $remote );
-		$data   = json_decode( (string) wp_remote_retrieve_body( $remote ), true );
+		$raw    = (string) wp_remote_retrieve_body( $remote );
+		$data   = json_decode( $raw, true );
 		if ( ! is_array( $data ) ) {
-			$data = array( 'error' => __( 'Respuesta interna inválida.', 'chatbot-plugin-wp' ) );
+			if ( self::looks_like_html_error_page( $raw ) ) {
+				return new WP_REST_Response(
+					array(
+						'error'     => __( 'El servidor devolvió una página de error (502). Deja vacía la URL interna del chat o usa una URL local; no uses la URL pública con Cloudflare.', 'chatbot-plugin-wp' ),
+						'errorCode' => 'PROVIDER_UPSTREAM',
+					),
+					502
+				);
+			}
+			$data = array(
+				'error'     => __( 'Respuesta interna inválida.', 'chatbot-plugin-wp' ),
+				'errorCode' => 'SERVER_ERROR',
+			);
 		}
 
 		return new WP_REST_Response( $data, $status > 0 ? $status : 500 );
+	}
+
+	private static function is_public_loop_url( string $base ): bool {
+		$base_parts = wp_parse_url( $base );
+		$home_parts = wp_parse_url( home_url() );
+		if ( ! is_array( $base_parts ) || ! is_array( $home_parts ) || empty( $base_parts['host'] ) || empty( $home_parts['host'] ) ) {
+			return false;
+		}
+
+		return strtolower( (string) $base_parts['host'] ) === strtolower( (string) $home_parts['host'] );
+	}
+
+	private static function looks_like_html_error_page( string $body ): bool {
+		$snippet = strtolower( substr( ltrim( $body ), 0, 256 ) );
+		return str_contains( $snippet, '<!doctype html' ) || str_contains( $snippet, '<html' );
 	}
 
 	/**

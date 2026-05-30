@@ -116,8 +116,25 @@
       ORIGIN_FORBIDDEN: "Solicitud no autorizada.",
       INVALID_REQUEST: "Mensaje inválido.",
       CONFIGURATION_ERROR: "El servicio de IA no está configurado.",
+      SERVER_ERROR: "Error interno del servidor.",
     };
     return map[code] || i18n.errorGeneric || "No se pudo enviar el mensaje.";
+  }
+
+  function sanitizeErrorMessage(message, status) {
+    if (!message || typeof message !== "string") {
+      if (status === 502 || status === 504) {
+        return "El servidor no pudo completar la solicitud. Revisa la configuración del chatbot o intenta más tarde.";
+      }
+      return message;
+    }
+    if (/<!doctype html/i.test(message) || /<html/i.test(message)) {
+      return "El servidor respondió con un error (502). Deja vacía la URL interna del chat y verifica la API key de DeepSeek.";
+    }
+    if (message.length > 280) {
+      return message.slice(0, 280) + "…";
+    }
+    return message;
   }
 
   function applyStyleVars(el, style) {
@@ -313,7 +330,7 @@
         throw {
           status: res.status,
           code: data.errorCode || "UNKNOWN",
-          message: data.error || mapErrorMessage(data.errorCode),
+          message: sanitizeErrorMessage(data.error || mapErrorMessage(data.errorCode), res.status),
           retryAfter: data.retryAfter,
         };
       }
@@ -360,7 +377,7 @@
         throw {
           status: res.status,
           code: data.errorCode || "UNKNOWN",
-          message: data.error || mapErrorMessage(data.errorCode),
+          message: sanitizeErrorMessage(data.error || mapErrorMessage(data.errorCode), res.status),
           retryAfter: data.retryAfter,
         };
       }
@@ -460,7 +477,7 @@
         if (idx >= 0) {
           messages.splice(idx, 1);
         }
-        setError((err && err.message) || mapErrorMessage(err && err.code));
+        setError(sanitizeErrorMessage(err && err.message, err && err.status) || mapErrorMessage(err && err.code));
       }
 
       saveState(messages);

@@ -24,34 +24,11 @@ class Chatbot_Provider_DeepSeek implements Chatbot_AI_Provider {
 			);
 		}
 
-		$base_url  = ! empty( $settings['deepseek_base_url'] ) ? rtrim( (string) $settings['deepseek_base_url'], '/' ) : 'https://api.deepseek.com/v1';
-		$preferred = ! empty( $settings['model'] ) ? (string) $settings['model'] : 'deepseek-v4-flash';
-		$pool_raw  = ! empty( $settings['model_candidates'] ) ? (string) $settings['model_candidates'] : '';
-		$pool      = array_filter( array_map( 'trim', explode( ',', $pool_raw ) ) );
-		$fallbacks = array( 'deepseek-v4-pro', 'deepseek-chat' );
-		$candidates = array_values( array_unique( array_merge( array( $preferred ), $pool, $fallbacks ) ) );
-		$timeout   = isset( $settings['request_timeout'] ) ? (int) $settings['request_timeout'] : 22;
-
-		$api_messages = array(
-			array(
-				'role'    => 'system',
-				'content' => $system,
-			),
-		);
-
-		foreach ( $messages as $message ) {
-			$role    = in_array( $message['role'] ?? '', array( 'user', 'assistant' ), true ) ? $message['role'] : 'user';
-			$content = trim( (string) ( $message['content'] ?? '' ) );
-			if ( '' === $content ) {
-				continue;
-			}
-			$api_messages[] = array(
-				'role'    => $role,
-				'content' => $content,
-			);
-		}
-
-		$last_error = null;
+		$base_url   = self::resolve_base_url( $settings );
+		$candidates = self::build_candidates( $settings );
+		$timeout    = isset( $settings['request_timeout'] ) ? (int) $settings['request_timeout'] : 22;
+		$api_messages = self::build_messages( $system, $messages );
+		$last_error   = null;
 
 		foreach ( $candidates as $model ) {
 			$response = wp_remote_post(
@@ -76,13 +53,19 @@ class Chatbot_Provider_DeepSeek implements Chatbot_AI_Provider {
 			if ( is_wp_error( $response ) ) {
 				$last_error = new WP_Error(
 					'provider_timeout',
-					__( 'No se pudo conectar con DeepSeek.', 'chatbot-plugin-wp' ),
+					__( 'No se pudo conectar con DeepSeek. Verifica que el servidor pueda acceder a api.deepseek.com.', 'chatbot-plugin-wp' ),
 					array( 'status' => 504, 'error_code' => 'PROVIDER_TIMEOUT' )
 				);
 				continue;
 			}
 
 			$code = (int) wp_remote_retrieve_response_code( $response );
+			$body = json_decode( (string) wp_remote_retrieve_body( $response ), true );
+
+			if ( in_array( $code, array( 401, 402, 403 ), true ) ) {
+				return self::map_api_error( $code, $body );
+			}
+
 			if ( 429 === $code ) {
 				$last_error = new WP_Error(
 					'rate_limit_model',
@@ -93,21 +76,16 @@ class Chatbot_Provider_DeepSeek implements Chatbot_AI_Provider {
 			}
 
 			if ( 404 === $code || 400 === $code ) {
+				$last_error = self::map_api_error( $code, $body );
 				continue;
 			}
 
 			if ( $code < 200 || $code >= 300 ) {
-				$last_error = new WP_Error(
-					'provider_upstream',
-					__( 'DeepSeek devolvió un error.', 'chatbot-plugin-wp' ),
-					array( 'status' => 502, 'error_code' => 'PROVIDER_UPSTREAM' )
-				);
+				$last_error = self::map_api_error( $code, $body );
 				continue;
 			}
 
-			$body = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 			$text = self::extract_text( $body );
-
 			if ( '' !== $text ) {
 				return array(
 					'text'  => $text,
@@ -122,8 +100,110 @@ class Chatbot_Provider_DeepSeek implements Chatbot_AI_Provider {
 
 		return new WP_Error(
 			'model_temp_unavailable',
-			__( 'Los modelos de DeepSeek no están disponibles en este momento. Intenta nuevamente más tarde.', 'chatbot-plugin-wp' ),
+			__( 'Los modelos de DeepSeek no están disponibles. Usa deepseek-chat o deepseek-v4-flash en Modelo IA.', 'chatbot-plugin-wp' ),
 			array( 'status' => 503, 'error_code' => 'MODEL_TEMP_UNAVAILABLE' )
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 * @return list<string>
+	 */
+	private static function build_candidates( array $settings ): array {
+		$preferred = ! empty( $settings['model'] ) ? trim( (string) $settings['model'] ) : 'deepseek-chat';
+		if ( ! self::is_deepseek_model( $preferred ) ) {
+			$preferred = 'deepseek-chat';
+		}
+
+		$pool_raw = ! empty( $settings['model_candidates'] ) ? (string) $settings['model_candidates'] : '';
+		$pool     = array_filter(
+			array_map( 'trim', explode( ',', $pool_raw ) ),
+			array( self::class, 'is_deepseek_model' )
+		);
+		$fallbacks = array( 'deepseek-chat', 'deepseek-reasoner' );
+
+		return array_values( array_unique( array_merge( array( $preferred ), $pool, $fallbacks ) ) );
+	}
+
+	private static function is_deepseek_model( string $model ): bool {
+		return (bool) preg_match( '/^deepseek-/i', trim( $model ) );
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 */
+	private static function resolve_base_url( array $settings ): string {
+		$base_url = ! empty( $settings['deepseek_base_url'] ) ? rtrim( (string) $settings['deepseek_base_url'], '/' ) : 'https://api.deepseek.com/v1';
+		if ( 'https://api.deepseek.com' === $base_url ) {
+			return 'https://api.deepseek.com/v1';
+		}
+		return $base_url;
+	}
+
+	/**
+	 * @param array<int, array{role: string, content: string}> $messages
+	 * @return list<array{role: string, content: string}>
+	 */
+	private static function build_messages( string $system, array $messages ): array {
+		$api_messages = array(
+			array(
+				'role'    => 'system',
+				'content' => $system,
+			),
+		);
+
+		foreach ( $messages as $message ) {
+			$role    = in_array( $message['role'] ?? '', array( 'user', 'assistant' ), true ) ? $message['role'] : 'user';
+			$content = trim( (string) ( $message['content'] ?? '' ) );
+			if ( '' === $content ) {
+				continue;
+			}
+			$api_messages[] = array(
+				'role'    => $role,
+				'content' => $content,
+			);
+		}
+
+		return $api_messages;
+	}
+
+	/**
+	 * @param mixed $body
+	 */
+	private static function map_api_error( int $code, $body ): WP_Error {
+		$message = '';
+		if ( is_array( $body ) && isset( $body['error']['message'] ) ) {
+			$message = trim( (string) $body['error']['message'] );
+		}
+
+		if ( 401 === $code || 403 === $code ) {
+			return new WP_Error(
+				'configuration_error',
+				'' !== $message ? $message : __( 'La API key de DeepSeek no es válida.', 'chatbot-plugin-wp' ),
+				array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
+			);
+		}
+
+		if ( 402 === $code ) {
+			return new WP_Error(
+				'configuration_error',
+				'' !== $message ? $message : __( 'La cuenta de DeepSeek no tiene saldo disponible.', 'chatbot-plugin-wp' ),
+				array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
+			);
+		}
+
+		if ( 400 === $code || 404 === $code ) {
+			return new WP_Error(
+				'model_temp_unavailable',
+				'' !== $message ? $message : __( 'El modelo de DeepSeek no es válido o no está disponible.', 'chatbot-plugin-wp' ),
+				array( 'status' => 503, 'error_code' => 'MODEL_TEMP_UNAVAILABLE' )
+			);
+		}
+
+		return new WP_Error(
+			'provider_upstream',
+			'' !== $message ? $message : __( 'DeepSeek devolvió un error.', 'chatbot-plugin-wp' ),
+			array( 'status' => 502, 'error_code' => 'PROVIDER_UPSTREAM' )
 		);
 	}
 

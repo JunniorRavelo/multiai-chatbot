@@ -555,7 +555,7 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'URL interna del chat', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<input type="url" class="regular-text code" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[internal_chat_base_url]" value="<?php echo esc_attr( (string) ( $settings['internal_chat_base_url'] ?? '' ) ); ?>" placeholder="<?php echo esc_attr( untrailingslashit( home_url() ) ); ?>" />
-					<p class="description"><?php esc_html_e( 'Opcional. Usada por el streaming para llamar a /chat sin saltos públicos. Equivalente a INTERNAL_CHAT_BASE_URL.', 'chatbot-plugin-wp' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Opcional. Déjala vacía en la mayoría de instalaciones. Si la defines, usa una URL local (p. ej. http://127.0.0.1); no uses la URL pública con Cloudflare.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 		</table>
