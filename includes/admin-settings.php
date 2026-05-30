@@ -357,7 +357,7 @@ class Chatbot_Admin_Settings {
 		return array(
 			'productName' => __( 'MultiAI Chatbot', 'chatbot-plugin-wp' ),
 			'authorName'  => 'Jsravelo',
-			'productUrl'  => esc_url_raw( 'https://github.com/JunniorRavelo/multiai-chatbot-for-wordpress' ),
+			'productUrl'  => esc_url_raw( 'https://github.com/JunniorRavelo/multiai-chatbot' ),
 			'authorUrl'   => esc_url_raw( 'https://www.linkedin.com/in/jsravelo/' ),
 		);
 	}
