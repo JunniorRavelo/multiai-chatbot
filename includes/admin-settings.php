@@ -1492,31 +1492,6 @@ class Chatbot_Admin_Settings {
 
 		$model_url = admin_url( 'admin.php?page=chatbot-plugin&tab=model' );
 		?>
-		<div class="chatbot-admin-general-toolbar">
-			<div class="chatbot-admin-kpi-grid chatbot-admin-kpi-grid--general">
-				<div class="chatbot-admin-kpi <?php echo $widget_on ? 'chatbot-admin-kpi--success' : ''; ?>">
-					<span class="chatbot-admin-kpi__label"><?php esc_html_e( 'Widget', 'chatbot-plugin-wp' ); ?></span>
-					<span class="chatbot-admin-kpi__value" id="chatbot-general-kpi-widget">
-						<?php
-						echo $widget_on
-							? esc_html__( 'Enabled', 'chatbot-plugin-wp' )
-							: esc_html__( 'Disabled', 'chatbot-plugin-wp' );
-						?>
-					</span>
-				</div>
-				<div class="chatbot-admin-kpi">
-					<span class="chatbot-admin-kpi__label"><?php esc_html_e( 'Streaming', 'chatbot-plugin-wp' ); ?></span>
-					<span class="chatbot-admin-kpi__value" id="chatbot-general-kpi-streaming">
-						<?php
-						echo $streaming_on
-							? esc_html__( 'Enabled', 'chatbot-plugin-wp' )
-							: esc_html__( 'Disabled', 'chatbot-plugin-wp' );
-						?>
-					</span>
-				</div>
-			</div>
-		</div>
-
 		<div class="chatbot-admin-layout chatbot-admin-layout--split">
 			<div class="chatbot-admin-general-fields">
 		<?php

@@ -48,29 +48,6 @@
     });
   }
 
-  function updateKpis() {
-    var widgetKpi = document.getElementById("chatbot-general-kpi-widget");
-    var streamingKpi = document.getElementById("chatbot-general-kpi-streaming");
-    var widgetEl = api.checkboxField("widget_enabled");
-    var streamingEl = api.checkboxField("streaming_enabled");
-
-    if (widgetKpi && widgetEl) {
-      widgetKpi.textContent = widgetEl.checked
-        ? i18n("widgetEnabled", "Enabled")
-        : i18n("widgetDisabledLabel", "Disabled");
-      var widgetCard = widgetKpi.closest(".chatbot-admin-kpi");
-      if (widgetCard) {
-        widgetCard.classList.toggle("chatbot-admin-kpi--success", widgetEl.checked);
-      }
-    }
-
-    if (streamingKpi && streamingEl) {
-      streamingKpi.textContent = streamingEl.checked
-        ? i18n("widgetEnabled", "Enabled")
-        : i18n("widgetDisabledLabel", "Disabled");
-    }
-  }
-
   function copyShortcode() {
     var text = cfg.shortcode || "[chatbot_widget]";
     var input = document.getElementById("chatbot-shortcode-display");
@@ -141,15 +118,9 @@
     var widgetEl = api.checkboxField("widget_enabled");
     if (widgetEl) {
       widgetEl.addEventListener("change", function () {
-        updateKpis();
         api.updateWidgetDisabledOverlay();
         api.applyPreview(api.readSettings(), refs);
       });
-    }
-
-    var streamingEl = api.checkboxField("streaming_enabled");
-    if (streamingEl) {
-      streamingEl.addEventListener("change", updateKpis);
     }
 
     var copyBtn = document.getElementById("chatbot-copy-shortcode");
@@ -166,7 +137,6 @@
     if (!refs) return;
 
     initCharCounters();
-    updateKpis();
     bindGeneralEvents(refs);
   }
 

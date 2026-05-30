@@ -1181,44 +1181,6 @@
 }
 
 /* General tab */
-.chatbot-admin-general-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.chatbot-admin-general-toolbar__intro p {
-  margin: 0;
-  font-size: 0.875rem;
-  color: var(--cb-admin-muted);
-  line-height: 1.45;
-}
-
-.chatbot-admin-general-toolbar__links {
-  margin: 0.5rem 0 0;
-  font-size: 0.8125rem;
-}
-
-.chatbot-admin-general-toolbar__links a {
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.chatbot-admin-general-toolbar__links span {
-  margin: 0 0.35rem;
-  color: var(--cb-admin-muted);
-}
-
-.chatbot-admin-kpi-grid--general {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 0.75rem;
-  min-width: min(100%, 280px);
-}
-
 .chatbot-admin-general-fields {
   display: flex;
   flex-direction: column;
