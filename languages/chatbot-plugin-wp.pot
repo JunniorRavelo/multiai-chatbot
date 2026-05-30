@@ -1,0 +1,1444 @@
+# Copyright (C) 2026 J. Santiago Ravelo Velasco
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Chatbot Plugin WP 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chatbot-plugin-wp\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-05-30T19:05:17+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: chatbot-plugin-wp\n"
+
+#. Plugin Name of the plugin
+#: chatbot-plugin-wp.php
+msgid "Chatbot Plugin WP"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: chatbot-plugin-wp.php
+msgid "https://github.com/JunniorRavelo/chatbot-plugin-wp"
+msgstr ""
+
+#. Description of the plugin
+#: chatbot-plugin-wp.php
+msgid "AI chat widget (Gemini, DeepSeek, Ollama, OpenAI-compatible), configurable styles, and telemetry."
+msgstr ""
+
+#. Author of the plugin
+#: chatbot-plugin-wp.php
+msgid "J. Santiago Ravelo Velasco"
+msgstr ""
+
+#. Author URI of the plugin
+#: chatbot-plugin-wp.php
+msgid "https://www.linkedin.com/in/jsravelo/"
+msgstr ""
+
+#: includes/admin-settings.php:72
+#: includes/admin-settings.php:73
+msgid "Chatbot"
+msgstr ""
+
+#: includes/admin-settings.php:136
+#: includes/admin-settings.php:837
+msgid "Changes saved successfully."
+msgstr ""
+
+#: includes/admin-settings.php:259
+msgid "Border radius is invalid; that value was ignored."
+msgstr ""
+
+#: includes/admin-settings.php:277
+msgid "Panel width is invalid; that value was ignored."
+msgstr ""
+
+#: includes/admin-settings.php:412
+#: includes/admin-settings.php:1422
+msgid "Open panel"
+msgstr ""
+
+#: includes/admin-settings.php:413
+msgid "Close panel"
+msgstr ""
+
+#: includes/admin-settings.php:414
+#: includes/enqueue.php:123
+msgid "Type your message…"
+msgstr ""
+
+#: includes/admin-settings.php:415
+#: includes/enqueue.php:124
+msgid "Send"
+msgstr ""
+
+#: includes/admin-settings.php:459
+msgid "Loading messages…"
+msgstr ""
+
+#: includes/admin-settings.php:460
+msgid "Could not load the conversation."
+msgstr ""
+
+#: includes/admin-settings.php:461
+msgid "Retry"
+msgstr ""
+
+#: includes/admin-settings.php:462
+msgid "Copied"
+msgstr ""
+
+#: includes/admin-settings.php:463
+msgid "Could not copy."
+msgstr ""
+
+#: includes/admin-settings.php:464
+msgid "Delete this conversation and all its messages?"
+msgstr ""
+
+#: includes/admin-settings.php:465
+#: includes/admin-settings.php:692
+msgid "Could not delete the conversation."
+msgstr ""
+
+#: includes/admin-settings.php:498
+msgid "Sapphire"
+msgstr ""
+
+#: includes/admin-settings.php:499
+msgid "Indigo blue with soft violet. Professional and trustworthy."
+msgstr ""
+
+#: includes/admin-settings.php:500
+#: includes/admin-settings.php:521
+#: includes/admin-settings.php:528
+#: includes/admin-settings.php:535
+#: includes/admin-settings.php:542
+msgid "Light"
+msgstr ""
+
+#: includes/admin-settings.php:505
+msgid "Midnight"
+msgstr ""
+
+#: includes/admin-settings.php:506
+msgid "Deep dark with cyan and violet accents. Readable header."
+msgstr ""
+
+#: includes/admin-settings.php:507
+#: includes/admin-settings.php:549
+msgid "Dark"
+msgstr ""
+
+#: includes/admin-settings.php:512
+msgid "Monochrome"
+msgstr ""
+
+#: includes/admin-settings.php:513
+msgid "Neutral zinc, straight edges and subtle shadows."
+msgstr ""
+
+#: includes/admin-settings.php:514
+msgid "Neutral"
+msgstr ""
+
+#: includes/admin-settings.php:519
+msgid "Aqua"
+msgstr ""
+
+#: includes/admin-settings.php:520
+msgid "Deep cyan with turquoise highlights. Fresh and modern."
+msgstr ""
+
+#: includes/admin-settings.php:526
+msgid "Ember"
+msgstr ""
+
+#: includes/admin-settings.php:527
+msgid "Warm orange with pink accents. Cozy and energetic."
+msgstr ""
+
+#: includes/admin-settings.php:533
+msgid "Emerald"
+msgstr ""
+
+#: includes/admin-settings.php:534
+msgid "Emerald green with natural backgrounds. Calm and trustworthy."
+msgstr ""
+
+#: includes/admin-settings.php:540
+msgid "Amethyst"
+msgstr ""
+
+#: includes/admin-settings.php:541
+msgid "Soft violet with light lavender. Elegant and modern."
+msgstr ""
+
+#: includes/admin-settings.php:547
+msgid "Plum"
+msgstr ""
+
+#: includes/admin-settings.php:548
+msgid "Deep purple with fuchsia accents. Dark and sophisticated."
+msgstr ""
+
+#: includes/admin-settings.php:561
+msgid "Bottom right"
+msgstr ""
+
+#: includes/admin-settings.php:562
+msgid "Center right"
+msgstr ""
+
+#: includes/admin-settings.php:563
+msgid "Bottom left"
+msgstr ""
+
+#: includes/admin-settings.php:564
+msgid "Center left"
+msgstr ""
+
+#: includes/admin-settings.php:565
+msgid "Bottom center"
+msgstr ""
+
+#: includes/admin-settings.php:614
+#: includes/admin-settings.php:630
+#: includes/admin-settings.php:642
+#: includes/admin-settings.php:683
+#: includes/admin-settings.php:700
+#: includes/admin-settings.php:2424
+msgid "Insufficient permissions."
+msgstr ""
+
+#: includes/admin-settings.php:688
+#: includes/admin-settings.php:2429
+msgid "Invalid conversation."
+msgstr ""
+
+#: includes/admin-settings.php:744
+msgid "General"
+msgstr ""
+
+#: includes/admin-settings.php:745
+msgid "AI Model"
+msgstr ""
+
+#: includes/admin-settings.php:746
+msgid "Security"
+msgstr ""
+
+#: includes/admin-settings.php:747
+msgid "Chat style"
+msgstr ""
+
+#: includes/admin-settings.php:748
+msgid "Statistics"
+msgstr ""
+
+#: includes/admin-settings.php:749
+msgid "History"
+msgstr ""
+
+#: includes/admin-settings.php:762
+msgid "Chatbot Plugin"
+msgstr ""
+
+#: includes/admin-settings.php:767
+msgid "Enabled"
+msgstr ""
+
+#: includes/admin-settings.php:768
+msgid "Disabled"
+msgstr ""
+
+#: includes/admin-settings.php:773
+msgid "Settings sections"
+msgstr ""
+
+#: includes/admin-settings.php:819
+msgid "Save changes"
+msgstr ""
+
+#: includes/admin-settings.php:821
+msgid "Changes apply immediately on the public site."
+msgstr ""
+
+#: includes/admin-settings.php:889
+msgid "Saved"
+msgstr ""
+
+#: includes/admin-settings.php:890
+#: includes/admin-settings.php:1537
+#: includes/admin-settings.php:1911
+#: includes/admin-settings.php:1955
+#: includes/admin-settings.php:2332
+#: includes/admin-settings.php:2783
+msgid "Error"
+msgstr ""
+
+#: includes/admin-settings.php:891
+msgid "Notice"
+msgstr ""
+
+#: includes/admin-settings.php:892
+msgid "Information"
+msgstr ""
+
+#: includes/admin-settings.php:908
+msgid "Dismiss notice"
+msgstr ""
+
+#: includes/admin-settings.php:943
+msgid "Visibility and text"
+msgstr ""
+
+#: includes/admin-settings.php:944
+msgid "Control where the chat appears and the messages visitors see."
+msgstr ""
+
+#: includes/admin-settings.php:949
+msgid "Global widget"
+msgstr ""
+
+#: includes/admin-settings.php:954
+msgid "Show site-wide (wp_footer)"
+msgstr ""
+
+#: includes/admin-settings.php:956
+msgid "You can also use the shortcode [chatbot_widget]."
+msgstr ""
+
+#: includes/admin-settings.php:960
+msgid "Welcome message"
+msgstr ""
+
+#: includes/admin-settings.php:966
+msgid "System instructions"
+msgstr ""
+
+#: includes/admin-settings.php:972
+msgid "Simulated streaming"
+msgstr ""
+
+#: includes/admin-settings.php:977
+msgid "Enable chunked response"
+msgstr ""
+
+#: includes/admin-settings.php:986
+msgid "Widget header"
+msgstr ""
+
+#: includes/admin-settings.php:987
+msgid "Title and subtitle shown in the chat top bar."
+msgstr ""
+
+#: includes/admin-settings.php:992
+msgid "Widget title"
+msgstr ""
+
+#: includes/admin-settings.php:998
+msgid "Subtitle"
+msgstr ""
+
+#: includes/admin-settings.php:1014
+msgid "Origins and access"
+msgstr ""
+
+#: includes/admin-settings.php:1015
+msgid "Control which domains can call the chat endpoint."
+msgstr ""
+
+#: includes/admin-settings.php:1020
+msgid "Allowed origins"
+msgstr ""
+
+#. translators: %s: site home URL
+#: includes/admin-settings.php:1027
+#, php-format
+msgid "Comma-separated URLs. Empty = this site only (%s). Equivalent to CHAT_ALLOWED_ORIGINS."
+msgstr ""
+
+#: includes/admin-settings.php:1035
+msgid "Internal chat URL"
+msgstr ""
+
+#: includes/admin-settings.php:1038
+msgid "Optional. Leave empty in most installations. If set, use a local URL (e.g. http://127.0.0.1); do not use the public URL with Cloudflare."
+msgstr ""
+
+#: includes/admin-settings.php:1046
+msgid "Cache and telemetry"
+msgstr ""
+
+#: includes/admin-settings.php:1047
+msgid "Reduce repeated model calls and optionally log events to a file."
+msgstr ""
+
+#: includes/admin-settings.php:1052
+msgid "Cache TTL (seconds)"
+msgstr ""
+
+#: includes/admin-settings.php:1055
+msgid "0 = disable cache. Equivalent to CHAT_CACHE_TTL_SECONDS."
+msgstr ""
+
+#: includes/admin-settings.php:1059
+msgid "Telemetry log path"
+msgstr ""
+
+#: includes/admin-settings.php:1062
+msgid "Optional. In addition to the database, write events to this file. Equivalent to CHAT_TELEMETRY_LOG_PATH."
+msgstr ""
+
+#: includes/admin-settings.php:1066
+msgid "History retention (days)"
+msgstr ""
+
+#: includes/admin-settings.php:1069
+msgid "0 = keep indefinitely. Older conversations are purged automatically each day."
+msgstr ""
+
+#: includes/admin-settings.php:1073
+msgid "Telemetry retention (days)"
+msgstr ""
+
+#: includes/admin-settings.php:1076
+msgid "0 = keep indefinitely. Older statistics events are purged automatically each day."
+msgstr ""
+
+#: includes/admin-settings.php:1084
+msgid "Rate limits"
+msgstr ""
+
+#: includes/admin-settings.php:1085
+msgid "Protect the endpoint and AI provider quota from abuse."
+msgstr ""
+
+#: includes/admin-settings.php:1090
+msgid "Per IP / minute"
+msgstr ""
+
+#: includes/admin-settings.php:1093
+msgid "CHAT_RATE_LIMIT_PER_MINUTE"
+msgstr ""
+
+#: includes/admin-settings.php:1097
+msgid "Per IP / day"
+msgstr ""
+
+#: includes/admin-settings.php:1100
+msgid "CHAT_RATE_LIMIT_PER_DAY"
+msgstr ""
+
+#: includes/admin-settings.php:1104
+msgid "Model / minute (global)"
+msgstr ""
+
+#: includes/admin-settings.php:1107
+msgid "CHAT_RATE_LIMIT_MODEL_PER_MINUTE"
+msgstr ""
+
+#: includes/admin-settings.php:1111
+msgid "Model / day (global)"
+msgstr ""
+
+#: includes/admin-settings.php:1114
+msgid "CHAT_RATE_LIMIT_MODEL_PER_DAY"
+msgstr ""
+
+#: includes/admin-settings.php:1118
+msgid "Soft threshold"
+msgstr ""
+
+#: includes/admin-settings.php:1121
+msgid "Fraction of the limit (0.1–1) at which a warning is logged. CHAT_RATE_LIMIT_SOFT_THRESHOLD"
+msgstr ""
+
+#: includes/admin-settings.php:1125
+msgid "Suspend IP after violations"
+msgstr ""
+
+#: includes/admin-settings.php:1128
+msgid "CHAT_IP_SUSPEND_AFTER_VIOLATIONS"
+msgstr ""
+
+#: includes/admin-settings.php:1132
+msgid "Suspension duration (sec)"
+msgstr ""
+
+#: includes/admin-settings.php:1135
+msgid "CHAT_IP_SUSPEND_SECONDS"
+msgstr ""
+
+#: includes/admin-settings.php:1149
+msgid "AI provider"
+msgstr ""
+
+#: includes/admin-settings.php:1150
+msgid "Choose the engine and configure credentials and models."
+msgstr ""
+
+#: includes/admin-settings.php:1155
+#: includes/admin-settings.php:1786
+#: includes/admin-settings.php:1896
+#: includes/admin-settings.php:1951
+#: includes/admin-settings.php:2317
+#: includes/admin-settings.php:2395
+#: includes/admin-settings.php:2527
+#: includes/chat-history.php:654
+msgid "Provider"
+msgstr ""
+
+#: includes/admin-settings.php:1166
+#: includes/admin-settings.php:1816
+#: includes/admin-settings.php:1918
+#: includes/admin-settings.php:1952
+#: includes/chat-history.php:655
+msgid "Model"
+msgstr ""
+
+#: includes/admin-settings.php:1169
+msgid "E.g.: gemini-3.1-flash-lite, deepseek-v4-flash, llama3, gpt-4o-mini."
+msgstr ""
+
+#: includes/admin-settings.php:1173
+msgid "Fallback model"
+msgstr ""
+
+#: includes/admin-settings.php:1176
+msgid "Gemini only. Comma-separated rotation pool (429/404/400 tries the next). Equivalent to GEMINI_MODEL_CANDIDATES."
+msgstr ""
+
+#: includes/admin-settings.php:1180
+msgid "Ollama base URL"
+msgstr ""
+
+#: includes/admin-settings.php:1186
+msgid "OpenAI-compatible base URL"
+msgstr ""
+
+#: includes/admin-settings.php:1192
+msgid "DeepSeek base URL"
+msgstr ""
+
+#: includes/admin-settings.php:1195
+msgid "Default: https://api.deepseek.com/v1"
+msgstr ""
+
+#: includes/admin-settings.php:1199
+msgid "Timeout (seconds)"
+msgstr ""
+
+#: includes/admin-settings.php:1205
+msgid "API Key"
+msgstr ""
+
+#: includes/admin-settings.php:1208
+msgid "Leave empty to keep the current key. In production define CHATBOT_GEMINI_API_KEY, CHATBOT_DEEPSEEK_API_KEY or CHATBOT_OPENAI_API_KEY in wp-config.php."
+msgstr ""
+
+#: includes/admin-settings.php:1220
+msgid "E.g.: gemini-3.1-flash-lite, gemini-2.5-flash. Equivalent to GEMINI_MODEL."
+msgstr ""
+
+#: includes/admin-settings.php:1221
+msgid "Comma-separated rotation pool (429/404/400 tries the next). Equivalent to GEMINI_MODEL_CANDIDATES."
+msgstr ""
+
+#: includes/admin-settings.php:1224
+msgid "E.g.: deepseek-v4-flash, deepseek-v4-pro, deepseek-chat."
+msgstr ""
+
+#: includes/admin-settings.php:1225
+msgid "Comma-separated DeepSeek fallback pool (429/404/400 tries the next)."
+msgstr ""
+
+#: includes/admin-settings.php:1228
+msgid "Name of the model installed in Ollama (e.g. llama3)."
+msgstr ""
+
+#: includes/admin-settings.php:1232
+msgid "E.g.: gpt-4o-mini, gpt-4o."
+msgstr ""
+
+#: includes/admin-settings.php:1284
+msgid "Visual theme"
+msgstr ""
+
+#: includes/admin-settings.php:1285
+msgid "Chat color palette, typography, and shapes."
+msgstr ""
+
+#: includes/admin-settings.php:1290
+msgid "Theme"
+msgstr ""
+
+#: includes/admin-settings.php:1335
+msgid "Colors and shape"
+msgstr ""
+
+#: includes/admin-settings.php:1336
+msgid "Optional: override the selected preset colors."
+msgstr ""
+
+#: includes/admin-settings.php:1341
+msgid "Primary color"
+msgstr ""
+
+#: includes/admin-settings.php:1344
+msgid "Send button, user bubbles, and accents."
+msgstr ""
+
+#: includes/admin-settings.php:1348
+msgid "Accent color"
+msgstr ""
+
+#: includes/admin-settings.php:1351
+msgid "Floating button gradient."
+msgstr ""
+
+#: includes/admin-settings.php:1355
+msgid "Border radius"
+msgstr ""
+
+#: includes/admin-settings.php:1358
+msgid "E.g.: 0.75rem, 1.5rem, 16px"
+msgstr ""
+
+#: includes/admin-settings.php:1362
+msgid "Panel width"
+msgstr ""
+
+#: includes/admin-settings.php:1365
+msgid "Empty = responsive width (max. 380px)."
+msgstr ""
+
+#: includes/admin-settings.php:1373
+msgid "Screen position"
+msgstr ""
+
+#: includes/admin-settings.php:1374
+msgid "Where the panel and floating button appear on the site."
+msgstr ""
+
+#: includes/admin-settings.php:1379
+msgid "Widget position"
+msgstr ""
+
+#: includes/admin-settings.php:1393
+msgid "Edge margin"
+msgstr ""
+
+#: includes/admin-settings.php:1399
+msgid "Floating button text"
+msgstr ""
+
+#: includes/admin-settings.php:1404
+msgid "Show title next to the 💬 icon"
+msgstr ""
+
+#: includes/admin-settings.php:1406
+msgid "The title is configured under General → Widget header."
+msgstr ""
+
+#: includes/admin-settings.php:1418
+msgid "Preview"
+msgstr ""
+
+#: includes/admin-settings.php:1419
+msgid "Interactive: try open/close and change options instantly."
+msgstr ""
+
+#: includes/admin-settings.php:1427
+msgid "Web page simulation"
+msgstr ""
+
+#: includes/admin-settings.php:1433
+msgid "The preview reflects theme, position, and styles instantly. Save to apply them on the public site."
+msgstr ""
+
+#: includes/admin-settings.php:1492
+#: includes/admin-settings.php:2050
+msgid "Pagination"
+msgstr ""
+
+#: includes/admin-settings.php:1497
+#: includes/admin-settings.php:2055
+msgid "Previous"
+msgstr ""
+
+#. translators: 1: current page, 2: total pages
+#: includes/admin-settings.php:1504
+#: includes/admin-settings.php:2062
+#: includes/admin-settings.php:2369
+#, php-format
+msgid "Page %1$d of %2$d"
+msgstr ""
+
+#: includes/admin-settings.php:1527
+#: includes/admin-settings.php:2085
+msgid "Next"
+msgstr ""
+
+#: includes/admin-settings.php:1535
+#: includes/admin-settings.php:1909
+#: includes/admin-settings.php:2331
+#: includes/admin-settings.php:2782
+msgid "Success"
+msgstr ""
+
+#: includes/admin-settings.php:1536
+#: includes/admin-settings.php:1710
+#: includes/admin-settings.php:1910
+#: includes/admin-settings.php:2333
+#: includes/admin-settings.php:2784
+msgid "Cached"
+msgstr ""
+
+#: includes/admin-settings.php:1538
+#: includes/admin-settings.php:1912
+msgid "Rate limited"
+msgstr ""
+
+#: includes/admin-settings.php:1539
+#: includes/admin-settings.php:1559
+#: includes/admin-settings.php:1913
+msgid "Configuration error"
+msgstr ""
+
+#: includes/admin-settings.php:1540
+#: includes/admin-settings.php:1558
+#: includes/admin-settings.php:1914
+msgid "Invalid request"
+msgstr ""
+
+#: includes/admin-settings.php:1541
+msgid "OK"
+msgstr ""
+
+#: includes/admin-settings.php:1556
+msgid "General limit"
+msgstr ""
+
+#: includes/admin-settings.php:1557
+msgid "Model limit"
+msgstr ""
+
+#: includes/admin-settings.php:1560
+msgid "Server error"
+msgstr ""
+
+#: includes/admin-settings.php:1631
+#: includes/admin-settings.php:1898
+#: includes/admin-settings.php:1908
+#: includes/admin-settings.php:1920
+#: includes/admin-settings.php:1929
+#: includes/admin-settings.php:2170
+#: includes/admin-settings.php:2204
+#: includes/admin-settings.php:2310
+#: includes/admin-settings.php:2319
+#: includes/admin-settings.php:2329
+msgid "All"
+msgstr ""
+
+#: includes/admin-settings.php:1632
+#: includes/admin-settings.php:2171
+msgid "7 days"
+msgstr ""
+
+#: includes/admin-settings.php:1633
+#: includes/admin-settings.php:2172
+msgid "30 days"
+msgstr ""
+
+#: includes/admin-settings.php:1634
+#: includes/admin-settings.php:2173
+msgid "90 days"
+msgstr ""
+
+#: includes/admin-settings.php:1635
+msgid "365 days"
+msgstr ""
+
+#. translators: %d: number of deleted events
+#: includes/admin-settings.php:1668
+#, php-format
+msgid "Purge complete: %d events deleted."
+msgstr ""
+
+#: includes/admin-settings.php:1677
+msgid "Chatbot usage telemetry on your site."
+msgstr ""
+
+#: includes/admin-settings.php:1679
+msgid "View conversations for the period"
+msgstr ""
+
+#: includes/admin-settings.php:1683
+#: includes/admin-settings.php:2269
+msgid "Period"
+msgstr ""
+
+#: includes/admin-settings.php:1691
+#: includes/admin-settings.php:2259
+msgid "Export CSV"
+msgstr ""
+
+#: includes/admin-settings.php:1693
+msgid "Purge events older than the configured retention period?"
+msgstr ""
+
+#: includes/admin-settings.php:1694
+#: includes/admin-settings.php:2265
+msgid "Purge old"
+msgstr ""
+
+#: includes/admin-settings.php:1702
+msgid "Total requests"
+msgstr ""
+
+#: includes/admin-settings.php:1706
+msgid "Successes"
+msgstr ""
+
+#: includes/admin-settings.php:1714
+msgid "Errors"
+msgstr ""
+
+#: includes/admin-settings.php:1718
+msgid "Success rate"
+msgstr ""
+
+#: includes/admin-settings.php:1722
+msgid "Average latency"
+msgstr ""
+
+#: includes/admin-settings.php:1726
+msgid "P95 latency"
+msgstr ""
+
+#: includes/admin-settings.php:1734
+msgid "Daily activity"
+msgstr ""
+
+#: includes/admin-settings.php:1755
+msgid "By status"
+msgstr ""
+
+#: includes/admin-settings.php:1758
+#: includes/admin-settings.php:1906
+#: includes/admin-settings.php:1953
+#: includes/admin-settings.php:2327
+#: includes/admin-settings.php:2394
+#: includes/admin-settings.php:2630
+#: includes/chat-history.php:656
+msgid "Status"
+msgstr ""
+
+#: includes/admin-settings.php:1758
+#: includes/admin-settings.php:1786
+#: includes/admin-settings.php:1817
+#: includes/admin-settings.php:1849
+msgid "Count"
+msgstr ""
+
+#: includes/admin-settings.php:1764
+#: includes/admin-settings.php:1792
+#: includes/admin-settings.php:1826
+msgid "No data in this period."
+msgstr ""
+
+#: includes/admin-settings.php:1783
+msgid "By provider"
+msgstr ""
+
+#: includes/admin-settings.php:1811
+msgid "By model"
+msgstr ""
+
+#: includes/admin-settings.php:1818
+msgid "Avg. latency"
+msgstr ""
+
+#: includes/admin-settings.php:1846
+msgid "By error code"
+msgstr ""
+
+#: includes/admin-settings.php:1849
+msgid "Code"
+msgstr ""
+
+#: includes/admin-settings.php:1855
+msgid "No errors in this period."
+msgstr ""
+
+#: includes/admin-settings.php:1877
+msgid "Events"
+msgstr ""
+
+#. translators: %s: number of events
+#: includes/admin-settings.php:1883
+#, php-format
+msgid "%s event in the period"
+msgid_plural "%s events in the period"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin-settings.php:1927
+msgid "Error code"
+msgstr ""
+
+#: includes/admin-settings.php:1936
+msgid "Conversation (ID)"
+msgstr ""
+
+#: includes/admin-settings.php:1940
+#: includes/admin-settings.php:2351
+msgid "Filter"
+msgstr ""
+
+#: includes/admin-settings.php:1942
+#: includes/admin-settings.php:2353
+#: includes/admin-settings.php:2384
+msgid "Clear filters"
+msgstr ""
+
+#: includes/admin-settings.php:1950
+msgid "Date"
+msgstr ""
+
+#: includes/admin-settings.php:1954
+msgid "Latency"
+msgstr ""
+
+#: includes/admin-settings.php:1956
+#: includes/admin-settings.php:2393
+msgid "Conversation"
+msgstr ""
+
+#: includes/admin-settings.php:1964
+#: includes/admin-settings.php:2383
+msgid "No results with these filters."
+msgstr ""
+
+#: includes/admin-settings.php:1966
+msgid "No events in this period."
+msgstr ""
+
+#. translators: %s: number of conversations
+#: includes/admin-settings.php:2197
+#, php-format
+msgid "%s conversation"
+msgid_plural "%s conversations"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of days
+#: includes/admin-settings.php:2202
+#, php-format
+msgid "%d days"
+msgstr ""
+
+#. translators: 1: conversations deleted, 2: messages deleted
+#: includes/admin-settings.php:2213
+#, php-format
+msgid "Purge complete: %1$d conversations and %2$d messages deleted."
+msgstr ""
+
+#: includes/admin-settings.php:2223
+#: includes/admin-settings.php:2244
+msgid "Conversations"
+msgstr ""
+
+#: includes/admin-settings.php:2227
+msgid "With error"
+msgstr ""
+
+#: includes/admin-settings.php:2231
+msgid "Total messages"
+msgstr ""
+
+#: includes/admin-settings.php:2235
+msgid "Avg. msgs/conv."
+msgstr ""
+
+#. translators: 1: conversation count label, 2: active period
+#: includes/admin-settings.php:2250
+#, php-format
+msgid "%1$s · %2$s"
+msgstr ""
+
+#: includes/admin-settings.php:2264
+msgid "Purge conversations older than the configured retention period?"
+msgstr ""
+
+#: includes/admin-settings.php:2296
+msgid "Search"
+msgstr ""
+
+#: includes/admin-settings.php:2297
+msgid "ID, title, path, session, or message…"
+msgstr ""
+
+#: includes/admin-settings.php:2300
+msgid "Search in"
+msgstr ""
+
+#: includes/admin-settings.php:2302
+msgid "Metadata and messages"
+msgstr ""
+
+#: includes/admin-settings.php:2303
+msgid "Metadata only"
+msgstr ""
+
+#: includes/admin-settings.php:2304
+msgid "Messages only"
+msgstr ""
+
+#: includes/admin-settings.php:2308
+#: includes/admin-settings.php:2671
+#: includes/chat-history.php:658
+msgid "Path"
+msgstr ""
+
+#: includes/admin-settings.php:2330
+#: includes/admin-settings.php:2781
+msgid "Active"
+msgstr ""
+
+#: includes/admin-settings.php:2337
+msgid "Sort by"
+msgstr ""
+
+#: includes/admin-settings.php:2339
+#: includes/admin-settings.php:2646
+#: includes/chat-history.php:660
+msgid "Last activity"
+msgstr ""
+
+#: includes/admin-settings.php:2340
+#: includes/admin-settings.php:2641
+#: includes/chat-history.php:659
+msgid "Start"
+msgstr ""
+
+#: includes/admin-settings.php:2344
+msgid "Direction"
+msgstr ""
+
+#: includes/admin-settings.php:2346
+msgid "Newest first"
+msgstr ""
+
+#: includes/admin-settings.php:2347
+msgid "Oldest first"
+msgstr ""
+
+#: includes/admin-settings.php:2386
+msgid "No conversations in this period."
+msgstr ""
+
+#: includes/admin-settings.php:2390
+msgid "Conversation list"
+msgstr ""
+
+#: includes/admin-settings.php:2396
+#: includes/admin-settings.php:2540
+msgid "Updated"
+msgstr ""
+
+#: includes/admin-settings.php:2397
+msgid "Msgs"
+msgstr ""
+
+#: includes/admin-settings.php:2434
+msgid "Conversation not found."
+msgstr ""
+
+#: includes/admin-settings.php:2467
+msgid "(Untitled)"
+msgstr ""
+
+#: includes/admin-settings.php:2543
+#, php-format
+msgid "%s ago"
+msgstr ""
+
+#: includes/admin-settings.php:2545
+msgid "Conversation duration"
+msgstr ""
+
+#: includes/admin-settings.php:2548
+#: includes/admin-settings.php:2636
+#: includes/admin-settings.php:2712
+#: includes/chat-history.php:657
+msgid "Messages"
+msgstr ""
+
+#: includes/admin-settings.php:2561
+#, php-format
+msgid "History of %s"
+msgstr ""
+
+#: includes/admin-settings.php:2604
+msgid "Copy public ID"
+msgstr ""
+
+#: includes/admin-settings.php:2608
+msgid "Copy link"
+msgstr ""
+
+#: includes/admin-settings.php:2611
+msgid "Delete"
+msgstr ""
+
+#: includes/admin-settings.php:2617
+msgid "Internal ID"
+msgstr ""
+
+#: includes/admin-settings.php:2623
+#: includes/chat-history.php:652
+msgid "Public ID"
+msgstr ""
+
+#: includes/admin-settings.php:2651
+msgid "Duration"
+msgstr ""
+
+#: includes/admin-settings.php:2657
+msgid "Provider / model"
+msgstr ""
+
+#: includes/admin-settings.php:2664
+msgid "Session"
+msgstr ""
+
+#: includes/admin-settings.php:2678
+msgid "URL"
+msgstr ""
+
+#: includes/admin-settings.php:2690
+msgid "Technical events"
+msgstr ""
+
+#: includes/admin-settings.php:2706
+msgid "View all statistics"
+msgstr ""
+
+#: includes/admin-settings.php:2724
+msgid "No saved messages."
+msgstr ""
+
+#: includes/admin-settings.php:2753
+msgid "Assistant"
+msgstr ""
+
+#: includes/admin-settings.php:2753
+msgid "User"
+msgstr ""
+
+#: includes/api-handler.php:57
+msgid "You are a helpful website assistant. Respond clearly and briefly."
+msgstr ""
+
+#: includes/api-handler.php:181
+#: includes/api-handler.php:231
+#: includes/rest-api.php:121
+msgid "Streaming disabled."
+msgstr ""
+
+#: includes/api-handler.php:238
+#: includes/rest-api.php:98
+msgid "Invalid nonce."
+msgstr ""
+
+#: includes/api-handler.php:244
+#: includes/rest-api.php:107
+msgid "Origin not allowed."
+msgstr ""
+
+#: includes/api-handler.php:428
+msgid "The server returned an error page (502). Leave the internal chat URL empty or use a local URL; do not use the public URL with Cloudflare."
+msgstr ""
+
+#: includes/api-handler.php:435
+msgid "Invalid internal response."
+msgstr ""
+
+#: includes/api-handler.php:474
+msgid "Invalid AI provider."
+msgstr ""
+
+#: includes/api-handler.php:488
+msgid "Invalid request."
+msgstr ""
+
+#: includes/api-handler.php:497
+msgid "The message must be between 2 and 700 characters."
+msgstr ""
+
+#: includes/api-handler.php:637
+msgid "Your IP is temporarily suspended due to too many requests."
+msgstr ""
+
+#: includes/api-handler.php:717
+msgid "Too many requests. Please wait a moment."
+msgstr ""
+
+#. translators: %d: seconds
+#: includes/chat-history.php:608
+#, php-format
+msgid "%d s"
+msgid_plural "%d s"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: minutes
+#: includes/chat-history.php:613
+#, php-format
+msgid "%d min"
+msgid_plural "%d min"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: hours, 2: minutes
+#: includes/chat-history.php:619
+#, php-format
+msgid "%1$dh %2$dmin"
+msgstr ""
+
+#. translators: %d: hours
+#: includes/chat-history.php:622
+#, php-format
+msgid "%d h"
+msgid_plural "%d h"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/chat-history.php:653
+msgid "Title"
+msgstr ""
+
+#. translators: %s: platform name
+#: includes/donation-footer.php:83
+#, php-format
+msgid "%s — add the URL in donation-footer.php"
+msgstr ""
+
+#: includes/donation-footer.php:128
+msgid "Support the plugin"
+msgstr ""
+
+#: includes/donation-footer.php:132
+msgid "Like this plugin? You can support development by donating on:"
+msgstr ""
+
+#: includes/donation-footer.php:134
+msgid "Donation platforms"
+msgstr ""
+
+#: includes/enqueue.php:125
+msgid "Open chat"
+msgstr ""
+
+#: includes/enqueue.php:126
+msgid "Close chat"
+msgstr ""
+
+#: includes/enqueue.php:127
+msgid "Reset chat"
+msgstr ""
+
+#: includes/enqueue.php:128
+msgid "Minimize chat"
+msgstr ""
+
+#: includes/enqueue.php:129
+msgid "System online"
+msgstr ""
+
+#: includes/enqueue.php:130
+msgid "Thinking…"
+msgstr ""
+
+#: includes/enqueue.php:131
+msgid "Could not send the message. Please try again."
+msgstr ""
+
+#. translators: %d: number of days
+#: includes/privacy.php:37
+#, php-format
+msgid "Conversation history is automatically purged after %d days."
+msgstr ""
+
+#: includes/privacy.php:40
+msgid "Conversation history is kept until manually deleted or until the plugin is uninstalled."
+msgstr ""
+
+#. translators: %d: number of days
+#: includes/privacy.php:45
+#, php-format
+msgid "Telemetry events are automatically purged after %d days."
+msgstr ""
+
+#: includes/privacy.php:48
+msgid "Telemetry events are kept until manually purged or until the plugin is uninstalled."
+msgstr ""
+
+#: includes/privacy.php:51
+msgid "What data this plugin collects"
+msgstr ""
+
+#: includes/privacy.php:52
+msgid "When visitors use the chat widget, the plugin may store and process the following data:"
+msgstr ""
+
+#: includes/privacy.php:54
+msgid "Chat messages sent by visitors and AI assistant replies."
+msgstr ""
+
+#: includes/privacy.php:55
+msgid "An anonymous session identifier (hashed; not linked to WordPress user accounts by default)."
+msgstr ""
+
+#: includes/privacy.php:56
+msgid "Page URL and path where the conversation started."
+msgstr ""
+
+#: includes/privacy.php:57
+msgid "Technical telemetry: provider, model, response status, latency, and error codes."
+msgstr ""
+
+#: includes/privacy.php:58
+msgid "Temporary rate-limit data derived from the visitor IP address (hashed in transients)."
+msgstr ""
+
+#: includes/privacy.php:61
+msgid "Data sent to third-party AI services"
+msgstr ""
+
+#: includes/privacy.php:62
+msgid "To generate responses, the plugin sends chat content to the AI provider configured by the site administrator (such as Google Gemini, DeepSeek, Ollama, or an OpenAI-compatible API). This typically includes:"
+msgstr ""
+
+#: includes/privacy.php:64
+msgid "The visitor message and recent conversation context."
+msgstr ""
+
+#: includes/privacy.php:65
+msgid "The system prompt configured in the plugin settings."
+msgstr ""
+
+#: includes/privacy.php:67
+msgid "The site administrator is responsible for choosing the provider and ensuring compliance with applicable privacy laws and the provider terms of service."
+msgstr ""
+
+#: includes/privacy.php:69
+msgid "Data not sent to the plugin author"
+msgstr ""
+
+#: includes/privacy.php:70
+msgid "This plugin does not send site data, chat content, or telemetry to the plugin author. Data is processed on your server and only forwarded to AI providers you configure."
+msgstr ""
+
+#: includes/privacy.php:72
+msgid "Retention"
+msgstr ""
+
+#: includes/privacy.php:76
+msgid "Uninstall"
+msgstr ""
+
+#: includes/privacy.php:77
+msgid "When the plugin is deleted via the WordPress admin, database tables, plugin settings, scheduled tasks, and plugin transients are removed. External log files configured via telemetry_log_path are not deleted automatically."
+msgstr ""
+
+#: includes/privacy.php:79
+msgid "Personal data requests"
+msgstr ""
+
+#: includes/privacy.php:80
+msgid "Chat history is stored with anonymous session identifiers and is not linked to visitor email addresses or WordPress user accounts by default. Site administrators can review, export, or delete conversations from the Chatbot admin screens."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:22
+msgid "DeepSeek API key is not configured."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:56
+msgid "Could not connect to DeepSeek. Verify that the server can reach api.deepseek.com."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:72
+msgid "DeepSeek rate limit reached. Please try again shortly."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:103
+msgid "DeepSeek models are not available. Use deepseek-chat or deepseek-v4-flash in AI Model."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:182
+msgid "DeepSeek API key is invalid."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:190
+msgid "DeepSeek account has no available balance."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:198
+msgid "DeepSeek model is invalid or unavailable."
+msgstr ""
+
+#: includes/providers/class-provider-deepseek.php:205
+msgid "DeepSeek returned an error."
+msgstr ""
+
+#: includes/providers/class-provider-gemini.php:22
+msgid "Gemini API key is not configured."
+msgstr ""
+
+#: includes/providers/class-provider-gemini.php:99
+msgid "Models are not available at this time. Please try again later."
+msgstr ""
+
+#: includes/providers/class-provider-ollama.php:59
+msgid "Could not connect to Ollama."
+msgstr ""
+
+#: includes/providers/class-provider-ollama.php:68
+msgid "Ollama returned an error."
+msgstr ""
+
+#: includes/providers/class-provider-ollama.php:82
+msgid "Ollama did not return a valid response."
+msgstr ""
+
+#: includes/providers/class-provider-openai.php:22
+msgid "API key is not configured."
+msgstr ""
+
+#: includes/providers/class-provider-openai.php:72
+msgid "Could not connect to the AI provider."
+msgstr ""
+
+#: includes/providers/class-provider-openai.php:81
+msgid "Provider rate limit reached. Please try again shortly."
+msgstr ""
+
+#: includes/providers/class-provider-openai.php:89
+msgid "The AI provider returned an error."
+msgstr ""
+
+#: includes/providers/class-provider-openai.php:103
+msgid "The model did not return a valid response."
+msgstr ""
+
+#: includes/rest-api.php:127
+msgid "Use POST with the same body and headers as /chat."
+msgstr ""

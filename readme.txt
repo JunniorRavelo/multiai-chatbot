@@ -9,122 +9,158 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Widget de chat con IA para WordPress. Soporta Gemini, DeepSeek, Ollama y APIs compatibles con OpenAI. Estilos, historial y telemetría.
+AI chat widget for WordPress. Supports Gemini, DeepSeek, Ollama, and OpenAI-compatible APIs. Styles, history, and telemetry.
 
 == Description ==
 
-**Chatbot Plugin WP** añade un asistente de inteligencia artificial a tu sitio WordPress con un widget flotante o embebido, panel de administración completo y herramientas para medir el uso.
+**Chatbot Plugin WP** adds an AI assistant to your WordPress site with a floating or embedded widget, a full admin panel, and usage analytics.
 
-Conecta el chat con el proveedor de IA que prefieras, personaliza la apariencia sin tocar código y revisa conversaciones y estadísticas desde el escritorio de WordPress.
+Connect the chat to your preferred AI provider, customize appearance without code, and review conversations and statistics from the WordPress dashboard.
 
-= Características principales =
+= Key features =
 
-* **Varios proveedores de IA:** Google Gemini, DeepSeek, Ollama (local) y cualquier API compatible con OpenAI.
-* **Widget global o shortcode:** Muestra el chat en todo el sitio o solo donde lo insertes con `[chatbot_widget]`.
-* **Modo flotante e inline:** Botón flotante con panel desplegable o chat embebido en la página.
-* **Respuestas en streaming:** Respuestas progresivas para una experiencia más natural (activable).
-* **8 temas visuales:** Sapphire, Midnight, Monochrome, Aqua, Ember, Emerald, Amethyst y Plum.
-* **Personalización:** Colores, radio de bordes, posición del widget (5 ubicaciones) y ancho del panel.
-* **Vista previa en vivo:** Previsualiza tema, posición y estilos desde el panel de administración.
-* **Historial de conversaciones:** Consulta mensajes, estado, proveedor y página de origen.
-* **Telemetría y exportación CSV:** Latencia, errores, modelos usados y resumen por periodo.
-* **Seguridad:** Rate limiting por IP, API keys en servidor (nunca expuestas al navegador) y soporte de constantes en `wp-config.php`.
+* **Multiple AI providers:** Google Gemini, DeepSeek, Ollama (local), and any OpenAI-compatible API.
+* **Global widget or shortcode:** Show the chat site-wide or only where you insert `[chatbot_widget]`.
+* **Floating and inline modes:** Floating button with slide-out panel or embedded chat in page content.
+* **Streaming responses:** Progressive replies for a more natural experience (optional).
+* **8 visual themes:** Sapphire, Midnight, Monochrome, Aqua, Ember, Emerald, Amethyst, and Plum.
+* **Customization:** Colors, border radius, widget position (5 locations), and panel width.
+* **Live preview:** Preview theme, position, and styles from the admin panel.
+* **Conversation history:** Browse messages, status, provider, and source page.
+* **Telemetry and CSV export:** Latency, errors, models used, and period summaries.
+* **Security:** IP rate limiting, API keys on the server (never exposed to the browser), and wp-config.php constant support.
 
-= Panel de administración =
+= Admin panel =
 
-* **General** — Activar widget, mensaje de bienvenida, prompt del sistema, streaming y límites de uso.
-* **Modelo IA** — Proveedor, API key, modelo principal y modelos de respaldo.
-* **Seguridad** — Orígenes permitidos, caché, telemetría y suspensión por abuso.
-* **Estilo del chat** — Presets, colores, posición y vista previa interactiva.
-* **Estadísticas** — Totales, desglose por proveedor y exportación CSV.
-* **Historial** — Listado filtrable de conversaciones con detalle de mensajes.
+* **General** — Enable widget, welcome message, system prompt, streaming, and usage limits.
+* **AI Model** — Provider, API key, primary model, and fallback models.
+* **Security** — Allowed origins, cache, telemetry, and abuse suspension.
+* **Chat Style** — Presets, colors, position, and interactive preview.
+* **Statistics** — Totals, provider breakdown, and CSV export.
+* **History** — Filterable conversation list with message detail.
 
-= Proveedores soportados =
+= Supported providers =
 
-* **Google Gemini** — Modelos Flash y respaldo automático ante errores.
-* **DeepSeek** — API oficial con rotación de modelos de respaldo.
-* **Ollama** — Modelos locales sin API key (ideal para entornos self-hosted).
-* **OpenAI-compatible** — OpenAI, Azure OpenAI u otros endpoints compatibles.
+* **Google Gemini** — Flash models with automatic fallback on errors.
+* **DeepSeek** — Official API with fallback model rotation.
+* **Ollama** — Local models without an API key (ideal for self-hosted setups).
+* **OpenAI-compatible** — OpenAI, Azure OpenAI, or other compatible endpoints.
 
 = Shortcodes =
 
-`[chatbot_widget]` — Widget flotante (por defecto).
+`[chatbot_widget]` — Floating widget (default).
 
-`[chatbot_widget mode="inline"]` — Panel embebido en el contenido.
+`[chatbot_widget mode="inline"]` — Embedded panel in content.
 
-= API REST =
+= REST API =
 
-* `POST /wp-json/chatbot-plugin/v1/chat` — Respuesta JSON.
-* `POST /chatbot-plugin/v1/chat/stream` — Streaming de texto.
+* `POST /wp-json/chatbot-plugin/v1/chat` — JSON response.
+* `POST /chatbot-plugin/v1/chat/stream` — Text streaming.
 
-La clave de API se gestiona siempre en el servidor; el frontend solo usa el nonce de WordPress.
+The API key is always handled on the server; the frontend only uses the WordPress nonce.
 
-= Requisitos =
+= Requirements =
 
-* WordPress 6.0 o superior
-* PHP 8.0 o superior
-* Para Gemini, DeepSeek u OpenAI: clave API válida
-* Para Ollama: servidor accesible desde el host de WordPress
+* WordPress 6.0 or higher
+* PHP 8.0 or higher
+* For Gemini, DeepSeek, or OpenAI: a valid API key
+* For Ollama: a server reachable from the WordPress host
 
 == Installation ==
 
-1. Sube la carpeta `chatbot-plugin-wp` al directorio `/wp-content/plugins/` o instala el ZIP desde **Plugins → Añadir nuevo → Subir plugin**.
-2. Activa el plugin desde **Plugins**.
-3. Ve a **Chatbot** en el menú de administración.
-4. En **Modelo IA**, elige el proveedor e introduce tu API key (excepto Ollama).
-5. En **General**, activa el widget y ajusta el mensaje de bienvenida.
-6. Guarda los cambios. El chat aparecerá en el frontend si el widget está activado.
+1. Upload the `chatbot-plugin-wp` folder to `/wp-content/plugins/` or install the ZIP from **Plugins → Add New → Upload Plugin**.
+2. Activate the plugin from **Plugins**.
+3. Go to **Chatbot** in the admin menu.
+4. Under **AI Model**, choose a provider and enter your API key (except for Ollama).
+5. Under **General**, enable the widget and adjust the welcome message.
+6. Save changes. The chat will appear on the frontend when the widget is enabled.
 
-**Nota:** Tras activar, las reglas de reescritura del streaming se registran automáticamente. Si el stream no responde, visita **Ajustes → Enlaces permanentes** y pulsa **Guardar cambios**.
+**Note:** After activation, streaming rewrite rules are registered automatically. If streaming does not respond, visit **Settings → Permalinks** and click **Save Changes**.
 
 == Frequently Asked Questions ==
 
-= ¿Necesito una API key? =
+= Do I need an API key? =
 
-Sí, para Gemini, DeepSeek y proveedores OpenAI-compatible. Ollama no requiere clave, pero sí un servidor Ollama accesible desde tu WordPress.
+Yes, for Gemini, DeepSeek, and OpenAI-compatible providers. Ollama does not require a key, but your WordPress host must be able to reach the Ollama server.
 
-= ¿La API key es visible en el navegador? =
+= Is the API key visible in the browser? =
 
-No. Todas las peticiones al modelo pasan por el backend de WordPress. El frontend solo envía mensajes al endpoint REST con el nonce de WordPress.
+No. All model requests go through the WordPress backend. The frontend only sends messages to the REST endpoint with the WordPress nonce.
 
-= ¿Puedo definir la API key en wp-config.php? =
+= Can I define the API key in wp-config.php? =
 
-Sí. Puedes usar constantes como `CHATBOT_GEMINI_API_KEY`, `CHATBOT_DEEPSEEK_API_KEY` o `CHATBOT_OPENAI_API_KEY` para mayor seguridad en producción.
+Yes. You can use constants such as `CHATBOT_GEMINI_API_KEY`, `CHATBOT_DEEPSEEK_API_KEY`, or `CHATBOT_OPENAI_API_KEY` for better security in production.
 
-= ¿Cómo muestro el chat solo en una página? =
+= How do I show the chat on only one page? =
 
-Desactiva el widget global en **General** e inserta el shortcode `[chatbot_widget]` en la página o entrada deseada.
+Disable the global widget under **General** and insert the shortcode `[chatbot_widget]` on the desired page or post.
 
-= ¿Se guardan las conversaciones? =
+= Are conversations stored? =
 
-Sí. Cada intercambio se almacena en la base de datos con un ID público (formato `CB-AAAA-MM-DD-HH-MM-SS`) y puedes consultarlo en **Historial**.
+Yes. Each exchange is stored in the database with a public ID (format `CB-AAAA-MM-DD-HH-MM-SS`) and can be reviewed under **History**.
 
-= ¿Qué ocurre al desinstalar el plugin? =
+= What happens when I uninstall the plugin? =
 
-El archivo `uninstall.php` elimina las tablas de telemetría e historial y las opciones del plugin.
+The `uninstall.php` routine removes:
+
+* Database tables: `chatbot_events`, conversation and message tables.
+* Plugin options: `chatbot_plugin_settings` and database version options.
+* Scheduled cron jobs: `chatbot_purge_history`, `chatbot_purge_telemetry`.
+* Plugin transients: response cache, rate limits, violations, and suspension flags.
+
+External log files configured via `telemetry_log_path` pointing outside the plugin directory are **not** deleted automatically.
+
+== Privacy ==
+
+= What data is stored locally? =
+
+* **Conversations:** chat messages and metadata in custom database tables.
+* **Telemetry:** request events (provider, model, status, latency) in `chatbot_events`.
+* **Settings:** plugin configuration in `chatbot_plugin_settings`.
+* **Temporary data:** rate-limit and response-cache transients (`chatbot_*`).
+
+= What data is sent to third parties? =
+
+When a visitor sends a chat message, the plugin forwards content to the AI provider configured by the site administrator (Google Gemini, DeepSeek, Ollama, or an OpenAI-compatible API). This typically includes the visitor message, recent conversation context, and the system prompt from plugin settings.
+
+= Who is responsible for compliance? =
+
+The site administrator chooses the AI provider and must comply with applicable privacy laws and the provider terms of service.
+
+= Retention =
+
+Conversation and telemetry retention can be configured in plugin settings (`history_retention_days`, `telemetry_retention_days`). A value of `0` means unlimited until manual purge or uninstall.
+
+= Does the plugin phone home? =
+
+No. This plugin does not send site data, chat content, or telemetry to the plugin author. Data is processed on your server and only forwarded to AI providers you configure.
+
+= Personal data =
+
+Chat history uses anonymous session identifiers and is not linked to visitor email addresses or WordPress user accounts by default. Administrators can review, export, or delete conversations from the Chatbot admin screens.
 
 == Screenshots ==
 
-1. Panel de administración — pestaña General con widget activado.
-2. Configuración del modelo IA — proveedor, API key y modelos de respaldo.
-3. Estilo del chat — temas visuales, colores y vista previa interactiva.
-4. Widget flotante en el frontend con tema Sapphire.
-5. Historial de conversaciones con filtros y detalle de mensajes.
+1. Admin panel — General tab with widget enabled.
+2. AI model settings — provider, API key, and fallback models.
+3. Chat style — visual themes, colors, and interactive preview.
+4. Floating widget on the frontend with Sapphire theme.
+5. Conversation history with filters and message detail.
 
 == Changelog ==
 
 = 1.0.0 =
-* Lanzamiento inicial.
-* Widget de chat con IA (Gemini, DeepSeek, Ollama, OpenAI-compatible).
-* Panel de administración con pestañas General, Modelo IA, Seguridad, Estilo, Estadísticas e Historial.
-* 8 presets visuales y personalización de colores, posición y dimensiones.
-* Vista previa interactiva en el administrador.
-* Streaming de respuestas, rate limiting y telemetría con exportación CSV.
-* Historial de conversaciones con ID público y detalle AJAX.
-* Shortcodes `[chatbot_widget]` y `[chatbot_widget mode="inline"]`.
-* API REST para chat JSON y streaming.
+* Initial release.
+* AI chat widget (Gemini, DeepSeek, Ollama, OpenAI-compatible).
+* Admin panel with General, AI Model, Security, Style, Statistics, and History tabs.
+* 8 visual presets and color, position, and dimension customization.
+* Interactive admin preview.
+* Response streaming, rate limiting, and telemetry with CSV export.
+* Conversation history with public ID and AJAX detail.
+* Shortcodes `[chatbot_widget]` and `[chatbot_widget mode="inline"]`.
+* REST API for JSON chat and streaming.
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Primera versión pública del plugin.
+First public release of the plugin.
