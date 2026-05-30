@@ -23,15 +23,25 @@ class Chatbot_Admin_Settings {
 	 */
 	public static function default_settings(): array {
 		return array(
-			'widget_enabled'        => true,
-			'welcome_message'       => "Hola. Soy un agente de IA. Puedo cometer errores; verifica la información importante antes de tomar decisiones.\n\n¿En qué puedo ayudarte?",
-			'system_prompt'         => 'Eres un asistente útil del sitio web. Responde en español de forma clara, breve y amable. Si no sabes algo, dilo con honestidad.',
-			'streaming_enabled'     => true,
-			'rate_limit_per_minute' => 10,
-			'provider'              => 'gemini',
-			'api_key'               => '',
-			'model'                 => 'gemini-2.0-flash',
-			'model_candidates'      => 'gemini-2.0-flash-lite',
+			'widget_enabled'                 => true,
+			'welcome_message'                => "Hola. Soy un agente de IA. Puedo cometer errores; verifica la información importante antes de tomar decisiones.\n\n¿En qué puedo ayudarte?",
+			'system_prompt'                  => 'Eres un asistente útil del sitio web. Responde en español de forma clara, breve y amable. Si no sabes algo, dilo con honestidad.',
+			'streaming_enabled'              => true,
+			'allowed_origins'                => '',
+			'cache_ttl_seconds'              => 1800,
+			'telemetry_log_path'             => '',
+			'rate_limit_per_minute'          => 10,
+			'rate_limit_per_day'             => 30,
+			'rate_limit_model_per_minute'    => 6,
+			'rate_limit_model_per_day'       => 24,
+			'rate_limit_soft_threshold'      => 0.8,
+			'ip_suspend_after_violations'    => 3,
+			'ip_suspend_seconds'             => 900,
+			'internal_chat_base_url'         => '',
+			'provider'                       => 'gemini',
+			'api_key'                        => '',
+			'model'                          => 'gemini-3.1-flash-lite',
+			'model_candidates'               => 'gemini-3-flash,gemini-3.1-flash-lite,gemini-2.5-flash,gemini-2.5-flash-lite,gemini-3.1-flash-tts,gemini-2.5-flash-tts',
 			'ollama_base_url'       => 'http://127.0.0.1:11434',
 			'openai_base_url'       => 'https://api.openai.com/v1',
 			'request_timeout'       => 22,
@@ -86,8 +96,18 @@ class Chatbot_Admin_Settings {
 		$out['widget_enabled']        = self::sanitize_checkbox( $input, $current, 'widget_enabled', (bool) $defaults['widget_enabled'] );
 		$out['welcome_message']       = sanitize_textarea_field( $input['welcome_message'] ?? $defaults['welcome_message'] );
 		$out['system_prompt']         = sanitize_textarea_field( $input['system_prompt'] ?? $defaults['system_prompt'] );
-		$out['streaming_enabled']     = self::sanitize_checkbox( $input, $current, 'streaming_enabled', (bool) $defaults['streaming_enabled'] );
-		$out['rate_limit_per_minute'] = max( 1, min( 60, (int) ( $input['rate_limit_per_minute'] ?? $defaults['rate_limit_per_minute'] ) ) );
+		$out['streaming_enabled']              = self::sanitize_checkbox( $input, $current, 'streaming_enabled', (bool) $defaults['streaming_enabled'] );
+		$out['allowed_origins']                = self::sanitize_origins_list( (string) ( $input['allowed_origins'] ?? $current['allowed_origins'] ?? $defaults['allowed_origins'] ) );
+		$out['cache_ttl_seconds']              = max( 0, min( 86400, (int) ( $input['cache_ttl_seconds'] ?? $current['cache_ttl_seconds'] ?? $defaults['cache_ttl_seconds'] ) ) );
+		$out['telemetry_log_path']             = sanitize_text_field( (string) ( $input['telemetry_log_path'] ?? $current['telemetry_log_path'] ?? $defaults['telemetry_log_path'] ) );
+		$out['rate_limit_per_minute']          = max( 1, min( 120, (int) ( $input['rate_limit_per_minute'] ?? $current['rate_limit_per_minute'] ?? $defaults['rate_limit_per_minute'] ) ) );
+		$out['rate_limit_per_day']             = max( 1, min( 1000, (int) ( $input['rate_limit_per_day'] ?? $current['rate_limit_per_day'] ?? $defaults['rate_limit_per_day'] ) ) );
+		$out['rate_limit_model_per_minute']    = max( 1, min( 120, (int) ( $input['rate_limit_model_per_minute'] ?? $current['rate_limit_model_per_minute'] ?? $defaults['rate_limit_model_per_minute'] ) ) );
+		$out['rate_limit_model_per_day']       = max( 1, min( 5000, (int) ( $input['rate_limit_model_per_day'] ?? $current['rate_limit_model_per_day'] ?? $defaults['rate_limit_model_per_day'] ) ) );
+		$out['rate_limit_soft_threshold']      = max( 0.1, min( 1.0, (float) ( $input['rate_limit_soft_threshold'] ?? $current['rate_limit_soft_threshold'] ?? $defaults['rate_limit_soft_threshold'] ) ) );
+		$out['ip_suspend_after_violations']    = max( 1, min( 20, (int) ( $input['ip_suspend_after_violations'] ?? $current['ip_suspend_after_violations'] ?? $defaults['ip_suspend_after_violations'] ) ) );
+		$out['ip_suspend_seconds']             = max( 60, min( 86400, (int) ( $input['ip_suspend_seconds'] ?? $current['ip_suspend_seconds'] ?? $defaults['ip_suspend_seconds'] ) ) );
+		$out['internal_chat_base_url']         = esc_url_raw( (string) ( $input['internal_chat_base_url'] ?? $current['internal_chat_base_url'] ?? $defaults['internal_chat_base_url'] ) );
 
 		$provider = sanitize_key( $input['provider'] ?? 'gemini' );
 		$out['provider'] = in_array( $provider, array( 'gemini', 'ollama', 'openai_compatible' ), true ) ? $provider : 'gemini';
@@ -256,6 +276,23 @@ class Chatbot_Admin_Settings {
 		return ! empty( $input[ $key ] );
 	}
 
+	private static function sanitize_origins_list( string $value ): string {
+		$parts = array_filter(
+			array_map(
+				static function ( $origin ) {
+					$origin = trim( (string) $origin );
+					if ( '' === $origin ) {
+						return '';
+					}
+					return esc_url_raw( $origin, array( 'http', 'https' ) );
+				},
+				explode( ',', $value )
+			)
+		);
+
+		return implode( ',', array_unique( $parts ) );
+	}
+
 	private static function sanitize_css_size( string $value ): string {
 		$value = trim( $value );
 		if ( '' === $value ) {
@@ -290,10 +327,11 @@ class Chatbot_Admin_Settings {
 		$tab      = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( (string) $_GET['tab'] ) ) : 'general';
 		$settings = Chatbot_Plugin::get_settings();
 		$tabs     = array(
-			'general' => __( 'General', 'chatbot-plugin-wp' ),
-			'model'   => __( 'Modelo IA', 'chatbot-plugin-wp' ),
-			'style'   => __( 'Estilo del chat', 'chatbot-plugin-wp' ),
-			'stats'   => __( 'Estadísticas', 'chatbot-plugin-wp' ),
+			'general'  => __( 'General', 'chatbot-plugin-wp' ),
+			'model'    => __( 'Modelo IA', 'chatbot-plugin-wp' ),
+			'security' => __( 'Seguridad', 'chatbot-plugin-wp' ),
+			'style'    => __( 'Estilo del chat', 'chatbot-plugin-wp' ),
+			'stats'    => __( 'Estadísticas', 'chatbot-plugin-wp' ),
 		);
 
 		if ( ! isset( $tabs[ $tab ] ) ) {
@@ -344,6 +382,8 @@ class Chatbot_Admin_Settings {
 							<?php self::render_general_fields( $settings ); ?>
 						<?php elseif ( 'model' === $tab ) : ?>
 							<?php self::render_model_fields( $settings ); ?>
+						<?php elseif ( 'security' === $tab ) : ?>
+							<?php self::render_security_fields( $settings ); ?>
 						<?php elseif ( 'style' === $tab ) : ?>
 							<?php self::render_style_fields( $settings ); ?>
 						<?php endif; ?>
@@ -450,11 +490,125 @@ class Chatbot_Admin_Settings {
 					<input type="text" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_subtitle]" value="<?php echo esc_attr( (string) $settings['widget_subtitle'] ); ?>" />
 				</td>
 			</tr>
+		</table>
+		<?php
+		self::card_close();
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 */
+	private static function render_security_fields( array $settings ): void {
+		$site_origin = esc_url( home_url( '/' ) );
+		self::card_open(
+			__( 'Orígenes y acceso', 'chatbot-plugin-wp' ),
+			__( 'Controla desde qué dominios pueden llamar al endpoint del chat.', 'chatbot-plugin-wp' )
+		);
+		?>
+		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Límite por minuto (IP)', 'chatbot-plugin-wp' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Orígenes permitidos', 'chatbot-plugin-wp' ); ?></th>
 				<td>
-					<input type="number" min="1" max="60" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_per_minute]" value="<?php echo esc_attr( (string) $settings['rate_limit_per_minute'] ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'Protege contra abuso de la API por visitante.', 'chatbot-plugin-wp' ); ?></p>
+					<textarea name="<?php echo esc_attr( self::OPTION_KEY ); ?>[allowed_origins]" rows="3" class="large-text code" placeholder="<?php echo esc_attr( $site_origin ); ?>"><?php echo esc_textarea( (string) ( $settings['allowed_origins'] ?? '' ) ); ?></textarea>
+					<p class="description">
+						<?php
+						printf(
+							/* translators: %s: site home URL */
+							esc_html__( 'URLs separadas por coma. Vacío = solo este sitio (%s). Equivalente a CHAT_ALLOWED_ORIGINS.', 'chatbot-plugin-wp' ),
+							esc_html( $site_origin )
+						);
+						?>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'URL interna del chat', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="url" class="regular-text code" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[internal_chat_base_url]" value="<?php echo esc_attr( (string) ( $settings['internal_chat_base_url'] ?? '' ) ); ?>" placeholder="<?php echo esc_attr( untrailingslashit( home_url() ) ); ?>" />
+					<p class="description"><?php esc_html_e( 'Opcional. Usada por el streaming para llamar a /chat sin saltos públicos. Equivalente a INTERNAL_CHAT_BASE_URL.', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php
+		self::card_close();
+
+		self::card_open(
+			__( 'Caché y telemetría', 'chatbot-plugin-wp' ),
+			__( 'Reduce llamadas repetidas al modelo y registra eventos en archivo opcional.', 'chatbot-plugin-wp' )
+		);
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'TTL de caché (segundos)', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="0" max="86400" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[cache_ttl_seconds]" value="<?php echo esc_attr( (string) ( $settings['cache_ttl_seconds'] ?? 1800 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( '0 = desactivar caché. Equivalente a CHAT_CACHE_TTL_SECONDS.', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Ruta de log de telemetría', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="text" class="large-text code" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[telemetry_log_path]" value="<?php echo esc_attr( (string) ( $settings['telemetry_log_path'] ?? '' ) ); ?>" placeholder="<?php echo esc_attr( WP_CONTENT_DIR . '/chatbot-telemetry.log' ); ?>" />
+					<p class="description"><?php esc_html_e( 'Opcional. Además de la base de datos, escribe eventos en este archivo. Equivalente a CHAT_TELEMETRY_LOG_PATH.', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php
+		self::card_close();
+
+		self::card_open(
+			__( 'Límites de tasa', 'chatbot-plugin-wp' ),
+			__( 'Protege el endpoint y la cuota del proveedor de IA contra abuso.', 'chatbot-plugin-wp' )
+		);
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Por IP / minuto', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="1" max="120" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_per_minute]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_per_minute'] ?? 10 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_PER_MINUTE', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Por IP / día', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="1" max="1000" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_per_day]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_per_day'] ?? 30 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_PER_DAY', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Modelo / minuto (global)', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="1" max="120" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_model_per_minute]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_model_per_minute'] ?? 6 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_MODEL_PER_MINUTE', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Modelo / día (global)', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="1" max="5000" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_model_per_day]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_model_per_day'] ?? 24 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_MODEL_PER_DAY', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Umbral suave', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="0.1" max="1" step="0.05" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_soft_threshold]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_soft_threshold'] ?? 0.8 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'Fracción del límite (0.1–1) a partir de la cual se registra advertencia. CHAT_RATE_LIMIT_SOFT_THRESHOLD', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Suspender IP tras violaciones', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="1" max="20" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[ip_suspend_after_violations]" value="<?php echo esc_attr( (string) ( $settings['ip_suspend_after_violations'] ?? 3 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'CHAT_IP_SUSPEND_AFTER_VIOLATIONS', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Duración suspensión (seg)', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="number" min="60" max="86400" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[ip_suspend_seconds]" value="<?php echo esc_attr( (string) ( $settings['ip_suspend_seconds'] ?? 900 ) ); ?>" class="small-text" />
+					<p class="description"><?php esc_html_e( 'CHAT_IP_SUSPEND_SECONDS', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -487,14 +641,14 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'Modelo', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<input type="text" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model]" value="<?php echo esc_attr( (string) $settings['model'] ); ?>" />
-					<p class="description"><?php esc_html_e( 'Ej: gemini-2.0-flash, llama3, gpt-4o-mini', 'chatbot-plugin-wp' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Ej: gemini-3.1-flash-lite, llama3, gpt-4o-mini. Equivalente a GEMINI_MODEL.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 			<tr class="chatbot-field-gemini">
 				<th scope="row"><?php esc_html_e( 'Modelo de respaldo', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<input type="text" class="large-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model_candidates]" value="<?php echo esc_attr( (string) $settings['model_candidates'] ); ?>" />
-					<p class="description"><?php esc_html_e( 'Solo Gemini. Modelos alternativos separados por coma.', 'chatbot-plugin-wp' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Solo Gemini. Pool de rotación separado por coma (429/404/400 prueba el siguiente). Equivalente a GEMINI_MODEL_CANDIDATES.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 			<tr class="chatbot-field-ollama">
@@ -519,7 +673,7 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'API Key', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<input type="password" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[api_key]" value="" placeholder="<?php echo ! empty( $settings['api_key'] ) ? '••••••••' : ''; ?>" autocomplete="new-password" />
-					<p class="description"><?php esc_html_e( 'Deja vacío para mantener la clave actual. En producción puedes definir CHATBOT_GEMINI_API_KEY o CHATBOT_OPENAI_API_KEY en wp-config.php.', 'chatbot-plugin-wp' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Deja vacío para mantener la clave actual. En producción define CHATBOT_GEMINI_API_KEY o CHATBOT_OPENAI_API_KEY en wp-config.php (equivalente a GEMINI_API_KEY).', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 		</table>

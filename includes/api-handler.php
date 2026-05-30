@@ -58,6 +58,26 @@ class Chatbot_Api_Handler {
 
 		$messages = self::build_messages( $parsed['message'], $parsed['history'] );
 
+		$cache_ttl = isset( $settings['cache_ttl_seconds'] ) ? max( 0, (int) $settings['cache_ttl_seconds'] ) : 0;
+		$cache_key = '';
+		if ( $cache_ttl > 0 ) {
+			$cache_key = 'chatbot_resp_' . md5(
+				$system . '|' . wp_json_encode( $messages ) . '|' . $provider_id . '|' . ( $settings['model'] ?? '' )
+			);
+			$cached = get_transient( $cache_key );
+			if ( is_array( $cached ) && ! empty( $cached['answer'] ) ) {
+				$latency = (int) ( ( microtime( true ) - $started ) * 1000 );
+				self::record_event( $session_hash, $settings, (string) ( $cached['meta']['model'] ?? '' ), 'cached', $latency );
+				return new WP_REST_Response( $cached, 200 );
+			}
+		}
+
+		$model_limit = self::enforce_model_rate_limit( $settings );
+		if ( $model_limit instanceof WP_REST_Response ) {
+			self::record_event( $session_hash, $settings, '', 'rate_limited', (int) ( ( microtime( true ) - $started ) * 1000 ), 'RATE_LIMIT_MODEL' );
+			return $model_limit;
+		}
+
 		$provider_settings = array(
 			'api_key'           => ! empty( $settings['api_key'] ) ? (string) $settings['api_key'] : '',
 			'model'             => ! empty( $settings['model'] ) ? (string) $settings['model'] : '',
@@ -93,16 +113,19 @@ class Chatbot_Api_Handler {
 
 		self::record_event( $session_hash, $settings, $result['model'], 'success', $latency );
 
-		return new WP_REST_Response(
-			array(
-				'answer' => $result['text'],
-				'meta'   => array(
-					'model'    => $result['model'],
-					'provider' => $provider_id,
-				),
+		$response_data = array(
+			'answer' => $result['text'],
+			'meta'   => array(
+				'model'    => $result['model'],
+				'provider' => $provider_id,
 			),
-			200
 		);
+
+		if ( $cache_ttl > 0 && '' !== $cache_key ) {
+			set_transient( $cache_key, $response_data, $cache_ttl );
+		}
+
+		return new WP_REST_Response( $response_data, 200 );
 	}
 
 	/**
@@ -115,19 +138,7 @@ class Chatbot_Api_Handler {
 			return new WP_REST_Response( array( 'error' => __( 'Streaming deshabilitado.', 'chatbot-plugin-wp' ) ), 404 );
 		}
 
-		$internal = new WP_REST_Request( 'POST', '/chatbot-plugin/v1/chat' );
-		$internal->set_body( $request->get_body() );
-		$internal->set_header( 'Content-Type', 'application/json' );
-		$session = $request->get_header( 'x-chat-session-id' );
-		if ( $session ) {
-			$internal->set_header( 'x-chat-session-id', $session );
-		}
-		$nonce = $request->get_header( 'x-wp-nonce' );
-		if ( $nonce ) {
-			$internal->set_header( 'x-wp-nonce', $nonce );
-		}
-
-		$response = rest_do_request( $internal );
+		$response = self::internal_chat_request( $request, $settings );
 		if ( $response->is_error() ) {
 			$error = $response->as_error();
 			$data  = $error->get_error_data();
@@ -185,16 +196,13 @@ class Chatbot_Api_Handler {
 			exit;
 		}
 
-		$internal = new WP_REST_Request( 'POST', '/chatbot-plugin/v1/chat' );
-		$internal->set_body( $request->get_body() );
-		$internal->set_header( 'Content-Type', 'application/json' );
-		$session = $request->get_header( 'x-chat-session-id' );
-		if ( $session ) {
-			$internal->set_header( 'x-chat-session-id', $session );
+		if ( ! self::verify_origin( $settings ) ) {
+			status_header( 403 );
+			echo wp_json_encode( array( 'error' => __( 'Origen no permitido.', 'chatbot-plugin-wp' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
+			exit;
 		}
-		$internal->set_header( 'x-wp-nonce', $nonce );
 
-		$response = rest_do_request( $internal );
+		$response = self::internal_chat_request( $request, $settings );
 		if ( $response->is_error() ) {
 			status_header( $response->get_status() );
 			header( 'Content-Type: application/json; charset=utf-8' );
@@ -229,6 +237,144 @@ class Chatbot_Api_Handler {
 
 	public static function verify_nonce( ?string $nonce ): bool {
 		return (bool) wp_verify_nonce( $nonce ? $nonce : '', 'wp_rest' );
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 */
+	public static function verify_origin( array $settings ): bool {
+		$request_origin = self::get_request_origin();
+		if ( '' === $request_origin ) {
+			return true;
+		}
+
+		$allowed = self::parse_allowed_origins( $settings );
+		if ( empty( $allowed ) ) {
+			$allowed = self::get_site_origins();
+		}
+
+		return in_array( $request_origin, $allowed, true );
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 * @return list<string>
+	 */
+	private static function parse_allowed_origins( array $settings ): array {
+		$raw = ! empty( $settings['allowed_origins'] ) ? (string) $settings['allowed_origins'] : '';
+		if ( '' === trim( $raw ) ) {
+			return array();
+		}
+
+		$origins = array();
+		foreach ( explode( ',', $raw ) as $part ) {
+			$origin = untrailingslashit( trim( $part ) );
+			if ( '' !== $origin ) {
+				$origins[] = $origin;
+			}
+		}
+
+		return array_values( array_unique( $origins ) );
+	}
+
+	/**
+	 * @return list<string>
+	 */
+	private static function get_site_origins(): array {
+		$home = home_url( '/' );
+		$origins = array( untrailingslashit( $home ) );
+
+		$parsed = wp_parse_url( $home );
+		if ( is_array( $parsed ) && ! empty( $parsed['host'] ) ) {
+			$scheme = ! empty( $parsed['scheme'] ) ? (string) $parsed['scheme'] : 'https';
+			$host   = (string) $parsed['host'];
+			$port   = ! empty( $parsed['port'] ) ? ':' . (int) $parsed['port'] : '';
+			$origins[] = $scheme . '://' . $host . $port;
+		}
+
+		return array_values( array_unique( $origins ) );
+	}
+
+	private static function get_request_origin(): string {
+		if ( ! empty( $_SERVER['HTTP_ORIGIN'] ) ) {
+			$origin = esc_url_raw( wp_unslash( (string) $_SERVER['HTTP_ORIGIN'] ), array( 'http', 'https' ) );
+			return '' !== $origin ? untrailingslashit( $origin ) : '';
+		}
+
+		if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+			$referer = esc_url_raw( wp_unslash( (string) $_SERVER['HTTP_REFERER'] ), array( 'http', 'https' ) );
+			$parsed  = wp_parse_url( $referer );
+			if ( is_array( $parsed ) && ! empty( $parsed['host'] ) ) {
+				$scheme = ! empty( $parsed['scheme'] ) ? (string) $parsed['scheme'] : 'https';
+				$port   = ! empty( $parsed['port'] ) ? ':' . (int) $parsed['port'] : '';
+				return $scheme . '://' . (string) $parsed['host'] . $port;
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * @param WP_REST_Request        $request
+	 * @param array<string, mixed>   $settings
+	 * @return WP_REST_Response
+	 */
+	private static function internal_chat_request( WP_REST_Request $request, array $settings ): WP_REST_Response {
+		$nonce   = (string) $request->get_header( 'x-wp-nonce' );
+		$session = (string) $request->get_header( 'x-chat-session-id' );
+		$base    = ! empty( $settings['internal_chat_base_url'] ) ? untrailingslashit( (string) $settings['internal_chat_base_url'] ) : '';
+
+		if ( '' === $base ) {
+			$internal = new WP_REST_Request( 'POST', '/chatbot-plugin/v1/chat' );
+			$internal->set_body( $request->get_body() );
+			$internal->set_header( 'Content-Type', 'application/json' );
+			if ( '' !== $session ) {
+				$internal->set_header( 'x-chat-session-id', $session );
+			}
+			if ( '' !== $nonce ) {
+				$internal->set_header( 'x-wp-nonce', $nonce );
+			}
+			return rest_do_request( $internal );
+		}
+
+		$url = $base . '/wp-json/chatbot-plugin/v1/chat';
+		$headers = array(
+			'Content-Type' => 'application/json',
+		);
+		if ( '' !== $nonce ) {
+			$headers['X-WP-Nonce'] = $nonce;
+		}
+		if ( '' !== $session ) {
+			$headers['X-Chat-Session-Id'] = $session;
+		}
+
+		$timeout = ! empty( $settings['request_timeout'] ) ? max( 5, (int) $settings['request_timeout'] ) : 22;
+		$remote  = wp_remote_post(
+			$url,
+			array(
+				'timeout' => $timeout + 5,
+				'headers' => $headers,
+				'body'    => $request->get_body(),
+			)
+		);
+
+		if ( is_wp_error( $remote ) ) {
+			return new WP_REST_Response(
+				array(
+					'error'     => $remote->get_error_message(),
+					'errorCode' => 'SERVER_ERROR',
+				),
+				503
+			);
+		}
+
+		$status = (int) wp_remote_retrieve_response_code( $remote );
+		$data   = json_decode( (string) wp_remote_retrieve_body( $remote ), true );
+		if ( ! is_array( $data ) ) {
+			$data = array( 'error' => __( 'Respuesta interna inválida.', 'chatbot-plugin-wp' ) );
+		}
+
+		return new WP_REST_Response( $data, $status > 0 ? $status : 500 );
 	}
 
 	/**
@@ -320,24 +466,142 @@ class Chatbot_Api_Handler {
 	 * @return true|WP_REST_Response
 	 */
 	private static function enforce_rate_limit( array $settings ) {
-		$limit = isset( $settings['rate_limit_per_minute'] ) ? max( 1, (int) $settings['rate_limit_per_minute'] ) : 10;
-		$ip    = self::get_client_ip();
-		$key   = 'chatbot_rl_' . md5( $ip );
-		$count = (int) get_transient( $key );
+		$ip      = self::get_client_ip();
+		$ip_hash = md5( $ip );
 
-		if ( $count >= $limit ) {
+		if ( false !== get_transient( 'chatbot_suspend_' . $ip_hash ) ) {
+			$suspend_seconds = max( 60, (int) ( $settings['ip_suspend_seconds'] ?? 900 ) );
 			return new WP_REST_Response(
 				array(
-					'error'      => __( 'Demasiadas solicitudes. Espera un momento.', 'chatbot-plugin-wp' ),
-					'errorCode'  => 'RATE_LIMIT_GENERAL',
-					'retryAfter' => 60,
+					'error'      => __( 'Tu IP está suspendida temporalmente por exceso de solicitudes.', 'chatbot-plugin-wp' ),
+					'errorCode'  => 'IP_SUSPENDED',
+					'retryAfter' => $suspend_seconds,
 				),
 				429
 			);
 		}
 
-		set_transient( $key, $count + 1, MINUTE_IN_SECONDS );
+		$checks = array(
+			array(
+				'key'    => 'chatbot_rl_min_' . $ip_hash,
+				'limit'  => max( 1, (int) ( $settings['rate_limit_per_minute'] ?? 10 ) ),
+				'window' => MINUTE_IN_SECONDS,
+				'code'   => 'RATE_LIMIT_GENERAL',
+			),
+			array(
+				'key'    => 'chatbot_rl_day_' . $ip_hash,
+				'limit'  => max( 1, (int) ( $settings['rate_limit_per_day'] ?? 30 ) ),
+				'window' => DAY_IN_SECONDS,
+				'code'   => 'RATE_LIMIT_GENERAL',
+			),
+		);
+
+		foreach ( $checks as $check ) {
+			$result = self::check_and_increment_limit( $check, $settings );
+			if ( $result instanceof WP_REST_Response ) {
+				self::record_rate_violation( $ip_hash, $settings );
+				return $result;
+			}
+		}
+
 		return true;
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 * @return true|WP_REST_Response
+	 */
+	private static function enforce_model_rate_limit( array $settings ) {
+		$checks = array(
+			array(
+				'key'    => 'chatbot_rl_model_min',
+				'limit'  => max( 1, (int) ( $settings['rate_limit_model_per_minute'] ?? 6 ) ),
+				'window' => MINUTE_IN_SECONDS,
+				'code'   => 'RATE_LIMIT_MODEL',
+			),
+			array(
+				'key'    => 'chatbot_rl_model_day',
+				'limit'  => max( 1, (int) ( $settings['rate_limit_model_per_day'] ?? 24 ) ),
+				'window' => DAY_IN_SECONDS,
+				'code'   => 'RATE_LIMIT_MODEL',
+			),
+		);
+
+		foreach ( $checks as $check ) {
+			$result = self::check_and_increment_limit( $check, $settings );
+			if ( $result instanceof WP_REST_Response ) {
+				return $result;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param array{key: string, limit: int, window: int, code: string} $check
+	 * @param array<string, mixed>                                       $settings
+	 * @return true|WP_REST_Response
+	 */
+	private static function check_and_increment_limit( array $check, array $settings ) {
+		$key    = $check['key'];
+		$limit  = $check['limit'];
+		$window = $check['window'];
+		$count  = (int) get_transient( $key );
+
+		self::maybe_log_soft_limit( $key, $count, $limit, (float) ( $settings['rate_limit_soft_threshold'] ?? 0.8 ) );
+
+		if ( $count >= $limit ) {
+			return new WP_REST_Response(
+				array(
+					'error'      => __( 'Demasiadas solicitudes. Espera un momento.', 'chatbot-plugin-wp' ),
+					'errorCode'  => $check['code'],
+					'retryAfter' => $window,
+				),
+				429
+			);
+		}
+
+		set_transient( $key, $count + 1, $window );
+		return true;
+	}
+
+	private static function maybe_log_soft_limit( string $key, int $count, int $limit, float $threshold ): void {
+		if ( $limit <= 0 ) {
+			return;
+		}
+
+		$threshold = max( 0.1, min( 1.0, $threshold ) );
+		$soft_at   = (int) floor( $limit * $threshold );
+
+		if ( $count >= $soft_at && $count < $limit ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log(
+				sprintf(
+					'[chatbot-plugin-wp] Soft rate limit warning for %1$s: %2$d/%3$d',
+					$key,
+					$count,
+					$limit
+				)
+			);
+		}
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 */
+	private static function record_rate_violation( string $ip_hash, array $settings ): void {
+		$key       = 'chatbot_violations_' . $ip_hash;
+		$count     = (int) get_transient( $key ) + 1;
+		$threshold = max( 1, (int) ( $settings['ip_suspend_after_violations'] ?? 3 ) );
+		$suspend   = max( 60, (int) ( $settings['ip_suspend_seconds'] ?? 900 ) );
+
+		if ( $count >= $threshold ) {
+			set_transient( 'chatbot_suspend_' . $ip_hash, time() + $suspend, $suspend );
+			delete_transient( $key );
+			return;
+		}
+
+		set_transient( $key, $count, DAY_IN_SECONDS );
 	}
 
 	private static function get_client_ip(): string {

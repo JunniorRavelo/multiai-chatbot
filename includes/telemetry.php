@@ -49,19 +49,54 @@ class Chatbot_Telemetry {
 	public static function record( array $event ): void {
 		global $wpdb;
 
+		$row = array(
+			'created_at'   => current_time( 'mysql', true ),
+			'session_hash' => isset( $event['session_hash'] ) ? sanitize_text_field( (string) $event['session_hash'] ) : '',
+			'provider'     => isset( $event['provider'] ) ? sanitize_text_field( (string) $event['provider'] ) : '',
+			'model'        => isset( $event['model'] ) ? sanitize_text_field( (string) $event['model'] ) : '',
+			'status'       => isset( $event['status'] ) ? sanitize_text_field( (string) $event['status'] ) : '',
+			'latency_ms'   => isset( $event['latency_ms'] ) ? (int) $event['latency_ms'] : 0,
+			'error_code'   => ! empty( $event['error_code'] ) ? sanitize_text_field( (string) $event['error_code'] ) : null,
+		);
+
 		$wpdb->insert(
 			self::table_name(),
-			array(
-				'created_at'   => current_time( 'mysql', true ),
-				'session_hash' => isset( $event['session_hash'] ) ? sanitize_text_field( (string) $event['session_hash'] ) : '',
-				'provider'     => isset( $event['provider'] ) ? sanitize_text_field( (string) $event['provider'] ) : '',
-				'model'        => isset( $event['model'] ) ? sanitize_text_field( (string) $event['model'] ) : '',
-				'status'       => isset( $event['status'] ) ? sanitize_text_field( (string) $event['status'] ) : '',
-				'latency_ms'   => isset( $event['latency_ms'] ) ? (int) $event['latency_ms'] : 0,
-				'error_code'   => ! empty( $event['error_code'] ) ? sanitize_text_field( (string) $event['error_code'] ) : null,
-			),
+			$row,
 			array( '%s', '%s', '%s', '%s', '%s', '%d', '%s' )
 		);
+
+		self::maybe_append_file_log( $row );
+	}
+
+	/**
+	 * @param array<string, mixed> $row
+	 */
+	private static function maybe_append_file_log( array $row ): void {
+		$settings = Chatbot_Plugin::get_settings();
+		$path     = ! empty( $settings['telemetry_log_path'] ) ? (string) $settings['telemetry_log_path'] : '';
+
+		if ( '' === $path ) {
+			return;
+		}
+
+		$line = wp_json_encode(
+			array(
+				'ts'           => gmdate( 'c' ),
+				'session_hash' => $row['session_hash'] ?? '',
+				'provider'     => $row['provider'] ?? '',
+				'model'        => $row['model'] ?? '',
+				'status'       => $row['status'] ?? '',
+				'latency_ms'   => $row['latency_ms'] ?? 0,
+				'error_code'   => $row['error_code'] ?? '',
+			)
+		);
+
+		if ( ! is_string( $line ) ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+		@file_put_contents( $path, $line . "\n", FILE_APPEND | LOCK_EX ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 
 	public static function hash_session( string $session_id ): string {

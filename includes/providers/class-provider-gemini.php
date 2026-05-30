@@ -24,7 +24,7 @@ class Chatbot_Provider_Gemini implements Chatbot_AI_Provider {
 			);
 		}
 
-		$preferred = ! empty( $settings['model'] ) ? (string) $settings['model'] : 'gemini-2.0-flash';
+		$preferred = ! empty( $settings['model'] ) ? (string) $settings['model'] : 'gemini-3.1-flash-lite';
 		$pool_raw  = ! empty( $settings['model_candidates'] ) ? (string) $settings['model_candidates'] : '';
 		$pool      = array_filter( array_map( 'trim', explode( ',', $pool_raw ) ) );
 		$fallbacks = array( 'gemini-2.0-flash', 'gemini-2.0-flash-lite' );

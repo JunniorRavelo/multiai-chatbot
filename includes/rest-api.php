@@ -99,6 +99,16 @@ class Chatbot_Rest_Api {
 				array( 'status' => 403, 'errorCode' => 'ORIGIN_FORBIDDEN' )
 			);
 		}
+
+		$settings = Chatbot_Plugin::get_settings();
+		if ( ! Chatbot_Api_Handler::verify_origin( $settings ) ) {
+			return new WP_Error(
+				'forbidden',
+				__( 'Origen no permitido.', 'chatbot-plugin-wp' ),
+				array( 'status' => 403, 'errorCode' => 'ORIGIN_FORBIDDEN' )
+			);
+		}
+
 		return true;
 	}
 
