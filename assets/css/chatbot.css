@@ -1093,8 +1093,8 @@
   border-radius: 0.5rem;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
+/* Tablet (641px–1024px): panel flotante, sin pantalla completa */
+@media (min-width: 641px) and (max-width: 1024px) {
   .cb-widget,
   #chatbot-plugin-root {
     --cb-panel-width: min(360px, calc(100vw - 2rem));
@@ -1110,10 +1110,35 @@
   .cb-panel.cb-position-bottom-center {
     height: min(520px, calc(100dvh - 6.5rem));
   }
+
+  .cb-panel.cb-position-center-right,
+  .cb-panel.cb-position-center-left {
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5rem);
+    transform: none;
+    width: min(var(--cb-panel-width), calc(100vw - 1.5rem));
+    height: min(72dvh, 560px);
+  }
+
+  .cb-panel.cb-position-center-left {
+    left: var(--cb-offset);
+    right: auto;
+  }
+
+  .cb-panel.cb-position-center-right {
+    right: var(--cb-offset);
+    left: auto;
+  }
+
+  .cb-panel.cb-position-bottom-center {
+    width: min(var(--cb-panel-width), calc(100vw - 1.5rem));
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
-/* Mobile */
-@media (max-width: 767px) {
+/* Mobile (≤640px): panel a pantalla completa al abrir */
+@media (max-width: 640px) {
   .cb-widget,
   #chatbot-plugin-root {
     --cb-panel-width: calc(100vw - 1.5rem);
@@ -1145,42 +1170,10 @@
     text-overflow: ellipsis;
   }
 
-  .cb-panel.cb-position-center-right,
-  .cb-panel.cb-position-center-left {
-    top: auto;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 5rem);
-    transform: none;
-    width: calc(100vw - 1.5rem);
-    height: min(78dvh, 600px);
-  }
-
-  .cb-panel.cb-position-bottom-right,
-  .cb-panel.cb-position-bottom-left,
-  .cb-panel.cb-position-bottom-center {
-    height: min(72dvh, 560px);
-  }
-
-  .cb-panel.cb-position-center-left {
-    left: var(--cb-offset);
-    right: auto;
-  }
-
-  .cb-panel.cb-position-center-right {
-    right: var(--cb-offset);
-    left: auto;
-  }
-
-  .cb-panel.cb-position-bottom-center {
-    width: calc(100vw - 1.5rem);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
   .cb-msg {
     max-width: min(92%, 20rem);
   }
 
-  /* Panel abierto: pantalla completa en móvil */
   #chatbot-plugin-root[data-mode="floating"] .cb-panel:not([hidden]) {
     top: 0 !important;
     right: 0 !important;
@@ -1188,8 +1181,6 @@
     left: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    height: 100% !important;
-    max-height: 100% !important;
     height: 100dvh !important;
     max-height: 100dvh !important;
     margin: 0;
