@@ -1194,7 +1194,13 @@
 
 .chatbot-admin-history-toolbar__intro {
   min-width: 0;
-  flex: 1 1 14rem;
+  flex: 1 1 auto;
+}
+
+@media (min-width: 783px) {
+  .chatbot-admin-history-toolbar__intro {
+    flex: 1 1 12rem;
+  }
 }
 
 .chatbot-admin-history-toolbar__intro h2 {
@@ -2075,6 +2081,15 @@
 
 /* Responsive — Historial */
 @media (max-width: 960px) {
+  .chatbot-admin-history-toolbar {
+    gap: 0.75rem 1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .chatbot-admin-history-panel__filters {
+    padding: 0.85rem 1rem;
+  }
+
   .chatbot-admin-history-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2097,7 +2112,36 @@
   .chatbot-admin-history-toolbar {
     flex-direction: column;
     align-items: stretch;
-    padding: 0.85rem 1rem;
+    gap: 0.55rem;
+    padding: 0.6rem 0.65rem;
+  }
+
+  .chatbot-admin-history-toolbar__intro {
+    flex: 0 0 auto;
+  }
+
+  .chatbot-admin-history-toolbar__intro h2 {
+    font-size: 0.9375rem;
+  }
+
+  .chatbot-admin-history-toolbar__intro p {
+    margin-top: 0.15rem;
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .chatbot-admin-history-toolbar__actions {
+    gap: 0.4rem;
+  }
+
+  .chatbot-admin-history-toolbar__actions .button {
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .chatbot-admin-history-panel__filters {
+    padding: 0.65rem 0.65rem 0.75rem;
   }
 
   .chatbot-admin-history-toolbar__period {
