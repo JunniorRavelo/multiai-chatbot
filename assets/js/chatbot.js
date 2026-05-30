@@ -16,6 +16,38 @@
     return scope.querySelector('[data-maicb="' + name + '"]');
   }
 
+  function appendDeveloperCredit(composer, style) {
+    if (!composer || !style || !style.showCredit) {
+      return;
+    }
+    const credit = config.credit || {};
+    if (!credit.productUrl) {
+      return;
+    }
+
+    const line = document.createElement("p");
+    line.className = "maicb-credit";
+    line.dataset.maicb = "credit";
+    line.setAttribute("role", "contentinfo");
+
+    const productLink = document.createElement("a");
+    productLink.href = credit.productUrl;
+    productLink.target = "_blank";
+    productLink.rel = "noopener noreferrer";
+    productLink.textContent = credit.productName || "MultiAI Chatbot";
+
+    const authorLink = document.createElement("a");
+    authorLink.href = credit.authorUrl || credit.productUrl;
+    authorLink.target = "_blank";
+    authorLink.rel = "noopener noreferrer";
+    authorLink.textContent = credit.authorName || "Jsravelo";
+
+    line.appendChild(productLink);
+    line.appendChild(document.createTextNode(" \u00b7 "));
+    line.appendChild(authorLink);
+    composer.appendChild(line);
+  }
+
   function prepareRoot(root) {
     if (!root.dataset.maicbRoot) {
       root.dataset.maicbRoot = "1";
@@ -232,6 +264,7 @@
       panelWidth: base.panelWidth,
       panelMaxHeight: base.panelMaxHeight,
       launcherLabel: base.launcherLabel,
+      showCredit: !!base.showCredit,
       fontFamily: base.fontFamily,
       zIndex: base.zIndex,
       reduceMotion: base.reduceMotion,
@@ -444,6 +477,7 @@
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>' +
       "</svg></button></div>";
+    appendDeveloperCredit(composer, style);
 
     panel.appendChild(header);
     panel.appendChild(messagesEl);

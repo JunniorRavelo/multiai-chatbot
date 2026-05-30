@@ -32,6 +32,7 @@
       Array.isArray(cfg.presets) && cfg.presets.length ? cfg.presets : DEFAULT_PRESETS;
     var PRESET_META = cfg.presetMeta || {};
     var savedStyle = cfg.savedStyle || {};
+    var credit = cfg.credit || {};
 
     function previewI18n(key, fallback) {
       return cfg.i18n && cfg.i18n[key] ? cfg.i18n[key] : fallback;
@@ -84,6 +85,7 @@
       var widthEl = field("style_panel_width");
       var maxHeightEl = field("style_panel_max_height");
       var launcherLabelEl = checkboxField("style_launcher_label");
+      var showCreditEl = checkboxField("style_show_credit");
       var reduceMotionEl = checkboxField("style_reduce_motion");
       var presetAutoEl = checkboxField("style_preset_auto");
       var presetAutoDarkEl = field("style_preset_auto_dark");
@@ -101,6 +103,7 @@
         panelWidth: widthEl ? widthEl.value.trim() : "",
         panelMaxHeight: maxHeightEl ? maxHeightEl.value.trim() : "",
         launcherLabel: launcherLabelEl ? launcherLabelEl.checked : true,
+        showCredit: showCreditEl ? showCreditEl.checked : false,
         reduceMotion: reduceMotionEl ? reduceMotionEl.checked : false,
         presetAuto: presetAutoEl ? presetAutoEl.checked : false,
         presetAutoDark: presetAutoDarkEl ? presetAutoDarkEl.value : "dark-glass",
@@ -121,6 +124,7 @@
         panelWidth: savedStyle.panelWidth || "",
         panelMaxHeight: savedStyle.panelMaxHeight || "",
         launcherLabel: savedStyle.launcherLabel !== false,
+        showCredit: !!savedStyle.showCredit,
         reduceMotion: !!savedStyle.reduceMotion,
         presetAuto: !!savedStyle.presetAuto,
         presetAutoDark: savedStyle.presetAutoDark || "dark-glass",
@@ -172,10 +176,41 @@
       );
     }
 
-    function buildComposerHtml() {
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function buildCreditHtml() {
+      if (!credit.productUrl) {
+        return "";
+      }
+      var productName = escapeHtml(credit.productName || "MultiAI Chatbot");
+      var authorName = escapeHtml(credit.authorName || "Jsravelo");
+      var productUrl = escapeHtml(credit.productUrl);
+      var authorUrl = escapeHtml(credit.authorUrl || credit.productUrl);
+      return (
+        '<p class="maicb-credit" data-maicb="credit" role="contentinfo">' +
+        '<a href="' +
+        productUrl +
+        '" target="_blank" rel="noopener noreferrer">' +
+        productName +
+        "</a> \u00b7 " +
+        '<a href="' +
+        authorUrl +
+        '" target="_blank" rel="noopener noreferrer">' +
+        authorName +
+        "</a></p>"
+      );
+    }
+
+    function buildComposerHtml(settings) {
       var placeholder = previewI18n("placeholder", "Type your message…");
       var sendLabel = previewI18n("send", "Send");
-      return (
+      var html =
         '<div class="maicb-composer-inner">' +
         '<textarea class="maicb-input" rows="1" placeholder="' +
         placeholder +
@@ -187,8 +222,23 @@
         '">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
         '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>' +
-        "</svg></button></div>"
-      );
+        "</svg></button></div>";
+      if (settings && settings.showCredit) {
+        html += buildCreditHtml();
+      }
+      return html;
+    }
+
+    function syncComposerCredit(composer, settings) {
+      if (!composer) return;
+      var existing = composer.querySelector(".maicb-credit");
+      if (settings.showCredit) {
+        if (!existing) {
+          composer.insertAdjacentHTML("beforeend", buildCreditHtml());
+        }
+      } else if (existing) {
+        existing.remove();
+      }
     }
 
     function buildHeaderHtml() {
@@ -447,6 +497,7 @@
 
       applyStyleVars(wrap, settings);
       renderMessages(panel.querySelector(".maicb-messages"), settings);
+      syncComposerCredit(panel.querySelector(".maicb-composer"), settings);
       updateContrastWarning(wrap, settings);
       if (mode === "style") {
         updatePositionButtons(settings.position);
@@ -509,7 +560,7 @@
         '<div class="maicb-messages" role="log"></div>' +
         '<div class="maicb-error" hidden></div>' +
         '<form class="maicb-composer">' +
-        buildComposerHtml() +
+        buildComposerHtml(settings) +
         "</form>";
 
       wrap.appendChild(launcher);
@@ -556,6 +607,7 @@
       panel.querySelector(".maicb-header-sub-text").textContent = settings.subtitle;
       applyStyleVars(wrap, settings);
       renderMessages(panel.querySelector(".maicb-messages"), settings);
+      syncComposerCredit(panel.querySelector(".maicb-composer"), settings);
       updateContrastWarning(wrap, settings);
       if (mode === "style") {
         updatePositionButtons(settings.position);

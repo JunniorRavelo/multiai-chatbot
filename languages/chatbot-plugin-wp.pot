@@ -1712,6 +1712,30 @@ msgstr ""
 msgid "Low contrast between primary color and background; check accessibility."
 msgstr ""
 
+#: includes/admin-settings.php
+msgid "Developer credit"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Optional attribution shown inside the chat panel."
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Show in chat"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Show developer credit in chat"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Adds a small line below the message box with the plugin name and a link. Off by default."
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "MultiAI Chatbot"
+msgstr ""
+
 msgid "Obsidian"
 msgstr ""
 

@@ -115,6 +115,7 @@ class Chatbot_Enqueue {
 				'widgetTitle'    => (string) ( $settings['widget_title'] ?? 'AI Agent' ),
 				'widgetSubtitle' => (string) ( $settings['widget_subtitle'] ?? '' ),
 				'style'          => $style,
+				'credit'         => Chatbot_Admin_Settings::developer_credit_for_js(),
 				'mode'           => $mode,
 				'i18n'           => array(
 					'placeholder'   => __( 'Type your message…', 'chatbot-plugin-wp' ),

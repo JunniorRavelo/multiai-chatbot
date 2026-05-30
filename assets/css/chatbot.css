@@ -1259,6 +1259,37 @@
     0 0 0 3px color-mix(in srgb, var(--maicb-primary) 12%, transparent);
 }
 
+#chatbot-plugin-root .maicb-composer:has(.maicb-credit),
+#chatbot-style-preview .maicb-composer:has(.maicb-credit) {
+  padding-bottom: 0.4rem;
+}
+
+#chatbot-plugin-root .maicb-credit,
+#chatbot-style-preview .maicb-credit {
+  margin: 0.28rem 0 0;
+  padding: 0;
+  font-size: 0.625rem;
+  line-height: 1.35;
+  text-align: center;
+  color: color-mix(in srgb, var(--maicb-fg, #64748b) 38%, transparent);
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+#chatbot-plugin-root .maicb-credit a,
+#chatbot-style-preview .maicb-credit a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#chatbot-plugin-root .maicb-credit a:hover,
+#chatbot-style-preview .maicb-credit a:hover,
+#chatbot-plugin-root .maicb-credit a:focus-visible,
+#chatbot-style-preview .maicb-credit a:focus-visible {
+  text-decoration: underline;
+  color: color-mix(in srgb, var(--maicb-fg, #64748b) 52%, transparent);
+}
+
 #chatbot-plugin-root .maicb-input,
 #chatbot-style-preview .maicb-input {
   flex: 1;

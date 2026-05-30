@@ -68,6 +68,7 @@ class Chatbot_Admin_Settings {
 			'style_reduce_motion'   => false,
 			'style_preset_auto'     => false,
 			'style_preset_auto_dark' => 'dark-glass',
+			'style_show_credit'     => false,
 			'style_custom_css'      => '',
 			'widget_title'          => 'AI Agent',
 			'widget_subtitle'       => 'System online',
@@ -340,9 +341,24 @@ class Chatbot_Admin_Settings {
 			'panelMaxHeight' => trim( (string) ( $settings['style_panel_max_height'] ?? '' ) ),
 			'fontFamily'     => sanitize_key( (string) ( $settings['style_font_family'] ?? 'system' ) ) ?: 'system',
 			'launcherLabel'  => ! empty( $settings['style_launcher_label'] ),
+			'showCredit'     => ! empty( $settings['style_show_credit'] ),
 			'reduceMotion'   => ! empty( $settings['style_reduce_motion'] ),
 			'presetAuto'     => ! empty( $settings['style_preset_auto'] ),
 			'presetAutoDark' => $preset_auto_dark,
+		);
+	}
+
+	/**
+	 * Developer credit labels and URLs for the frontend widget.
+	 *
+	 * @return array{productName: string, authorName: string, productUrl: string, authorUrl: string}
+	 */
+	public static function developer_credit_for_js(): array {
+		return array(
+			'productName' => __( 'MultiAI Chatbot', 'chatbot-plugin-wp' ),
+			'authorName'  => 'Jsravelo',
+			'productUrl'  => esc_url_raw( 'https://github.com/JunniorRavelo/multiai-chatbot-for-wordpress' ),
+			'authorUrl'   => esc_url_raw( 'https://www.linkedin.com/in/jsravelo/' ),
 		);
 	}
 
@@ -476,6 +492,7 @@ class Chatbot_Admin_Settings {
 		}
 
 		$out['style_launcher_label'] = self::sanitize_checkbox( $input, $current, 'style_launcher_label', (bool) $defaults['style_launcher_label'] );
+		$out['style_show_credit']    = self::sanitize_checkbox( $input, $current, 'style_show_credit', (bool) $defaults['style_show_credit'] );
 
 		$out['style_bg'] = sanitize_hex_color( $input['style_bg'] ?? $current['style_bg'] ?? '' ) ?: '';
 		$out['style_fg'] = sanitize_hex_color( $input['style_fg'] ?? $current['style_fg'] ?? '' ) ?: '';
@@ -552,6 +569,7 @@ class Chatbot_Admin_Settings {
 			'style_offset',
 			'style_panel_width',
 			'style_launcher_label',
+			'style_show_credit',
 			'style_bg',
 			'style_fg',
 			'style_font_family',
@@ -602,6 +620,7 @@ class Chatbot_Admin_Settings {
 			'panelWidth'      => trim( (string) ( $merged['style_panel_width'] ?? '' ) ),
 			'panelMaxHeight'  => trim( (string) ( $merged['style_panel_max_height'] ?? '' ) ),
 			'launcherLabel'   => ! empty( $merged['style_launcher_label'] ),
+			'showCredit'      => ! empty( $merged['style_show_credit'] ),
 			'fontFamily'      => $font_family,
 			'zIndex'          => $z > 0 ? $z : 0,
 			'reduceMotion'    => ! empty( $merged['style_reduce_motion'] ),
@@ -811,6 +830,7 @@ class Chatbot_Admin_Settings {
 					),
 					'i18n'            => self::admin_preview_i18n_strings(),
 					'positionLabels'  => self::style_position_labels(),
+					'credit'          => self::developer_credit_for_js(),
 				)
 			);
 		}
@@ -876,6 +896,7 @@ class Chatbot_Admin_Settings {
 						self::admin_preview_i18n_strings(),
 						self::admin_general_i18n_strings()
 					),
+					'credit'            => self::developer_credit_for_js(),
 				)
 			);
 		}
@@ -1469,18 +1490,9 @@ class Chatbot_Admin_Settings {
 			$position = 'bottom-right';
 		}
 
-		$style_url = admin_url( 'admin.php?page=chatbot-plugin&tab=style' );
 		$model_url = admin_url( 'admin.php?page=chatbot-plugin&tab=model' );
 		?>
 		<div class="chatbot-admin-general-toolbar">
-			<div class="chatbot-admin-general-toolbar__intro">
-				<p><?php esc_html_e( 'Configure visibility, visitor-facing text, and how the assistant behaves.', 'chatbot-plugin-wp' ); ?></p>
-				<p class="chatbot-admin-general-toolbar__links">
-					<a href="<?php echo esc_url( $style_url ); ?>"><?php esc_html_e( 'Customize appearance', 'chatbot-plugin-wp' ); ?></a>
-					<span aria-hidden="true">·</span>
-					<a href="<?php echo esc_url( $model_url ); ?>"><?php esc_html_e( 'Configure AI model', 'chatbot-plugin-wp' ); ?></a>
-				</p>
-			</div>
 			<div class="chatbot-admin-kpi-grid chatbot-admin-kpi-grid--general">
 				<div class="chatbot-admin-kpi <?php echo $widget_on ? 'chatbot-admin-kpi--success' : ''; ?>">
 					<span class="chatbot-admin-kpi__label"><?php esc_html_e( 'Widget', 'chatbot-plugin-wp' ); ?></span>
@@ -2121,6 +2133,27 @@ class Chatbot_Admin_Settings {
 				<td>
 					<textarea name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_custom_css]" rows="6" class="large-text code" placeholder="#chatbot-plugin-root .maicb-send { }"><?php echo esc_textarea( (string) ( $settings['style_custom_css'] ?? '' ) ); ?></textarea>
 					<p class="description"><?php esc_html_e( 'Scoped to the widget root. No @import. Max 8000 characters.', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php
+		self::card_close();
+
+		self::card_open(
+			__( 'Developer credit', 'chatbot-plugin-wp' ),
+			__( 'Optional attribution shown inside the chat panel.', 'chatbot-plugin-wp' )
+		);
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Show in chat', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<label class="chatbot-admin-toggle">
+						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_credit]" value="0" />
+						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_credit]" value="1" <?php checked( ! empty( $settings['style_show_credit'] ) ); ?> />
+						<span><?php esc_html_e( 'Show developer credit in chat', 'chatbot-plugin-wp' ); ?></span>
+					</label>
+					<p class="description"><?php esc_html_e( 'Adds a small line below the message box with the plugin name and a link. Off by default.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 		</table>
