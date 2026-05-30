@@ -206,10 +206,10 @@ class Chatbot_Admin_Settings {
 			),
 			'dark-glass' => array(
 				'label'      => __( 'Midnight', 'chatbot-plugin-wp' ),
-				'desc'       => __( 'Oscuro translúcido con brillo azul y púrpura.', 'chatbot-plugin-wp' ),
+				'desc'       => __( 'Oscuro profundo con acentos cian y violeta. Cabecera legible.', 'chatbot-plugin-wp' ),
 				'badge'      => __( 'Oscuro', 'chatbot-plugin-wp' ),
 				'badge_type' => 'dark',
-				'colors'     => array( '#60a5fa', '#c084fc', '#0f172a' ),
+				'colors'     => array( '#38bdf8', '#a78bfa', '#0f172a' ),
 			),
 			'minimal'    => array(
 				'label'      => __( 'Monochrome', 'chatbot-plugin-wp' ),
