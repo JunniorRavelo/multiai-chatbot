@@ -342,7 +342,10 @@ class Chatbot_Admin_Settings {
 		?>
 		<div class="wrap chatbot-admin-wrap">
 			<header class="chatbot-admin-header">
-				<h1><?php esc_html_e( 'Chatbot Plugin', 'chatbot-plugin-wp' ); ?></h1>
+				<div class="chatbot-admin-header__brand">
+					<span class="chatbot-admin-header__icon dashicons dashicons-format-chat" aria-hidden="true"></span>
+					<h1><?php esc_html_e( 'Chatbot Plugin', 'chatbot-plugin-wp' ); ?></h1>
+				</div>
 				<span class="chatbot-admin-badge <?php echo $widget_on ? 'chatbot-admin-badge--on' : 'chatbot-admin-badge--off'; ?>">
 					<?php
 					echo $widget_on
