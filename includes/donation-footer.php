@@ -3,7 +3,7 @@
  * Footer de donación del panel de administración.
  *
  * Edita las URLs abajo para activar cada enlace. Deja vacío ("") para mostrar
- * el icono desactivado hasta que añadas la URL.
+ * el chip desactivado hasta que añadas la URL.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,7 +29,7 @@ class Chatbot_Donation_Footer {
 
 	private static function svg_icon( string $path_d ): string {
 		return sprintf(
-			'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">%s</svg>',
+			'<svg class="chatbot-donation-footer__svg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">%s</svg>',
 			$path_d
 		);
 	}
@@ -52,13 +52,54 @@ class Chatbot_Donation_Footer {
 				'svg'   => self::svg_icon( '<path fill="currentColor" d="M20.216 6.415h-.132c-.229-.955-.666-1.788-1.296-2.448a4.035 4.035 0 0 0-1.863-1.078 6.865 6.865 0 0 0-1.621-.19c-.622-.042-1.237-.127-1.846-.127H6.79a.79.79 0 0 0-.553.227.79.79 0 0 0-.227.553v.126c.042.622.127 1.237.127 1.846v8.415c0 .622.085 1.237.127 1.846.042.622.127 1.237.127 1.846.042.622.127 1.237.127 1.846v.126a.79.79 0 0 0 .227.553.79.79 0 0 0 .553.227h8.415c.622 0 1.237-.085 1.846-.127.622-.042 1.237-.127 1.846-.127.622-.042 1.237-.127 1.621-.19a4.035 4.035 0 0 0 1.863-1.078c.63-.66 1.067-1.493 1.296-2.448h.132c.622 0 1.153-.085 1.593-.254.44-.17.792-.424 1.055-.762.263-.339.395-.762.395-1.271 0-.509-.132-.932-.395-1.271a2.089 2.089 0 0 0-1.055-.762c-.44-.17-.971-.254-1.593-.254zm-2.415 4.415H8.415v6.415h9.386c.339 0 .622-.085.848-.254a1.35 1.35 0 0 0 .508-.678c.085-.254.127-.551.127-.889 0-.339-.042-.635-.127-.889a1.35 1.35 0 0 0-.508-.678 1.35 1.35 0 0 0-.848-.254zM6.79 4.415c-.339 0-.622.085-.848.254a1.35 1.35 0 0 0-.508.678c-.085.254-.127.551-.127.889 0 .339.042.635.127.889.127.254.297.466.508.678.226.17.509.254.848.254h.126V4.415H6.79z"/>' ),
 			),
 			'github_sponsors' => array(
-				'label' => 'GitHub Sponsors',
+				'label' => 'GitHub',
 				'svg'   => self::svg_icon( '<path fill="currentColor" d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>' ),
 			),
 			'patreon'         => array(
 				'label' => 'Patreon',
 				'svg'   => self::svg_icon( '<path fill="currentColor" d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.613-3.863 8.613-8.613 0-4.764-3.863-8.64-8.613-8.64zM.003 23.537h4.22V.524H.003v23.013z"/>' ),
 			),
+		);
+	}
+
+	/**
+	 * @param string               $slug
+	 * @param array{label: string, svg: string} $icon
+	 * @param string               $url
+	 */
+	private static function render_chip( string $slug, array $icon, string $url ): void {
+		$label   = (string) $icon['label'];
+		$active  = '' !== $url;
+		$classes = 'chatbot-donation-footer__chip chatbot-donation-footer__chip--' . $slug;
+		if ( ! $active ) {
+			$classes .= ' chatbot-donation-footer__chip--pending';
+		}
+		$title = $active
+			? $label
+			: sprintf(
+				/* translators: %s: platform name */
+				__( '%s — añade la URL en includes/donation-footer.php', 'chatbot-plugin-wp' ),
+				$label
+			);
+
+		if ( $active ) {
+			printf(
+				'<a class="%1$s" href="%2$s" target="_blank" rel="noopener noreferrer" title="%3$s">%4$s<span class="chatbot-donation-footer__chip-label">%5$s</span></a>',
+				esc_attr( $classes ),
+				esc_url( $url ),
+				esc_attr( $title ),
+				$icon['svg'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG estático
+				esc_html( $label )
+			);
+			return;
+		}
+
+		printf(
+			'<span class="%1$s" title="%2$s" aria-disabled="true">%3$s<span class="chatbot-donation-footer__chip-label">%4$s</span></span>',
+			esc_attr( $classes ),
+			esc_attr( $title ),
+			$icon['svg'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG estático
+			esc_html( $label )
 		);
 	}
 
@@ -71,41 +112,25 @@ class Chatbot_Donation_Footer {
 		$icons = self::donation_icons();
 		?>
 		<footer class="chatbot-donation-footer" aria-label="<?php esc_attr_e( 'Apoyar el plugin', 'chatbot-plugin-wp' ); ?>">
+			<div class="chatbot-donation-footer__accent" aria-hidden="true"></div>
 			<div class="chatbot-donation-footer__inner">
-				<p class="chatbot-donation-footer__text">
-					<span class="chatbot-donation-footer__heart" aria-hidden="true">♥</span>
-					<?php esc_html_e( '¿Te gusta este plugin? Apoya su desarrollo', 'chatbot-plugin-wp' ); ?>
-				</p>
-				<ul class="chatbot-donation-footer__icons">
+				<div class="chatbot-donation-footer__copy">
+					<span class="chatbot-donation-footer__kicker">
+						<span class="chatbot-donation-footer__kicker-icon" aria-hidden="true">♥</span>
+						<?php esc_html_e( 'Apoya el proyecto', 'chatbot-plugin-wp' ); ?>
+					</span>
+					<p class="chatbot-donation-footer__title">
+						<?php esc_html_e( '¿Te gusta Chatbot Plugin?', 'chatbot-plugin-wp' ); ?>
+					</p>
+					<p class="chatbot-donation-footer__desc">
+						<?php esc_html_e( 'Tu apoyo mantiene el desarrollo activo, nuevas funciones y soporte gratuito.', 'chatbot-plugin-wp' ); ?>
+					</p>
+				</div>
+				<div class="chatbot-donation-footer__chips" role="list">
 					<?php foreach ( $icons as $slug => $icon ) : ?>
-						<?php
-						$url = trim( (string) ( $urls[ $slug ] ?? '' ) );
-						$label = (string) $icon['label'];
-						?>
-						<li>
-							<?php if ( '' !== $url ) : ?>
-								<a
-									class="chatbot-donation-footer__link chatbot-donation-footer__link--<?php echo esc_attr( $slug ); ?>"
-									href="<?php echo esc_url( $url ); ?>"
-									target="_blank"
-									rel="noopener noreferrer"
-									title="<?php echo esc_attr( $label ); ?>"
-								>
-									<?php echo $icon['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG estático ?>
-									<span class="screen-reader-text"><?php echo esc_html( $label ); ?></span>
-								</a>
-							<?php else : ?>
-								<span
-									class="chatbot-donation-footer__icon chatbot-donation-footer__icon--<?php echo esc_attr( $slug ); ?>"
-									title="<?php echo esc_attr( sprintf( /* translators: %s: platform name */ __( '%s — añade la URL en includes/donation-footer.php', 'chatbot-plugin-wp' ), $label ) ); ?>"
-								>
-									<?php echo $icon['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG estático ?>
-									<span class="screen-reader-text"><?php echo esc_html( $label ); ?></span>
-								</span>
-							<?php endif; ?>
-						</li>
+						<?php self::render_chip( $slug, $icon, trim( (string) ( $urls[ $slug ] ?? '' ) ) ); ?>
 					<?php endforeach; ?>
-				</ul>
+				</div>
 			</div>
 		</footer>
 		<?php

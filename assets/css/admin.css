@@ -298,104 +298,193 @@
 
 /* Donation footer */
 .chatbot-donation-footer {
-  margin-top: 1rem;
-  padding: 0.65rem 1rem;
+  position: relative;
+  margin-top: 1.25rem;
   border: 1px solid var(--cb-admin-border);
-  border-radius: 8px;
+  border-radius: var(--cb-admin-radius);
   background: var(--cb-admin-surface);
+  box-shadow: var(--cb-admin-shadow);
+  overflow: hidden;
+}
+
+.chatbot-donation-footer__accent {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #ff5e5b 0%,
+    #ff424d 20%,
+    #003087 40%,
+    #ffdd00 60%,
+    #24292f 80%,
+    var(--cb-admin-primary) 100%
+  );
 }
 
 .chatbot-donation-footer__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0.65rem 1rem;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  padding: 1.1rem 1.25rem;
 }
 
-.chatbot-donation-footer__text {
-  display: flex;
+.chatbot-donation-footer__copy {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.chatbot-donation-footer__kicker {
+  display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--cb-admin-muted);
-  white-space: nowrap;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
 }
 
-.chatbot-donation-footer__heart {
-  color: #e11d48;
+.chatbot-donation-footer__kicker-icon {
   font-size: 0.75rem;
   line-height: 1;
 }
 
-.chatbot-donation-footer__icons {
+.chatbot-donation-footer__title {
+  margin: 0.55rem 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.chatbot-donation-footer__desc {
+  margin: 0.35rem 0 0;
+  max-width: 34rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--cb-admin-muted);
+}
+
+.chatbot-donation-footer__chips {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex: 1 1 280px;
 }
 
-.chatbot-donation-footer__icons > li {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  line-height: 0;
-}
-
-.chatbot-donation-footer__link,
-.chatbot-donation-footer__icon {
+.chatbot-donation-footer__chip {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border-radius: 6px;
-  border: 1px solid var(--cb-admin-border);
-  background: #f8fafc;
-  overflow: hidden;
-  box-sizing: border-box;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.chatbot-donation-footer__link {
-  color: #475569;
+  gap: 0.45rem;
+  height: 36px;
+  padding: 0 0.75rem 0 0.55rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
   text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
-.chatbot-donation-footer__link:hover {
-  background: #fff;
+.chatbot-donation-footer__chip-label {
+  display: inline;
+}
+
+.chatbot-donation-footer__svg {
+  display: block;
+  flex-shrink: 0;
+  width: 18px !important;
+  height: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+}
+
+.chatbot-donation-footer__chip--pending {
+  opacity: 0.55;
+  cursor: help;
+  filter: grayscale(0.35);
+}
+
+.chatbot-donation-footer__chip:not(.chatbot-donation-footer__chip--pending):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.chatbot-donation-footer__chip--ko_fi {
+  color: #c2410c;
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.chatbot-donation-footer__chip--ko_fi:not(.chatbot-donation-footer__chip--pending):hover {
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+.chatbot-donation-footer__chip--paypal {
+  color: #1e3a8a;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.chatbot-donation-footer__chip--paypal:not(.chatbot-donation-footer__chip--pending):hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.chatbot-donation-footer__chip--buy_me_a_coffee {
+  color: #92400e;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.chatbot-donation-footer__chip--buy_me_a_coffee:not(.chatbot-donation-footer__chip--pending):hover {
+  background: #fef3c7;
+  border-color: #fcd34d;
+}
+
+.chatbot-donation-footer__chip--github_sponsors {
+  color: #0f172a;
+  background: #f8fafc;
   border-color: #cbd5e1;
 }
 
-.chatbot-donation-footer__link svg,
-.chatbot-donation-footer__icon svg {
-  display: block;
-  flex-shrink: 0;
-  width: 16px !important;
-  height: 16px !important;
-  max-width: 16px !important;
-  max-height: 16px !important;
+.chatbot-donation-footer__chip--github_sponsors:not(.chatbot-donation-footer__chip--pending):hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
 }
 
-.chatbot-donation-footer__icon {
-  opacity: 0.5;
-  cursor: help;
-  color: #94a3b8;
+.chatbot-donation-footer__chip--patreon {
+  color: #be123c;
+  background: #fff1f2;
+  border-color: #fecdd3;
 }
 
-.chatbot-donation-footer__link--ko_fi:hover { color: #ff5e5b; border-color: #fecaca; }
-.chatbot-donation-footer__link--paypal:hover { color: #003087; border-color: #bfdbfe; }
-.chatbot-donation-footer__link--buy_me_a_coffee:hover { color: #b45309; border-color: #fde68a; }
-.chatbot-donation-footer__link--github_sponsors:hover { color: #24292f; border-color: #cbd5e1; }
-.chatbot-donation-footer__link--patreon:hover { color: #ff424d; border-color: #fecaca; }
+.chatbot-donation-footer__chip--patreon:not(.chatbot-donation-footer__chip--pending):hover {
+  background: #ffe4e6;
+  border-color: #fda4af;
+}
+
+@media (max-width: 782px) {
+  .chatbot-donation-footer__inner {
+    align-items: flex-start;
+  }
+
+  .chatbot-donation-footer__chips {
+    justify-content: flex-start;
+  }
+}
 
 /* Style preview */
 .chatbot-admin-preview-card {
