@@ -359,11 +359,12 @@
 
 /* Preview uses absolute positioning inside viewport */
 /* Aislar el widget del CSS global de wp-admin (.wrap h3, .wrap p, etc.) */
-#chatbot-preview-viewport .cb-header {
+#chatbot-preview-viewport #chatbot-style-preview .cb-header {
   background: var(--cb-header-bg, color-mix(in srgb, var(--cb-card) 85%, var(--cb-primary) 5%));
 }
 
-#chatbot-preview-viewport .cb-header .cb-header-title {
+#chatbot-preview-viewport #chatbot-style-preview .cb-header .cb-header-title,
+#chatbot-preview-viewport #chatbot-style-preview .cb-header h3.cb-header-title {
   margin: 0;
   padding: 0;
   font-size: 0.95rem;
@@ -373,23 +374,39 @@
   line-height: 1.25;
 }
 
-#chatbot-preview-viewport .cb-header .cb-header-sub {
+#chatbot-preview-viewport #chatbot-style-preview .cb-header .cb-header-sub,
+#chatbot-preview-viewport #chatbot-style-preview .cb-header p.cb-header-sub {
   margin: 0;
   font-size: 0.7rem;
   color: var(--cb-header-sub-color, var(--cb-muted));
   line-height: 1.3;
 }
 
-#chatbot-preview-viewport .cb-preset-dark-glass .cb-header .cb-header-title {
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header {
+  color: #f8fafc;
+}
+
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header .cb-header-title,
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header h3.cb-header-title {
   font-weight: 600;
   font-size: 0.925rem;
-  color: var(--cb-header-title-color, #f8fafc);
+  color: #f8fafc !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
-#chatbot-preview-viewport .cb-preset-dark-glass .cb-header .cb-header-sub {
-  color: var(--cb-header-sub-color, #cbd5e1);
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header .cb-header-sub,
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header p.cb-header-sub {
+  color: #cbd5e1 !important;
   font-weight: 500;
+}
+
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header .cb-icon-btn {
+  color: #cbd5e1 !important;
+}
+
+#chatbot-preview-viewport #chatbot-style-preview.cb-preset-dark-glass .cb-header .cb-icon-btn:hover {
+  color: #f8fafc !important;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .chatbot-admin-preview__viewport .cb-preview-widget {
