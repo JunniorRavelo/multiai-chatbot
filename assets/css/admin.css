@@ -296,6 +296,93 @@
   color: var(--cb-admin-muted);
 }
 
+/* Donation footer */
+.chatbot-donation-footer {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid var(--cb-admin-border);
+  border-radius: var(--cb-admin-radius);
+  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #fff 100%);
+  box-shadow: var(--cb-admin-shadow);
+}
+
+.chatbot-donation-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+}
+
+.chatbot-donation-footer__text {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.chatbot-donation-footer__heart {
+  color: #e11d48;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.chatbot-donation-footer__icons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chatbot-donation-footer__link,
+.chatbot-donation-footer__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--cb-admin-border);
+  background: var(--cb-admin-surface);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.chatbot-donation-footer__link {
+  color: #0f172a;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.chatbot-donation-footer__link:hover {
+  transform: translateY(-1px);
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+}
+
+.chatbot-donation-footer__link svg,
+.chatbot-donation-footer__icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.chatbot-donation-footer__icon {
+  opacity: 0.45;
+  cursor: help;
+  color: #64748b;
+}
+
+.chatbot-donation-footer__link--ko_fi:hover { color: #ff5e5b; }
+.chatbot-donation-footer__link--paypal:hover { color: #003087; }
+.chatbot-donation-footer__link--buy_me_a_coffee:hover { color: #ffdd00; }
+.chatbot-donation-footer__link--github_sponsors:hover { color: #24292f; }
+.chatbot-donation-footer__link--patreon:hover { color: #ff424d; }
+
 /* Style preview */
 .chatbot-admin-preview-card {
   position: sticky;

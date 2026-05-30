@@ -399,6 +399,8 @@ class Chatbot_Admin_Settings {
 					</div>
 				</form>
 			<?php endif; ?>
+
+			<?php Chatbot_Donation_Footer::render(); ?>
 		</div>
 		<?php
 	}

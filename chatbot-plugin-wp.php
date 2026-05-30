@@ -36,6 +36,7 @@ require_once CHATBOT_PLUGIN_PATH . 'includes/api-handler.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/rest-api.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/enqueue.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/admin-settings.php';
+require_once CHATBOT_PLUGIN_PATH . 'includes/donation-footer.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/class-plugin.php';
 
 register_activation_hook( __FILE__, array( 'Chatbot_Plugin', 'activate' ) );
