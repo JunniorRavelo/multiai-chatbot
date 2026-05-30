@@ -157,4 +157,4 @@ Exportación CSV desde la pestaña **Estadísticas**. Al desinstalar el plugin, 
 
 ## Licencia
 
-GPL v2 or later
+Este proyecto se distribuye bajo la [GNU General Public License v2.0 o posterior](LICENSE) (GPL-2.0-or-later), compatible con los requisitos del directorio de plugins de WordPress.org.
