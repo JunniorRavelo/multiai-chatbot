@@ -271,15 +271,21 @@
     const composer = document.createElement("form");
     composer.className = "cb-composer";
     composer.innerHTML =
+      '<div class="cb-composer-inner">' +
       '<textarea class="cb-input" rows="1" placeholder="' +
       (i18n.placeholder || "Escribe tu mensaje…") +
-      '" maxlength="700"></textarea>' +
+      '" maxlength="700" aria-label="' +
+      (i18n.placeholder || "Escribe tu mensaje…") +
+      '"></textarea>' +
       '<button type="submit" class="cb-send" aria-label="' +
       (i18n.send || "Enviar") +
       '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>' +
-      "</svg></button>";
+      "</svg></button></div>" +
+      '<p class="cb-composer-hint">' +
+      (i18n.composerHint || "Enter para enviar") +
+      "</p>";
 
     const input = composer.querySelector(".cb-input");
     const sendBtn = composer.querySelector(".cb-send");
@@ -578,13 +584,21 @@
       renderMessages();
     });
 
+    function resizeInput() {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 96) + "px";
+    }
+
     composer.addEventListener("submit", (e) => {
       e.preventDefault();
       const value = input.value.trim();
       if (!value) return;
       input.value = "";
+      resizeInput();
       sendMessage(value);
     });
+
+    input.addEventListener("input", resizeInput);
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {

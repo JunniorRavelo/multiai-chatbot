@@ -132,11 +132,13 @@
       "</header>" +
       '<div class="cb-messages" role="log"></div>' +
       '<form class="cb-composer">' +
-      '<textarea class="cb-input" rows="1" placeholder="Escribe tu mensaje…" readonly></textarea>' +
+      '<div class="cb-composer-inner">' +
+      '<textarea class="cb-input" rows="1" placeholder="Escribe tu mensaje…" readonly aria-label="Escribe tu mensaje…"></textarea>' +
       '<button type="submit" class="cb-send" aria-label="Enviar">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>' +
-      "</svg></button>" +
+      "</svg></button></div>" +
+      '<p class="cb-composer-hint">Enter para enviar</p>' +
       "</form>";
 
     wrap.appendChild(launcher);

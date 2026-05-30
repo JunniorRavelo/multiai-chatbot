@@ -127,6 +127,7 @@ class Chatbot_Enqueue {
 					'resetLabel'    => __( 'Reiniciar chat', 'chatbot-plugin-wp' ),
 					'minimizeLabel' => __( 'Minimizar chat', 'chatbot-plugin-wp' ),
 					'onlineLabel'   => __( 'Sistema en línea', 'chatbot-plugin-wp' ),
+					'composerHint'  => __( 'Enter para enviar', 'chatbot-plugin-wp' ),
 					'thinking'      => __( 'Pensando…', 'chatbot-plugin-wp' ),
 					'errorGeneric'  => __( 'No se pudo enviar el mensaje. Intenta de nuevo.', 'chatbot-plugin-wp' ),
 				),
