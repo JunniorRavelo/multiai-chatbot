@@ -11,7 +11,17 @@ Plugin de WordPress que añade un widget de chat con IA (Gemini, DeepSeek, Ollam
 
 ## Instalación
 
-1. Copia la carpeta `chatbot-plugin-wp` a `wp-content/plugins/`.
+### ZIP para WordPress (sin `.git`)
+
+WordPress **no permite** subir un ZIP que incluya la carpeta `.git`. Genera el paquete desde el repositorio:
+
+```bash
+./scripts/package-plugin.sh
+```
+
+Eso crea `chatbot-plugin-wp.zip` listo para **Plugins → Añadir nuevo → Subir plugin**.
+
+1. Copia la carpeta `chatbot-plugin-wp` a `wp-content/plugins/` (o usa el ZIP anterior).
 2. Activa el plugin en **Plugins**.
 3. Ve a **Chatbot** en el menú de administración.
 4. Configura el proveedor, API key y estilos.
