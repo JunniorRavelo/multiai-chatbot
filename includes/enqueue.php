@@ -126,6 +126,7 @@ class Chatbot_Enqueue {
 					'minimizeLabel' => __( 'Minimize chat', 'chatbot-plugin-wp' ),
 					'onlineLabel'   => __( 'System online', 'chatbot-plugin-wp' ),
 					'thinking'      => __( 'Thinking…', 'chatbot-plugin-wp' ),
+					'welcomeLabel'  => __( 'Welcome message', 'chatbot-plugin-wp' ),
 					'errorGeneric'  => __( 'Could not send the message. Please try again.', 'chatbot-plugin-wp' ),
 				),
 			)

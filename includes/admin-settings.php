@@ -248,6 +248,7 @@ class Chatbot_Admin_Settings {
 				'We are open Monday through Friday, 9:00 AM to 6:00 PM.',
 				'chatbot-plugin-wp'
 			),
+			'welcomeMessageLabel'    => __( 'Welcome message', 'chatbot-plugin-wp' ),
 			'widgetDisabled'       => __(
 				'Global widget is disabled. The preview shows how copy would look if enabled.',
 				'chatbot-plugin-wp'
@@ -1443,7 +1444,6 @@ class Chatbot_Admin_Settings {
 				<div class="chatbot-admin-card__head chatbot-admin-preview__head">
 					<div>
 						<h2><?php esc_html_e( 'Content preview', 'chatbot-plugin-wp' ); ?></h2>
-						<p><?php esc_html_e( 'Interactive: try open/close and see visitor-facing text update instantly.', 'chatbot-plugin-wp' ); ?></p>
 					</div>
 					<button type="button" class="button button-secondary" id="chatbot-preview-toggle" aria-pressed="false">
 						<?php esc_html_e( 'Open panel', 'chatbot-plugin-wp' ); ?>

@@ -426,7 +426,7 @@
       }
     }
 
-    function createPreviewMessage(role, text) {
+    function createPreviewMessage(role, text, metaLabel) {
       var row = document.createElement("div");
       row.className = "maicb-msg-row maicb-msg-row-" + role;
 
@@ -445,6 +445,12 @@
       var bubble = document.createElement("div");
       bubble.className = "maicb-msg maicb-msg-" + role;
       bubble.textContent = text;
+      if (metaLabel) {
+        var meta = document.createElement("span");
+        meta.className = "maicb-msg-meta";
+        meta.textContent = metaLabel;
+        bubble.appendChild(meta);
+      }
       row.appendChild(bubble);
       return row;
     }
@@ -453,7 +459,13 @@
       messagesEl.innerHTML = "";
       var welcomeText =
         settings.welcome || previewI18n("fallbackWelcome", "Hello! How can I help you?");
-      messagesEl.appendChild(createPreviewMessage("assistant", welcomeText));
+      messagesEl.appendChild(
+        createPreviewMessage(
+          "assistant",
+          welcomeText,
+          previewI18n("welcomeMessageLabel", "Welcome message")
+        )
+      );
       messagesEl.appendChild(
         createPreviewMessage(
           "user",

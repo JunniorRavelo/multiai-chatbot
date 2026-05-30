@@ -544,11 +544,16 @@
           "</div>";
       } else {
         bubble.textContent = msg.content || "";
-        if (role === "assistant" && msg.model && msg.model !== "system") {
+        if (role === "assistant") {
           const meta = document.createElement("span");
           meta.className = "maicb-msg-meta";
-          meta.textContent = msg.model;
-          bubble.appendChild(meta);
+          if (msg.id === "welcome") {
+            meta.textContent = i18n.welcomeLabel || "Welcome message";
+            bubble.appendChild(meta);
+          } else if (msg.model && msg.model !== "system") {
+            meta.textContent = msg.model;
+            bubble.appendChild(meta);
+          }
         }
       }
 
