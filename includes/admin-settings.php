@@ -83,10 +83,10 @@ class Chatbot_Admin_Settings {
 
 		$out = array();
 
-		$out['widget_enabled']        = ! empty( $input['widget_enabled'] );
+		$out['widget_enabled']        = self::sanitize_checkbox( $input, $current, 'widget_enabled', (bool) $defaults['widget_enabled'] );
 		$out['welcome_message']       = sanitize_textarea_field( $input['welcome_message'] ?? $defaults['welcome_message'] );
 		$out['system_prompt']         = sanitize_textarea_field( $input['system_prompt'] ?? $defaults['system_prompt'] );
-		$out['streaming_enabled']     = ! empty( $input['streaming_enabled'] );
+		$out['streaming_enabled']     = self::sanitize_checkbox( $input, $current, 'streaming_enabled', (bool) $defaults['streaming_enabled'] );
 		$out['rate_limit_per_minute'] = max( 1, min( 60, (int) ( $input['rate_limit_per_minute'] ?? $defaults['rate_limit_per_minute'] ) ) );
 
 		$provider = sanitize_key( $input['provider'] ?? 'gemini' );
@@ -114,7 +114,7 @@ class Chatbot_Admin_Settings {
 		$out['style_position'] = in_array( $position, self::style_positions(), true ) ? $position : 'bottom-right';
 		$out['style_offset']       = self::sanitize_css_size( $input['style_offset'] ?? '1rem' ) ?: '1rem';
 		$out['style_panel_width']  = self::sanitize_css_size( $input['style_panel_width'] ?? '' );
-		$out['style_launcher_label'] = ! empty( $input['style_launcher_label'] );
+		$out['style_launcher_label'] = self::sanitize_checkbox( $input, $current, 'style_launcher_label', (bool) $defaults['style_launcher_label'] );
 
 		$out['widget_title']    = sanitize_text_field( $input['widget_title'] ?? $defaults['widget_title'] );
 		$out['widget_subtitle'] = sanitize_text_field( $input['widget_subtitle'] ?? $defaults['widget_subtitle'] );
@@ -239,6 +239,21 @@ class Chatbot_Admin_Settings {
 			'center-left'   => __( 'Centro izquierda', 'chatbot-plugin-wp' ),
 			'bottom-center' => __( 'Abajo centro', 'chatbot-plugin-wp' ),
 		);
+	}
+
+	/**
+	 * Preserva checkboxes al guardar desde pestañas que no incluyen el campo.
+	 * En la pestaña que sí lo incluye, usa input hidden con value="0" antes del checkbox.
+	 *
+	 * @param array<string, mixed> $input
+	 * @param array<string, mixed> $current
+	 */
+	private static function sanitize_checkbox( array $input, array $current, string $key, bool $default ): bool {
+		if ( ! array_key_exists( $key, $input ) ) {
+			return ! empty( $current[ $key ] ?? $default );
+		}
+
+		return ! empty( $input[ $key ] );
 	}
 
 	private static function sanitize_css_size( string $value ): string {
@@ -384,6 +399,7 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'Widget global', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<label class="chatbot-admin-toggle">
+						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_enabled]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_enabled]" value="1" <?php checked( ! empty( $settings['widget_enabled'] ) ); ?> />
 						<span><?php esc_html_e( 'Mostrar en todo el sitio (wp_footer)', 'chatbot-plugin-wp' ); ?></span>
 					</label>
@@ -406,6 +422,7 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'Streaming simulado', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<label class="chatbot-admin-toggle">
+						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[streaming_enabled]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[streaming_enabled]" value="1" <?php checked( ! empty( $settings['streaming_enabled'] ) ); ?> />
 						<span><?php esc_html_e( 'Activar respuesta por trozos', 'chatbot-plugin-wp' ); ?></span>
 					</label>
@@ -668,6 +685,7 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'Texto en botón flotante', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<label class="chatbot-admin-toggle">
+						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_launcher_label]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_launcher_label]" value="1" <?php checked( ! empty( $settings['style_launcher_label'] ) ); ?> />
 						<span><?php esc_html_e( 'Mostrar título junto al icono 💬', 'chatbot-plugin-wp' ); ?></span>
 					</label>
