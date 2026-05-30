@@ -137,13 +137,14 @@
 .chatbot-admin-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 2rem;
 }
 
 .chatbot-admin-body {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 .chatbot-admin-layout {
@@ -270,8 +271,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 1rem 1.25rem;
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem;
   border: 1px solid var(--cb-admin-border);
   border-top: 2px solid color-mix(in srgb, var(--cb-admin-primary) 18%, var(--cb-admin-border));
   border-radius: var(--cb-admin-radius);
