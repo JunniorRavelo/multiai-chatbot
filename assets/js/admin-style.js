@@ -133,7 +133,10 @@
       '<div class="cb-messages" role="log"></div>' +
       '<form class="cb-composer">' +
       '<textarea class="cb-input" rows="1" placeholder="Escribe tu mensaje…" readonly></textarea>' +
-      '<button type="submit" class="cb-send" type="button">Enviar</button>' +
+      '<button type="submit" class="cb-send" aria-label="Enviar">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>' +
+      "</svg></button>" +
       "</form>";
 
     wrap.appendChild(launcher);
@@ -179,23 +182,36 @@
     return { wrap: wrap, launcher: launcher, panel: panel, setOpen: setOpen };
   }
 
+  function createPreviewMessage(role, text) {
+    const row = document.createElement("div");
+    row.className = "cb-msg-row cb-msg-row-" + role;
+
+    if (role === "assistant") {
+      const avatar = document.createElement("span");
+      avatar.className = "cb-msg-avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      avatar.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M12 8V4H8"/><path d="M16 12h2"/><path d="M6 12H4"/>' +
+        '<rect width="16" height="12" x="4" y="8" rx="2"/><path d="M9 13v2"/><path d="M15 13v2"/>' +
+        "</svg>";
+      row.appendChild(avatar);
+    }
+
+    const bubble = document.createElement("div");
+    bubble.className = "cb-msg cb-msg-" + role;
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    return row;
+  }
+
   function renderMessages(messagesEl, settings) {
     messagesEl.innerHTML = "";
-
-    const welcome = document.createElement("div");
-    welcome.className = "cb-msg cb-msg-assistant";
-    welcome.textContent = settings.welcome;
-    messagesEl.appendChild(welcome);
-
-    const user = document.createElement("div");
-    user.className = "cb-msg cb-msg-user";
-    user.textContent = "¿Cuáles son vuestros horarios?";
-    messagesEl.appendChild(user);
-
-    const reply = document.createElement("div");
-    reply.className = "cb-msg cb-msg-assistant";
-    reply.textContent = "Atendemos de lunes a viernes, de 9:00 a 18:00.";
-    messagesEl.appendChild(reply);
+    messagesEl.appendChild(createPreviewMessage("assistant", settings.welcome));
+    messagesEl.appendChild(createPreviewMessage("user", "¿Cuáles son vuestros horarios?"));
+    messagesEl.appendChild(
+      createPreviewMessage("assistant", "Atendemos de lunes a viernes, de 9:00 a 18:00.")
+    );
   }
 
   function applyPreview(settings, refs) {
