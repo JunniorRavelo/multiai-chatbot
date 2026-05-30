@@ -17,6 +17,7 @@ class Chatbot_Admin_Settings {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_assets' ) );
 		add_action( 'admin_post_chatbot_export_csv', array( __CLASS__, 'export_csv' ) );
 		add_action( 'wp_ajax_chatbot_history_detail', array( __CLASS__, 'ajax_history_detail' ) );
+		add_filter( 'wp_redirect', array( __CLASS__, 'preserve_tab_on_settings_redirect' ), 10, 2 );
 	}
 
 	/**
@@ -142,7 +143,79 @@ class Chatbot_Admin_Settings {
 		$out['widget_title']    = sanitize_text_field( $input['widget_title'] ?? $defaults['widget_title'] );
 		$out['widget_subtitle'] = sanitize_text_field( $input['widget_subtitle'] ?? $defaults['widget_subtitle'] );
 
+		self::maybe_add_css_size_warning(
+			$input['style_radius'] ?? '',
+			$out['style_radius'],
+			__( 'El radio de borde no es válido; se ignoró ese valor.', 'chatbot-plugin-wp' )
+		);
+		self::maybe_add_css_size_warning(
+			$input['style_panel_width'] ?? '',
+			$out['style_panel_width'],
+			__( 'El ancho del panel no es válido; se ignoró ese valor.', 'chatbot-plugin-wp' )
+		);
+
+		$has_errors = ! empty(
+			array_filter(
+				get_settings_errors( 'chatbot_plugin_group' ),
+				static function ( $error ) {
+					return 'error' === ( $error['type'] ?? '' );
+				}
+			)
+		);
+
+		if ( ! $has_errors ) {
+			add_settings_error(
+				'chatbot_plugin_group',
+				'chatbot_settings_saved',
+				__( 'Los cambios se guardaron correctamente.', 'chatbot-plugin-wp' ),
+				'success'
+			);
+		}
+
 		return wp_parse_args( $out, $defaults );
+	}
+
+	/**
+	 * @param mixed $raw
+	 * @param mixed $sanitized
+	 */
+	private static function maybe_add_css_size_warning( $raw, $sanitized, string $message ): void {
+		if ( '' === trim( (string) $raw ) ) {
+			return;
+		}
+
+		if ( '' !== (string) $sanitized ) {
+			return;
+		}
+
+		add_settings_error(
+			'chatbot_plugin_group',
+			'chatbot_invalid_css_size_' . md5( $message ),
+			$message,
+			'warning'
+		);
+	}
+
+	/**
+	 * @param string $location
+	 * @param int    $status
+	 * @return string
+	 */
+	public static function preserve_tab_on_settings_redirect( $location, $status ) {
+		unset( $status );
+
+		if ( empty( $_POST['option_page'] ) || 'chatbot_plugin_group' !== $_POST['option_page'] ) {
+			return $location;
+		}
+
+		$tab = isset( $_POST['chatbot_admin_tab'] ) ? sanitize_key( wp_unslash( (string) $_POST['chatbot_admin_tab'] ) ) : 'general';
+		$allowed_tabs = array( 'general', 'model', 'security', 'style' );
+
+		if ( ! in_array( $tab, $allowed_tabs, true ) ) {
+			return $location;
+		}
+
+		return add_query_arg( 'tab', $tab, remove_query_arg( 'tab', $location ) );
 	}
 
 	public static function enqueue_admin_assets( string $hook ): void {
@@ -160,6 +233,19 @@ class Chatbot_Admin_Settings {
 			CHATBOT_PLUGIN_URL . 'assets/css/admin.css',
 			array(),
 			$admin_css_ver
+		);
+
+		$admin_feedback_js_path = CHATBOT_PLUGIN_PATH . 'assets/js/admin-feedback.js';
+		$admin_feedback_js_ver  = file_exists( $admin_feedback_js_path )
+			? (string) filemtime( $admin_feedback_js_path )
+			: CHATBOT_PLUGIN_VERSION;
+
+		wp_enqueue_script(
+			'chatbot-plugin-admin-feedback',
+			CHATBOT_PLUGIN_URL . 'assets/js/admin-feedback.js',
+			array(),
+			$admin_feedback_js_ver,
+			true
 		);
 
 		$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( (string) $_GET['tab'] ) ) : 'general';
@@ -437,6 +523,8 @@ class Chatbot_Admin_Settings {
 				<?php endforeach; ?>
 			</nav>
 
+			<?php self::render_save_notices(); ?>
+
 			<?php if ( in_array( $tab, array( 'stats', 'history' ), true ) ) : ?>
 				<div class="chatbot-admin-body">
 					<?php
@@ -450,6 +538,7 @@ class Chatbot_Admin_Settings {
 			<?php else : ?>
 				<form method="post" action="options.php" class="chatbot-admin-form">
 					<?php settings_fields( 'chatbot_plugin_group' ); ?>
+					<input type="hidden" name="chatbot_admin_tab" value="<?php echo esc_attr( $tab ); ?>" />
 
 					<div class="chatbot-admin-body">
 						<?php if ( 'general' === $tab ) : ?>
@@ -480,6 +569,88 @@ class Chatbot_Admin_Settings {
 			<?php endif; ?>
 
 			<?php Chatbot_Donation_Footer::render(); ?>
+		</div>
+		<?php
+	}
+
+	private static function render_save_notices(): void {
+		$errors = self::consume_settings_errors( 'chatbot_plugin_group' );
+
+		if ( empty( $errors ) && isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
+			self::render_admin_notice(
+				__( 'Los cambios se guardaron correctamente.', 'chatbot-plugin-wp' ),
+				'success'
+			);
+			return;
+		}
+
+		foreach ( $errors as $error ) {
+			$type = (string) ( $error['type'] ?? 'info' );
+			if ( ! in_array( $type, array( 'error', 'success', 'warning', 'info', 'updated' ), true ) ) {
+				$type = 'info';
+			}
+			if ( 'updated' === $type ) {
+				$type = 'success';
+			}
+
+			self::render_admin_notice( (string) ( $error['message'] ?? '' ), $type );
+		}
+	}
+
+	/**
+	 * @return list<array<string, mixed>>
+	 */
+	private static function consume_settings_errors( string $setting ): array {
+		$errors = get_settings_errors( $setting );
+		if ( empty( $errors ) ) {
+			return array();
+		}
+
+		global $wp_settings_errors;
+		if ( ! is_array( $wp_settings_errors ) ) {
+			$wp_settings_errors = array();
+		}
+
+		$wp_settings_errors = array_values(
+			array_filter(
+				$wp_settings_errors,
+				static function ( $error ) use ( $setting ) {
+					return ( $error['setting'] ?? '' ) !== $setting;
+				}
+			)
+		);
+
+		return $errors;
+	}
+
+	private static function render_admin_notice( string $message, string $type ): void {
+		if ( '' === trim( $message ) ) {
+			return;
+		}
+
+		$type_class = 'chatbot-admin-notice--' . sanitize_html_class( $type );
+		$labels     = array(
+			'success' => __( 'Guardado', 'chatbot-plugin-wp' ),
+			'error'   => __( 'Error', 'chatbot-plugin-wp' ),
+			'warning' => __( 'Aviso', 'chatbot-plugin-wp' ),
+			'info'    => __( 'Información', 'chatbot-plugin-wp' ),
+		);
+		$label      = $labels[ $type ] ?? $labels['info'];
+		?>
+		<div
+			class="chatbot-admin-notice <?php echo esc_attr( $type_class ); ?>"
+			role="<?php echo 'error' === $type ? 'alert' : 'status'; ?>"
+			data-auto-dismiss="true"
+		>
+			<div class="chatbot-admin-notice__content">
+				<strong class="chatbot-admin-notice__title"><?php echo esc_html( $label ); ?></strong>
+				<p class="chatbot-admin-notice__text"><?php echo esc_html( $message ); ?></p>
+			</div>
+			<button
+				type="button"
+				class="chatbot-admin-notice__dismiss"
+				aria-label="<?php esc_attr_e( 'Cerrar aviso', 'chatbot-plugin-wp' ); ?>"
+			>&times;</button>
 		</div>
 		<?php
 	}
