@@ -5,6 +5,18 @@
  *
  * @since 4.9.0
  */
+if ( ! function_exists( 'esc_html' ) ) {
+	/**
+	 * Minimal esc_html polyfill for CLI POMO tooling (no WordPress bootstrap).
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_html( $text ) {
+		return htmlspecialchars( (string) $text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+	}
+}
+
 if ( ! class_exists( 'Plural_Forms', false ) ) :
 	#[AllowDynamicProperties]
 	class Plural_Forms {
@@ -159,7 +171,7 @@ if ( ! class_exists( 'Plural_Forms', false ) ) :
 						$end_operator = strspn( $str, self::OP_CHARS, $pos );
 						$operator     = substr( $str, $pos, $end_operator );
 						if ( ! array_key_exists( $operator, self::$op_precedence ) ) {
-							throw new Exception( sprintf( 'Unknown operator "%s"', $operator ) );
+							throw new Exception( sprintf( 'Unknown operator "%s"', esc_html( $operator ) ) );
 						}
 
 						while ( ! empty( $stack ) ) {
@@ -214,7 +226,7 @@ if ( ! class_exists( 'Plural_Forms', false ) ) :
 							break;
 						}
 
-						throw new Exception( sprintf( 'Unknown symbol "%s"', $next ) );
+						throw new Exception( sprintf( 'Unknown symbol "%s"', esc_html( $next ) ) );
 				}
 			}
 
@@ -337,7 +349,7 @@ if ( ! class_exists( 'Plural_Forms', false ) ) :
 						break;
 
 					default:
-						throw new Exception( sprintf( 'Unknown operator "%s"', $next[1] ) );
+						throw new Exception( sprintf( 'Unknown operator "%s"', esc_html( $next[1] ) ) );
 				}
 			}
 

@@ -32,5 +32,5 @@ foreach ( $files as $po_path ) {
 		fwrite( STDERR, "Failed to write: {$mo_path}\n" );
 		exit( 1 );
 	}
-	echo 'compiled: ' . basename( $mo_path ) . PHP_EOL;
+	echo 'compiled: ' . esc_html( basename( $mo_path ) ) . PHP_EOL;
 }
