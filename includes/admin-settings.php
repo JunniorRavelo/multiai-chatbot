@@ -579,14 +579,10 @@ class Chatbot_Admin_Settings {
 								'desc'  => '',
 								'badge' => '',
 							);
-							$option_label = trim(
-								sprintf(
-									'%s (%s)',
-									$meta['label'],
-									$meta['badge']
-								),
-								' ()'
-							);
+							$badge = (string) ( $meta['badge'] ?? '' );
+							$option_label = $badge !== ''
+								? sprintf( '%s (%s)', $meta['label'], $badge )
+								: (string) $meta['label'];
 							?>
 							<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $preset, $id ); ?>>
 								<?php echo esc_html( $option_label ); ?>
