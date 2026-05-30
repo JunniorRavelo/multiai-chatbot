@@ -1292,265 +1292,342 @@ class Chatbot_Admin_Settings {
 	}
 
 	/**
-	 * @param array<string, mixed> $item
-	 */
-	private static function render_history_card( array $item, bool $expanded = false ): void {
-		$id         = (int) ( $item['id'] ?? 0 );
-		$public_id  = (string) ( $item['public_id'] ?? '' );
-		$title      = (string) ( $item['title'] ?? '' );
-		$status     = (string) ( $item['status'] ?? '' );
-		$provider   = (string) ( $item['provider'] ?? '' );
-		$model      = (string) ( $item['model'] ?? '' );
-		$msg_count  = (int) ( $item['message_count'] ?? 0 );
-		$page_path  = (string) ( $item['page_path'] ?? '' );
-		$updated    = Chatbot_Chat_History::format_datetime_local( (string) ( $item['updated_at'] ?? '' ) );
-		$session    = (string) ( $item['session_hash'] ?? '' );
-		$is_ok      = in_array( $status, array( 'success', 'active', 'cached' ), true );
+ * @param array<string, mixed> $item
+ */
+private static function render_history_card( array $item, bool $expanded = false ): void {
+	$id         = (int) ( $item['id'] ?? 0 );
+	$public_id  = (string) ( $item['public_id'] ?? '' );
+	$title      = (string) ( $item['title'] ?? '' );
+	$status     = (string) ( $item['status'] ?? '' );
+	$provider   = (string) ( $item['provider'] ?? '' );
+	$model      = (string) ( $item['model'] ?? '' );
+	$msg_count  = (int) ( $item['message_count'] ?? 0 );
+	$page_path  = (string) ( $item['page_path'] ?? '' );
+	$updated    = Chatbot_Chat_History::format_datetime_local( (string) ( $item['updated_at'] ?? '' ) );
+	$session    = (string) ( $item['session_hash'] ?? '' );
+	$is_ok      = in_array( $status, array( 'success', 'active', 'cached' ), true );
 
-		if ( '' === $title ) {
-			$title = __( '(Sin título)', 'chatbot-plugin-wp' );
-		}
+	if ( '' === $title ) {
+		$title = __( '(Sin título)', 'chatbot-plugin-wp' );
+	}
 
-		$provider_label = self::format_history_provider_label( $provider, $model );
-		$provider_name  = self::format_history_provider_name( $provider );
-		$card_id        = 'chatbot-history-card-' . $id;
-		$panel_id       = 'chatbot-history-panel-' . $id;
-		$loaded         = $expanded;
-		$messages       = array();
-		$status_class   = 'chatbot-admin-history-card__status--err';
-		$avatar_label   = self::format_history_provider_avatar( $provider );
+	$provider_label = self::format_history_provider_label( $provider, $model );
+	$provider_name  = self::format_history_provider_name( $provider );
+	$card_id        = 'chatbot-history-card-' . $id;
+	$panel_id       = 'chatbot-history-panel-' . $id;
+	$loaded         = $expanded;
+	$messages       = array();
+	$status_class   = 'chatbot-admin-history-card__status--err';
+	$avatar_label   = self::format_history_provider_avatar( $provider );
 
-		if ( 'cached' === $status ) {
-			$status_class = 'chatbot-admin-history-card__status--cached';
-		} elseif ( $is_ok ) {
-			$status_class = 'chatbot-admin-history-card__status--ok';
-		}
+	if ( 'cached' === $status ) {
+		$status_class = 'chatbot-admin-history-card__status--cached';
+	} elseif ( $is_ok ) {
+		$status_class = 'chatbot-admin-history-card__status--ok';
+	}
 
-		if ( $expanded ) {
-			$messages = Chatbot_Chat_History::get_messages( $id );
-		}
-		?>
-		<article
-			class="chatbot-admin-history-card chatbot-admin-history-card--<?php echo esc_attr( $status ); ?><?php echo $expanded ? ' is-open' : ''; ?>"
-			id="<?php echo esc_attr( $card_id ); ?>"
-			data-conversation-id="<?php echo esc_attr( (string) $id ); ?>"
-			data-loaded="<?php echo $loaded ? '1' : '0'; ?>"
+	if ( $expanded ) {
+		$messages = Chatbot_Chat_History::get_messages( $id );
+	}
+	?>
+	<article
+		class="chatbot-admin-history-card chatbot-admin-history-card--<?php echo esc_attr( $status ); ?><?php echo $expanded ? ' is-open' : ''; ?>"
+		id="<?php echo esc_attr( $card_id ); ?>"
+		data-conversation-id="<?php echo esc_attr( (string) $id ); ?>"
+		data-loaded="<?php echo $loaded ? '1' : '0'; ?>"
+	>
+		<button
+			type="button"
+			class="chatbot-admin-history-card__toggle"
+			aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>"
+			aria-controls="<?php echo esc_attr( $panel_id ); ?>"
 		>
-			<button
-				type="button"
-				class="chatbot-admin-history-card__toggle"
-				aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>"
-				aria-controls="<?php echo esc_attr( $panel_id ); ?>"
-			>
-				<span class="chatbot-admin-history-card__visual" aria-hidden="true">
-					<span class="chatbot-admin-history-card__avatar">
-						<span class="chatbot-admin-history-card__avatar-label"><?php echo esc_html( $avatar_label ); ?></span>
+			<span class="chatbot-admin-history-card__visual" aria-hidden="true">
+				<span class="chatbot-admin-history-card__avatar">
+					<span class="chatbot-admin-history-card__avatar-label"><?php echo esc_html( $avatar_label ); ?></span>
+				</span>
+				<span class="chatbot-admin-history-card__count"><?php echo esc_html( number_format_i18n( $msg_count ) ); ?></span>
+			</span>
+
+			<span class="chatbot-admin-history-card__preview">
+				<span class="chatbot-admin-history-card__headline">
+					<span class="chatbot-admin-history-card__title"><?php echo esc_html( $title ); ?></span>
+					<span class="chatbot-admin-history-card__status <?php echo esc_attr( $status_class ); ?>">
+						<span class="chatbot-admin-history-card__status-dot" aria-hidden="true"></span>
+						<?php echo esc_html( self::format_history_status_label( $status ) ); ?>
 					</span>
-					<span class="chatbot-admin-history-card__count"><?php echo esc_html( number_format_i18n( $msg_count ) ); ?></span>
 				</span>
 
-				<span class="chatbot-admin-history-card__preview">
-					<span class="chatbot-admin-history-card__headline">
-						<span class="chatbot-admin-history-card__title"><?php echo esc_html( $title ); ?></span>
-						<span class="chatbot-admin-history-card__status <?php echo esc_attr( $status_class ); ?>">
-							<span class="chatbot-admin-history-card__status-dot" aria-hidden="true"></span>
-							<?php echo esc_html( self::format_history_status_label( $status ) ); ?>
-						</span>
+				<span class="chatbot-admin-history-card__metrics">
+					<span class="chatbot-admin-history-metric">
+						<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Actualizado', 'chatbot-plugin-wp' ); ?></span>
+						<span class="chatbot-admin-history-metric__value"><?php echo esc_html( $updated ); ?></span>
 					</span>
 
-					<span class="chatbot-admin-history-card__metrics">
+					<?php if ( '' !== $provider_name ) : ?>
 						<span class="chatbot-admin-history-metric">
-							<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Actualizado', 'chatbot-plugin-wp' ); ?></span>
-							<span class="chatbot-admin-history-metric__value"><?php echo esc_html( $updated ); ?></span>
+							<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Proveedor', 'chatbot-plugin-wp' ); ?></span>
+							<span class="chatbot-admin-history-metric__value"><?php echo esc_html( $provider_name ); ?></span>
 						</span>
-						<?php if ( '' !== $provider_name ) : ?>
-							<span class="chatbot-admin-history-metric">
-								<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Proveedor', 'chatbot-plugin-wp' ); ?></span>
-								<span class="chatbot-admin-history-metric__value"><?php echo esc_html( $provider_name ); ?></span>
-							</span>
-						<?php endif; ?>
-						<?php if ( '' !== $model ) : ?>
-							<span class="chatbot-admin-history-metric">
-								<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Modelo', 'chatbot-plugin-wp' ); ?></span>
-								<span class="chatbot-admin-history-metric__value" title="<?php echo esc_attr( $model ); ?>"><?php echo esc_html( $model ); ?></span>
-							</span>
-						<?php elseif ( '' !== $provider_label && '' === $model ) : ?>
-							<span class="chatbot-admin-history-metric">
-								<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Motor', 'chatbot-plugin-wp' ); ?></span>
-								<span class="chatbot-admin-history-metric__value"><?php echo esc_html( $provider_label ); ?></span>
-							</span>
-						<?php endif; ?>
-					</span>
+					<?php endif; ?>
 
-					<span class="chatbot-admin-history-card__foot">
-						<code class="chatbot-admin-history-card__ref"><?php echo esc_html( $public_id ); ?></code>
-						<?php if ( '' !== $page_path || '' !== $session ) : ?>
-							<span class="chatbot-admin-history-card__tags">
-								<?php if ( '' !== $page_path ) : ?>
-									<span class="chatbot-admin-history-tag chatbot-admin-history-tag--path" title="<?php echo esc_attr( $page_path ); ?>">
-										<?php echo esc_html( $page_path ); ?>
-									</span>
-								<?php endif; ?>
-								<?php if ( '' !== $session ) : ?>
-									<span class="chatbot-admin-history-tag chatbot-admin-history-tag--session" title="<?php echo esc_attr( $session ); ?>">
-										<?php echo esc_html( substr( $session, 0, 8 ) ); ?>…
-									</span>
-								<?php endif; ?>
-							</span>
-						<?php endif; ?>
+					<?php if ( '' !== $model ) : ?>
+						<span class="chatbot-admin-history-metric">
+							<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Modelo', 'chatbot-plugin-wp' ); ?></span>
+							<span class="chatbot-admin-history-metric__value" title="<?php echo esc_attr( $model ); ?>"><?php echo esc_html( $model ); ?></span>
+						</span>
+					<?php elseif ( '' !== $provider_label ) : ?>
+						<span class="chatbot-admin-history-metric">
+							<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Motor', 'chatbot-plugin-wp' ); ?></span>
+							<span class="chatbot-admin-history-metric__value"><?php echo esc_html( $provider_label ); ?></span>
+						</span>
+					<?php endif; ?>
+
+					<span class="chatbot-admin-history-metric">
+						<span class="chatbot-admin-history-metric__label"><?php esc_html_e( 'Mensajes', 'chatbot-plugin-wp' ); ?></span>
+						<span class="chatbot-admin-history-metric__value"><?php echo esc_html( number_format_i18n( $msg_count ) ); ?></span>
 					</span>
 				</span>
 
-				<span class="chatbot-admin-history-card__aside" aria-hidden="true">
-					<span class="chatbot-admin-history-card__expand-label"><?php esc_html_e( 'Ver', 'chatbot-plugin-wp' ); ?></span>
-					<span class="chatbot-admin-history-card__chevron"></span>
+				<span class="chatbot-admin-history-card__foot">
+					<code class="chatbot-admin-history-card__ref"><?php echo esc_html( $public_id ); ?></code>
+
+					<?php if ( '' !== $page_path || '' !== $session ) : ?>
+						<span class="chatbot-admin-history-card__tags">
+							<?php if ( '' !== $page_path ) : ?>
+								<span class="chatbot-admin-history-tag chatbot-admin-history-tag--path" title="<?php echo esc_attr( $page_path ); ?>">
+									<?php echo esc_html( $page_path ); ?>
+								</span>
+							<?php endif; ?>
+
+							<?php if ( '' !== $session ) : ?>
+								<span class="chatbot-admin-history-tag chatbot-admin-history-tag--session" title="<?php echo esc_attr( $session ); ?>">
+									<?php echo esc_html( substr( $session, 0, 8 ) ); ?>…
+								</span>
+							<?php endif; ?>
+						</span>
+					<?php endif; ?>
 				</span>
-			</button>
-			<div
-				class="chatbot-admin-history-card__panel"
-				id="<?php echo esc_attr( $panel_id ); ?>"
-				role="region"
-				aria-label="<?php echo esc_attr( sprintf( __( 'Historial de %s', 'chatbot-plugin-wp' ), $public_id ) ); ?>"
-				<?php echo $expanded ? '' : 'hidden'; ?>
-			>
-				<?php if ( $expanded ) : ?>
-					<?php self::render_history_card_body( $item, $messages ); ?>
-				<?php endif; ?>
-			</div>
-		</article>
-		<?php
-	}
+			</span>
 
-	/**
-	 * @param array<string, mixed> $conv
-	 * @param array<int, array<string, mixed>> $messages
-	 */
-	private static function render_history_card_body( array $conv, array $messages ): void {
-		$started = Chatbot_Chat_History::format_datetime_local( (string) ( $conv['started_at'] ?? '' ) );
-		$updated = Chatbot_Chat_History::format_datetime_local( (string) ( $conv['updated_at'] ?? '' ) );
-		?>
-		<div class="chatbot-admin-history-card__body">
-			<dl class="chatbot-admin-history-detail__grid">
-				<div>
-					<dt><?php esc_html_e( 'ID interno', 'chatbot-plugin-wp' ); ?></dt>
-					<dd>#<?php echo esc_html( (string) (int) ( $conv['id'] ?? 0 ) ); ?></dd>
-				</div>
-				<div>
-					<dt><?php esc_html_e( 'Inicio', 'chatbot-plugin-wp' ); ?></dt>
-					<dd><?php echo esc_html( $started ); ?></dd>
-				</div>
-				<div>
-					<dt><?php esc_html_e( 'Última actividad', 'chatbot-plugin-wp' ); ?></dt>
-					<dd><?php echo esc_html( $updated ); ?></dd>
-				</div>
-				<div>
-					<dt><?php esc_html_e( 'Proveedor', 'chatbot-plugin-wp' ); ?></dt>
-					<dd><?php echo esc_html( self::format_history_provider_label( (string) ( $conv['provider'] ?? '' ), (string) ( $conv['model'] ?? '' ) ) ); ?></dd>
-				</div>
-				<?php if ( ! empty( $conv['page_url'] ) ) : ?>
-					<div class="chatbot-admin-history-detail__grid-wide">
-						<dt><?php esc_html_e( 'URL', 'chatbot-plugin-wp' ); ?></dt>
-						<dd><a href="<?php echo esc_url( (string) $conv['page_url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) $conv['page_url'] ); ?></a></dd>
-					</div>
-				<?php endif; ?>
-			</dl>
+			<span class="chatbot-admin-history-card__aside" aria-hidden="true">
+				<span class="chatbot-admin-history-card__expand-label"><?php esc_html_e( 'Detalle', 'chatbot-plugin-wp' ); ?></span>
+				<span class="chatbot-admin-history-card__chevron"></span>
+			</span>
+		</button>
 
-			<div class="chatbot-admin-history-messages">
-				<h3 class="chatbot-admin-history-messages__title"><?php esc_html_e( 'Mensajes', 'chatbot-plugin-wp' ); ?></h3>
-				<?php self::render_history_messages_list( $messages ); ?>
-			</div>
+		<div
+			class="chatbot-admin-history-card__panel"
+			id="<?php echo esc_attr( $panel_id ); ?>"
+			role="region"
+			aria-label="<?php echo esc_attr( sprintf( __( 'Historial de %s', 'chatbot-plugin-wp' ), $public_id ) ); ?>"
+			<?php echo $expanded ? '' : 'hidden'; ?>
+		>
+			<?php if ( $expanded ) : ?>
+				<?php self::render_history_card_body( $item, $messages ); ?>
+			<?php endif; ?>
 		</div>
-		<?php
-	}
+	</article>
+	<?php
+}
 
-	/**
-	 * @param array<int, array<string, mixed>> $messages
-	 */
-	private static function render_history_messages_list( array $messages ): void {
-		if ( empty( $messages ) ) {
-			echo '<p class="chatbot-admin-history-messages__empty">' . esc_html__( 'Sin mensajes guardados.', 'chatbot-plugin-wp' ) . '</p>';
-			return;
-		}
-		?>
-		<div class="chatbot-admin-history-messages__list">
-			<?php foreach ( $messages as $msg ) : ?>
-				<?php
-				$role = (string) ( $msg['role'] ?? 'user' );
-				$when = Chatbot_Chat_History::format_datetime_local( (string) ( $msg['created_at'] ?? '' ) );
-				?>
-				<div class="chatbot-admin-history-msg chatbot-admin-history-msg--<?php echo esc_attr( $role ); ?>">
-					<div class="chatbot-admin-history-msg__head">
-						<span class="chatbot-admin-history-msg__role"><?php echo esc_html( 'user' === $role ? __( 'Usuario', 'chatbot-plugin-wp' ) : __( 'Asistente', 'chatbot-plugin-wp' ) ); ?></span>
-						<time datetime="<?php echo esc_attr( (string) ( $msg['created_at'] ?? '' ) ); ?>"><?php echo esc_html( $when ); ?></time>
-						<?php if ( 'assistant' === $role && ! empty( $msg['status'] ) ) : ?>
-							<span class="chatbot-admin-status chatbot-admin-status--<?php echo in_array( (string) $msg['status'], array( 'success', 'cached' ), true ) ? 'ok' : 'err'; ?>">
-								<?php echo esc_html( self::format_history_status_label( (string) $msg['status'] ) ); ?>
-							</span>
-						<?php endif; ?>
-					</div>
-					<div class="chatbot-admin-history-msg__body"><?php echo esc_html( (string) ( $msg['content'] ?? '' ) ); ?></div>
+/**
+ * @param array<string, mixed> $conv
+ * @param array<int, array<string, mixed>> $messages
+ */
+private static function render_history_card_body( array $conv, array $messages ): void {
+	$started   = Chatbot_Chat_History::format_datetime_local( (string) ( $conv['started_at'] ?? '' ) );
+	$updated   = Chatbot_Chat_History::format_datetime_local( (string) ( $conv['updated_at'] ?? '' ) );
+	$status    = (string) ( $conv['status'] ?? '' );
+	$provider  = (string) ( $conv['provider'] ?? '' );
+	$model     = (string) ( $conv['model'] ?? '' );
+	$page_url  = (string) ( $conv['page_url'] ?? '' );
+	$page_path = (string) ( $conv['page_path'] ?? '' );
+	$session   = (string) ( $conv['session_hash'] ?? '' );
+	$public_id = (string) ( $conv['public_id'] ?? '' );
+	$msg_count = (int) ( $conv['message_count'] ?? count( $messages ) );
+	?>
+	<div class="chatbot-admin-history-card__body">
+		<dl class="chatbot-admin-history-detail__grid">
+			<div>
+				<dt><?php esc_html_e( 'ID interno', 'chatbot-plugin-wp' ); ?></dt>
+				<dd>#<?php echo esc_html( (string) (int) ( $conv['id'] ?? 0 ) ); ?></dd>
+			</div>
+
+			<?php if ( '' !== $public_id ) : ?>
+				<div>
+					<dt><?php esc_html_e( 'ID público', 'chatbot-plugin-wp' ); ?></dt>
+					<dd><code><?php echo esc_html( $public_id ); ?></code></dd>
 				</div>
-			<?php endforeach; ?>
+			<?php endif; ?>
+
+			<?php if ( '' !== $status ) : ?>
+				<div>
+					<dt><?php esc_html_e( 'Estado', 'chatbot-plugin-wp' ); ?></dt>
+					<dd><?php echo esc_html( self::format_history_status_label( $status ) ); ?></dd>
+				</div>
+			<?php endif; ?>
+
+			<div>
+				<dt><?php esc_html_e( 'Mensajes', 'chatbot-plugin-wp' ); ?></dt>
+				<dd><?php echo esc_html( number_format_i18n( $msg_count ) ); ?></dd>
+			</div>
+
+			<div>
+				<dt><?php esc_html_e( 'Inicio', 'chatbot-plugin-wp' ); ?></dt>
+				<dd><?php echo esc_html( $started ); ?></dd>
+			</div>
+
+			<div>
+				<dt><?php esc_html_e( 'Última actividad', 'chatbot-plugin-wp' ); ?></dt>
+				<dd><?php echo esc_html( $updated ); ?></dd>
+			</div>
+
+			<?php if ( '' !== $provider || '' !== $model ) : ?>
+				<div>
+					<dt><?php esc_html_e( 'Proveedor / modelo', 'chatbot-plugin-wp' ); ?></dt>
+					<dd><?php echo esc_html( self::format_history_provider_label( $provider, $model ) ); ?></dd>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( '' !== $session ) : ?>
+				<div>
+					<dt><?php esc_html_e( 'Sesión', 'chatbot-plugin-wp' ); ?></dt>
+					<dd><code><?php echo esc_html( $session ); ?></code></dd>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( '' !== $page_path ) : ?>
+				<div class="chatbot-admin-history-detail__grid-wide">
+					<dt><?php esc_html_e( 'Ruta', 'chatbot-plugin-wp' ); ?></dt>
+					<dd><?php echo esc_html( $page_path ); ?></dd>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( '' !== $page_url ) : ?>
+				<div class="chatbot-admin-history-detail__grid-wide">
+					<dt><?php esc_html_e( 'URL', 'chatbot-plugin-wp' ); ?></dt>
+					<dd>
+						<a href="<?php echo esc_url( $page_url ); ?>" target="_blank" rel="noopener noreferrer">
+							<?php echo esc_html( $page_url ); ?>
+						</a>
+					</dd>
+				</div>
+			<?php endif; ?>
+		</dl>
+
+		<div class="chatbot-admin-history-messages">
+			<h3 class="chatbot-admin-history-messages__title"><?php esc_html_e( 'Mensajes', 'chatbot-plugin-wp' ); ?></h3>
+			<?php self::render_history_messages_list( $messages ); ?>
 		</div>
-		<?php
+	</div>
+	<?php
+}
+
+/**
+ * @param array<int, array<string, mixed>> $messages
+ */
+private static function render_history_messages_list( array $messages ): void {
+	if ( empty( $messages ) ) {
+		echo '<p class="chatbot-admin-history-messages__empty">' . esc_html__( 'Sin mensajes guardados.', 'chatbot-plugin-wp' ) . '</p>';
+		return;
+	}
+	?>
+	<div class="chatbot-admin-history-messages__list">
+		<?php foreach ( $messages as $msg ) : ?>
+			<?php
+			$role         = (string) ( $msg['role'] ?? 'user' );
+			$when         = Chatbot_Chat_History::format_datetime_local( (string) ( $msg['created_at'] ?? '' ) );
+			$message_text = (string) ( $msg['content'] ?? '' );
+			$msg_status   = (string) ( $msg['status'] ?? '' );
+
+			$status_badge_class = 'chatbot-admin-status--err';
+			if ( 'cached' === $msg_status ) {
+				$status_badge_class = 'chatbot-admin-status--cached';
+			} elseif ( in_array( $msg_status, array( 'success', 'active' ), true ) ) {
+				$status_badge_class = 'chatbot-admin-status--ok';
+			}
+			?>
+			<div class="chatbot-admin-history-msg chatbot-admin-history-msg--<?php echo esc_attr( $role ); ?>">
+				<div class="chatbot-admin-history-msg__head">
+					<span class="chatbot-admin-history-msg__role">
+						<?php echo esc_html( 'user' === $role ? __( 'Usuario', 'chatbot-plugin-wp' ) : __( 'Asistente', 'chatbot-plugin-wp' ) ); ?>
+					</span>
+
+					<time datetime="<?php echo esc_attr( (string) ( $msg['created_at'] ?? '' ) ); ?>">
+						<?php echo esc_html( $when ); ?>
+					</time>
+
+					<?php if ( 'assistant' === $role && '' !== $msg_status ) : ?>
+						<span class="chatbot-admin-status <?php echo esc_attr( $status_badge_class ); ?>">
+							<?php echo esc_html( self::format_history_status_label( $msg_status ) ); ?>
+						</span>
+					<?php endif; ?>
+				</div>
+
+				<div class="chatbot-admin-history-msg__body"><?php echo esc_html( $message_text ); ?></div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+	<?php
+}
+
+private static function format_history_status_label( string $status ): string {
+	$labels = array(
+		'active'  => __( 'Activa', 'chatbot-plugin-wp' ),
+		'success' => __( 'Éxito', 'chatbot-plugin-wp' ),
+		'error'   => __( 'Error', 'chatbot-plugin-wp' ),
+		'cached'  => __( 'En caché', 'chatbot-plugin-wp' ),
+	);
+
+	return $labels[ $status ] ?? $status;
+}
+
+private static function format_history_provider_label( string $provider, string $model = '' ): string {
+	$labels = array(
+		'gemini'            => 'Gemini',
+		'ollama'            => 'Ollama',
+		'openai_compatible' => 'OpenAI-compatible',
+	);
+
+	$label = $labels[ $provider ] ?? $provider;
+	if ( '' === $label ) {
+		return '';
 	}
 
-	private static function format_history_status_label( string $status ): string {
-		$labels = array(
-			'active'  => __( 'Activa', 'chatbot-plugin-wp' ),
-			'success' => __( 'Éxito', 'chatbot-plugin-wp' ),
-			'error'   => __( 'Error', 'chatbot-plugin-wp' ),
-			'cached'  => __( 'En caché', 'chatbot-plugin-wp' ),
-		);
+	return '' !== $model ? $label . ' · ' . $model : $label;
+}
 
-		return $labels[ $status ] ?? $status;
+private static function format_history_provider_name( string $provider ): string {
+	$labels = array(
+		'gemini'            => 'Gemini',
+		'ollama'            => 'Ollama',
+		'openai_compatible' => 'OpenAI-compatible',
+	);
+
+	return $labels[ $provider ] ?? $provider;
+}
+
+private static function format_history_provider_avatar( string $provider ): string {
+	$labels = array(
+		'gemini'            => 'G',
+		'ollama'            => 'O',
+		'openai_compatible' => 'AI',
+	);
+
+	if ( isset( $labels[ $provider ] ) ) {
+		return $labels[ $provider ];
 	}
 
-	private static function format_history_provider_label( string $provider, string $model = '' ): string {
-		$labels = array(
-			'gemini'            => 'Gemini',
-			'ollama'            => 'Ollama',
-			'openai_compatible' => 'OpenAI-compatible',
-		);
-
-		$label = $labels[ $provider ] ?? $provider;
-		if ( '' === $label ) {
-			return '';
-		}
-
-		return '' !== $model ? $label . ' · ' . $model : $label;
+	$provider = trim( $provider );
+	if ( '' === $provider ) {
+		return '?';
 	}
 
-	private static function format_history_provider_name( string $provider ): string {
-		$labels = array(
-			'gemini'            => 'Gemini',
-			'ollama'            => 'Ollama',
-			'openai_compatible' => 'OpenAI-compatible',
-		);
-
-		return $labels[ $provider ] ?? $provider;
+	if ( function_exists( 'mb_substr' ) ) {
+		return mb_strtoupper( mb_substr( $provider, 0, 1, 'UTF-8' ), 'UTF-8' );
 	}
 
-	private static function format_history_provider_avatar( string $provider ): string {
-		$labels = array(
-			'gemini'            => 'G',
-			'ollama'            => 'O',
-			'openai_compatible' => 'AI',
-		);
-
-		if ( isset( $labels[ $provider ] ) ) {
-			return $labels[ $provider ];
-		}
-
-		$provider = trim( $provider );
-		if ( '' === $provider ) {
-			return '?';
-		}
-
-		if ( function_exists( 'mb_substr' ) ) {
-			return mb_strtoupper( mb_substr( $provider, 0, 1, 'UTF-8' ), 'UTF-8' );
-		}
-
-		return strtoupper( substr( $provider, 0, 1 ) );
-	}
+	return strtoupper( substr( $provider, 0, 1 ) );
+}
 }
