@@ -229,60 +229,6 @@ class Chatbot_Admin_Settings {
 	}
 
 	/**
-	 * @param string $id
-	 * @param array{label: string, desc: string, badge: string, badge_type: string, colors: list<string>} $meta
-	 * @param bool   $active
-	 */
-	private static function render_preset_card( string $id, array $meta, bool $active ): void {
-		?>
-		<button type="button"
-			class="chatbot-preset-card<?php echo $active ? ' is-active' : ''; ?>"
-			data-preset="<?php echo esc_attr( $id ); ?>"
-			role="radio"
-			aria-checked="<?php echo $active ? 'true' : 'false'; ?>">
-			<span class="chatbot-preset-card__check" aria-hidden="true">
-				<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-			</span>
-			<div class="chatbot-preset-card__scene chatbot-preset-card__scene--<?php echo esc_attr( $meta['badge_type'] ?? 'light' ); ?>">
-				<div class="cb-widget cb-preset-<?php echo esc_attr( $id ); ?> chatbot-preset-mini-wrap">
-					<div class="chatbot-preset-mini">
-						<div class="chatbot-preset-mini__panel">
-							<div class="chatbot-preset-mini__header">
-								<div class="chatbot-preset-mini__header-text">
-									<span class="chatbot-preset-mini__title"></span>
-									<span class="chatbot-preset-mini__sub"></span>
-								</div>
-							</div>
-							<div class="chatbot-preset-mini__body">
-								<span class="chatbot-preset-mini__bubble chatbot-preset-mini__bubble--bot"></span>
-								<span class="chatbot-preset-mini__bubble chatbot-preset-mini__bubble--user"></span>
-							</div>
-							<div class="chatbot-preset-mini__composer">
-								<span class="chatbot-preset-mini__input"></span>
-								<span class="chatbot-preset-mini__send"></span>
-							</div>
-						</div>
-						<span class="chatbot-preset-mini__launcher"></span>
-					</div>
-				</div>
-			</div>
-			<div class="chatbot-preset-card__meta">
-				<div class="chatbot-preset-card__meta-row">
-					<span class="chatbot-preset-card__label"><?php echo esc_html( $meta['label'] ); ?></span>
-					<span class="chatbot-preset-card__badge chatbot-preset-card__badge--<?php echo esc_attr( $meta['badge_type'] ?? 'light' ); ?>"><?php echo esc_html( $meta['badge'] ); ?></span>
-				</div>
-				<p class="chatbot-preset-card__desc"><?php echo esc_html( $meta['desc'] ); ?></p>
-				<div class="chatbot-preset-card__palette" aria-hidden="true">
-					<?php foreach ( $meta['colors'] as $color ) : ?>
-						<span class="chatbot-preset-card__chip" style="background-color:<?php echo esc_attr( $color ); ?>"></span>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</button>
-		<?php
-	}
-
-	/**
 	 * @return array<string, string>
 	 */
 	public static function style_position_labels(): array {
@@ -600,24 +546,57 @@ class Chatbot_Admin_Settings {
 			<div class="chatbot-admin-style-fields">
 		<?php
 		self::card_open(
-			__( 'Temas visuales', 'chatbot-plugin-wp' ),
-			__( 'Cada tema combina colores, tipografía y formas de forma coherente. Haz clic para previsualizar.', 'chatbot-plugin-wp' )
+			__( 'Tema visual', 'chatbot-plugin-wp' ),
+			__( 'Paleta de colores, tipografía y formas del chat.', 'chatbot-plugin-wp' )
 		);
 		?>
-		<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_preset]" value="<?php echo esc_attr( $preset ); ?>" id="chatbot-style-preset-input" />
-		<div class="chatbot-preset-gallery" role="radiogroup" aria-label="<?php esc_attr_e( 'Tema del chat', 'chatbot-plugin-wp' ); ?>">
-			<?php foreach ( self::style_presets() as $id ) : ?>
-				<?php
-				$meta = $preset_meta[ $id ] ?? array(
-					'label'  => $id,
-					'desc'   => '',
-					'badge'  => '',
-					'colors' => array( '#2563eb', '#6366f1', '#fff' ),
-				);
-				self::render_preset_card( $id, $meta, $preset === $id );
-				?>
-			<?php endforeach; ?>
-		</div>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Tema', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_preset]" id="chatbot-style-preset">
+						<?php foreach ( self::style_presets() as $id ) : ?>
+							<?php
+							$meta = $preset_meta[ $id ] ?? array(
+								'label' => $id,
+								'desc'  => '',
+								'badge' => '',
+							);
+							$option_label = trim(
+								sprintf(
+									'%s (%s)',
+									$meta['label'],
+									$meta['badge']
+								),
+								' ()'
+							);
+							?>
+							<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $preset, $id ); ?>>
+								<?php echo esc_html( $option_label ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+					<p class="description" id="chatbot-style-preset-desc">
+						<?php
+						$current_meta = $preset_meta[ $preset ] ?? array( 'desc' => '' );
+						echo esc_html( (string) ( $current_meta['desc'] ?? '' ) );
+						?>
+					</p>
+				</td>
+			</tr>
+		</table>
+		<script>
+		(function () {
+			const sel = document.getElementById('chatbot-style-preset');
+			const desc = document.getElementById('chatbot-style-preset-desc');
+			if (!sel || !desc) return;
+			const descriptions = <?php echo wp_json_encode( array_map( static fn( $m ) => $m['desc'] ?? '', $preset_meta ) ); ?>;
+			function updateDesc() {
+				desc.textContent = descriptions[sel.value] || '';
+			}
+			sel.addEventListener('change', updateDesc);
+		})();
+		</script>
 		<?php
 		self::card_close();
 

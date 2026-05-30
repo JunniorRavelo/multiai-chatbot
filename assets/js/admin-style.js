@@ -62,14 +62,6 @@
     if (settings.panelWidth) wrap.style.setProperty("--cb-panel-width", settings.panelWidth);
   }
 
-  function updatePresetCards(preset) {
-    document.querySelectorAll(".chatbot-preset-card").forEach(function (card) {
-      const active = card.dataset.preset === preset;
-      card.classList.toggle("is-active", active);
-      card.setAttribute("aria-checked", active ? "true" : "false");
-    });
-  }
-
   function updatePositionButtons(position) {
     document.querySelectorAll(".chatbot-position-btn").forEach(function (btn) {
       btn.classList.toggle("is-active", btn.dataset.position === position);
@@ -196,13 +188,7 @@
     applyStyleVars(wrap, settings);
     renderMessages(panel.querySelector(".cb-messages"), settings);
 
-    updatePresetCards(settings.preset);
     updatePositionButtons(settings.position);
-  }
-
-  function syncPresetInput(preset) {
-    const el = field("style_preset");
-    if (el) el.value = preset;
   }
 
   function syncPositionInput(position) {
@@ -218,14 +204,6 @@
     inputs.forEach(function (input) {
       const evt = input.type === "checkbox" || input.tagName === "SELECT" ? "change" : "input";
       input.addEventListener(evt, function () {
-        applyPreview(readSettings(), refs);
-      });
-    });
-
-    document.querySelectorAll(".chatbot-preset-card").forEach(function (card) {
-      card.addEventListener("click", function () {
-        const preset = card.dataset.preset;
-        syncPresetInput(preset);
         applyPreview(readSettings(), refs);
       });
     });
