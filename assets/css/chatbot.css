@@ -13,6 +13,12 @@
   --cb-shadow: 0 18px 44px -18px rgba(15, 23, 42, 0.35);
   --cb-offset: 1rem;
   --cb-panel-width: min(380px, calc(100vw - 2rem));
+  --cb-scrollbar-size: 6px;
+  --cb-scrollbar-size-input: 4px;
+  --cb-scrollbar-track: transparent;
+  --cb-scrollbar-thumb: color-mix(in srgb, var(--cb-primary) 48%, var(--cb-muted) 52%);
+  --cb-scrollbar-thumb-hover: color-mix(in srgb, var(--cb-primary) 62%, var(--cb-accent) 38%);
+  --cb-scrollbar-radius: 999px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   font-size: 14px;
   line-height: 1.45;
@@ -128,6 +134,8 @@
   --cb-radius: 0.625rem;
   --cb-shadow: 0 6px 24px -6px rgba(0, 0, 0, 0.14);
   --cb-launcher-glow: 0 6px 18px -4px rgba(0, 0, 0, 0.25);
+  --cb-scrollbar-radius: 0.25rem;
+  --cb-scrollbar-thumb: color-mix(in srgb, var(--cb-primary) 55%, var(--cb-muted) 45%);
 }
 
 .cb-preset-ocean,
@@ -771,23 +779,32 @@
   gap: 0.875rem;
   background: var(--cb-body-bg, var(--cb-bg));
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cb-scrollbar-thumb) var(--cb-scrollbar-track);
 }
 
 .cb-messages::-webkit-scrollbar {
-  width: 6px;
+  width: var(--cb-scrollbar-size);
 }
 
 .cb-messages::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--cb-scrollbar-track);
 }
 
 .cb-messages::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cb-muted) 35%, transparent);
+  border-radius: var(--cb-scrollbar-radius);
+  background: var(--cb-scrollbar-thumb);
 }
 
 .cb-messages::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--cb-muted) 55%, transparent);
+  background: var(--cb-scrollbar-thumb-hover);
+}
+
+.cb-messages::-webkit-scrollbar-button,
+.cb-messages::-webkit-scrollbar-button:single-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .cb-msg-row {
@@ -988,27 +1005,27 @@
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--cb-muted) 42%, transparent) transparent;
+  scrollbar-color: var(--cb-scrollbar-thumb) var(--cb-scrollbar-track);
   font: inherit;
   line-height: 1.45;
 }
 
 .cb-input::-webkit-scrollbar {
-  width: 4px;
+  width: var(--cb-scrollbar-size-input);
 }
 
 .cb-input::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--cb-scrollbar-track);
   margin: 0.2rem 0;
 }
 
 .cb-input::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cb-muted) 40%, transparent);
+  border-radius: var(--cb-scrollbar-radius);
+  background: var(--cb-scrollbar-thumb);
 }
 
 .cb-input::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--cb-muted) 62%, transparent);
+  background: var(--cb-scrollbar-thumb-hover);
 }
 
 .cb-input::-webkit-scrollbar-button,
@@ -1016,21 +1033,6 @@
   display: none;
   width: 0;
   height: 0;
-}
-
-.cb-preset-dark-glass .cb-input,
-.cb-preset-plum .cb-input {
-  scrollbar-color: color-mix(in srgb, var(--cb-primary) 48%, transparent) transparent;
-}
-
-.cb-preset-dark-glass .cb-input::-webkit-scrollbar-thumb,
-.cb-preset-plum .cb-input::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--cb-primary) 45%, transparent);
-}
-
-.cb-preset-dark-glass .cb-input::-webkit-scrollbar-thumb:hover,
-.cb-preset-plum .cb-input::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--cb-primary) 65%, transparent);
 }
 
 .cb-input::placeholder {
