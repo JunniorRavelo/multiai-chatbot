@@ -985,6 +985,7 @@ class Chatbot_Admin_Settings {
 								<div class="chatbot-admin-preview__page-mock">
 									<span></span><span></span><span></span>
 								</div>
+								<div class="cb-preview-widget-host" aria-hidden="false"></div>
 							</div>
 							<p class="chatbot-admin-preview__hint"><?php esc_html_e( 'La vista previa refleja tema, posición y estilos al instante. Guarda para aplicarlos en el sitio público.', 'chatbot-plugin-wp' ); ?></p>
 						</div>

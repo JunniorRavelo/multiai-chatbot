@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  const cfg = window.chatbotStylePreview || {};
+  const optionKey = cfg.optionKey || "chatbot_plugin_settings";
   const PRESETS = Array.isArray(cfg.presets) && cfg.presets.length
     ? cfg.presets
     : ["default", "dark-glass", "minimal", "ocean", "sunset", "forest", "lavender", "plum"];
@@ -12,8 +14,9 @@
     "bottom-center",
   ];
 
-  const cfg = window.chatbotStylePreview || {};
-  const optionKey = cfg.optionKey || "chatbot_plugin_settings";
+  function previewI18n(key, fallback) {
+    return cfg.i18n && cfg.i18n[key] ? cfg.i18n[key] : fallback;
+  }
 
   function launcherMarkup(showLabel, labelText) {
     return (
@@ -123,7 +126,13 @@
   }
 
   function buildPreviewDOM(viewport) {
-    viewport.innerHTML = "";
+    const widgetHost = viewport.querySelector(".cb-preview-widget-host");
+    const mount = widgetHost || viewport;
+    if (widgetHost) {
+      widgetHost.innerHTML = "";
+    } else {
+      viewport.innerHTML = "";
+    }
 
     const wrap = document.createElement("div");
     wrap.className = "cb-widget cb-wrap cb-preview-widget";
@@ -161,7 +170,7 @@
 
     wrap.appendChild(launcher);
     wrap.appendChild(panel);
-    viewport.appendChild(wrap);
+    mount.appendChild(wrap);
 
     let isOpen = false;
 
@@ -189,7 +198,7 @@
       toggleBtn.addEventListener("click", function () {
         setOpen(!isOpen);
         toggleBtn.setAttribute("aria-pressed", isOpen ? "true" : "false");
-        toggleBtn.textContent = isOpen ? cfg.i18n.closePanel : cfg.i18n.openPanel;
+        toggleBtn.textContent = isOpen ? previewI18n("closePanel", "Cerrar panel") : previewI18n("openPanel", "Abrir panel");
       });
     }
 
@@ -201,7 +210,7 @@
     setOpen(true);
     if (toggleBtn) {
       toggleBtn.setAttribute("aria-pressed", "true");
-      toggleBtn.textContent = cfg.i18n.closePanel;
+      toggleBtn.textContent = previewI18n("closePanel", "Cerrar panel");
     }
 
     return { wrap: wrap, launcher: launcher, panel: panel, setOpen: setOpen };

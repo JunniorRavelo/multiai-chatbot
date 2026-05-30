@@ -544,6 +544,12 @@
 }
 
 /* Preview — posicionamiento dentro del viewport (anula position:fixed del widget) */
+#chatbot-preview-viewport .cb-preview-widget-host {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 #chatbot-preview-viewport #chatbot-style-preview {
   position: absolute;
   inset: 0;
