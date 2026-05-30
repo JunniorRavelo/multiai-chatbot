@@ -584,62 +584,191 @@ msgstr "Nombre del modelo instalado en Ollama (p. ej. llama3)."
 msgid "E.g.: gpt-4o-mini, gpt-4o."
 msgstr "P. ej.: gpt-4o-mini, gpt-4o."
 
-#: includes/admin-settings.php:1284
+#: includes/admin-settings.php
 msgid "Visual theme"
 msgstr "Tema visual"
 
-#: includes/admin-settings.php:1285
-msgid "Chat color palette, typography, and shapes."
-msgstr "Paleta de colores del chat, tipografía y formas."
-
+#: includes/admin-settings.php
 msgid "Color palette and shapes. Typography is configured under Colors and shape."
 msgstr "Paleta de colores y formas. La tipografía se configura en Colores y forma."
 
-#: includes/admin-settings.php:1290
+#: includes/admin-settings.php
 msgid "Theme"
 msgstr "Tema"
 
-#: includes/admin-settings.php:1335
+#: includes/admin-settings.php
 msgid "Colors and shape"
 msgstr "Colores y forma"
 
-#: includes/admin-settings.php:1336
-msgid "Optional: override the selected preset colors."
-msgstr "Opcional: sobrescriba los colores del preset seleccionado."
+#: includes/admin-settings.php
+msgid "Optional: override the selected preset."
+msgstr "Opcional: sobrescriba el preset seleccionado."
 
-#: includes/admin-settings.php:1341
+#: includes/admin-settings.php
+msgid "Reset color overrides"
+msgstr "Restaurar colores personalizados"
+
+#: includes/admin-settings.php
+msgid "Export theme"
+msgstr "Exportar tema"
+
+#: includes/admin-settings.php
+msgid "Import theme"
+msgstr "Importar tema"
+
+#: includes/admin-settings.php
 msgid "Primary color"
 msgstr "Color principal"
 
-#: includes/admin-settings.php:1344
+#: includes/admin-settings.php
 msgid "Send button, user bubbles, and accents."
 msgstr "Botón de envío, burbujas del usuario y acentos."
 
-#: includes/admin-settings.php:1348
+#: includes/admin-settings.php
 msgid "Accent color"
 msgstr "Color de acento"
 
-#: includes/admin-settings.php:1351
+#: includes/admin-settings.php
 msgid "Floating button gradient."
 msgstr "Degradado del botón flotante."
 
-#: includes/admin-settings.php:1355
+#: includes/admin-settings.php
+msgid "Background color"
+msgstr "Color de fondo"
+
+#: includes/admin-settings.php
+msgid "Text color"
+msgstr "Color de texto"
+
+#: includes/admin-settings.php
+msgid "Font"
+msgstr "Fuente"
+
+#: includes/admin-settings.php
+msgid "System UI"
+msgstr "Interfaz del sistema"
+
+#: includes/admin-settings.php
+msgid "Inherit from theme"
+msgstr "Heredar del tema"
+
+#: includes/admin-settings.php
+msgid "Serif"
+msgstr "Serif"
+
+#: includes/admin-settings.php
+msgid "Monospace"
+msgstr "Monoespaciada"
+
+#: includes/admin-settings.php
 msgid "Border radius"
 msgstr "Radio del borde"
 
-#: includes/admin-settings.php:1358
+#: includes/admin-settings.php
 msgid "E.g.: 0.75rem, 1.5rem, 16px"
 msgstr "P. ej.: 0.75rem, 1.5rem, 16px"
 
-#: includes/admin-settings.php:1362
+#: includes/admin-settings.php
 msgid "Panel width"
 msgstr "Ancho del panel"
 
-#: includes/admin-settings.php:1365
+#: includes/admin-settings.php
 msgid "Empty = responsive width (max. 380px)."
 msgstr "Vacío = ancho adaptable (máx. 380px)."
 
-#: includes/admin-settings.php:1373
+#: includes/admin-settings.php
+msgid "Panel max height"
+msgstr "Altura máxima del panel"
+
+#: includes/admin-settings.php
+msgid "Limits the message area height. E.g.: 60vh, 480px"
+msgstr "Limita la altura del área de mensajes. Ej.: 60vh, 480px"
+
+#: includes/admin-settings.php
+msgid "Stack order (z-index)"
+msgstr "Orden de capas (z-index)"
+
+#: includes/admin-settings.php
+msgid "0 = default. Raise if another plugin covers the chat."
+msgstr "0 = predeterminado. Súbelo si otro plugin tapa el chat."
+
+#: includes/admin-settings.php
+msgid "Motion and automatic theme"
+msgstr "Animación y tema automático"
+
+#: includes/admin-settings.php
+msgid "Accessibility and system appearance."
+msgstr "Accesibilidad y apariencia del sistema."
+
+#: includes/admin-settings.php
+msgid "Reduce motion"
+msgstr "Reducir movimiento"
+
+#: includes/admin-settings.php
+msgid "Disable launcher pulse animation"
+msgstr "Desactivar animación de pulso del botón"
+
+#: includes/admin-settings.php
+msgid "Match system theme"
+msgstr "Coincidir con el tema del sistema"
+
+#: includes/admin-settings.php
+msgid "Use dark preset when the visitor prefers dark mode"
+msgstr "Usar preset oscuro cuando el visitante prefiere modo oscuro"
+
+#: includes/admin-settings.php
+msgid "Light mode uses the theme selected above."
+msgstr "El modo claro usa el tema seleccionado arriba."
+
+#: includes/admin-settings.php
+msgid "Dark mode preset"
+msgstr "Preset en modo oscuro"
+
+#: includes/admin-settings.php
+msgid "Custom CSS"
+msgstr "CSS personalizado"
+
+#: includes/admin-settings.php
+msgid "Scoped to the widget root. No @import. Max 8000 characters."
+msgstr "Ámbito del widget. Sin @import. Máximo 8000 caracteres."
+
+#: includes/admin-settings.php
+msgid "Panel max height is invalid; that value was ignored."
+msgstr "La altura máxima del panel no es válida; se ignoró ese valor."
+
+#: includes/admin-settings.php
+msgid "Theme imported into the form. Save to apply on the site."
+msgstr "Tema importado en el formulario. Guarde para aplicarlo en el sitio."
+
+#: includes/admin-settings.php
+msgid "Invalid theme JSON."
+msgstr "JSON de tema no válido."
+
+#: includes/admin-settings.php
+msgid "Low contrast between primary color and background; check accessibility."
+msgstr "Bajo contraste entre el color primario y el fondo; revise la accesibilidad."
+
+#: includes/admin-settings.php
+msgid "Obsidian"
+msgstr "Obsidiana"
+
+#: includes/admin-settings.php
+msgid "Charcoal slate with emerald and teal highlights. Calm dark UI."
+msgstr "Pizarra carbón con acentos esmeralda y turquesa. Interfaz oscura y tranquila."
+
+#: includes/admin-settings.php
+msgid "Minimize"
+msgstr "Minimizar"
+
+#: includes/admin-settings.php
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: includes/admin-settings.php
+msgid "Close"
+msgstr "Cerrar"
+
+#: includes/admin-settings.php
 msgid "Screen position"
 msgstr "Posición en pantalla"
 
@@ -1493,84 +1622,3 @@ msgstr "El modelo no devolvió una respuesta válida."
 #: includes/rest-api.php:127
 msgid "Use POST with the same body and headers as /chat."
 msgstr "Use POST con el mismo cuerpo y cabeceras que /chat."
-
-msgid "Optional: override the selected preset."
-msgstr "Opcional: anular el preset seleccionado."
-
-msgid "Reset color overrides"
-msgstr "Restaurar colores personalizados"
-
-msgid "Export theme"
-msgstr "Exportar tema"
-
-msgid "Import theme"
-msgstr "Importar tema"
-
-msgid "Background color"
-msgstr "Color de fondo"
-
-msgid "Text color"
-msgstr "Color de texto"
-
-msgid "Font"
-msgstr "Fuente"
-
-msgid "Panel max height"
-msgstr "Altura máxima del panel"
-
-msgid "Limits the message area height. E.g.: 60vh, 480px"
-msgstr "Limita la altura del área de mensajes. Ej.: 60vh, 480px"
-
-msgid "Stack order (z-index)"
-msgstr "Orden de capas (z-index)"
-
-msgid "0 = default. Raise if another plugin covers the chat."
-msgstr "0 = predeterminado. Súbelo si otro plugin tapa el chat."
-
-msgid "Motion and automatic theme"
-msgstr "Animación y tema automático"
-
-msgid "Accessibility and system appearance."
-msgstr "Accesibilidad y apariencia del sistema."
-
-msgid "Reduce motion"
-msgstr "Reducir movimiento"
-
-msgid "Disable launcher pulse animation"
-msgstr "Desactivar animación de pulso del botón"
-
-msgid "Match system theme"
-msgstr "Coincidir con el tema del sistema"
-
-msgid "Use dark preset when the visitor prefers dark mode"
-msgstr "Usar preset oscuro cuando el visitante prefiere modo oscuro"
-
-msgid "Light mode uses the theme selected above."
-msgstr "El modo claro usa el tema seleccionado arriba."
-
-msgid "Dark mode preset"
-msgstr "Preset en modo oscuro"
-
-msgid "Custom CSS"
-msgstr "CSS personalizado"
-
-msgid "Scoped to the widget root. No @import. Max 8000 characters."
-msgstr "Ámbito del widget. Sin @import. Máximo 8000 caracteres."
-
-msgid "Panel max height is invalid; that value was ignored."
-msgstr "La altura máxima del panel no es válida; se ignoró ese valor."
-
-msgid "Theme imported into the form. Save to apply on the site."
-msgstr "Tema importado en el formulario. Guarde para aplicarlo en el sitio."
-
-msgid "Invalid theme JSON."
-msgstr "JSON de tema no válido."
-
-msgid "Low contrast between primary color and background; check accessibility."
-msgstr "Bajo contraste entre el color primario y el fondo; revise la accesibilidad."
-
-msgid "Obsidian"
-msgstr "Obsidiana"
-
-msgid "Charcoal slate with emerald and teal highlights. Calm dark UI."
-msgstr "Pizarra carbón con acentos esmeralda y turquesa. Interfaz oscura y tranquila."

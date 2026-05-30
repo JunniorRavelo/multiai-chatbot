@@ -336,6 +336,20 @@ class Chatbot_Admin_Settings {
 	}
 
 	/**
+	 * Human-readable font options (English source strings).
+	 *
+	 * @return array<string, string>
+	 */
+	public static function style_font_family_labels(): array {
+		return array(
+			'system'  => __( 'System UI', 'chatbot-plugin-wp' ),
+			'inherit' => __( 'Inherit from theme', 'chatbot-plugin-wp' ),
+			'serif'   => __( 'Serif', 'chatbot-plugin-wp' ),
+			'mono'    => __( 'Monospace', 'chatbot-plugin-wp' ),
+		);
+	}
+
+	/**
 	 * Keys exported/imported as theme JSON.
 	 *
 	 * @return list<string>
@@ -596,6 +610,10 @@ class Chatbot_Admin_Settings {
 					'i18n'            => array(
 						'openPanel'        => __( 'Open panel', 'chatbot-plugin-wp' ),
 						'closePanel'       => __( 'Close panel', 'chatbot-plugin-wp' ),
+						'openChat'         => __( 'Open chat', 'chatbot-plugin-wp' ),
+						'minimize'         => __( 'Minimize', 'chatbot-plugin-wp' ),
+						'reset'            => __( 'Reset', 'chatbot-plugin-wp' ),
+						'close'            => __( 'Close', 'chatbot-plugin-wp' ),
 						'placeholder'      => __( 'Type your message…', 'chatbot-plugin-wp' ),
 						'send'             => __( 'Send', 'chatbot-plugin-wp' ),
 						'resetOverrides'   => __( 'Reset color overrides', 'chatbot-plugin-wp' ),
@@ -1573,9 +1591,9 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'Font', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_font_family]">
-						<?php foreach ( self::style_font_families() as $font_id => $font_css ) : ?>
+						<?php foreach ( self::style_font_family_labels() as $font_id => $font_label ) : ?>
 							<option value="<?php echo esc_attr( $font_id ); ?>" <?php selected( (string) ( $settings['style_font_family'] ?? 'system' ), $font_id ); ?>>
-								<?php echo esc_html( ucfirst( $font_id ) ); ?>
+								<?php echo esc_html( $font_label ); ?>
 							</option>
 						<?php endforeach; ?>
 					</select>

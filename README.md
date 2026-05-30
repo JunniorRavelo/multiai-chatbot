@@ -130,6 +130,12 @@ Presets disponibles en la pestaña **Estilo del chat** (selector visual con vist
 
 Exportar/importar tema JSON desde el admin (pestaña Estilo del chat).
 
+## Traducciones (i18n)
+
+- **Idioma fuente:** inglés en el código PHP/JS (`__()`, `esc_html_e()`).
+- **Español:** [`languages/chatbot-plugin-wp-es_ES.po`](languages/chatbot-plugin-wp-es_ES.po) y [`languages/chatbot-plugin-wp-es_CO.po`](languages/chatbot-plugin-wp-es_CO.po).
+- Tras editar `.po`, compilar `.mo`: `./scripts/compile-languages.sh` (o `php scripts/compile-languages.php`).
+
 ## API REST
 
 | Endpoint | Método | Descripción |

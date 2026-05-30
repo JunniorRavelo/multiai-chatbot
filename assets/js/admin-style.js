@@ -63,6 +63,9 @@
   }
 
   function buildHeaderHtml() {
+    const minimizeLabel = previewI18n("minimize", "Minimize");
+    const resetLabel = previewI18n("reset", "Reset");
+    const closeLabel = previewI18n("close", "Close");
     return (
       '<div class="maicb-header-brand">' +
       '<span class="maicb-header-avatar" aria-hidden="true">' +
@@ -76,15 +79,27 @@
       '<span class="maicb-header-sub-text"></span></p>' +
       "</div></div>" +
       '<div class="maicb-header-actions">' +
-      '<button type="button" class="maicb-icon-btn maicb-minimize" title="Minimize" aria-label="Minimize">' +
+      '<button type="button" class="maicb-icon-btn maicb-minimize" title="' +
+      minimizeLabel +
+      '" aria-label="' +
+      minimizeLabel +
+      '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
       '<path d="M5 12h14"/>' +
       "</svg></button>" +
-      '<button type="button" class="maicb-icon-btn maicb-reset" title="Reset" aria-label="Reset">' +
+      '<button type="button" class="maicb-icon-btn maicb-reset" title="' +
+      resetLabel +
+      '" aria-label="' +
+      resetLabel +
+      '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
       '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>' +
       "</svg></button>" +
-      '<button type="button" class="maicb-icon-btn maicb-close" title="Close" aria-label="Close">' +
+      '<button type="button" class="maicb-icon-btn maicb-close" title="' +
+      closeLabel +
+      '" aria-label="' +
+      closeLabel +
+      '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
       '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>' +
       "</svg></button></div>"
@@ -323,7 +338,7 @@
       "maicb-launcher maicb-launcher-" +
       launcherSide(settings.position) +
       (settings.launcherLabel ? "" : " maicb-launcher--icon-only");
-    launcher.setAttribute("aria-label", "Open chat");
+    launcher.setAttribute("aria-label", previewI18n("openChat", "Open chat"));
     launcher.innerHTML = launcherMarkup(settings.launcherLabel, settings.title);
 
     const panel = document.createElement("section");

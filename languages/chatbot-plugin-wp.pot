@@ -570,20 +570,20 @@ msgstr ""
 msgid "Visual theme"
 msgstr ""
 
-#: includes/admin-settings.php:1285
-msgid "Chat color palette, typography, and shapes."
+#: includes/admin-settings.php
+msgid "Color palette and shapes. Typography is configured under Colors and shape."
 msgstr ""
 
-#: includes/admin-settings.php:1290
+#: includes/admin-settings.php
 msgid "Theme"
 msgstr ""
 
-#: includes/admin-settings.php:1335
+#: includes/admin-settings.php
 msgid "Colors and shape"
 msgstr ""
 
-#: includes/admin-settings.php:1336
-msgid "Optional: override the selected preset colors."
+#: includes/admin-settings.php
+msgid "Optional: override the selected preset."
 msgstr ""
 
 #: includes/admin-settings.php:1341
@@ -1551,4 +1551,36 @@ msgid "Obsidian"
 msgstr ""
 
 msgid "Charcoal slate with emerald and teal highlights. Calm dark UI."
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "System UI"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Inherit from theme"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Serif"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Monospace"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Minimize"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Reset"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Close"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Open chat"
 msgstr ""
