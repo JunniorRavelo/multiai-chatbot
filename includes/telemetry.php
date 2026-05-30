@@ -58,6 +58,24 @@ class Chatbot_Telemetry {
 		}
 	}
 
+	public static function drop_table(): void {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Required on uninstall; WordPress has no API to drop custom tables.
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::table_name() );
+	}
+
+	public static function delete_plugin_transients(): void {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Required on uninstall; no WP API to delete transients by prefix.
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+				$wpdb->esc_like( '_transient_chatbot_' ) . '%',
+				$wpdb->esc_like( '_transient_timeout_chatbot_' ) . '%'
+			)
+		);
+	}
+
 	/**
 	 * @param array<string, mixed> $args
 	 * @return array{where: list<string>, params: list<mixed>}

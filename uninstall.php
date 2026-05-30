@@ -7,25 +7,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/includes/telemetry.php';
 require_once __DIR__ . '/includes/chat-history.php';
-
-global $wpdb;
 
 wp_clear_scheduled_hook( 'chatbot_purge_history' );
 wp_clear_scheduled_hook( 'chatbot_purge_telemetry' );
 
-$table = $wpdb->prefix . 'chatbot_events';
-// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
-
+Chatbot_Telemetry::drop_table();
 Chatbot_Chat_History::drop_tables();
-
-// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-$wpdb->query(
-	"DELETE FROM {$wpdb->options}
-	WHERE option_name LIKE '_transient_chatbot_%'
-	OR option_name LIKE '_transient_timeout_chatbot_%'"
-);
+Chatbot_Telemetry::delete_plugin_transients();
 
 delete_option( 'chatbot_plugin_settings' );
 delete_option( 'chatbot_plugin_db_version' );

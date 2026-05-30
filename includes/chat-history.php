@@ -834,9 +834,9 @@ class Chatbot_Chat_History {
 
 	public static function drop_tables(): void {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Required on uninstall; WordPress has no API to drop custom tables.
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::messages_table() );
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Required on uninstall; WordPress has no API to drop custom tables.
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::conversations_table() );
 		delete_option( 'chatbot_plugin_history_db_version' );
 	}
