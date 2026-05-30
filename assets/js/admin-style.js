@@ -301,6 +301,22 @@
     if (label && cfg.positionLabels && cfg.positionLabels[position]) {
       label.textContent = cfg.positionLabels[position];
     }
+    const viewport = document.getElementById("chatbot-preview-viewport");
+    if (viewport) {
+      viewport.setAttribute("data-preview-position", position);
+    }
+  }
+
+  function syncPreviewOpenState(refs, open) {
+    if (!refs || typeof refs.setOpen !== "function") return;
+    refs.setOpen(open);
+    const toggleBtn = document.getElementById("chatbot-preview-toggle");
+    if (toggleBtn) {
+      toggleBtn.setAttribute("aria-pressed", open ? "true" : "false");
+      toggleBtn.textContent = open
+        ? previewI18n("closePanel", "Close panel")
+        : previewI18n("openPanel", "Open panel");
+    }
   }
 
   function updatePresetDesc(presetId) {
@@ -399,6 +415,7 @@
     applyStyleVars(wrap, settings);
     renderMessages(panel.querySelector(".maicb-messages"), settings);
     updateContrastWarning(wrap, settings);
+    updatePositionButtons(settings.position);
 
     setOpen(true);
     if (toggleBtn) {
@@ -583,6 +600,7 @@
     document.querySelectorAll(".chatbot-position-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         syncPositionInput(btn.dataset.position);
+        syncPreviewOpenState(refs, false);
         applyPreview(readSettings(), refs);
       });
     });

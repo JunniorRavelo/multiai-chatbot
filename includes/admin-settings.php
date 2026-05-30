@@ -1700,6 +1700,9 @@ class Chatbot_Admin_Settings {
 				<?php endforeach; ?>
 			</div>
 			<p class="chatbot-position-label" id="chatbot-position-label"><?php echo esc_html( $position_labels[ $position ] ?? $position ); ?></p>
+			<p class="description chatbot-position-picker__hint">
+				<?php esc_html_e( 'The preview closes the panel when you change position so you can see where the floating button will sit. Use “Open panel” to preview the chat window.', 'chatbot-plugin-wp' ); ?>
+			</p>
 		</div>
 		<table class="form-table" role="presentation">
 			<tr>
@@ -1737,7 +1740,7 @@ class Chatbot_Admin_Settings {
 					</div>
 					<div class="chatbot-admin-card__body">
 						<div class="chatbot-admin-preview">
-							<div class="chatbot-admin-preview__viewport" id="chatbot-preview-viewport" aria-label="<?php esc_attr_e( 'Web page simulation', 'chatbot-plugin-wp' ); ?>">
+							<div class="chatbot-admin-preview__viewport" id="chatbot-preview-viewport" data-preview-position="<?php echo esc_attr( $position ); ?>" aria-label="<?php esc_attr_e( 'Web page simulation', 'chatbot-plugin-wp' ); ?>">
 								<div class="chatbot-admin-preview__page-mock">
 									<span></span><span></span><span></span>
 								</div>

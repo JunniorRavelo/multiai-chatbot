@@ -437,6 +437,49 @@
   border: 1px solid var(--cb-admin-border);
   overflow: hidden;
   --maicb-offset: 0.85rem;
+  container-type: size;
+  container-name: maicb-admin-preview;
+}
+
+/* Escritorio: más alto el simulador para distinguir abajo vs centro */
+@media (min-width: 900px) {
+  .chatbot-admin-layout--split .chatbot-admin-preview__viewport {
+    min-height: 520px;
+    height: min(640px, calc(100vh - 11rem));
+  }
+}
+
+/* Guías de posición (solo vista previa admin, no afecta el sitio público) */
+.chatbot-admin-preview__viewport::before,
+.chatbot-admin-preview__viewport::after {
+  content: "";
+  position: absolute;
+  left: 0.65rem;
+  right: 0.65rem;
+  pointer-events: none;
+  z-index: 0;
+  border-top: 1px dashed rgba(37, 99, 235, 0.28);
+}
+
+.chatbot-admin-preview__viewport::before {
+  top: 50%;
+}
+
+.chatbot-admin-preview__viewport::after {
+  bottom: 4.25rem;
+}
+
+.chatbot-admin-preview__viewport[data-preview-position="center-right"]::before,
+.chatbot-admin-preview__viewport[data-preview-position="center-left"]::before {
+  border-top-color: rgba(37, 99, 235, 0.55);
+  border-top-width: 2px;
+}
+
+.chatbot-admin-preview__viewport[data-preview-position="bottom-right"]::after,
+.chatbot-admin-preview__viewport[data-preview-position="bottom-left"]::after,
+.chatbot-admin-preview__viewport[data-preview-position="bottom-center"]::after {
+  border-top-color: rgba(37, 99, 235, 0.55);
+  border-top-width: 2px;
 }
 
 .chatbot-admin-preview__page-mock {
@@ -602,16 +645,23 @@
 
 #chatbot-preview-viewport #chatbot-style-preview .maicb-launcher {
   z-index: 2;
-  bottom: var(--maicb-offset, 0.85rem) !important;
   font-size: 0.8125rem;
   padding: 0.4rem 0.75rem 0.4rem 0.4rem;
+}
+
+#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-right,
+#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-right,
+#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-left,
+#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-left,
+#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-center {
+  bottom: var(--maicb-offset, 0.85rem) !important;
+  top: auto !important;
 }
 
 #chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-right,
 #chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-right {
   right: var(--maicb-offset, 0.85rem) !important;
   left: auto !important;
-  top: auto !important;
   transform: none;
 }
 
@@ -705,6 +755,67 @@
   bottom: auto !important;
   right: auto !important;
   transform: translateY(-50%) !important;
+}
+
+/* Panel central más bajo en preview: se nota la diferencia con “abajo” en PC */
+#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-right,
+#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-left {
+  height: min(300px, 72%) !important;
+  max-height: 72% !important;
+}
+
+/* Anular reglas responsive globales de chatbot.css solo dentro del simulador */
+#chatbot-preview-viewport #chatbot-style-preview .maicb-panel:not([hidden]) {
+  position: absolute !important;
+  width: min(var(--maicb-panel-width, 320px), calc(100% - 1.75rem)) !important;
+  max-width: calc(100% - 1.75rem) !important;
+  border-radius: var(--maicb-radius) !important;
+}
+
+@media (max-width: 640px) {
+  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel:not([hidden]) {
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: min(var(--maicb-panel-width, 320px), calc(100% - 1.75rem)) !important;
+    max-width: calc(100% - 1.75rem) !important;
+    height: min(440px, calc(100% - 4.5rem)) !important;
+    max-height: calc(100% - 2rem) !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-right:not([hidden]),
+  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-left:not([hidden]) {
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    height: min(300px, 72%) !important;
+    max-height: 72% !important;
+  }
+
+  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-right:not([hidden]) {
+    top: auto !important;
+    right: var(--maicb-offset, 0.85rem) !important;
+    bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
+    left: auto !important;
+    transform: none !important;
+  }
+
+  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-left:not([hidden]) {
+    top: auto !important;
+    left: var(--maicb-offset, 0.85rem) !important;
+    bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
+    right: auto !important;
+    transform: none !important;
+  }
+
+  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-center:not([hidden]) {
+    left: 50% !important;
+    bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
+    transform: translateX(-50%) !important;
+  }
 }
 
 #chatbot-preview-viewport #chatbot-style-preview .maicb-messages {
@@ -999,6 +1110,11 @@
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--cb-admin-primary);
+}
+
+.chatbot-position-picker__hint {
+  margin: 0.35rem 0 0;
+  max-width: 28rem;
 }
 
 .chatbot-admin-style-fields .wp-picker-container {
