@@ -411,49 +411,17 @@
   top: 32px;
 }
 
-.chatbot-admin-preview-card .chatbot-admin-card__head.chatbot-admin-preview__head {
-  padding: 0.55rem 0.9rem;
-}
-
 .chatbot-admin-preview__head {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.chatbot-admin-preview__head h2 {
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.chatbot-admin-preview__head p {
-  margin: 0.15rem 0 0;
-  font-size: 0.75rem;
-  line-height: 1.35;
+  gap: 0.75rem;
 }
 
 .chatbot-admin-preview__head .button {
   flex-shrink: 0;
-  margin: 0;
-  min-height: 28px;
-  padding: 0 10px;
-  font-size: 12px;
-  line-height: 26px;
-  border-radius: 6px;
-}
-
-/* Escritorio (columna preview): una sola línea de título; el detalle está en la hint bajo el simulador */
-@media (min-width: 900px) {
-  .chatbot-admin-layout--split .chatbot-admin-preview__head p {
-    display: none;
-  }
-
-  .chatbot-admin-layout--split .chatbot-admin-preview-card .chatbot-admin-card__head.chatbot-admin-preview__head {
-    padding: 0.45rem 0.75rem;
-  }
+  border-radius: 8px;
 }
 
 .chatbot-admin-preview {

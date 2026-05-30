@@ -1730,11 +1730,8 @@ class Chatbot_Admin_Settings {
 			<div class="chatbot-admin-preview-card">
 				<div class="chatbot-admin-card">
 					<div class="chatbot-admin-card__head chatbot-admin-preview__head">
-						<div>
-							<h2><?php esc_html_e( 'Preview', 'chatbot-plugin-wp' ); ?></h2>
-							<p><?php esc_html_e( 'Interactive: try open/close and change options instantly.', 'chatbot-plugin-wp' ); ?></p>
-						</div>
-						<button type="button" class="button button-secondary button-small" id="chatbot-preview-toggle" aria-pressed="false">
+						<h2><?php esc_html_e( 'Preview', 'chatbot-plugin-wp' ); ?></h2>
+						<button type="button" class="button button-secondary" id="chatbot-preview-toggle" aria-pressed="false">
 							<?php esc_html_e( 'Open panel', 'chatbot-plugin-wp' ); ?>
 						</button>
 					</div>
