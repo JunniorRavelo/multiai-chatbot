@@ -984,8 +984,23 @@
   background: transparent;
   color: var(--cb-fg);
   resize: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   font: inherit;
   line-height: 1.45;
+}
+
+.cb-input::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.cb-input::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .cb-input::placeholder {
