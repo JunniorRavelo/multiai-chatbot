@@ -508,8 +508,8 @@ class Chatbot_Admin_Settings {
 				<span class="chatbot-admin-badge <?php echo $widget_on ? 'chatbot-admin-badge--on' : 'chatbot-admin-badge--off'; ?>">
 					<?php
 					echo $widget_on
-						? esc_html__( 'Widget activo', 'chatbot-plugin-wp' )
-						: esc_html__( 'Widget desactivado', 'chatbot-plugin-wp' );
+						? esc_html__( 'Activado', 'chatbot-plugin-wp' )
+						: esc_html__( 'Desactivado', 'chatbot-plugin-wp' );
 					?>
 				</span>
 			</header>
