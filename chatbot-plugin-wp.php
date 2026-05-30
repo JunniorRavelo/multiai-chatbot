@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Chatbot Plugin WP
  * Plugin URI: https://github.com/JunniorRavelo/chatbot-plugin-wp
- * Description: Widget de chat con IA (Gemini, Ollama, OpenAI-compatible), estilos configurables y telemetría.
+ * Description: Widget de chat con IA (Gemini, DeepSeek, Ollama, OpenAI-compatible), estilos configurables y telemetría.
  * Version: 1.0.0
  * Requires at least: 6.0
  * Requires PHP: 8.0
@@ -32,6 +32,7 @@ require_once CHATBOT_PLUGIN_PATH . 'includes/providers/interface-provider.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/providers/class-provider-gemini.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/providers/class-provider-ollama.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/providers/class-provider-openai.php';
+require_once CHATBOT_PLUGIN_PATH . 'includes/providers/class-provider-deepseek.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/api-handler.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/rest-api.php';
 require_once CHATBOT_PLUGIN_PATH . 'includes/enqueue.php';

@@ -1,12 +1,12 @@
 # Chatbot Plugin WP
 
-Plugin de WordPress que añade un widget de chat con IA (Gemini, Ollama u OpenAI-compatible), panel de administración y telemetría de uso.
+Plugin de WordPress que añade un widget de chat con IA (Gemini, DeepSeek, Ollama u OpenAI-compatible), panel de administración y telemetría de uso.
 
 ## Requisitos
 
 - WordPress 6.0+
 - PHP 8.0+
-- Para Gemini u OpenAI: API key válida
+- Para Gemini, DeepSeek u OpenAI: API key válida
 - Para Ollama: servidor accesible desde el host de WordPress (p. ej. `http://127.0.0.1:11434`)
 
 ## Instalación
@@ -22,7 +22,7 @@ Plugin de WordPress que añade un widget de chat con IA (Gemini, Ollama u OpenAI
 | Pestaña | Contenido |
 |---------|-----------|
 | **General** | Widget global, mensaje de bienvenida, prompt del sistema, streaming, rate limit |
-| **Modelo IA** | Proveedor, API key, modelo, URLs de Ollama/OpenAI |
+| **Modelo IA** | Proveedor, API key, modelo, URLs de Ollama/OpenAI/DeepSeek |
 | **Estilo del chat** | Presets CSS, colores personalizados y posición del widget |
 | **Estadísticas** | Totales, desglose y exportación CSV |
 | **Historial** | Conversaciones en tarjetas (ID `CB-AAAA-MM-DD-HH-MM-SS`), filtros y detalle de mensajes |
@@ -39,6 +39,20 @@ Plugin de WordPress que añade un widget de chat con IA (Gemini, Ollama u OpenAI
 ```php
 define( 'CHATBOT_GEMINI_API_KEY', 'tu-clave' );
 ```
+
+### DeepSeek
+
+- Proveedor: `deepseek`
+- URL base por defecto: `https://api.deepseek.com/v1`
+- Modelo por defecto recomendado: `deepseek-v4-flash` (rápido) o `deepseek-v4-pro` (más capaz)
+- Modelos de respaldo: campo separado por comas (rotación ante 429/404/400)
+- Constante opcional en `wp-config.php`:
+
+```php
+define( 'CHATBOT_DEEPSEEK_API_KEY', 'tu-clave' );
+```
+
+Obtén tu API key en [platform.deepseek.com](https://platform.deepseek.com/).
 
 ### Ollama
 

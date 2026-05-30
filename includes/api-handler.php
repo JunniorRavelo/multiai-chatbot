@@ -102,8 +102,9 @@ class Chatbot_Api_Handler {
 			'model'             => ! empty( $settings['model'] ) ? (string) $settings['model'] : '',
 			'model_candidates'  => ! empty( $settings['model_candidates'] ) ? (string) $settings['model_candidates'] : '',
 			'ollama_base_url'   => ! empty( $settings['ollama_base_url'] ) ? (string) $settings['ollama_base_url'] : 'http://127.0.0.1:11434',
-			'openai_base_url'   => ! empty( $settings['openai_base_url'] ) ? (string) $settings['openai_base_url'] : 'https://api.openai.com/v1',
-			'request_timeout'   => ! empty( $settings['request_timeout'] ) ? (int) $settings['request_timeout'] : 22,
+			'openai_base_url'    => ! empty( $settings['openai_base_url'] ) ? (string) $settings['openai_base_url'] : 'https://api.openai.com/v1',
+			'deepseek_base_url'  => ! empty( $settings['deepseek_base_url'] ) ? (string) $settings['deepseek_base_url'] : 'https://api.deepseek.com/v1',
+			'request_timeout'    => ! empty( $settings['request_timeout'] ) ? (int) $settings['request_timeout'] : 22,
 		);
 
 		$result = $provider->complete( $system, $messages, $provider_settings );
@@ -433,6 +434,8 @@ class Chatbot_Api_Handler {
 				return new Chatbot_Provider_Ollama();
 			case 'openai_compatible':
 				return new Chatbot_Provider_OpenAI();
+			case 'deepseek':
+				return new Chatbot_Provider_DeepSeek();
 			default:
 				return new WP_Error(
 					'configuration_error',

@@ -45,6 +45,7 @@ class Chatbot_Admin_Settings {
 			'model_candidates'               => 'gemini-3-flash,gemini-3.1-flash-lite,gemini-2.5-flash,gemini-2.5-flash-lite,gemini-3.1-flash-tts,gemini-2.5-flash-tts',
 			'ollama_base_url'       => 'http://127.0.0.1:11434',
 			'openai_base_url'       => 'https://api.openai.com/v1',
+			'deepseek_base_url'     => 'https://api.deepseek.com/v1',
 			'request_timeout'       => 22,
 			'style_preset'          => 'default',
 			'style_primary'         => '',
@@ -111,7 +112,7 @@ class Chatbot_Admin_Settings {
 		$out['internal_chat_base_url']         = esc_url_raw( (string) ( $input['internal_chat_base_url'] ?? $current['internal_chat_base_url'] ?? $defaults['internal_chat_base_url'] ) );
 
 		$provider = sanitize_key( $input['provider'] ?? 'gemini' );
-		$out['provider'] = in_array( $provider, array( 'gemini', 'ollama', 'openai_compatible' ), true ) ? $provider : 'gemini';
+		$out['provider'] = in_array( $provider, array( 'gemini', 'ollama', 'openai_compatible', 'deepseek' ), true ) ? $provider : 'gemini';
 
 		$new_key = isset( $input['api_key'] ) ? trim( (string) $input['api_key'] ) : '';
 		if ( '' !== $new_key ) {
@@ -123,8 +124,9 @@ class Chatbot_Admin_Settings {
 		$out['model']            = sanitize_text_field( $input['model'] ?? $defaults['model'] );
 		$out['model_candidates'] = sanitize_text_field( $input['model_candidates'] ?? $defaults['model_candidates'] );
 		$out['ollama_base_url']  = esc_url_raw( $input['ollama_base_url'] ?? $defaults['ollama_base_url'] );
-		$out['openai_base_url']  = esc_url_raw( $input['openai_base_url'] ?? $defaults['openai_base_url'] );
-		$out['request_timeout']  = max( 5, min( 120, (int) ( $input['request_timeout'] ?? $defaults['request_timeout'] ) ) );
+		$out['openai_base_url']    = esc_url_raw( $input['openai_base_url'] ?? $defaults['openai_base_url'] );
+		$out['deepseek_base_url']  = esc_url_raw( $input['deepseek_base_url'] ?? $defaults['deepseek_base_url'] );
+		$out['request_timeout']    = max( 5, min( 120, (int) ( $input['request_timeout'] ?? $defaults['request_timeout'] ) ) );
 
 		$preset = sanitize_key( $input['style_preset'] ?? 'default' );
 		$out['style_preset'] = in_array( $preset, self::style_presets(), true ) ? $preset : 'default';
@@ -660,6 +662,7 @@ class Chatbot_Admin_Settings {
 				<td>
 					<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[provider]" id="chatbot-provider">
 						<option value="gemini" <?php selected( $provider, 'gemini' ); ?>>Google Gemini</option>
+						<option value="deepseek" <?php selected( $provider, 'deepseek' ); ?>>DeepSeek</option>
 						<option value="ollama" <?php selected( $provider, 'ollama' ); ?>>Ollama</option>
 						<option value="openai_compatible" <?php selected( $provider, 'openai_compatible' ); ?>>OpenAI-compatible</option>
 					</select>
@@ -668,15 +671,15 @@ class Chatbot_Admin_Settings {
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Modelo', 'chatbot-plugin-wp' ); ?></th>
 				<td>
-					<input type="text" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model]" value="<?php echo esc_attr( (string) $settings['model'] ); ?>" />
-					<p class="description"><?php esc_html_e( 'Ej: gemini-3.1-flash-lite, llama3, gpt-4o-mini. Equivalente a GEMINI_MODEL.', 'chatbot-plugin-wp' ); ?></p>
+					<input type="text" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model]" id="chatbot-model" value="<?php echo esc_attr( (string) $settings['model'] ); ?>" />
+					<p class="description" id="chatbot-model-desc"><?php esc_html_e( 'Ej: gemini-3.1-flash-lite, deepseek-v4-flash, llama3, gpt-4o-mini.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
-			<tr class="chatbot-field-gemini">
+			<tr class="chatbot-field-gemini chatbot-field-deepseek">
 				<th scope="row"><?php esc_html_e( 'Modelo de respaldo', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<input type="text" class="large-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model_candidates]" value="<?php echo esc_attr( (string) $settings['model_candidates'] ); ?>" />
-					<p class="description"><?php esc_html_e( 'Solo Gemini. Pool de rotación separado por coma (429/404/400 prueba el siguiente). Equivalente a GEMINI_MODEL_CANDIDATES.', 'chatbot-plugin-wp' ); ?></p>
+					<p class="description" id="chatbot-model-candidates-desc"><?php esc_html_e( 'Solo Gemini. Pool de rotación separado por coma (429/404/400 prueba el siguiente). Equivalente a GEMINI_MODEL_CANDIDATES.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 			<tr class="chatbot-field-ollama">
@@ -691,6 +694,13 @@ class Chatbot_Admin_Settings {
 					<input type="url" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[openai_base_url]" value="<?php echo esc_attr( (string) $settings['openai_base_url'] ); ?>" />
 				</td>
 			</tr>
+			<tr class="chatbot-field-deepseek-url">
+				<th scope="row"><?php esc_html_e( 'URL base DeepSeek', 'chatbot-plugin-wp' ); ?></th>
+				<td>
+					<input type="url" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[deepseek_base_url]" value="<?php echo esc_attr( (string) ( $settings['deepseek_base_url'] ?? 'https://api.deepseek.com/v1' ) ); ?>" />
+					<p class="description"><?php esc_html_e( 'Por defecto: https://api.deepseek.com/v1', 'chatbot-plugin-wp' ); ?></p>
+				</td>
+			</tr>
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Timeout (segundos)', 'chatbot-plugin-wp' ); ?></th>
 				<td>
@@ -701,7 +711,7 @@ class Chatbot_Admin_Settings {
 				<th scope="row"><?php esc_html_e( 'API Key', 'chatbot-plugin-wp' ); ?></th>
 				<td>
 					<input type="password" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[api_key]" value="" placeholder="<?php echo ! empty( $settings['api_key'] ) ? '••••••••' : ''; ?>" autocomplete="new-password" />
-					<p class="description"><?php esc_html_e( 'Deja vacío para mantener la clave actual. En producción define CHATBOT_GEMINI_API_KEY o CHATBOT_OPENAI_API_KEY en wp-config.php (equivalente a GEMINI_API_KEY).', 'chatbot-plugin-wp' ); ?></p>
+					<p class="description" id="chatbot-api-key-desc"><?php esc_html_e( 'Deja vacío para mantener la clave actual. En producción define CHATBOT_GEMINI_API_KEY, CHATBOT_DEEPSEEK_API_KEY o CHATBOT_OPENAI_API_KEY en wp-config.php.', 'chatbot-plugin-wp' ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -709,6 +719,26 @@ class Chatbot_Admin_Settings {
 		(function () {
 			const sel = document.getElementById('chatbot-provider');
 			if (!sel) return;
+			const modelDesc = document.getElementById('chatbot-model-desc');
+			const candidatesDesc = document.getElementById('chatbot-model-candidates-desc');
+			const descriptions = {
+				gemini: {
+					model: '<?php echo esc_js( __( 'Ej: gemini-3.1-flash-lite, gemini-2.5-flash. Equivalente a GEMINI_MODEL.', 'chatbot-plugin-wp' ) ); ?>',
+					candidates: '<?php echo esc_js( __( 'Pool de rotación separado por coma (429/404/400 prueba el siguiente). Equivalente a GEMINI_MODEL_CANDIDATES.', 'chatbot-plugin-wp' ) ); ?>',
+				},
+				deepseek: {
+					model: '<?php echo esc_js( __( 'Ej: deepseek-v4-flash, deepseek-v4-pro, deepseek-chat.', 'chatbot-plugin-wp' ) ); ?>',
+					candidates: '<?php echo esc_js( __( 'Pool de respaldo DeepSeek separado por coma (429/404/400 prueba el siguiente).', 'chatbot-plugin-wp' ) ); ?>',
+				},
+				ollama: {
+					model: '<?php echo esc_js( __( 'Nombre del modelo instalado en Ollama (p. ej. llama3).', 'chatbot-plugin-wp' ) ); ?>',
+					candidates: '',
+				},
+				openai_compatible: {
+					model: '<?php echo esc_js( __( 'Ej: gpt-4o-mini, gpt-4o.', 'chatbot-plugin-wp' ) ); ?>',
+					candidates: '',
+				},
+			};
 			function toggle() {
 				const v = sel.value;
 				document.querySelectorAll('.chatbot-field-api-key').forEach(el => {
@@ -717,12 +747,24 @@ class Chatbot_Admin_Settings {
 				document.querySelectorAll('.chatbot-field-gemini').forEach(el => {
 					el.style.display = v === 'gemini' ? '' : 'none';
 				});
+				document.querySelectorAll('.chatbot-field-deepseek').forEach(el => {
+					el.style.display = v === 'deepseek' ? '' : 'none';
+				});
 				document.querySelectorAll('.chatbot-field-ollama').forEach(el => {
 					el.style.display = v === 'ollama' ? '' : 'none';
 				});
 				document.querySelectorAll('.chatbot-field-openai').forEach(el => {
 					el.style.display = v === 'openai_compatible' ? '' : 'none';
 				});
+				document.querySelectorAll('.chatbot-field-deepseek-url').forEach(el => {
+					el.style.display = v === 'deepseek' ? '' : 'none';
+				});
+				if (modelDesc && descriptions[v]) {
+					modelDesc.textContent = descriptions[v].model;
+				}
+				if (candidatesDesc && descriptions[v]) {
+					candidatesDesc.textContent = descriptions[v].candidates;
+				}
 			}
 			sel.addEventListener('change', toggle);
 			toggle();
@@ -1163,6 +1205,7 @@ class Chatbot_Admin_Settings {
 						<select id="chatbot-history-provider" name="provider">
 							<option value="all"<?php selected( $provider, 'all' ); ?>><?php esc_html_e( 'Todos', 'chatbot-plugin-wp' ); ?></option>
 							<option value="gemini"<?php selected( $provider, 'gemini' ); ?>>Gemini</option>
+							<option value="deepseek"<?php selected( $provider, 'deepseek' ); ?>>DeepSeek</option>
 							<option value="ollama"<?php selected( $provider, 'ollama' ); ?>>Ollama</option>
 							<option value="openai_compatible"<?php selected( $provider, 'openai_compatible' ); ?>>OpenAI-compatible</option>
 						</select>
@@ -1570,6 +1613,7 @@ private static function format_history_status_label( string $status ): string {
 private static function format_history_provider_label( string $provider, string $model = '' ): string {
 	$labels = array(
 		'gemini'            => 'Gemini',
+		'deepseek'          => 'DeepSeek',
 		'ollama'            => 'Ollama',
 		'openai_compatible' => 'OpenAI-compatible',
 	);
@@ -1585,6 +1629,7 @@ private static function format_history_provider_label( string $provider, string 
 private static function format_history_provider_name( string $provider ): string {
 	$labels = array(
 		'gemini'            => 'Gemini',
+		'deepseek'          => 'DeepSeek',
 		'ollama'            => 'Ollama',
 		'openai_compatible' => 'OpenAI-compatible',
 	);
@@ -1595,6 +1640,7 @@ private static function format_history_provider_name( string $provider ): string
 private static function format_history_provider_avatar( string $provider ): string {
 	$labels = array(
 		'gemini'            => 'G',
+		'deepseek'          => 'DS',
 		'ollama'            => 'O',
 		'openai_compatible' => 'AI',
 	);
