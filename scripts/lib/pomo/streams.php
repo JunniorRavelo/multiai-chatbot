@@ -170,7 +170,7 @@ if ( ! class_exists( 'POMO_FileReader', false ) ) :
 		 */
 		public function __construct( $filename ) {
 			parent::__construct();
-			$this->_f = fopen( $filename, 'rb' );
+			$this->_f = fopen( $filename, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Vendored pomo library requires binary stream I/O for MO/PO parsing.
 		}
 
 		/**
@@ -190,7 +190,7 @@ if ( ! class_exists( 'POMO_FileReader', false ) ) :
 		 * @return string|false Returns read string, otherwise false.
 		 */
 		public function read( $bytes ) {
-			return fread( $this->_f, $bytes );
+			return fread( $this->_f, $bytes ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread -- Vendored pomo library requires binary stream I/O for MO/PO parsing.
 		}
 
 		/**
@@ -223,7 +223,7 @@ if ( ! class_exists( 'POMO_FileReader', false ) ) :
 		 * @return bool
 		 */
 		public function close() {
-			return fclose( $this->_f );
+			return fclose( $this->_f ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Vendored pomo library requires binary stream I/O for MO/PO parsing.
 		}
 
 		/**
