@@ -1,95 +1,95 @@
 # MultiAI ChatBot
 
-Plugin de WordPress que añade un widget de chat con IA (Gemini, DeepSeek, Ollama u OpenAI-compatible), panel de administración y telemetría de uso.
+WordPress plugin that adds an AI chat widget (Gemini, DeepSeek, Ollama, or OpenAI-compatible), admin panel, and usage telemetry.
 
-## Convenciones de nombres (namespace)
+## Naming conventions (namespace)
 
-El widget público usa el prefijo de clases `maicb-*` y el contenedor `#chatbot-plugin-root` con `data-maicb-root`. Ver [docs/NAMING.md](docs/NAMING.md). Antes de publicar, ejecuta `./scripts/check-namespace.sh`.
+The public widget uses the `maicb-*` class prefix and the `#chatbot-plugin-root` container with `data-maicb-root`. See [docs/NAMING.md](docs/NAMING.md). Before publishing, run `./scripts/check-namespace.sh`.
 
-## Requisitos
+## Requirements
 
 - WordPress 6.0+
 - PHP 8.0+
-- Para Gemini, DeepSeek u OpenAI: API key válida
-- Para Ollama: servidor accesible desde el host de WordPress (p. ej. `http://127.0.0.1:11434`)
+- For Gemini, DeepSeek, or OpenAI: a valid API key
+- For Ollama: a server reachable from the WordPress host (e.g. `http://127.0.0.1:11434`)
 
-## Instalación
+## Installation
 
-### ZIP para WordPress (sin `.git`)
+### WordPress ZIP (without `.git`)
 
-WordPress **no permite** subir un ZIP que incluya la carpeta `.git`. Genera el paquete desde el repositorio:
+WordPress **does not allow** uploading a ZIP that includes the `.git` folder. Generate the package from the repository:
 
 ```bash
 ./scripts/package-plugin.sh
 ```
 
-Eso crea `chatbot-plugin-wp.zip` listo para **Plugins → Añadir nuevo → Subir plugin**. El ZIP **no incluye** `scripts/` (herramientas de desarrollo). Para producción, usa siempre ese ZIP o excluye `scripts/` si despliegas por Git (p. ej. WP Pusher). La compilación de traducciones (`./scripts/compile-languages.sh`) es solo para desarrollo local.
+This creates `chatbot-plugin-wp.zip`, ready for **Plugins → Add New → Upload Plugin**. The ZIP **does not include** `scripts/` (development tools). For production, always use that ZIP or exclude `scripts/` if you deploy via Git (e.g. WP Pusher). Translation compilation (`./scripts/compile-languages.sh`) is for local development only.
 
-1. Copia la carpeta `chatbot-plugin-wp` a `wp-content/plugins/` (o usa el ZIP anterior).
-2. Activa el plugin en **Plugins**.
-3. Ve a **MultiAI ChatBot** en el menú de administración.
-4. Configura el proveedor, API key y estilos.
-5. Tras activar, las reglas de reescritura del streaming se registran automáticamente. Si el stream no responde, visita **Ajustes → Enlaces permanentes** y guarda de nuevo.
+1. Copy the `chatbot-plugin-wp` folder to `wp-content/plugins/` (or use the ZIP above).
+2. Activate the plugin under **Plugins**.
+3. Go to **MultiAI ChatBot** in the admin menu.
+4. Configure the provider, API key, and styles.
+5. After activation, streaming rewrite rules are registered automatically. If the stream does not respond, visit **Settings → Permalinks** and save again.
 
-## Panel de administración
+## Admin panel
 
-| Pestaña | Contenido |
-|---------|-----------|
-| **General** | Widget global, mensaje de bienvenida, prompt del sistema, streaming, rate limit |
-| **Modelo IA** | Proveedor, API key, modelo, URLs de Ollama/OpenAI/DeepSeek |
-| **Estilo del chat** | Presets CSS, colores personalizados y posición del widget |
-| **Estadísticas** | Totales, desglose y exportación CSV |
-| **Historial** | Conversaciones en tarjetas (ID `CB-AAAA-MM-DD-HH-MM-SS`), filtros y detalle de mensajes |
+| Tab | Contents |
+|-----|----------|
+| **General** | Global widget, welcome message, system prompt, streaming, rate limit |
+| **AI Model** | Provider, API key, model, Ollama/OpenAI/DeepSeek URLs |
+| **Chat Style** | CSS presets, custom colors, and widget position |
+| **Statistics** | Totals, breakdown, and CSV export |
+| **History** | Conversations in cards (ID `CB-YYYY-MM-DD-HH-MM-SS`), filters, and message detail |
 
-## Proveedores de IA
+## AI providers
 
 ### Google Gemini
 
-- Proveedor: `gemini`
-- Modelo por defecto: `gemini-2.0-flash`
-- Modelos de respaldo: campo separado por comas
-- Constante opcional en `wp-config.php`:
+- Provider: `gemini`
+- Default model: `gemini-2.0-flash`
+- Fallback models: comma-separated field
+- Optional constant in `wp-config.php`:
 
 ```php
-define( 'CHATBOT_GEMINI_API_KEY', 'tu-clave' );
+define( 'CHATBOT_GEMINI_API_KEY', 'your-key' );
 ```
 
 ### DeepSeek
 
-- Proveedor: `deepseek`
-- URL base por defecto: `https://api.deepseek.com/v1`
-- Modelo por defecto recomendado: `deepseek-v4-flash` (rápido) o `deepseek-v4-pro` (más capaz)
-- Modelos de respaldo: campo separado por comas (rotación ante 429/404/400)
-- Constante opcional en `wp-config.php`:
+- Provider: `deepseek`
+- Default base URL: `https://api.deepseek.com/v1`
+- Recommended default model: `deepseek-v4-flash` (fast) or `deepseek-v4-pro` (more capable)
+- Fallback models: comma-separated field (rotation on 429/404/400)
+- Optional constant in `wp-config.php`:
 
 ```php
-define( 'CHATBOT_DEEPSEEK_API_KEY', 'tu-clave' );
+define( 'CHATBOT_DEEPSEEK_API_KEY', 'your-key' );
 ```
 
-Obtén tu API key en [platform.deepseek.com](https://platform.deepseek.com/).
+Get your API key at [platform.deepseek.com](https://platform.deepseek.com/).
 
 ### Ollama
 
-- Proveedor: `ollama`
-- No requiere API key
-- URL base por defecto: `http://127.0.0.1:11434`
-- Modelo: nombre del modelo instalado en Ollama (p. ej. `llama3`)
+- Provider: `ollama`
+- No API key required
+- Default base URL: `http://127.0.0.1:11434`
+- Model: name of the model installed in Ollama (e.g. `llama3`)
 
 ### OpenAI-compatible
 
-- Proveedor: `openai_compatible`
-- URL base: `https://api.openai.com/v1` u otro endpoint compatible
-- Constante opcional:
+- Provider: `openai_compatible`
+- Base URL: `https://api.openai.com/v1` or another compatible endpoint
+- Optional constant:
 
 ```php
-define( 'CHATBOT_OPENAI_API_KEY', 'tu-clave' );
+define( 'CHATBOT_OPENAI_API_KEY', 'your-key' );
 ```
 
-## Uso en el sitio
+## Site usage
 
-### Widget global
+### Global widget
 
-Activa **Mostrar en todo el sitio** en la pestaña General. El widget se carga en `wp_footer`.
+Enable **Show site-wide** on the General tab. The widget loads on `wp_footer`.
 
 ### Shortcode
 
@@ -98,15 +98,15 @@ Activa **Mostrar en todo el sitio** en la pestaña General. El widget se carga e
 [chatbot_widget mode="inline"]
 ```
 
-- `floating` (por defecto): botón flotante + panel
-- `inline`: panel embebido en la página
+- `floating` (default): floating button + panel
+- `inline`: panel embedded in the page
 
-## Estilos
+## Styles
 
-Presets disponibles en la pestaña **Estilo del chat** (selector visual con vista previa):
+Presets available on the **Chat Style** tab (visual selector with preview):
 
-| ID | Nombre |
-|----|--------|
+| ID | Name |
+|----|------|
 | `default` | Sapphire |
 | `dark-glass` | Midnight |
 | `obsidian` | Obsidian |
@@ -117,54 +117,54 @@ Presets disponibles en la pestaña **Estilo del chat** (selector visual con vist
 | `lavender` | Amethyst |
 | `plum` | Plum |
 
-**Posiciones:** `bottom-right`, `center-right`, `bottom-left`, `center-left`, `bottom-center`.
+**Positions:** `bottom-right`, `center-right`, `bottom-left`, `center-left`, `bottom-center`.
 
-**Overrides opcionales:** colores primario, acento, fondo, texto, radio, ancho y altura máxima del panel, fuente, z-index, animaciones y tema automático según `prefers-color-scheme`.
+**Optional overrides:** primary color, accent, background, text, radius, panel max width and height, font, z-index, animations, and automatic theme via `prefers-color-scheme`.
 
-**Shortcode con estilo por página:**
+**Per-page style via shortcode:**
 
 ```
 [chatbot_widget preset="ocean" position="bottom-left"]
 [chatbot_widget mode="inline" primary="#059669"]
 ```
 
-Exportar/importar tema JSON desde el admin (pestaña Estilo del chat).
+Export/import theme JSON from the admin (Chat Style tab).
 
-## Traducciones (i18n)
+## Translations (i18n)
 
-- **Idioma fuente:** inglés en el código PHP/JS (`__()`, `esc_html_e()`).
-- **Español:** [`languages/chatbot-plugin-wp-es_ES.po`](languages/chatbot-plugin-wp-es_ES.po) y [`languages/chatbot-plugin-wp-es_CO.po`](languages/chatbot-plugin-wp-es_CO.po).
-- Tras editar `.po`, compilar `.mo`: `./scripts/compile-languages.sh` (o `php scripts/compile-languages.php`).
+- **Source language:** English in PHP/JS code (`__()`, `esc_html_e()`).
+- **Spanish:** [`languages/chatbot-plugin-wp-es_ES.po`](languages/chatbot-plugin-wp-es_ES.po) and [`languages/chatbot-plugin-wp-es_CO.po`](languages/chatbot-plugin-wp-es_CO.po).
+- After editing `.po` files, compile `.mo`: `./scripts/compile-languages.sh` (or `php scripts/compile-languages.php`).
 
-## API REST
+## REST API
 
-| Endpoint | Método | Descripción |
+| Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/wp-json/chatbot-plugin/v1/chat` | POST | Respuesta JSON `{ answer, meta }` |
-| `/chatbot-plugin/v1/chat/stream` | POST | Streaming simulado (`text/plain`) |
+| `/wp-json/chatbot-plugin/v1/chat` | POST | JSON response `{ answer, meta }` |
+| `/chatbot-plugin/v1/chat/stream` | POST | Simulated streaming (`text/plain`) |
 
-Headers requeridos:
+Required headers:
 
-- `X-WP-Nonce`: nonce REST (`wp_rest`)
-- `X-Chat-Session-Id`: identificador anónimo de sesión (opcional)
+- `X-WP-Nonce`: REST nonce (`wp_rest`)
+- `X-Chat-Session-Id`: anonymous session identifier (optional)
 
-Body de ejemplo:
+Example body:
 
 ```json
 {
-  "message": "Hola",
+  "message": "Hello",
   "history": [
     { "role": "user", "content": "..." },
     { "role": "assistant", "content": "..." }
   ],
   "currentPath": "/",
-  "currentUrl": "https://ejemplo.com/"
+  "currentUrl": "https://example.com/"
 }
 ```
 
-La API key **nunca** se expone al frontend.
+The API key is **never** exposed to the frontend.
 
-## Estructura del plugin
+## Plugin structure
 
 ```
 chatbot-plugin-wp.php
@@ -185,38 +185,39 @@ assets/
 uninstall.php
 ```
 
-## Historial de conversaciones
+## Conversation history
 
-Cada intercambio usuario/asistente se guarda en `{prefix}chatbot_conversations` y `{prefix}chatbot_messages`.
+Each user/assistant exchange is stored in `{prefix}chatbot_conversations` and `{prefix}chatbot_messages`.
 
-- **ID público:** `CB-2026-05-29-14-35-42` (fecha y hora en la zona del sitio)
-- **ID interno:** número autoincremental para administración
-- Agrupación por sesión del visitante (30 min de inactividad abre conversación nueva)
-- El frontend envía `conversationId` en el body para continuar el mismo hilo
+- **Public ID:** `CB-2026-05-29-14-35-42` (date and time in the site timezone)
+- **Internal ID:** auto-increment number for administration
+- Grouped by visitor session (30 minutes of inactivity starts a new conversation)
+- The frontend sends `conversationId` in the body to continue the same thread
 
-## Telemetría
+## Telemetry
 
-Cada petición al chat registra un evento en la tabla `{prefix}chatbot_events`:
+Each chat request logs an event in the `{prefix}chatbot_events` table:
 
-- Proveedor, modelo, estado, latencia, código de error
-- Hash de sesión (no IP en claro)
+- Provider, model, status, latency, error code
+- Session hash (no plain IP address)
 
-Exportación CSV desde la pestaña **Estadísticas**. Al desinstalar el plugin, la tabla y las opciones se eliminan.
+CSV export from the **Statistics** tab. On plugin uninstall, the table and options are removed.
 
-## Seguridad
+## Security
 
-- No subas API keys al repositorio.
-- Usa constantes en `wp-config.php` en producción en lugar de guardar claves solo en la base de datos.
-- El rate limit por IP usa transients de WordPress.
-- Rota las claves si se han expuesto accidentalmente.
+- Do not commit API keys to the repository.
+- Use constants in `wp-config.php` in production instead of storing keys only in the database.
+- IP rate limiting uses WordPress transients.
+- Rotate keys if they were accidentally exposed.
 
-## Autor
+## Author
 
 **J. Santiago Ravelo Velasco**
 
 - GitHub: [github.com/JunniorRavelo/multiai-chatbot](https://github.com/JunniorRavelo/multiai-chatbot)
+- GitHub Sponsors: [github.com/sponsors/JunniorRavelo](https://github.com/sponsors/JunniorRavelo)
 - LinkedIn: [linkedin.com/in/jsravelo](https://www.linkedin.com/in/jsravelo/)
 
-## Licencia
+## License
 
-Este proyecto se distribuye bajo la [GNU General Public License v2.0 o posterior](LICENSE) (GPL-2.0-or-later), compatible con los requisitos del directorio de plugins de WordPress.org.
+This project is distributed under the [GNU General Public License v2.0 or later](LICENSE) (GPL-2.0-or-later), compatible with the WordPress.org plugin directory requirements.
