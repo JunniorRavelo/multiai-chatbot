@@ -27,7 +27,7 @@ rsync -a \
 	--exclude='docs' \
 	--exclude='CHANGELOG.md' \
 	--exclude='README.md' \
-	--exclude-from="${ROOT}/.distignore" \
+	--exclude-from="${ROOT}/scripts/package-excludes.txt" \
 	"${ROOT}/" "${DEST}/"
 
 (

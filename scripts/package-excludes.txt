@@ -2,7 +2,6 @@ scripts/
 .github/
 .env
 .env.example
-.distignore
 .gitignore
 .venv-i18n/
 node_modules/
