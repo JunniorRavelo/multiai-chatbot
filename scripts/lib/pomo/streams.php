@@ -8,6 +8,10 @@
  * @subpackage streams
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! class_exists( 'POMO_Reader', false ) ) :
 	#[AllowDynamicProperties]
 	class POMO_Reader {

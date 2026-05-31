@@ -7,6 +7,10 @@
  * @subpackage mo
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once __DIR__ . '/translations.php';
 require_once __DIR__ . '/streams.php';
 

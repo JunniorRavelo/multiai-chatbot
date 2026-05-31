@@ -7,6 +7,10 @@
  * @subpackage po
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once __DIR__ . '/translations.php';
 
 if ( ! defined( 'PO_MAX_LINE_LEN' ) ) {

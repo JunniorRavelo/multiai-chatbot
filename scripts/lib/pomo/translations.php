@@ -8,6 +8,10 @@
  * @since 2.8.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once __DIR__ . '/plural-forms.php';
 require_once __DIR__ . '/entry.php';
 

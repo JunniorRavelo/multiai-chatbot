@@ -5,6 +5,11 @@
  *
  * @since 4.9.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! function_exists( 'esc_html' ) ) {
 	/**
 	 * Minimal esc_html polyfill for CLI POMO tooling (no WordPress bootstrap).

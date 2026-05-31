@@ -5,6 +5,14 @@
  * Usage: php scripts/compile-languages.php
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	if ( 'cli' === php_sapi_name() ) {
+		define( 'ABSPATH', dirname( __DIR__ ) . '/' );
+	} else {
+		exit;
+	}
+}
+
 $root     = dirname( __DIR__ );
 $lang_dir = $root . '/languages';
 

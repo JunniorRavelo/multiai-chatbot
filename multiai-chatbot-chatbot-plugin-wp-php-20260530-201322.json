@@ -1,0 +1,90 @@
+{
+    "generated_at": "2026-05-30 20:13:22",
+    "plugin": "MultiAI ChatBot",
+    "results": {
+        "scripts/lib/pomo/streams.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Flib%2Fpomo%2Fstreams.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ],
+        "scripts/lib/pomo/translations.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Flib%2Fpomo%2Ftranslations.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ],
+        "scripts/lib/pomo/entry.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Flib%2Fpomo%2Fentry.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ],
+        "scripts/lib/pomo/po.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Flib%2Fpomo%2Fpo.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ],
+        "scripts/lib/pomo/mo.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Flib%2Fpomo%2Fmo.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ],
+        "scripts/lib/pomo/plural-forms.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Flib%2Fpomo%2Fplural-forms.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ],
+        "scripts/compile-languages.php": [
+            {
+                "message": "PHP file should prevent direct access. Add a check like: if ( ! defined( 'ABSPATH' ) ) exit;",
+                "code": "missing_direct_file_access_protection",
+                "link": "https://wordpress.misistema.com.co/wp-admin/plugin-editor.php?plugin=multiai-chatbot%2Fchatbot-plugin-wp.php&file=multiai-chatbot%2Fscripts%2Fcompile-languages.php",
+                "docs": "https://developer.wordpress.org/plugins/wordpress-org/common-issues/#direct-file-access",
+                "severity": 6,
+                "type": "ERROR",
+                "line": 0,
+                "column": 0
+            }
+        ]
+    }
+}

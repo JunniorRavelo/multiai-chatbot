@@ -23,7 +23,7 @@ WordPress **no permite** subir un ZIP que incluya la carpeta `.git`. Genera el p
 ./scripts/package-plugin.sh
 ```
 
-Eso crea `chatbot-plugin-wp.zip` listo para **Plugins → Añadir nuevo → Subir plugin**.
+Eso crea `chatbot-plugin-wp.zip` listo para **Plugins → Añadir nuevo → Subir plugin**. El ZIP **no incluye** `scripts/` (herramientas de desarrollo). Para producción, usa siempre ese ZIP o excluye `scripts/` si despliegas por Git (p. ej. WP Pusher). La compilación de traducciones (`./scripts/compile-languages.sh`) es solo para desarrollo local.
 
 1. Copia la carpeta `chatbot-plugin-wp` a `wp-content/plugins/` (o usa el ZIP anterior).
 2. Activa el plugin en **Plugins**.
