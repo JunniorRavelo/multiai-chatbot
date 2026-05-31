@@ -3,7 +3,7 @@ Contributors: jsravelo
 Donate link: https://github.com/JunniorRavelo/multiai-chatbot
 Tags: chatbot, ai, gemini, live chat, customer support
 Requires at least: 6.2
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.0
 Stable tag: 1.0.0
 License: GPLv2 or later

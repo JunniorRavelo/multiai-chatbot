@@ -100,11 +100,11 @@ class Chatbot_Chat_History {
 
 	private static function public_id_exists( string $public_id ): bool {
 		global $wpdb;
-		$table = self::conversations_table();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 		return (bool) $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT id FROM {$table} WHERE public_id = %s LIMIT 1",
+				'SELECT id FROM %i WHERE public_id = %s LIMIT 1',
+				self::conversations_table(),
 				$public_id
 			)
 		);
@@ -132,12 +132,13 @@ class Chatbot_Chat_History {
 
 		if ( '' !== $session_hash ) {
 			$idle_since = gmdate( 'Y-m-d H:i:s', strtotime( '-' . self::IDLE_MINUTES . ' minutes' ) );
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 			$active = $wpdb->get_row(
 				$wpdb->prepare(
-					"SELECT id, public_id FROM {$table}
+					"SELECT id, public_id FROM %i
 					WHERE session_hash = %s AND status = 'active' AND updated_at >= %s
 					ORDER BY updated_at DESC LIMIT 1",
+					self::conversations_table(),
 					$session_hash,
 					$idle_since
 				),
@@ -154,6 +155,7 @@ class Chatbot_Chat_History {
 		$public_id = self::generate_public_id();
 		$title     = isset( $meta['title'] ) ? self::truncate_title( (string) $meta['title'] ) : '';
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom conversations table; no WP API for plugin chat history.
 		$wpdb->insert(
 			$table,
 			array(
@@ -184,14 +186,14 @@ class Chatbot_Chat_History {
 	private static function find_by_client_ref( string $client_ref, string $session_hash ) {
 		global $wpdb;
 
-		$table = self::conversations_table();
-		$ref   = sanitize_text_field( $client_ref );
+		$ref = sanitize_text_field( $client_ref );
 
 		if ( preg_match( '/^\d+$/', $ref ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 			return $wpdb->get_row(
 				$wpdb->prepare(
-					"SELECT * FROM {$table} WHERE id = %d LIMIT 1",
+					'SELECT * FROM %i WHERE id = %d LIMIT 1',
+					self::conversations_table(),
 					(int) $ref
 				),
 				ARRAY_A
@@ -199,10 +201,11 @@ class Chatbot_Chat_History {
 		}
 
 		if ( preg_match( '/^CB-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}/', $ref ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 			return $wpdb->get_row(
 				$wpdb->prepare(
-					"SELECT * FROM {$table} WHERE public_id = %s LIMIT 1",
+					'SELECT * FROM %i WHERE public_id = %s LIMIT 1',
+					self::conversations_table(),
 					$ref
 				),
 				ARRAY_A
@@ -232,6 +235,7 @@ class Chatbot_Chat_History {
 		$role = 'assistant' === $role ? 'assistant' : 'user';
 		$now  = current_time( 'mysql', true );
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom messages table; no WP API for plugin chat history.
 		$wpdb->insert(
 			self::messages_table(),
 			array(
@@ -294,6 +298,7 @@ class Chatbot_Chat_History {
 			$formats[]            = '%s';
 		}
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom conversations table; no WP API for plugin chat history.
 		$wpdb->update(
 			$conv_table,
 			$updates,
@@ -399,7 +404,7 @@ class Chatbot_Chat_History {
 		$params[] = $per;
 		$params[] = $offset;
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 		$rows = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
 
 		return $rows ?: array();
@@ -419,11 +424,11 @@ class Chatbot_Chat_History {
 			. implode( ' AND ', $filters['where'] );
 
 		if ( empty( $filters['params'] ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 			return (int) $wpdb->get_var( $sql );
 		}
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 		return (int) $wpdb->get_var( $wpdb->prepare( $sql, $filters['params'] ) );
 	}
 
@@ -446,10 +451,10 @@ class Chatbot_Chat_History {
 			. implode( ' AND ', $filters['where'] );
 
 		if ( empty( $filters['params'] ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 			$row = $wpdb->get_row( $sql, ARRAY_A );
 		} else {
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 			$row = $wpdb->get_row( $wpdb->prepare( $sql, $filters['params'] ), ARRAY_A );
 		}
 
@@ -481,10 +486,10 @@ class Chatbot_Chat_History {
 			. " AND {$alias}.page_path IS NOT NULL AND {$alias}.page_path != '' ORDER BY {$alias}.page_path ASC LIMIT 100";
 
 		if ( empty( $filters['params'] ) ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 			$rows = $wpdb->get_col( $sql );
 		} else {
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 			$rows = $wpdb->get_col( $wpdb->prepare( $sql, $filters['params'] ) );
 		}
 
@@ -532,7 +537,7 @@ class Chatbot_Chat_History {
 		$params[] = $pivot;
 		$params[] = $conversation_id;
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
 		$before = (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
 
 		return max( 1, (int) floor( $before / $per_page ) + 1 );
@@ -548,10 +553,9 @@ class Chatbot_Chat_History {
 			return null;
 		}
 
-		$table = self::conversations_table();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ),
+			$wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', self::conversations_table(), $id ),
 			ARRAY_A
 		);
 
@@ -568,11 +572,11 @@ class Chatbot_Chat_History {
 			return array();
 		}
 
-		$table = self::messages_table();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$table} WHERE conversation_id = %d ORDER BY created_at ASC, id ASC",
+				'SELECT * FROM %i WHERE conversation_id = %d ORDER BY created_at ASC, id ASC',
+				self::messages_table(),
 				$conversation_id
 			),
 			ARRAY_A
@@ -703,14 +707,13 @@ class Chatbot_Chat_History {
 
 		global $wpdb;
 
-		$conv_table = self::conversations_table();
-		$msg_table  = self::messages_table();
-		$cutoff     = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
+		$cutoff = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; table name via %i placeholder.
 		$ids = $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT id FROM {$conv_table} WHERE updated_at < %s",
+				'SELECT id FROM %i WHERE updated_at < %s',
+				self::conversations_table(),
 				$cutoff
 			)
 		);
@@ -725,18 +728,20 @@ class Chatbot_Chat_History {
 		$ids          = array_map( 'intval', $ids );
 		$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; table name via %i placeholder.
 		$deleted_messages = (int) $wpdb->query(
 			$wpdb->prepare(
-				"DELETE FROM {$msg_table} WHERE conversation_id IN ({$placeholders})",
+				'DELETE FROM %i WHERE conversation_id IN (' . $placeholders . ')',
+				self::messages_table(),
 				...$ids
 			)
 		);
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; table name via %i placeholder.
 		$deleted_conversations = (int) $wpdb->query(
 			$wpdb->prepare(
-				"DELETE FROM {$conv_table} WHERE id IN ({$placeholders})",
+				'DELETE FROM %i WHERE id IN (' . $placeholders . ')',
+				self::conversations_table(),
 				...$ids
 			)
 		);
@@ -757,9 +762,9 @@ class Chatbot_Chat_History {
 		$msg_table  = self::messages_table();
 		$conv_table = self::conversations_table();
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table delete; table names from plugin helpers.
 		$wpdb->delete( $msg_table, array( 'conversation_id' => $conversation_id ), array( '%d' ) );
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table delete; table names from plugin helpers.
 		$deleted = $wpdb->delete( $conv_table, array( 'id' => $conversation_id ), array( '%d' ) );
 
 		return (bool) $deleted;
@@ -780,18 +785,20 @@ class Chatbot_Chat_History {
 		$msg_table    = self::messages_table();
 		$placeholders = implode( ',', array_fill( 0, count( $conversation_ids ), '%d' ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table names via %i placeholders.
 		$sql = "SELECT m.conversation_id, m.content
-			FROM {$msg_table} m
+			FROM %i m
 			INNER JOIN (
 				SELECT conversation_id, MIN(id) AS min_id
-				FROM {$msg_table}
+				FROM %i
 				WHERE role = 'user' AND conversation_id IN ({$placeholders})
 				GROUP BY conversation_id
 			) first_msg ON m.id = first_msg.min_id";
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dynamic history query; table/join names from plugin helpers and whitelisted order columns.
-		$rows = $wpdb->get_results( $wpdb->prepare( $sql, ...$conversation_ids ), ARRAY_A );
+		$rows = $wpdb->get_results(
+			$wpdb->prepare( $sql, $msg_table, $msg_table, ...$conversation_ids ),
+			ARRAY_A
+		);
 
 		$out = array();
 		foreach ( $rows ?: array() as $row ) {
@@ -853,13 +860,13 @@ class Chatbot_Chat_History {
 
 		global $wpdb;
 
-		$table        = self::conversations_table();
 		$placeholders = implode( ',', array_fill( 0, count( $conversation_ids ), '%d' ) );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table lookup; no WP API for plugin conversation metadata.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT id, public_id FROM {$table} WHERE id IN ({$placeholders})",
+				'SELECT id, public_id FROM %i WHERE id IN (' . $placeholders . ')',
+				self::conversations_table(),
 				...$conversation_ids
 			),
 			ARRAY_A
