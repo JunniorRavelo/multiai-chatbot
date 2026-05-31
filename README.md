@@ -23,9 +23,9 @@ WordPress **does not allow** uploading a ZIP that includes the `.git` folder. Ge
 ./scripts/package-plugin.sh
 ```
 
-This creates `chatbot-plugin-wp.zip`, ready for **Plugins → Add New → Upload Plugin**. The ZIP **does not include** `scripts/` (development tools). For production, always use that ZIP or exclude `scripts/` if you deploy via Git (e.g. WP Pusher). Translation compilation (`./scripts/compile-languages.sh`) is for local development only.
+This creates `multiai-chatbot.zip`, ready for **Plugins → Add New → Upload Plugin**. The ZIP **does not include** `scripts/` (development tools). For production, always use that ZIP or exclude `scripts/` if you deploy via Git (e.g. WP Pusher). Translation compilation (`./scripts/compile-languages.sh`) is for local development only.
 
-1. Copy the `chatbot-plugin-wp` folder to `wp-content/plugins/` (or use the ZIP above).
+1. Copy the `multiai-chatbot` folder to `wp-content/plugins/` (or use the ZIP above).
 2. Activate the plugin under **Plugins**.
 3. Go to **MultiAI ChatBot** in the admin menu.
 4. Configure the provider, API key, and styles.
@@ -133,7 +133,7 @@ Export/import theme JSON from the admin (Chat Style tab).
 ## Translations (i18n)
 
 - **Source language:** English in PHP/JS code (`__()`, `esc_html_e()`).
-- **Spanish:** [`languages/chatbot-plugin-wp-es_ES.po`](languages/chatbot-plugin-wp-es_ES.po) and [`languages/chatbot-plugin-wp-es_CO.po`](languages/chatbot-plugin-wp-es_CO.po).
+- **Spanish:** [`languages/multiai-chatbot-es_ES.po`](languages/multiai-chatbot-es_ES.po) and [`languages/multiai-chatbot-es_CO.po`](languages/multiai-chatbot-es_CO.po).
 - After editing `.po` files, compile `.mo`: `./scripts/compile-languages.sh` (or `php scripts/compile-languages.php`).
 
 ## REST API
@@ -167,7 +167,7 @@ The API key is **never** exposed to the frontend.
 ## Plugin structure
 
 ```
-chatbot-plugin-wp.php
+multiai-chatbot.php
 includes/
   class-plugin.php
   admin-settings.php

@@ -2,8 +2,8 @@
 Contributors: jsravelo
 Donate link: https://github.com/JunniorRavelo/multiai-chatbot
 Tags: chatbot, ai, gemini, live chat, customer support
-Requires at least: 6.0
-Tested up to: 6.8
+Requires at least: 6.2
+Tested up to: 6.9
 Requires PHP: 8.0
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -63,14 +63,14 @@ The API key is always handled on the server; the frontend only uses the WordPres
 
 = Requirements =
 
-* WordPress 6.0 or higher
+* WordPress 6.2 or higher
 * PHP 8.0 or higher
 * For Gemini, DeepSeek, or OpenAI: a valid API key
 * For Ollama: a server reachable from the WordPress host
 
 == Installation ==
 
-1. Upload the `chatbot-plugin-wp` folder to `/wp-content/plugins/` or install the ZIP from **Plugins → Add New → Upload Plugin**.
+1. Upload the `multiai-chatbot` folder to `/wp-content/plugins/` or install the ZIP from **Plugins → Add New → Upload Plugin**.
 2. Activate the plugin from **Plugins**.
 3. Go to **MultiAI ChatBot** in the admin menu.
 4. Under **AI Model**, choose a provider and enter your API key (except for Ollama).

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SLUG="chatbot-plugin-wp"
+SLUG="multiai-chatbot"
 BUILD_ROOT="$(mktemp -d)"
 DEST="${BUILD_ROOT}/${SLUG}"
 OUT="${ROOT}/${SLUG}.zip"
@@ -19,11 +19,20 @@ mkdir -p "${DEST}"
 rsync -a \
 	--exclude='.git' \
 	--exclude='.git/' \
+	--exclude='.github' \
+	--exclude='.github/' \
 	--exclude='.env' \
+	--exclude='.env.example' \
+	--exclude='.distignore' \
+	--exclude='.gitignore' \
 	--exclude='node_modules' \
 	--exclude='*.zip' \
+	--exclude='*.csv' \
 	--exclude='.DS_Store' \
 	--exclude='scripts' \
+	--exclude='docs' \
+	--exclude='CHANGELOG.md' \
+	--exclude='README.md' \
 	"${ROOT}/" "${DEST}/"
 
 (

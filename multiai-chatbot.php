@@ -4,11 +4,11 @@
  * Plugin URI: https://github.com/JunniorRavelo/multiai-chatbot
  * Description: AI chat widget (Gemini, DeepSeek, Ollama, OpenAI-compatible), configurable styles, and telemetry.
  * Version: 1.0.0
- * Requires at least: 6.0
+ * Requires at least: 6.2
  * Requires PHP: 8.0
  * Author: J. Santiago Ravelo Velasco
  * Author URI: https://www.linkedin.com/in/jsravelo/
- * Text Domain: chatbot-plugin-wp
+ * Text Domain: multiai-chatbot
  * Domain Path: /languages
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html

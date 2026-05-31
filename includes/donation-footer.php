@@ -22,21 +22,21 @@ class Chatbot_Donation_Footer {
             return;
         }
         ?>
-        <footer class="chatbot-donation-footer" aria-label="<?php esc_attr_e( 'Support the plugin', 'chatbot-plugin-wp' ); ?>">
+        <footer class="chatbot-donation-footer" aria-label="<?php esc_attr_e( 'Support the plugin', 'multiai-chatbot' ); ?>">
             <div class="chatbot-donation-footer__inner">
                 <p class="chatbot-donation-footer__text">
                     <span class="chatbot-donation-footer__heart" aria-hidden="true">♥</span>
-                    <?php esc_html_e( 'Like this plugin? You can support development on GitHub Sponsors:', 'chatbot-plugin-wp' ); ?>
+                    <?php esc_html_e( 'Like this plugin? You can support development on GitHub Sponsors:', 'multiai-chatbot' ); ?>
                 </p>
                 <a
                     class="chatbot-donation-footer__chip chatbot-donation-footer__chip--github_sponsors"
                     href="<?php echo esc_url( self::GITHUB_SPONSORS_URL ); ?>"
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="<?php esc_attr_e( 'GitHub Sponsors', 'chatbot-plugin-wp' ); ?>"
+                    title="<?php esc_attr_e( 'GitHub Sponsors', 'multiai-chatbot' ); ?>"
                 >
                     <?php echo self::github_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG estático ?>
-                    <span class="chatbot-donation-footer__chip-label"><?php esc_html_e( 'GitHub Sponsors', 'chatbot-plugin-wp' ); ?></span>
+                    <span class="chatbot-donation-footer__chip-label"><?php esc_html_e( 'GitHub Sponsors', 'multiai-chatbot' ); ?></span>
                 </a>
             </div>
         </footer>

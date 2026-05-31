@@ -54,7 +54,7 @@ class Chatbot_Api_Handler {
 
 		$system = ! empty( $settings['system_prompt'] )
 			? (string) $settings['system_prompt']
-			: __( 'You are a helpful website assistant. Respond clearly and briefly.', 'chatbot-plugin-wp' );
+			: __( 'You are a helpful website assistant. Respond clearly and briefly.', 'multiai-chatbot' );
 
 		$messages     = self::build_messages( $parsed['message'], $parsed['history'] );
 		$conversation = self::resolve_history_conversation(
@@ -178,7 +178,7 @@ class Chatbot_Api_Handler {
 	public static function handle_stream( WP_REST_Request $request ) {
 		$settings = Chatbot_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
-			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', 'chatbot-plugin-wp' ) ), 404 );
+			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ), 404 );
 		}
 
 		$response = self::internal_chat_request( $request, $settings );
@@ -228,20 +228,20 @@ class Chatbot_Api_Handler {
 		$settings = Chatbot_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
 			status_header( 404 );
-			echo wp_json_encode( array( 'error' => __( 'Streaming disabled.', 'chatbot-plugin-wp' ) ) );
+			echo wp_json_encode( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ) );
 			exit;
 		}
 
 		$nonce = $request->get_header( 'x-wp-nonce' );
 		if ( ! self::verify_nonce( $nonce ) ) {
 			status_header( 403 );
-			echo wp_json_encode( array( 'error' => __( 'Invalid nonce.', 'chatbot-plugin-wp' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
+			echo wp_json_encode( array( 'error' => __( 'Invalid nonce.', 'multiai-chatbot' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
 			exit;
 		}
 
 		if ( ! self::verify_origin( $settings ) ) {
 			status_header( 403 );
-			echo wp_json_encode( array( 'error' => __( 'Origin not allowed.', 'chatbot-plugin-wp' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
+			echo wp_json_encode( array( 'error' => __( 'Origin not allowed.', 'multiai-chatbot' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
 			exit;
 		}
 
@@ -427,14 +427,14 @@ class Chatbot_Api_Handler {
 			if ( self::looks_like_html_error_page( $raw ) ) {
 				return new WP_REST_Response(
 					array(
-						'error'     => __( 'The server returned an error page (502). Leave the internal chat URL empty or use a local URL; do not use the public URL with Cloudflare.', 'chatbot-plugin-wp' ),
+						'error'     => __( 'The server returned an error page (502). Leave the internal chat URL empty or use a local URL; do not use the public URL with Cloudflare.', 'multiai-chatbot' ),
 						'errorCode' => 'PROVIDER_UPSTREAM',
 					),
 					502
 				);
 			}
 			$data = array(
-				'error'     => __( 'Invalid internal response.', 'chatbot-plugin-wp' ),
+				'error'     => __( 'Invalid internal response.', 'multiai-chatbot' ),
 				'errorCode' => 'SERVER_ERROR',
 			);
 		}
@@ -473,7 +473,7 @@ class Chatbot_Api_Handler {
 			default:
 				return new WP_Error(
 					'configuration_error',
-					__( 'Invalid AI provider.', 'chatbot-plugin-wp' ),
+					__( 'Invalid AI provider.', 'multiai-chatbot' ),
 					array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 				);
 		}
@@ -487,7 +487,7 @@ class Chatbot_Api_Handler {
 		if ( ! is_array( $body ) ) {
 			return new WP_Error(
 				'invalid_request',
-				__( 'Invalid request.', 'chatbot-plugin-wp' ),
+				__( 'Invalid request.', 'multiai-chatbot' ),
 				array( 'status' => 400, 'error_code' => 'INVALID_REQUEST' )
 			);
 		}
@@ -496,7 +496,7 @@ class Chatbot_Api_Handler {
 		if ( strlen( $message ) < 2 || strlen( $message ) > 700 ) {
 			return new WP_Error(
 				'invalid_request',
-				__( 'The message must be between 2 and 700 characters.', 'chatbot-plugin-wp' ),
+				__( 'The message must be between 2 and 700 characters.', 'multiai-chatbot' ),
 				array( 'status' => 400, 'error_code' => 'INVALID_REQUEST' )
 			);
 		}
@@ -636,7 +636,7 @@ class Chatbot_Api_Handler {
 			$suspend_seconds = max( 60, (int) ( $settings['ip_suspend_seconds'] ?? 900 ) );
 			return new WP_REST_Response(
 				array(
-					'error'      => __( 'Your IP is temporarily suspended due to too many requests.', 'chatbot-plugin-wp' ),
+					'error'      => __( 'Your IP is temporarily suspended due to too many requests.', 'multiai-chatbot' ),
 					'errorCode'  => 'IP_SUSPENDED',
 					'retryAfter' => $suspend_seconds,
 				),
@@ -716,7 +716,7 @@ class Chatbot_Api_Handler {
 		if ( $count >= $limit ) {
 			return new WP_REST_Response(
 				array(
-					'error'      => __( 'Too many requests. Please wait a moment.', 'chatbot-plugin-wp' ),
+					'error'      => __( 'Too many requests. Please wait a moment.', 'multiai-chatbot' ),
 					'errorCode'  => $check['code'],
 					'retryAfter' => $window,
 				),
@@ -775,7 +775,7 @@ class Chatbot_Api_Handler {
 			return sanitize_text_field( wp_unslash( (string) $_SERVER['HTTP_X_REAL_IP'] ) );
 		}
 		if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			$parts = explode( ',', (string) $_SERVER['HTTP_X_FORWARDED_FOR'] );
+			$parts = explode( ',', sanitize_text_field( wp_unslash( (string) $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) );
 			return sanitize_text_field( trim( $parts[0] ) );
 		}
 		return 'unknown';

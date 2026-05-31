@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MultiAI ChatBot 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/chatbot-plugin-wp\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiai-chatbot\n"
 "POT-Creation-Date: 2026-05-30T19:05:17+00:00\n"
 "PO-Revision-Date: 2026-05-30 12:00+0000\n"
 "Last-Translator: J. Santiago Ravelo Velasco\n"
@@ -15,31 +15,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: manual\n"
-"X-Domain: chatbot-plugin-wp\n"
+"X-Domain: multiai-chatbot\n"
 
 #. Plugin Name of the plugin
-#: chatbot-plugin-wp.php
+#: multiai-chatbot.php
 msgid "MultiAI ChatBot"
 msgstr "MultiAI ChatBot"
 
 #. Plugin URI of the plugin
-#: chatbot-plugin-wp.php
+#: multiai-chatbot.php
 msgid "https://github.com/JunniorRavelo/multiai-chatbot"
 msgstr "https://github.com/JunniorRavelo/multiai-chatbot"
 
 #. Description of the plugin
-#: chatbot-plugin-wp.php
+#: multiai-chatbot.php
 msgid "AI chat widget (Gemini, DeepSeek, Ollama, OpenAI-compatible), configurable styles, and telemetry."
 msgstr "Widget de chat con IA (Gemini, DeepSeek, Ollama, compatible con OpenAI"
 "), estilos configurables y telemetría."
 
 #. Author of the plugin
-#: chatbot-plugin-wp.php
+#: multiai-chatbot.php
 msgid "J. Santiago Ravelo Velasco"
 msgstr "J. Santiago Ravelo Velasco"
 
 #. Author URI of the plugin
-#: chatbot-plugin-wp.php
+#: multiai-chatbot.php
 msgid "https://www.linkedin.com/in/jsravelo/"
 msgstr "https://www.linkedin.com/in/jsravelo/"
 

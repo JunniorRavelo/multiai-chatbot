@@ -19,7 +19,7 @@ $lang_dir = $root . '/languages';
 require_once $root . '/scripts/lib/pomo/po.php';
 require_once $root . '/scripts/lib/pomo/mo.php';
 
-$files = glob( $lang_dir . '/chatbot-plugin-wp-*.po' );
+$files = glob( $lang_dir . '/multiai-chatbot-*.po' );
 if ( ! $files ) {
 	fwrite( STDERR, "No .po files found in languages/\n" );
 	exit( 1 );

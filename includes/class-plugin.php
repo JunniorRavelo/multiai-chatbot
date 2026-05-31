@@ -44,20 +44,13 @@ class Chatbot_Plugin {
 	}
 
 	public function load_textdomain(): void {
-		$domain = 'chatbot-plugin-wp';
+		$domain = 'multiai-chatbot';
 		$locale = determine_locale();
 		$mofile = self::resolve_translation_file( $domain, $locale );
 
 		if ( $mofile ) {
 			load_textdomain( $domain, $mofile, $locale );
-			return;
 		}
-
-		load_plugin_textdomain(
-			$domain,
-			false,
-			dirname( CHATBOT_PLUGIN_BASENAME ) . '/languages'
-		);
 	}
 
 	/**

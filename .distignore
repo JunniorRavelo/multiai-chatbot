@@ -1,3 +1,11 @@
 scripts/
+.github/
 .env.example
+.distignore
+.gitignore
+docs/
+CHANGELOG.md
+README.md
 *.json
+*.csv
+*.zip

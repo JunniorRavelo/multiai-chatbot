@@ -19,7 +19,7 @@ class Chatbot_Provider_Gemini implements Chatbot_AI_Provider {
 		if ( '' === $api_key ) {
 			return new WP_Error(
 				'configuration_error',
-				__( 'Gemini API key is not configured.', 'chatbot-plugin-wp' ),
+				__( 'Gemini API key is not configured.', 'multiai-chatbot' ),
 				array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 			);
 		}
@@ -96,7 +96,7 @@ class Chatbot_Provider_Gemini implements Chatbot_AI_Provider {
 
 		return new WP_Error(
 			'model_temp_unavailable',
-			__( 'Models are not available at this time. Please try again later.', 'chatbot-plugin-wp' ),
+			__( 'Models are not available at this time. Please try again later.', 'multiai-chatbot' ),
 			array( 'status' => 503, 'error_code' => 'MODEL_TEMP_UNAVAILABLE' )
 		);
 	}

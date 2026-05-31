@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Compile .po translation files to .mo for WordPress (chatbot-plugin-wp).
+# Compile .po translation files to .mo for WordPress (multiai-chatbot).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LANG_DIR="${ROOT}/languages"
 
 if command -v msgfmt >/dev/null 2>&1; then
-	for po in "${LANG_DIR}"/chatbot-plugin-wp-*.po; do
+	for po in "${LANG_DIR}"/multiai-chatbot-*.po; do
 		[[ -f "$po" ]] || continue
 		mo="${po%.po}.mo"
 		msgfmt -o "$mo" "$po"

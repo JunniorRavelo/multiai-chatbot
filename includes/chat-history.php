@@ -251,10 +251,11 @@ class Chatbot_Chat_History {
 		);
 		$formats    = array( '%s' );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table name from plugin helper via %i placeholder.
 		$updates['message_count'] = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT COUNT(*) FROM ' . self::messages_table() . ' WHERE conversation_id = %d',
+				'SELECT COUNT(*) FROM %i WHERE conversation_id = %d',
+				self::messages_table(),
 				$conversation_id
 			)
 		);
@@ -262,9 +263,9 @@ class Chatbot_Chat_History {
 
 		if ( 'user' === $role ) {
 			$title = self::truncate_title( $content );
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name from plugin helper (prefix + fixed suffix); %i requires WP 6.2+.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table name from plugin helper via %i placeholder.
 			$current_title = (string) $wpdb->get_var(
-				$wpdb->prepare( "SELECT title FROM {$conv_table} WHERE id = %d", $conversation_id )
+				$wpdb->prepare( 'SELECT title FROM %i WHERE id = %d', self::conversations_table(), $conversation_id )
 			);
 			if ( '' === trim( $current_title ) && '' !== $title ) {
 				$updates['title'] = $title;
@@ -611,21 +612,21 @@ class Chatbot_Chat_History {
 		$seconds = $end - $start;
 		if ( $seconds < 60 ) {
 			/* translators: %d: seconds */
-			return sprintf( _n( '%d s', '%d s', $seconds, 'chatbot-plugin-wp' ), $seconds );
+			return sprintf( _n( '%d s', '%d s', $seconds, 'multiai-chatbot' ), $seconds );
 		}
 		if ( $seconds < 3600 ) {
 			$mins = (int) floor( $seconds / 60 );
 			/* translators: %d: minutes */
-			return sprintf( _n( '%d min', '%d min', $mins, 'chatbot-plugin-wp' ), $mins );
+			return sprintf( _n( '%d min', '%d min', $mins, 'multiai-chatbot' ), $mins );
 		}
 		$hours = (int) floor( $seconds / 3600 );
 		$mins  = (int) floor( ( $seconds % 3600 ) / 60 );
 		if ( $mins > 0 ) {
 			/* translators: 1: hours, 2: minutes */
-			return sprintf( __( '%1$dh %2$dmin', 'chatbot-plugin-wp' ), $hours, $mins );
+			return sprintf( __( '%1$dh %2$dmin', 'multiai-chatbot' ), $hours, $mins );
 		}
 		/* translators: %d: hours */
-		return sprintf( _n( '%d h', '%d h', $hours, 'chatbot-plugin-wp' ), $hours );
+		return sprintf( _n( '%d h', '%d h', $hours, 'multiai-chatbot' ), $hours );
 	}
 
 	/**
@@ -647,6 +648,7 @@ class Chatbot_Chat_History {
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- php://output is the standard stream for CSV downloads.
 		$out = fopen( 'php://output', 'w' );
 		if ( false === $out ) {
 			return;
@@ -655,15 +657,15 @@ class Chatbot_Chat_History {
 		fputcsv(
 			$out,
 			array(
-				__( 'Public ID', 'chatbot-plugin-wp' ),
-				__( 'Title', 'chatbot-plugin-wp' ),
-				__( 'Provider', 'chatbot-plugin-wp' ),
-				__( 'Model', 'chatbot-plugin-wp' ),
-				__( 'Status', 'chatbot-plugin-wp' ),
-				__( 'Messages', 'chatbot-plugin-wp' ),
-				__( 'Path', 'chatbot-plugin-wp' ),
-				__( 'Start', 'chatbot-plugin-wp' ),
-				__( 'Last activity', 'chatbot-plugin-wp' ),
+				__( 'Public ID', 'multiai-chatbot' ),
+				__( 'Title', 'multiai-chatbot' ),
+				__( 'Provider', 'multiai-chatbot' ),
+				__( 'Model', 'multiai-chatbot' ),
+				__( 'Status', 'multiai-chatbot' ),
+				__( 'Messages', 'multiai-chatbot' ),
+				__( 'Path', 'multiai-chatbot' ),
+				__( 'Start', 'multiai-chatbot' ),
+				__( 'Last activity', 'multiai-chatbot' ),
 			)
 		);
 
@@ -684,6 +686,7 @@ class Chatbot_Chat_History {
 			);
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- closes php://output stream after CSV export.
 		fclose( $out );
 	}
 
@@ -872,10 +875,10 @@ class Chatbot_Chat_History {
 
 	public static function drop_tables(): void {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Required on uninstall; table names from plugin helpers.
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::messages_table() );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Required on uninstall; table names from plugin helpers.
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::conversations_table() );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Required on uninstall; table names from plugin helpers via %i.
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', self::messages_table() ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Required on uninstall; table names from plugin helpers via %i.
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', self::conversations_table() ) );
 		delete_option( 'chatbot_plugin_history_db_version' );
 	}
 }

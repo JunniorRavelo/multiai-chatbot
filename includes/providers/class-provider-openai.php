@@ -19,7 +19,7 @@ class Chatbot_Provider_OpenAI implements Chatbot_AI_Provider {
 		if ( '' === $api_key ) {
 			return new WP_Error(
 				'configuration_error',
-				__( 'API key is not configured.', 'chatbot-plugin-wp' ),
+				__( 'API key is not configured.', 'multiai-chatbot' ),
 				array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 			);
 		}
@@ -69,7 +69,7 @@ class Chatbot_Provider_OpenAI implements Chatbot_AI_Provider {
 		if ( is_wp_error( $response ) ) {
 			return new WP_Error(
 				'provider_timeout',
-				__( 'Could not connect to the AI provider.', 'chatbot-plugin-wp' ),
+				__( 'Could not connect to the AI provider.', 'multiai-chatbot' ),
 				array( 'status' => 504, 'error_code' => 'PROVIDER_TIMEOUT' )
 			);
 		}
@@ -78,7 +78,7 @@ class Chatbot_Provider_OpenAI implements Chatbot_AI_Provider {
 		if ( 429 === $code ) {
 			return new WP_Error(
 				'rate_limit_model',
-				__( 'Provider rate limit reached. Please try again shortly.', 'chatbot-plugin-wp' ),
+				__( 'Provider rate limit reached. Please try again shortly.', 'multiai-chatbot' ),
 				array( 'status' => 429, 'error_code' => 'RATE_LIMIT_MODEL_MINUTE', 'retry_after' => 60 )
 			);
 		}
@@ -86,7 +86,7 @@ class Chatbot_Provider_OpenAI implements Chatbot_AI_Provider {
 		if ( $code < 200 || $code >= 300 ) {
 			return new WP_Error(
 				'provider_upstream',
-				__( 'The AI provider returned an error.', 'chatbot-plugin-wp' ),
+				__( 'The AI provider returned an error.', 'multiai-chatbot' ),
 				array( 'status' => 502, 'error_code' => 'PROVIDER_UPSTREAM' )
 			);
 		}
@@ -100,7 +100,7 @@ class Chatbot_Provider_OpenAI implements Chatbot_AI_Provider {
 		if ( '' === $text ) {
 			return new WP_Error(
 				'model_temp_unavailable',
-				__( 'The model did not return a valid response.', 'chatbot-plugin-wp' ),
+				__( 'The model did not return a valid response.', 'multiai-chatbot' ),
 				array( 'status' => 503, 'error_code' => 'MODEL_TEMP_UNAVAILABLE' )
 			);
 		}
