@@ -1,8 +1,6 @@
 scripts/
 .github/
 .env
-.env.example
-.gitignore
 .venv-i18n/
 node_modules/
 docs/
