@@ -1,5 +1,6 @@
-# Copia local para desarrollo: cp scripts/gitignore.template .gitignore
-# No versionar .gitignore: Plugin Check no permite archivos ocultos en el plugin.
+# No crear .gitignore en la raíz del plugin (Plugin Check lo rechaza).
+# Las exclusiones locales viven en .git/info/exclude. Instálalas con:
+#   ./scripts/setup-dev-excludes.sh
 .env
 .git/
 *.log
