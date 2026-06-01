@@ -725,23 +725,27 @@ class Chatbot_Chat_History {
 			);
 		}
 
-		$ids = self::sanitize_id_list( $ids );
+		$ids       = self::sanitize_id_list( $ids );
+		$msg_table = self::messages_table();
+		$conv_table = self::conversations_table();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table purge; IN list is intval-only via sanitize_id_list().
-		$deleted_messages = (int) $wpdb->query(
-			$wpdb->prepare(
-				'DELETE FROM %i WHERE conversation_id IN (' . implode( ',', $ids ) . ')',
-				self::messages_table()
-			)
-		);
+		$deleted_messages      = 0;
+		$deleted_conversations = 0;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table purge; IN list is intval-only via sanitize_id_list().
-		$deleted_conversations = (int) $wpdb->query(
-			$wpdb->prepare(
-				'DELETE FROM %i WHERE id IN (' . implode( ',', $ids ) . ')',
-				self::conversations_table()
-			)
-		);
+		foreach ( $ids as $id ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; IDs sanitized via sanitize_id_list().
+			$deleted_messages += (int) $wpdb->delete(
+				$msg_table,
+				array( 'conversation_id' => $id ),
+				array( '%d' )
+			);
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; IDs sanitized via sanitize_id_list().
+			$deleted_conversations += (int) $wpdb->delete(
+				$conv_table,
+				array( 'id' => $id ),
+				array( '%d' )
+			);
+		}
 
 		return array(
 			'deleted_conversations' => $deleted_conversations,
@@ -780,33 +784,29 @@ class Chatbot_Chat_History {
 		global $wpdb;
 
 		$msg_table = self::messages_table();
+		$out       = array();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table lookup; IN list is intval-only via sanitize_id_list().
-		$rows = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT m.conversation_id, m.content
-				FROM %i m
-				INNER JOIN (
-					SELECT conversation_id, MIN(id) AS min_id
-					FROM %i
-					WHERE role = %s AND conversation_id IN (' . implode( ',', $conversation_ids ) . ')
-					GROUP BY conversation_id
-				) first_msg ON m.id = first_msg.min_id',
-				$msg_table,
-				$msg_table,
-				'user'
-			),
-			ARRAY_A
-		);
-
-		$out = array();
-		foreach ( $rows ?: array() as $row ) {
-			$cid = (int) ( $row['conversation_id'] ?? 0 );
-			if ( $cid > 0 ) {
-				$text = wp_strip_all_tags( (string) ( $row['content'] ?? '' ) );
-				$text = preg_replace( '/\s+/', ' ', $text ) ?? $text;
-				$out[ $cid ] = self::truncate_title( trim( $text ) );
+		foreach ( $conversation_ids as $cid ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; first user message per conversation.
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'SELECT conversation_id, content FROM %i WHERE conversation_id = %d AND role = %s ORDER BY id ASC LIMIT 1',
+					$msg_table,
+					$cid,
+					'user'
+				),
+				ARRAY_A
+			);
+			if ( ! $row ) {
+				continue;
 			}
+			$conversation_id = (int) ( $row['conversation_id'] ?? 0 );
+			if ( $conversation_id <= 0 ) {
+				continue;
+			}
+			$text = wp_strip_all_tags( (string) ( $row['content'] ?? '' ) );
+			$text = preg_replace( '/\s+/', ' ', $text ) ?? $text;
+			$out[ $conversation_id ] = self::truncate_title( trim( $text ) );
 		}
 
 		return $out;
@@ -867,17 +867,22 @@ class Chatbot_Chat_History {
 
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table lookup; IN list is intval-only via sanitize_id_list().
-		$rows = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT id, public_id FROM %i WHERE id IN (' . implode( ',', $conversation_ids ) . ')',
-				self::conversations_table()
-			),
-			ARRAY_A
-		);
+		$conv_table = self::conversations_table();
+		$map        = array();
 
-		$map = array();
-		foreach ( $rows ?: array() as $row ) {
+		foreach ( $conversation_ids as $cid ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; IDs sanitized via sanitize_id_list().
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'SELECT id, public_id FROM %i WHERE id = %d LIMIT 1',
+					$conv_table,
+					$cid
+				),
+				ARRAY_A
+			);
+			if ( ! $row ) {
+				continue;
+			}
 			$map[ (int) ( $row['id'] ?? 0 ) ] = (string) ( $row['public_id'] ?? '' );
 		}
 
