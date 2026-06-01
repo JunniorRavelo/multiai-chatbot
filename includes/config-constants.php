@@ -10,6 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Plugin text domain (must match plugin slug / Text Domain header).
+ */
+function multch_text_domain(): string {
+	return defined( 'MULTCH_TEXT_DOMAIN' ) ? MULTCH_TEXT_DOMAIN : 'multiai-chatbot';
+}
+
+/**
  * @param string      $name   Preferred constant (e.g. MULTCH_OPENAI_API_KEY).
  * @param string|null $legacy Legacy constant name (e.g. CHATBOT_OPENAI_API_KEY).
  */

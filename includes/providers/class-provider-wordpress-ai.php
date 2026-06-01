@@ -18,7 +18,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		if ( ! multch_ai_client_available() ) {
 			return new WP_Error(
 				'configuration_error',
-				__( 'WordPress AI Client is not available. Use WordPress 7.0 or newer, or choose Ollama for a local model.', 'multiai-chatbot' ),
+				__( 'WordPress AI Client is not available. Use WordPress 7.0 or newer, or choose Ollama for a local model.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 			);
 		}
@@ -26,7 +26,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		if ( ! class_exists( 'WordPress\AiClient\Messages\DTO\UserMessage' ) ) {
 			return new WP_Error(
 				'configuration_error',
-				__( 'WordPress AI Client libraries are not loaded.', 'multiai-chatbot' ),
+				__( 'WordPress AI Client libraries are not loaded.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 			);
 		}
@@ -35,7 +35,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		if ( '' === $split['latest'] ) {
 			return new WP_Error(
 				'invalid_request',
-				__( 'Invalid request.', 'multiai-chatbot' ),
+				__( 'Invalid request.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 400, 'error_code' => 'INVALID_REQUEST' )
 			);
 		}
@@ -83,7 +83,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 
 		return new WP_Error(
 			'model_temp_unavailable',
-			__( 'The model did not return a valid response. Check Settings → Connectors and the model ID in AI Model.', 'multiai-chatbot' ),
+			__( 'The model did not return a valid response. Check Settings → Connectors and the model ID in AI Model.', MULTCH_TEXT_DOMAIN ),
 			array( 'status' => 503, 'error_code' => 'MODEL_TEMP_UNAVAILABLE' )
 		);
 	}

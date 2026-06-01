@@ -54,7 +54,7 @@ class Multch_Api_Handler {
 
 		$system = ! empty( $settings['system_prompt'] )
 			? (string) $settings['system_prompt']
-			: __( 'You are a helpful website assistant. Respond clearly and briefly.', 'multiai-chatbot' );
+			: __( 'You are a helpful website assistant. Respond clearly and briefly.', MULTCH_TEXT_DOMAIN );
 
 		$messages     = self::build_messages( $parsed['message'], $parsed['history'] );
 		$conversation = self::resolve_history_conversation(
@@ -175,7 +175,7 @@ class Multch_Api_Handler {
 	public static function handle_stream( WP_REST_Request $request ) {
 		$settings = Multch_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
-			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ), 404 );
+			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', MULTCH_TEXT_DOMAIN ) ), 404 );
 		}
 
 		$response = self::internal_chat_request( $request, $settings );
@@ -225,20 +225,20 @@ class Multch_Api_Handler {
 		$settings = Multch_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
 			status_header( 404 );
-			echo wp_json_encode( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ) );
+			echo wp_json_encode( array( 'error' => __( 'Streaming disabled.', MULTCH_TEXT_DOMAIN ) ) );
 			exit;
 		}
 
 		$nonce = $request->get_header( 'x-wp-nonce' );
 		if ( ! self::verify_nonce( $nonce ) ) {
 			status_header( 403 );
-			echo wp_json_encode( array( 'error' => __( 'Invalid nonce.', 'multiai-chatbot' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
+			echo wp_json_encode( array( 'error' => __( 'Invalid nonce.', MULTCH_TEXT_DOMAIN ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
 			exit;
 		}
 
 		if ( ! self::verify_origin( $settings ) ) {
 			status_header( 403 );
-			echo wp_json_encode( array( 'error' => __( 'Origin not allowed.', 'multiai-chatbot' ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
+			echo wp_json_encode( array( 'error' => __( 'Origin not allowed.', MULTCH_TEXT_DOMAIN ), 'errorCode' => 'ORIGIN_FORBIDDEN' ) );
 			exit;
 		}
 
@@ -424,14 +424,14 @@ class Multch_Api_Handler {
 			if ( self::looks_like_html_error_page( $raw ) ) {
 				return new WP_REST_Response(
 					array(
-						'error'     => __( 'The server returned an error page (502). Leave the internal chat URL empty or use a local URL; do not use the public URL with Cloudflare.', 'multiai-chatbot' ),
+						'error'     => __( 'The server returned an error page (502). Leave the internal chat URL empty or use a local URL; do not use the public URL with Cloudflare.', MULTCH_TEXT_DOMAIN ),
 						'errorCode' => 'PROVIDER_UPSTREAM',
 					),
 					502
 				);
 			}
 			$data = array(
-				'error'     => __( 'Invalid internal response.', 'multiai-chatbot' ),
+				'error'     => __( 'Invalid internal response.', MULTCH_TEXT_DOMAIN ),
 				'errorCode' => 'SERVER_ERROR',
 			);
 		}
@@ -470,7 +470,7 @@ class Multch_Api_Handler {
 			default:
 				return new WP_Error(
 					'configuration_error',
-					__( 'Invalid AI provider.', 'multiai-chatbot' ),
+					__( 'Invalid AI provider.', MULTCH_TEXT_DOMAIN ),
 					array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 				);
 		}
@@ -484,7 +484,7 @@ class Multch_Api_Handler {
 		if ( ! is_array( $body ) ) {
 			return new WP_Error(
 				'invalid_request',
-				__( 'Invalid request.', 'multiai-chatbot' ),
+				__( 'Invalid request.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 400, 'error_code' => 'INVALID_REQUEST' )
 			);
 		}
@@ -493,7 +493,7 @@ class Multch_Api_Handler {
 		if ( strlen( $message ) < 2 || strlen( $message ) > 700 ) {
 			return new WP_Error(
 				'invalid_request',
-				__( 'The message must be between 2 and 700 characters.', 'multiai-chatbot' ),
+				__( 'The message must be between 2 and 700 characters.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 400, 'error_code' => 'INVALID_REQUEST' )
 			);
 		}
@@ -633,7 +633,7 @@ class Multch_Api_Handler {
 			$suspend_seconds = max( 60, (int) ( $settings['ip_suspend_seconds'] ?? 900 ) );
 			return new WP_REST_Response(
 				array(
-					'error'      => __( 'Your IP is temporarily suspended due to too many requests.', 'multiai-chatbot' ),
+					'error'      => __( 'Your IP is temporarily suspended due to too many requests.', MULTCH_TEXT_DOMAIN ),
 					'errorCode'  => 'IP_SUSPENDED',
 					'retryAfter' => $suspend_seconds,
 				),
@@ -713,7 +713,7 @@ class Multch_Api_Handler {
 		if ( $count >= $limit ) {
 			return new WP_REST_Response(
 				array(
-					'error'      => __( 'Too many requests. Please wait a moment.', 'multiai-chatbot' ),
+					'error'      => __( 'Too many requests. Please wait a moment.', MULTCH_TEXT_DOMAIN ),
 					'errorCode'  => $check['code'],
 					'retryAfter' => $window,
 				),

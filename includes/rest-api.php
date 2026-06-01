@@ -95,7 +95,7 @@ class Multch_Rest_Api {
 		if ( ! Multch_Api_Handler::verify_nonce( $nonce ) ) {
 			return new WP_Error(
 				'forbidden',
-				__( 'Invalid nonce.', 'multiai-chatbot' ),
+				__( 'Invalid nonce.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 403, 'errorCode' => 'ORIGIN_FORBIDDEN' )
 			);
 		}
@@ -104,7 +104,7 @@ class Multch_Rest_Api {
 		if ( ! Multch_Api_Handler::verify_origin( $settings ) ) {
 			return new WP_Error(
 				'forbidden',
-				__( 'Origin not allowed.', 'multiai-chatbot' ),
+				__( 'Origin not allowed.', MULTCH_TEXT_DOMAIN ),
 				array( 'status' => 403, 'errorCode' => 'ORIGIN_FORBIDDEN' )
 			);
 		}
@@ -118,13 +118,13 @@ class Multch_Rest_Api {
 	public static function stream_info( WP_REST_Request $request ): WP_REST_Response {
 		$settings = Multch_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
-			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ), 404 );
+			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', MULTCH_TEXT_DOMAIN ) ), 404 );
 		}
 
 		return new WP_REST_Response(
 			array(
 				'streamUrl' => home_url( '/multch/v1/chat/stream' ),
-				'hint'      => __( 'Use POST with the same body and headers as /chat.', 'multiai-chatbot' ),
+				'hint'      => __( 'Use POST with the same body and headers as /chat.', MULTCH_TEXT_DOMAIN ),
 			),
 			200
 		);

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Fail if gettext domains in PHP do not match the plugin slug (multiai-chatbot).
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
+
+EXPECTED="multiai-chatbot"
+FORBIDDEN="chatbot-plugin-wp"
+
+if OUT="$(python3 - "$EXPECTED" "$FORBIDDEN" "$ROOT" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+expected = sys.argv[1]
+forbidden = sys.argv[2]
+root = Path(sys.argv[3])
+
+funcs = r"(?:__|_e|_n|_x|esc_html__|esc_attr__|esc_html_e|esc_attr_e|_nx|_ex)"
+# Domain is the last string literal in common two- and four-argument gettext calls.
+pat = re.compile(
+    funcs
+    + r"\s*\((?:[^()]|\([^()]*\))*?,"
+    + r"\s*['\"]([^'\"]+)['\"]\s*(?:,|\))",
+    re.M,
+)
+
+errors = []
+for path in sorted(root.rglob("*.php")):
+    if any(part in {".git", "vendor", "scripts/lib"} for part in path.parts):
+        continue
+    text = path.read_text(encoding="utf-8", errors="replace")
+    if forbidden in text:
+        errors.append(f"{path.relative_to(root)}: contains forbidden domain {forbidden!r}")
+    for match in pat.finditer(text):
+        domain = match.group(1)
+        if domain in {expected, "MULTCH_TEXT_DOMAIN"}:
+            continue
+        if "%" in domain or domain.isupper():
+            continue
+        errors.append(
+            f"{path.relative_to(root)}:{text.count(chr(10), 0, match.start()) + 1}: "
+            f"unexpected text domain {domain!r} (expected {expected!r})"
+        )
+
+if errors:
+    print("check-text-domain: FAILED", file=sys.stderr)
+    for line in errors[:40]:
+        print(line, file=sys.stderr)
+    if len(errors) > 40:
+        print(f"... and {len(errors) - 40} more", file=sys.stderr)
+    sys.exit(1)
+
+print("check-text-domain: OK")
+PY
+)"; then
+	echo "$OUT"
+else
+	exit 1
+fi

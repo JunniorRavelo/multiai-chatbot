@@ -22,21 +22,21 @@ class Multch_Donation_Footer {
             return;
         }
         ?>
-        <footer class="multch-donation-footer" aria-label="<?php esc_attr_e( 'Support the plugin', 'multiai-chatbot' ); ?>">
+        <footer class="multch-donation-footer" aria-label="<?php esc_attr_e( 'Support the plugin', MULTCH_TEXT_DOMAIN ); ?>">
             <div class="multch-donation-footer__inner">
                 <p class="multch-donation-footer__text">
                     <span class="multch-donation-footer__heart" aria-hidden="true">♥</span>
-                    <?php esc_html_e( 'Like this plugin? You can support development on GitHub Sponsors:', 'multiai-chatbot' ); ?>
+                    <?php esc_html_e( 'Like this plugin? You can support development on GitHub Sponsors:', MULTCH_TEXT_DOMAIN ); ?>
                 </p>
                 <a
                     class="multch-donation-footer__chip multch-donation-footer__chip--github_sponsors"
                     href="<?php echo esc_url( self::GITHUB_SPONSORS_URL ); ?>"
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="<?php esc_attr_e( 'GitHub Sponsors', 'multiai-chatbot' ); ?>"
+                    title="<?php esc_attr_e( 'GitHub Sponsors', MULTCH_TEXT_DOMAIN ); ?>"
                 >
                     <?php echo self::github_icon(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG estático ?>
-                    <span class="multch-donation-footer__chip-label"><?php esc_html_e( 'GitHub Sponsors', 'multiai-chatbot' ); ?></span>
+                    <span class="multch-donation-footer__chip-label"><?php esc_html_e( 'GitHub Sponsors', MULTCH_TEXT_DOMAIN ); ?></span>
                 </a>
             </div>
         </footer>

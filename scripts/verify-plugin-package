@@ -13,6 +13,7 @@ cleanup() {
 trap cleanup EXIT
 
 cd "${ROOT}"
+./scripts/check-text-domain
 ./scripts/package-plugin
 
 if [[ ! -f "${ZIP}" ]]; then

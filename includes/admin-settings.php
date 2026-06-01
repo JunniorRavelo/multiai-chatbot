@@ -77,8 +77,8 @@ class Multch_Admin_Settings {
 
 	public static function register_menu(): void {
 		add_menu_page(
-			__( 'MultiAI ChatBot', 'multiai-chatbot' ),
-			__( 'MultiAI ChatBot', 'multiai-chatbot' ),
+			__( 'MultiAI ChatBot', MULTCH_TEXT_DOMAIN ),
+			__( 'MultiAI ChatBot', MULTCH_TEXT_DOMAIN ),
 			'manage_options',
 			'multch-plugin',
 			array( __CLASS__, 'render_page' ),
@@ -142,7 +142,7 @@ class Multch_Admin_Settings {
 			add_settings_error(
 				'multch_plugin_group',
 				'multch_settings_saved',
-				__( 'Changes saved successfully.', 'multiai-chatbot' ),
+				__( 'Changes saved successfully.', MULTCH_TEXT_DOMAIN ),
 				'success'
 			);
 		}
@@ -208,15 +208,15 @@ class Multch_Admin_Settings {
 	 */
 	public static function translated_general_defaults(): array {
 		return array(
-			'widget_title'    => __( 'AI Agent', 'multiai-chatbot' ),
-			'widget_subtitle' => __( 'System online', 'multiai-chatbot' ),
+			'widget_title'    => __( 'AI Agent', MULTCH_TEXT_DOMAIN ),
+			'widget_subtitle' => __( 'System online', MULTCH_TEXT_DOMAIN ),
 			'welcome_message' => __(
 				"Hello. I'm an AI agent. I may make mistakes; please verify important information before making decisions.\n\nHow can I help you?",
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
 			'system_prompt'   => __(
 				'You are a helpful website assistant. Respond clearly, briefly, and kindly. If you don\'t know something, say so honestly.',
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
 		);
 	}
@@ -228,44 +228,44 @@ class Multch_Admin_Settings {
 	 */
 	private static function admin_preview_i18n_strings(): array {
 		return array(
-			'openPanel'            => __( 'Open panel', 'multiai-chatbot' ),
-			'closePanel'           => __( 'Close panel', 'multiai-chatbot' ),
-			'openChat'             => __( 'Open chat', 'multiai-chatbot' ),
-			'minimize'             => __( 'Minimize', 'multiai-chatbot' ),
-			'reset'                => __( 'Reset', 'multiai-chatbot' ),
-			'close'                => __( 'Close', 'multiai-chatbot' ),
-			'placeholder'          => __( 'Type your message…', 'multiai-chatbot' ),
-			'send'                 => __( 'Send', 'multiai-chatbot' ),
-			'fallbackTitle'        => __( 'AI Agent', 'multiai-chatbot' ),
-			'fallbackSubtitle'     => __( 'System online', 'multiai-chatbot' ),
+			'openPanel'            => __( 'Open panel', MULTCH_TEXT_DOMAIN ),
+			'closePanel'           => __( 'Close panel', MULTCH_TEXT_DOMAIN ),
+			'openChat'             => __( 'Open chat', MULTCH_TEXT_DOMAIN ),
+			'minimize'             => __( 'Minimize', MULTCH_TEXT_DOMAIN ),
+			'reset'                => __( 'Reset', MULTCH_TEXT_DOMAIN ),
+			'close'                => __( 'Close', MULTCH_TEXT_DOMAIN ),
+			'placeholder'          => __( 'Type your message…', MULTCH_TEXT_DOMAIN ),
+			'send'                 => __( 'Send', MULTCH_TEXT_DOMAIN ),
+			'fallbackTitle'        => __( 'AI Agent', MULTCH_TEXT_DOMAIN ),
+			'fallbackSubtitle'     => __( 'System online', MULTCH_TEXT_DOMAIN ),
 			'fallbackWelcome'      => __(
 				"Hello. I'm an AI agent. I may make mistakes; please verify important information before making decisions.\n\nHow can I help you?",
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
-			'previewSampleUser'      => __( 'What are your opening hours?', 'multiai-chatbot' ),
+			'previewSampleUser'      => __( 'What are your opening hours?', MULTCH_TEXT_DOMAIN ),
 			'previewSampleAssistant' => __(
 				'We are open Monday through Friday, 9:00 AM to 6:00 PM.',
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
-			'welcomeMessageLabel'    => __( 'Welcome message', 'multiai-chatbot' ),
+			'welcomeMessageLabel'    => __( 'Welcome message', MULTCH_TEXT_DOMAIN ),
 			'widgetDisabled'       => __(
 				'Global widget is disabled. The preview shows how copy would look if enabled.',
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
-			'widgetEnabled'        => __( 'Enabled', 'multiai-chatbot' ),
-			'widgetDisabledLabel'  => __( 'Disabled', 'multiai-chatbot' ),
+			'widgetEnabled'        => __( 'Enabled', MULTCH_TEXT_DOMAIN ),
+			'widgetDisabledLabel'  => __( 'Disabled', MULTCH_TEXT_DOMAIN ),
 			'contrastWarning'      => __(
 				'Low contrast between primary color and background; check accessibility.',
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
-			'resetOverrides'       => __( 'Reset color overrides', 'multiai-chatbot' ),
-			'exportTheme'          => __( 'Export theme', 'multiai-chatbot' ),
-			'importTheme'          => __( 'Import theme', 'multiai-chatbot' ),
+			'resetOverrides'       => __( 'Reset color overrides', MULTCH_TEXT_DOMAIN ),
+			'exportTheme'          => __( 'Export theme', MULTCH_TEXT_DOMAIN ),
+			'importTheme'          => __( 'Import theme', MULTCH_TEXT_DOMAIN ),
 			'importSuccess'        => __(
 				'Theme imported into the form. Save to apply on the site.',
-				'multiai-chatbot'
+				MULTCH_TEXT_DOMAIN
 			),
-			'importError'          => __( 'Invalid theme JSON.', 'multiai-chatbot' ),
+			'importError'          => __( 'Invalid theme JSON.', MULTCH_TEXT_DOMAIN ),
 		);
 	}
 
@@ -282,11 +282,11 @@ class Multch_Admin_Settings {
 	private static function admin_model_provider_descriptions(): array {
 		return array(
 			'wordpress_ai' => array(
-				'model'      => __( 'Preferred model ID (e.g. gemini-2.5-flash, gpt-4o-mini, claude-sonnet-4-6). WordPress picks the first available from your Connectors.', 'multiai-chatbot' ),
-				'candidates' => __( 'Comma-separated fallback model preferences if the primary model is unavailable.', 'multiai-chatbot' ),
+				'model'      => __( 'Preferred model ID (e.g. gemini-2.5-flash, gpt-4o-mini, claude-sonnet-4-6). WordPress picks the first available from your Connectors.', MULTCH_TEXT_DOMAIN ),
+				'candidates' => __( 'Comma-separated fallback model preferences if the primary model is unavailable.', MULTCH_TEXT_DOMAIN ),
 			),
 			'ollama'       => array(
-				'model'      => __( 'Name of the model installed in Ollama (e.g. llama3).', 'multiai-chatbot' ),
+				'model'      => __( 'Name of the model installed in Ollama (e.g. llama3).', MULTCH_TEXT_DOMAIN ),
 				'candidates' => '',
 			),
 		);
@@ -313,7 +313,7 @@ class Multch_Admin_Settings {
 			wp_kses(
 				sprintf(
 					/* translators: %s: WordPress version number. */
-					__( 'Cloud AI requires WordPress %s or newer with the built-in AI Client, or choose Ollama for a local model.', 'multiai-chatbot' ),
+					__( 'Cloud AI requires WordPress %s or newer with the built-in AI Client, or choose Ollama for a local model.', MULTCH_TEXT_DOMAIN ),
 					'7.0'
 				),
 				array()
@@ -323,13 +323,13 @@ class Multch_Admin_Settings {
 
 	private static function admin_general_i18n_strings(): array {
 		return array(
-			'copyShortcode'       => __( 'Copy shortcode', 'multiai-chatbot' ),
-			'copied'              => __( 'Copied', 'multiai-chatbot' ),
-			'copyFailed'          => __( 'Could not copy.', 'multiai-chatbot' ),
-			'restoreWelcome'      => __( 'Restore default welcome message?', 'multiai-chatbot' ),
-			'restoreSystemPrompt' => __( 'Restore default system instructions?', 'multiai-chatbot' ),
+			'copyShortcode'       => __( 'Copy shortcode', MULTCH_TEXT_DOMAIN ),
+			'copied'              => __( 'Copied', MULTCH_TEXT_DOMAIN ),
+			'copyFailed'          => __( 'Could not copy.', MULTCH_TEXT_DOMAIN ),
+			'restoreWelcome'      => __( 'Restore default welcome message?', MULTCH_TEXT_DOMAIN ),
+			'restoreSystemPrompt' => __( 'Restore default system instructions?', MULTCH_TEXT_DOMAIN ),
 			/* translators: 1: current character count, 2: maximum allowed characters */
-			'charCount'           => __( '%1$d / %2$d characters', 'multiai-chatbot' ),
+			'charCount'           => __( '%1$d / %2$d characters', MULTCH_TEXT_DOMAIN ),
 		);
 	}
 
@@ -403,7 +403,7 @@ class Multch_Admin_Settings {
 	 */
 	public static function developer_credit_for_js(): array {
 		return array(
-			'productName' => __( 'MultiAI Chatbot', 'multiai-chatbot' ),
+			'productName' => __( 'MultiAI Chatbot', MULTCH_TEXT_DOMAIN ),
 			'authorName'  => 'Jsravelo',
 			'productUrl'  => esc_url_raw( 'https://github.com/JunniorRavelo/multiai-chatbot' ),
 			'authorUrl'   => esc_url_raw( 'https://www.linkedin.com/in/jsravelo/' ),
@@ -443,7 +443,7 @@ class Multch_Admin_Settings {
 			add_settings_error(
 				'multch_plugin_group',
 				'multch_empty_widget_title',
-				__( 'The widget is enabled but the title is empty. Visitors may see a blank header until you set a title.', 'multiai-chatbot' ),
+				__( 'The widget is enabled but the title is empty. Visitors may see a blank header until you set a title.', MULTCH_TEXT_DOMAIN ),
 				'warning'
 			);
 		}
@@ -515,7 +515,7 @@ class Multch_Admin_Settings {
 			self::maybe_add_css_size_warning(
 				$input['style_radius'],
 				$out['style_radius'],
-				__( 'Border radius is invalid; that value was ignored.', 'multiai-chatbot' )
+				__( 'Border radius is invalid; that value was ignored.', MULTCH_TEXT_DOMAIN )
 			);
 		}
 
@@ -533,7 +533,7 @@ class Multch_Admin_Settings {
 			self::maybe_add_css_size_warning(
 				$input['style_panel_width'],
 				$out['style_panel_width'],
-				__( 'Panel width is invalid; that value was ignored.', 'multiai-chatbot' )
+				__( 'Panel width is invalid; that value was ignored.', MULTCH_TEXT_DOMAIN )
 			);
 		}
 
@@ -553,7 +553,7 @@ class Multch_Admin_Settings {
 			self::maybe_add_css_size_warning(
 				$input['style_panel_max_height'],
 				$out['style_panel_max_height'],
-				__( 'Panel max height is invalid; that value was ignored.', 'multiai-chatbot' )
+				__( 'Panel max height is invalid; that value was ignored.', MULTCH_TEXT_DOMAIN )
 			);
 		}
 
@@ -593,10 +593,10 @@ class Multch_Admin_Settings {
 	 */
 	public static function style_font_family_labels(): array {
 		return array(
-			'system'  => __( 'System UI', 'multiai-chatbot' ),
-			'inherit' => __( 'Inherit from theme', 'multiai-chatbot' ),
-			'serif'   => __( 'Serif', 'multiai-chatbot' ),
-			'mono'    => __( 'Monospace', 'multiai-chatbot' ),
+			'system'  => __( 'System UI', MULTCH_TEXT_DOMAIN ),
+			'inherit' => __( 'Inherit from theme', MULTCH_TEXT_DOMAIN ),
+			'serif'   => __( 'Serif', MULTCH_TEXT_DOMAIN ),
+			'mono'    => __( 'Monospace', MULTCH_TEXT_DOMAIN ),
 		);
 	}
 
@@ -1011,13 +1011,13 @@ class Multch_Admin_Settings {
 					'nonce'   => wp_create_nonce( 'multch_history_detail' ),
 					'deleteNonce' => wp_create_nonce( 'multch_delete_conversation' ),
 					'i18n'    => array(
-						'loading'      => __( 'Loading messages…', 'multiai-chatbot' ),
-						'error'        => __( 'Could not load the conversation.', 'multiai-chatbot' ),
-						'retry'        => __( 'Retry', 'multiai-chatbot' ),
-						'copied'       => __( 'Copied', 'multiai-chatbot' ),
-						'copyFailed'   => __( 'Could not copy.', 'multiai-chatbot' ),
-						'deleteConfirm' => __( 'Delete this conversation and all its messages?', 'multiai-chatbot' ),
-						'deleteFailed' => __( 'Could not delete the conversation.', 'multiai-chatbot' ),
+						'loading'      => __( 'Loading messages…', MULTCH_TEXT_DOMAIN ),
+						'error'        => __( 'Could not load the conversation.', MULTCH_TEXT_DOMAIN ),
+						'retry'        => __( 'Retry', MULTCH_TEXT_DOMAIN ),
+						'copied'       => __( 'Copied', MULTCH_TEXT_DOMAIN ),
+						'copyFailed'   => __( 'Could not copy.', MULTCH_TEXT_DOMAIN ),
+						'deleteConfirm' => __( 'Delete this conversation and all its messages?', MULTCH_TEXT_DOMAIN ),
+						'deleteFailed' => __( 'Could not delete the conversation.', MULTCH_TEXT_DOMAIN ),
 					),
 				)
 			);
@@ -1057,65 +1057,65 @@ class Multch_Admin_Settings {
 	public static function style_preset_meta(): array {
 		return array(
 			'default'    => array(
-				'label'      => __( 'Sapphire', 'multiai-chatbot' ),
-				'desc'       => __( 'Indigo blue with soft violet. Professional and trustworthy.', 'multiai-chatbot' ),
-				'badge'      => __( 'Light', 'multiai-chatbot' ),
+				'label'      => __( 'Sapphire', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Indigo blue with soft violet. Professional and trustworthy.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Light', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'light',
 				'colors'     => array( '#2563eb', '#6366f1', '#ffffff' ),
 			),
 			'dark-glass' => array(
-				'label'      => __( 'Midnight', 'multiai-chatbot' ),
-				'desc'       => __( 'Deep dark with cyan and violet accents. Readable header.', 'multiai-chatbot' ),
-				'badge'      => __( 'Dark', 'multiai-chatbot' ),
+				'label'      => __( 'Midnight', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Deep dark with cyan and violet accents. Readable header.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Dark', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'dark',
 				'colors'     => array( '#38bdf8', '#a78bfa', '#0f172a' ),
 			),
 			'obsidian'   => array(
-				'label'      => __( 'Obsidian', 'multiai-chatbot' ),
-				'desc'       => __( 'Charcoal slate with emerald and teal highlights. Calm dark UI.', 'multiai-chatbot' ),
-				'badge'      => __( 'Dark', 'multiai-chatbot' ),
+				'label'      => __( 'Obsidian', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Charcoal slate with emerald and teal highlights. Calm dark UI.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Dark', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'dark',
 				'colors'     => array( '#34d399', '#2dd4bf', '#0c1117' ),
 			),
 			'minimal'    => array(
-				'label'      => __( 'Monochrome', 'multiai-chatbot' ),
-				'desc'       => __( 'Neutral zinc, straight edges and subtle shadows.', 'multiai-chatbot' ),
-				'badge'      => __( 'Neutral', 'multiai-chatbot' ),
+				'label'      => __( 'Monochrome', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Neutral zinc, straight edges and subtle shadows.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Neutral', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'neutral',
 				'colors'     => array( '#27272a', '#71717a', '#ffffff' ),
 			),
 			'ocean'      => array(
-				'label'      => __( 'Aqua', 'multiai-chatbot' ),
-				'desc'       => __( 'Deep cyan with turquoise highlights. Fresh and modern.', 'multiai-chatbot' ),
-				'badge'      => __( 'Light', 'multiai-chatbot' ),
+				'label'      => __( 'Aqua', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Deep cyan with turquoise highlights. Fresh and modern.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Light', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'light',
 				'colors'     => array( '#0e7490', '#22d3ee', '#f0fdff' ),
 			),
 			'sunset'     => array(
-				'label'      => __( 'Ember', 'multiai-chatbot' ),
-				'desc'       => __( 'Warm orange with pink accents. Cozy and energetic.', 'multiai-chatbot' ),
-				'badge'      => __( 'Light', 'multiai-chatbot' ),
+				'label'      => __( 'Ember', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Warm orange with pink accents. Cozy and energetic.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Light', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'light',
 				'colors'     => array( '#ea580c', '#f43f5e', '#fff7ed' ),
 			),
 			'forest'     => array(
-				'label'      => __( 'Emerald', 'multiai-chatbot' ),
-				'desc'       => __( 'Emerald green with natural backgrounds. Calm and trustworthy.', 'multiai-chatbot' ),
-				'badge'      => __( 'Light', 'multiai-chatbot' ),
+				'label'      => __( 'Emerald', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Emerald green with natural backgrounds. Calm and trustworthy.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Light', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'light',
 				'colors'     => array( '#059669', '#34d399', '#ecfdf5' ),
 			),
 			'lavender'   => array(
-				'label'      => __( 'Amethyst', 'multiai-chatbot' ),
-				'desc'       => __( 'Soft violet with light lavender. Elegant and modern.', 'multiai-chatbot' ),
-				'badge'      => __( 'Light', 'multiai-chatbot' ),
+				'label'      => __( 'Amethyst', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Soft violet with light lavender. Elegant and modern.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Light', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'light',
 				'colors'     => array( '#7c3aed', '#a855f7', '#faf5ff' ),
 			),
 			'plum'       => array(
-				'label'      => __( 'Plum', 'multiai-chatbot' ),
-				'desc'       => __( 'Deep purple with fuchsia accents. Dark and sophisticated.', 'multiai-chatbot' ),
-				'badge'      => __( 'Dark', 'multiai-chatbot' ),
+				'label'      => __( 'Plum', MULTCH_TEXT_DOMAIN ),
+				'desc'       => __( 'Deep purple with fuchsia accents. Dark and sophisticated.', MULTCH_TEXT_DOMAIN ),
+				'badge'      => __( 'Dark', MULTCH_TEXT_DOMAIN ),
 				'badge_type' => 'dark',
 				'colors'     => array( '#c084fc', '#e879f9', '#1e1b4b' ),
 			),
@@ -1127,11 +1127,11 @@ class Multch_Admin_Settings {
 	 */
 	public static function style_position_labels(): array {
 		return array(
-			'bottom-right'  => __( 'Bottom right', 'multiai-chatbot' ),
-			'center-right'  => __( 'Center right', 'multiai-chatbot' ),
-			'bottom-left'   => __( 'Bottom left', 'multiai-chatbot' ),
-			'center-left'   => __( 'Center left', 'multiai-chatbot' ),
-			'bottom-center' => __( 'Bottom center', 'multiai-chatbot' ),
+			'bottom-right'  => __( 'Bottom right', MULTCH_TEXT_DOMAIN ),
+			'center-right'  => __( 'Center right', MULTCH_TEXT_DOMAIN ),
+			'bottom-left'   => __( 'Bottom left', MULTCH_TEXT_DOMAIN ),
+			'center-left'   => __( 'Center left', MULTCH_TEXT_DOMAIN ),
+			'bottom-center' => __( 'Bottom center', MULTCH_TEXT_DOMAIN ),
 		);
 	}
 
@@ -1180,7 +1180,7 @@ class Multch_Admin_Settings {
 
 	public static function export_csv(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Insufficient permissions.', 'multiai-chatbot' ) );
+			wp_die( esc_html__( 'Insufficient permissions.', MULTCH_TEXT_DOMAIN ) );
 		}
 		check_admin_referer( 'multch_export_csv' );
 
@@ -1196,7 +1196,7 @@ class Multch_Admin_Settings {
 
 	public static function export_history_csv(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Insufficient permissions.', 'multiai-chatbot' ) );
+			wp_die( esc_html__( 'Insufficient permissions.', MULTCH_TEXT_DOMAIN ) );
 		}
 		check_admin_referer( 'multch_export_history_csv' );
 
@@ -1208,7 +1208,7 @@ class Multch_Admin_Settings {
 
 	public static function purge_history(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Insufficient permissions.', 'multiai-chatbot' ) );
+			wp_die( esc_html__( 'Insufficient permissions.', MULTCH_TEXT_DOMAIN ) );
 		}
 		check_admin_referer( 'multch_purge_history' );
 
@@ -1249,16 +1249,16 @@ class Multch_Admin_Settings {
 		check_ajax_referer( 'multch_delete_conversation', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'multiai-chatbot' ) ), 403 );
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', MULTCH_TEXT_DOMAIN ) ), 403 );
 		}
 
 		$conversation_id = isset( $_POST['id'] ) ? (int) $_POST['id'] : 0;
 		if ( $conversation_id <= 0 ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid conversation.', 'multiai-chatbot' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Invalid conversation.', MULTCH_TEXT_DOMAIN ) ), 400 );
 		}
 
 		if ( ! Multch_Chat_History::delete_conversation( $conversation_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'Could not delete the conversation.', 'multiai-chatbot' ) ), 500 );
+			wp_send_json_error( array( 'message' => __( 'Could not delete the conversation.', MULTCH_TEXT_DOMAIN ) ), 500 );
 		}
 
 		wp_send_json_success();
@@ -1266,7 +1266,7 @@ class Multch_Admin_Settings {
 
 	public static function purge_telemetry(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Insufficient permissions.', 'multiai-chatbot' ) );
+			wp_die( esc_html__( 'Insufficient permissions.', MULTCH_TEXT_DOMAIN ) );
 		}
 		check_admin_referer( 'multch_purge_telemetry' );
 
@@ -1311,12 +1311,12 @@ class Multch_Admin_Settings {
 		$tab      = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( (string) $_GET['tab'] ) ) : 'general';
 		$settings = Multch_Plugin::get_settings();
 		$tabs     = array(
-			'general'  => __( 'General', 'multiai-chatbot' ),
-			'model'    => __( 'AI Model', 'multiai-chatbot' ),
-			'security' => __( 'Security', 'multiai-chatbot' ),
-			'style'    => __( 'Chat style', 'multiai-chatbot' ),
-			'stats'    => __( 'Statistics', 'multiai-chatbot' ),
-			'history'  => __( 'History', 'multiai-chatbot' ),
+			'general'  => __( 'General', MULTCH_TEXT_DOMAIN ),
+			'model'    => __( 'AI Model', MULTCH_TEXT_DOMAIN ),
+			'security' => __( 'Security', MULTCH_TEXT_DOMAIN ),
+			'style'    => __( 'Chat style', MULTCH_TEXT_DOMAIN ),
+			'stats'    => __( 'Statistics', MULTCH_TEXT_DOMAIN ),
+			'history'  => __( 'History', MULTCH_TEXT_DOMAIN ),
 		);
 
 		if ( ! isset( $tabs[ $tab ] ) ) {
@@ -1329,18 +1329,18 @@ class Multch_Admin_Settings {
 			<header class="multch-admin-header">
 				<div class="multch-admin-header__brand">
 					<span class="multch-admin-header__icon dashicons dashicons-format-chat" aria-hidden="true"></span>
-					<h1><?php esc_html_e( 'MultiAI ChatBot', 'multiai-chatbot' ); ?></h1>
+					<h1><?php esc_html_e( 'MultiAI ChatBot', MULTCH_TEXT_DOMAIN ); ?></h1>
 				</div>
 				<span class="multch-admin-badge <?php echo $widget_on ? 'multch-admin-badge--on' : 'multch-admin-badge--off'; ?>">
 					<?php
 					echo $widget_on
-						? esc_html__( 'Enabled', 'multiai-chatbot' )
-						: esc_html__( 'Disabled', 'multiai-chatbot' );
+						? esc_html__( 'Enabled', MULTCH_TEXT_DOMAIN )
+						: esc_html__( 'Disabled', MULTCH_TEXT_DOMAIN );
 					?>
 				</span>
 			</header>
 
-			<nav class="nav-tab-wrapper multch-admin-nav" aria-label="<?php esc_attr_e( 'Settings sections', 'multiai-chatbot' ); ?>">
+			<nav class="nav-tab-wrapper multch-admin-nav" aria-label="<?php esc_attr_e( 'Settings sections', MULTCH_TEXT_DOMAIN ); ?>">
 				<?php foreach ( $tabs as $id => $label ) : ?>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=multch-plugin&tab=' . $id ) ); ?>"
 						class="nav-tab<?php echo $tab === $id ? ' nav-tab-active' : ''; ?>">
@@ -1386,9 +1386,9 @@ class Multch_Admin_Settings {
 					></div>
 
 					<div class="multch-admin-footer">
-						<?php submit_button( __( 'Save changes', 'multiai-chatbot' ), 'primary', 'submit', false ); ?>
+						<?php submit_button( __( 'Save changes', MULTCH_TEXT_DOMAIN ), 'primary', 'submit', false ); ?>
 						<span class="multch-admin-footer__hint">
-							<?php esc_html_e( 'Changes apply immediately on the public site.', 'multiai-chatbot' ); ?>
+							<?php esc_html_e( 'Changes apply immediately on the public site.', MULTCH_TEXT_DOMAIN ); ?>
 						</span>
 					</div>
 				</form>
@@ -1406,7 +1406,7 @@ class Multch_Admin_Settings {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- settings-updated is set by options.php after verified save.
 		if ( empty( $errors ) && isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
 			self::render_admin_notice(
-				__( 'Changes saved successfully.', 'multiai-chatbot' ),
+				__( 'Changes saved successfully.', MULTCH_TEXT_DOMAIN ),
 				'success'
 			);
 			// phpcs:enable WordPress.Security.NonceVerification.Recommended
@@ -1460,10 +1460,10 @@ class Multch_Admin_Settings {
 
 		$type_class = 'multch-admin-notice--' . sanitize_html_class( $type );
 		$labels     = array(
-			'success' => __( 'Saved', 'multiai-chatbot' ),
-			'error'   => __( 'Error', 'multiai-chatbot' ),
-			'warning' => __( 'Notice', 'multiai-chatbot' ),
-			'info'    => __( 'Information', 'multiai-chatbot' ),
+			'success' => __( 'Saved', MULTCH_TEXT_DOMAIN ),
+			'error'   => __( 'Error', MULTCH_TEXT_DOMAIN ),
+			'warning' => __( 'Notice', MULTCH_TEXT_DOMAIN ),
+			'info'    => __( 'Information', MULTCH_TEXT_DOMAIN ),
 		);
 		$label      = $labels[ $type ] ?? $labels['info'];
 		?>
@@ -1479,7 +1479,7 @@ class Multch_Admin_Settings {
 			<button
 				type="button"
 				class="multch-admin-notice__dismiss"
-				aria-label="<?php esc_attr_e( 'Dismiss notice', 'multiai-chatbot' ); ?>"
+				aria-label="<?php esc_attr_e( 'Dismiss notice', MULTCH_TEXT_DOMAIN ); ?>"
 			>&times;</button>
 		</div>
 		<?php
@@ -1520,10 +1520,10 @@ class Multch_Admin_Settings {
 			<div class="multch-admin-card">
 				<div class="multch-admin-card__head multch-admin-preview__head">
 					<div>
-						<h2><?php esc_html_e( 'Content preview', 'multiai-chatbot' ); ?></h2>
+						<h2><?php esc_html_e( 'Content preview', MULTCH_TEXT_DOMAIN ); ?></h2>
 					</div>
 					<button type="button" class="button button-secondary" id="multch-preview-toggle" aria-pressed="false">
-						<?php esc_html_e( 'Open panel', 'multiai-chatbot' ); ?>
+						<?php esc_html_e( 'Open panel', MULTCH_TEXT_DOMAIN ); ?>
 					</button>
 				</div>
 				<div class="multch-admin-card__body">
@@ -1533,7 +1533,7 @@ class Multch_Admin_Settings {
 							id="multch-preview-viewport"
 							data-preview-position="<?php echo esc_attr( $position ); ?>"
 							data-preview-panel-open="false"
-							aria-label="<?php esc_attr_e( 'Web page simulation', 'multiai-chatbot' ); ?>"
+							aria-label="<?php esc_attr_e( 'Web page simulation', MULTCH_TEXT_DOMAIN ); ?>"
 						>
 							<div class="multch-admin-preview__page-mock">
 								<span></span><span></span><span></span>
@@ -1573,44 +1573,44 @@ class Multch_Admin_Settings {
 			<div class="multch-admin-general-fields">
 		<?php
 		self::card_open(
-			__( 'Widget availability', 'multiai-chatbot' ),
-			__( 'Choose whether the chat appears automatically on every page.', 'multiai-chatbot' )
+			__( 'Widget availability', MULTCH_TEXT_DOMAIN ),
+			__( 'Choose whether the chat appears automatically on every page.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Global widget', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Global widget', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<label class="multch-admin-toggle">
 						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_enabled]" value="0" />
 						<input type="checkbox" id="multch-widget-enabled" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_enabled]" value="1" <?php checked( $widget_on ); ?> />
-						<span><?php esc_html_e( 'Show site-wide (wp_footer)', 'multiai-chatbot' ); ?></span>
+						<span><?php esc_html_e( 'Show site-wide (wp_footer)', MULTCH_TEXT_DOMAIN ); ?></span>
 					</label>
 					<?php if ( ! $widget_on ) : ?>
-						<p class="description multch-admin-general-notice"><?php esc_html_e( 'While disabled, use the shortcode below to embed the chat on specific pages.', 'multiai-chatbot' ); ?></p>
+						<p class="description multch-admin-general-notice"><?php esc_html_e( 'While disabled, use the shortcode below to embed the chat on specific pages.', MULTCH_TEXT_DOMAIN ); ?></p>
 					<?php endif; ?>
 				</td>
 			</tr>
 		</table>
 		<div class="multch-admin-embed-box">
-			<label for="multch-shortcode-display" class="multch-admin-embed-box__label"><?php esc_html_e( 'Embed shortcode', 'multiai-chatbot' ); ?></label>
+			<label for="multch-shortcode-display" class="multch-admin-embed-box__label"><?php esc_html_e( 'Embed shortcode', MULTCH_TEXT_DOMAIN ); ?></label>
 			<div class="multch-admin-embed-box__row">
 				<input type="text" id="multch-shortcode-display" class="large-text code" readonly value="[multch_widget]" />
-				<button type="button" class="button button-secondary" id="multch-copy-shortcode"><?php esc_html_e( 'Copy shortcode', 'multiai-chatbot' ); ?></button>
+				<button type="button" class="button button-secondary" id="multch-copy-shortcode"><?php esc_html_e( 'Copy shortcode', MULTCH_TEXT_DOMAIN ); ?></button>
 			</div>
-			<p class="description"><?php esc_html_e( 'Place this shortcode in a page, post, or block where you want the chat to appear.', 'multiai-chatbot' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Place this shortcode in a page, post, or block where you want the chat to appear.', MULTCH_TEXT_DOMAIN ); ?></p>
 		</div>
 		<?php
 		self::card_close();
 
 		self::card_open(
-			__( 'Visitor-facing copy', 'multiai-chatbot' ),
-			__( 'Text shown in the widget header and as the first assistant message.', 'multiai-chatbot' )
+			__( 'Visitor-facing copy', MULTCH_TEXT_DOMAIN ),
+			__( 'Text shown in the widget header and as the first assistant message.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Widget title', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Widget title', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input
 						type="text"
@@ -1626,7 +1626,7 @@ class Multch_Admin_Settings {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Subtitle', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Subtitle', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input
 						type="text"
@@ -1639,11 +1639,11 @@ class Multch_Admin_Settings {
 						data-char-max="<?php echo esc_attr( (string) $limits['widget_subtitle'] ); ?>"
 					/>
 					<p class="multch-admin-char-count" data-char-for="multch-widget-subtitle" aria-live="polite"></p>
-					<p class="description"><?php esc_html_e( 'Shown under the title in the chat header (e.g. status line).', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Shown under the title in the chat header (e.g. status line).', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Welcome message', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Welcome message', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<textarea
 						name="<?php echo esc_attr( self::OPTION_KEY ); ?>[welcome_message]"
@@ -1655,10 +1655,10 @@ class Multch_Admin_Settings {
 						data-char-max="<?php echo esc_attr( (string) $limits['welcome_message'] ); ?>"
 					><?php echo esc_textarea( (string) $settings['welcome_message'] ); ?></textarea>
 					<p class="multch-admin-char-count" data-char-for="multch-welcome-message" aria-live="polite"></p>
-					<p class="description"><?php esc_html_e( 'First message visitors see when they open the chat. Visible to everyone.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'First message visitors see when they open the chat. Visible to everyone.', MULTCH_TEXT_DOMAIN ); ?></p>
 					<p class="multch-admin-field-actions">
 						<button type="button" class="button button-secondary" id="multch-restore-welcome" data-default="<?php echo esc_attr( (string) $display_defaults['welcome_message'] ); ?>">
-							<?php esc_html_e( 'Restore default welcome', 'multiai-chatbot' ); ?>
+							<?php esc_html_e( 'Restore default welcome', MULTCH_TEXT_DOMAIN ); ?>
 						</button>
 					</p>
 				</td>
@@ -1668,13 +1668,13 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'AI behavior', 'multiai-chatbot' ),
-			__( 'Instructions sent to the model with every request. Visitors do not see this text.', 'multiai-chatbot' )
+			__( 'AI behavior', MULTCH_TEXT_DOMAIN ),
+			__( 'Instructions sent to the model with every request. Visitors do not see this text.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'System instructions', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'System instructions', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<textarea
 						name="<?php echo esc_attr( self::OPTION_KEY ); ?>[system_prompt]"
@@ -1687,12 +1687,12 @@ class Multch_Admin_Settings {
 					><?php echo esc_textarea( (string) $settings['system_prompt'] ); ?></textarea>
 					<p class="multch-admin-char-count" data-char-for="multch-system-prompt" aria-live="polite"></p>
 					<p class="description">
-						<?php esc_html_e( 'Defines tone, scope, and safety. Not shown in the chat UI.', 'multiai-chatbot' ); ?>
-						<a href="<?php echo esc_url( $model_url ); ?>"><?php esc_html_e( 'Model and timeout settings', 'multiai-chatbot' ); ?></a>
+						<?php esc_html_e( 'Defines tone, scope, and safety. Not shown in the chat UI.', MULTCH_TEXT_DOMAIN ); ?>
+						<a href="<?php echo esc_url( $model_url ); ?>"><?php esc_html_e( 'Model and timeout settings', MULTCH_TEXT_DOMAIN ); ?></a>
 					</p>
 					<p class="multch-admin-field-actions">
 						<button type="button" class="button button-secondary" id="multch-restore-system-prompt" data-default="<?php echo esc_attr( (string) $display_defaults['system_prompt'] ); ?>">
-							<?php esc_html_e( 'Restore default system prompt', 'multiai-chatbot' ); ?>
+							<?php esc_html_e( 'Restore default system prompt', MULTCH_TEXT_DOMAIN ); ?>
 						</button>
 					</p>
 				</td>
@@ -1702,22 +1702,22 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Response delivery', 'multiai-chatbot' ),
-			__( 'How assistant replies appear while the model is generating.', 'multiai-chatbot' )
+			__( 'Response delivery', MULTCH_TEXT_DOMAIN ),
+			__( 'How assistant replies appear while the model is generating.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Simulated streaming', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Simulated streaming', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<label class="multch-admin-toggle">
 						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[streaming_enabled]" value="0" />
 						<input type="checkbox" id="multch-streaming-enabled" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[streaming_enabled]" value="1" <?php checked( $streaming_on ); ?> />
-						<span><?php esc_html_e( 'Enable chunked response', 'multiai-chatbot' ); ?></span>
+						<span><?php esc_html_e( 'Enable chunked response', MULTCH_TEXT_DOMAIN ); ?></span>
 					</label>
 					<p class="description">
-						<?php esc_html_e( 'When enabled, the reply is revealed in small chunks for a typing effect. When disabled, the full message appears at once.', 'multiai-chatbot' ); ?>
-						<a href="<?php echo esc_url( $model_url ); ?>"><?php esc_html_e( 'Request timeout', 'multiai-chatbot' ); ?></a>
+						<?php esc_html_e( 'When enabled, the reply is revealed in small chunks for a typing effect. When disabled, the full message appears at once.', MULTCH_TEXT_DOMAIN ); ?>
+						<a href="<?php echo esc_url( $model_url ); ?>"><?php esc_html_e( 'Request timeout', MULTCH_TEXT_DOMAIN ); ?></a>
 					</p>
 				</td>
 			</tr>
@@ -1728,7 +1728,7 @@ class Multch_Admin_Settings {
 			</div>
 		<?php
 		self::render_content_preview_panel(
-			__( 'Preview uses your saved chat style. Edit appearance under Chat style.', 'multiai-chatbot' ),
+			__( 'Preview uses your saved chat style. Edit appearance under Chat style.', MULTCH_TEXT_DOMAIN ),
 			$position,
 			false
 		);
@@ -1743,20 +1743,20 @@ class Multch_Admin_Settings {
 	private static function render_security_fields( array $settings ): void {
 		$site_origin = esc_url( home_url( '/' ) );
 		self::card_open(
-			__( 'Origins and access', 'multiai-chatbot' ),
-			__( 'Control which domains can call the chat endpoint.', 'multiai-chatbot' )
+			__( 'Origins and access', MULTCH_TEXT_DOMAIN ),
+			__( 'Control which domains can call the chat endpoint.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Allowed origins', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Allowed origins', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<textarea name="<?php echo esc_attr( self::OPTION_KEY ); ?>[allowed_origins]" rows="3" class="large-text code" placeholder="<?php echo esc_attr( $site_origin ); ?>"><?php echo esc_textarea( (string) ( $settings['allowed_origins'] ?? '' ) ); ?></textarea>
 					<p class="description">
 						<?php
 						printf(
 							/* translators: %s: site home URL */
-							esc_html__( 'Comma-separated URLs. Empty = this site only (%s). Equivalent to CHAT_ALLOWED_ORIGINS.', 'multiai-chatbot' ),
+							esc_html__( 'Comma-separated URLs. Empty = this site only (%s). Equivalent to CHAT_ALLOWED_ORIGINS.', MULTCH_TEXT_DOMAIN ),
 							esc_html( $site_origin )
 						);
 						?>
@@ -1764,10 +1764,10 @@ class Multch_Admin_Settings {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Internal chat URL', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Internal chat URL', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="url" class="regular-text code" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[internal_chat_base_url]" value="<?php echo esc_attr( (string) ( $settings['internal_chat_base_url'] ?? '' ) ); ?>" placeholder="<?php echo esc_attr( untrailingslashit( home_url() ) ); ?>" />
-					<p class="description"><?php esc_html_e( 'Optional. Leave empty in most installations. If set, use a local URL (e.g. http://127.0.0.1); do not use the public URL with Cloudflare.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Optional. Leave empty in most installations. If set, use a local URL (e.g. http://127.0.0.1); do not use the public URL with Cloudflare.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -1775,25 +1775,25 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Cache and telemetry', 'multiai-chatbot' ),
-			__( 'Reduce repeated model calls and optionally log events to a file.', 'multiai-chatbot' )
+			__( 'Cache and telemetry', MULTCH_TEXT_DOMAIN ),
+			__( 'Reduce repeated model calls and optionally log events to a file.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Cache TTL (seconds)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Cache TTL (seconds)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="0" max="86400" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[cache_ttl_seconds]" value="<?php echo esc_attr( (string) ( $settings['cache_ttl_seconds'] ?? 1800 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( '0 = disable cache. Equivalent to CHAT_CACHE_TTL_SECONDS.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( '0 = disable cache. Equivalent to CHAT_CACHE_TTL_SECONDS.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Telemetry file log', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Telemetry file log', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[telemetry_file_log]" value="0" />
 					<label>
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[telemetry_file_log]" value="1" <?php checked( ! empty( $settings['telemetry_file_log'] ) ); ?> />
-						<?php esc_html_e( 'Also append events to a log file in the uploads folder', 'multiai-chatbot' ); ?>
+						<?php esc_html_e( 'Also append events to a log file in the uploads folder', MULTCH_TEXT_DOMAIN ); ?>
 					</label>
 					<?php
 					$log_path = Multch_Telemetry::get_file_log_path();
@@ -1803,27 +1803,27 @@ class Multch_Admin_Settings {
 						<?php
 						printf(
 							/* translators: %s: absolute path inside wp-content/uploads */
-							esc_html__( 'File location: %s', 'multiai-chatbot' ),
+							esc_html__( 'File location: %s', MULTCH_TEXT_DOMAIN ),
 							'<code>' . esc_html( $log_path ) . '</code>'
 						);
 						?>
 					</p>
 					<?php endif; ?>
-					<p class="description"><?php esc_html_e( 'Events are always stored in the database. Enable this only if you need a JSONL file for external tools. Can be forced via MULTCH_TELEMETRY_FILE_LOG in wp-config.php.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Events are always stored in the database. Enable this only if you need a JSONL file for external tools. Can be forced via MULTCH_TELEMETRY_FILE_LOG in wp-config.php.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'History retention (days)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'History retention (days)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="0" max="3650" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[history_retention_days]" value="<?php echo esc_attr( (string) ( $settings['history_retention_days'] ?? 0 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( '0 = keep indefinitely. Older conversations are purged automatically each day.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( '0 = keep indefinitely. Older conversations are purged automatically each day.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Telemetry retention (days)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Telemetry retention (days)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="0" max="3650" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[telemetry_retention_days]" value="<?php echo esc_attr( (string) ( $settings['telemetry_retention_days'] ?? 0 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( '0 = keep indefinitely. Older statistics events are purged automatically each day.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( '0 = keep indefinitely. Older statistics events are purged automatically each day.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -1831,58 +1831,58 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Rate limits', 'multiai-chatbot' ),
-			__( 'Protect the endpoint and AI provider quota from abuse.', 'multiai-chatbot' )
+			__( 'Rate limits', MULTCH_TEXT_DOMAIN ),
+			__( 'Protect the endpoint and AI provider quota from abuse.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Per IP / minute', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Per IP / minute', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="1" max="120" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_per_minute]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_per_minute'] ?? 10 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_PER_MINUTE', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_PER_MINUTE', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Per IP / day', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Per IP / day', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="1" max="1000" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_per_day]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_per_day'] ?? 30 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_PER_DAY', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_PER_DAY', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Model / minute (global)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Model / minute (global)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="1" max="120" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_model_per_minute]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_model_per_minute'] ?? 6 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_MODEL_PER_MINUTE', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_MODEL_PER_MINUTE', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Model / day (global)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Model / day (global)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="1" max="5000" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_model_per_day]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_model_per_day'] ?? 24 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_MODEL_PER_DAY', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'CHAT_RATE_LIMIT_MODEL_PER_DAY', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Soft threshold', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Soft threshold', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="0.1" max="1" step="0.05" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[rate_limit_soft_threshold]" value="<?php echo esc_attr( (string) ( $settings['rate_limit_soft_threshold'] ?? 0.8 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'Fraction of the limit (0.1–1) at which a warning is logged. CHAT_RATE_LIMIT_SOFT_THRESHOLD', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Fraction of the limit (0.1–1) at which a warning is logged. CHAT_RATE_LIMIT_SOFT_THRESHOLD', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Suspend IP after violations', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Suspend IP after violations', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="1" max="20" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[ip_suspend_after_violations]" value="<?php echo esc_attr( (string) ( $settings['ip_suspend_after_violations'] ?? 3 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'CHAT_IP_SUSPEND_AFTER_VIOLATIONS', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'CHAT_IP_SUSPEND_AFTER_VIOLATIONS', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Suspension duration (sec)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Suspension duration (sec)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="60" max="86400" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[ip_suspend_seconds]" value="<?php echo esc_attr( (string) ( $settings['ip_suspend_seconds'] ?? 900 ) ); ?>" class="small-text" />
-					<p class="description"><?php esc_html_e( 'CHAT_IP_SUSPEND_SECONDS', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'CHAT_IP_SUSPEND_SECONDS', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -1908,7 +1908,7 @@ class Multch_Admin_Settings {
 			echo '<p class="description">' . esc_html(
 				sprintf(
 					/* translators: %s: WordPress version number. */
-					__( 'WordPress %s or newer is required for cloud AI via Connectors. You can still use Ollama below.', 'multiai-chatbot' ),
+					__( 'WordPress %s or newer is required for cloud AI via Connectors. You can still use Ollama below.', MULTCH_TEXT_DOMAIN ),
 					'7.0'
 				)
 			) . '</p>';
@@ -1920,7 +1920,7 @@ class Multch_Admin_Settings {
 			printf(
 				wp_kses(
 					/* translators: %s: Settings → Connectors URL. */
-					__( 'No AI connectors are registered yet. Open <a href="%s">Settings → Connectors</a> to add a provider.', 'multiai-chatbot' ),
+					__( 'No AI connectors are registered yet. Open <a href="%s">Settings → Connectors</a> to add a provider.', MULTCH_TEXT_DOMAIN ),
 					array( 'a' => array( 'href' => array() ) )
 				),
 				esc_url( $connectors_url )
@@ -1955,7 +1955,7 @@ class Multch_Admin_Settings {
 		printf(
 			wp_kses(
 				/* translators: 1: Connectors settings URL, 2: refresh models URL. */
-				__( 'Manage keys in <a href="%1$s">Settings → Connectors</a>. <a href="%2$s">Refresh model list</a>.', 'multiai-chatbot' ),
+				__( 'Manage keys in <a href="%1$s">Settings → Connectors</a>. <a href="%2$s">Refresh model list</a>.', MULTCH_TEXT_DOMAIN ),
 				array( 'a' => array( 'href' => array() ) )
 			),
 			esc_url( $connectors_url ),
@@ -1964,7 +1964,7 @@ class Multch_Admin_Settings {
 		echo '</p>';
 
 		if ( empty( $ai_state['has_connected'] ) ) {
-			echo '<p class="description"><em>' . esc_html__( 'Connect at least one provider to enable cloud chat models.', 'multiai-chatbot' ) . '</em></p>';
+			echo '<p class="description"><em>' . esc_html__( 'Connect at least one provider to enable cloud chat models.', MULTCH_TEXT_DOMAIN ) . '</em></p>';
 		}
 	}
 
@@ -1983,7 +1983,7 @@ class Multch_Admin_Settings {
 				$enabled ? '' : ' disabled="disabled"'
 			);
 			if ( ! empty( $ai_state['has_connected'] ) ) {
-				echo '<p class="description">' . esc_html__( 'No models were returned yet. Enter a model ID manually or refresh the list after saving your connector.', 'multiai-chatbot' ) . '</p>';
+				echo '<p class="description">' . esc_html__( 'No models were returned yet. Enter a model ID manually or refresh the list after saving your connector.', MULTCH_TEXT_DOMAIN ) . '</p>';
 			}
 			return;
 		}
@@ -2001,7 +2001,7 @@ class Multch_Admin_Settings {
 		}
 
 		echo '<select class="regular-text" name="' . esc_attr( $name ) . '" id="multch-model"' . ( $enabled ? '' : ' disabled="disabled"' ) . '>';
-		echo '<option value="">' . esc_html__( '— Automatic (first available) —', 'multiai-chatbot' ) . '</option>';
+		echo '<option value="">' . esc_html__( '— Automatic (first available) —', MULTCH_TEXT_DOMAIN ) . '</option>';
 
 		$known_ids = array();
 		foreach ( $by_provider as $group ) {
@@ -2030,7 +2030,7 @@ class Multch_Admin_Settings {
 				esc_html(
 					sprintf(
 						/* translators: %s: model ID saved in settings but not in the current connector list */
-						__( 'Current: %s (not in list)', 'multiai-chatbot' ),
+						__( 'Current: %s (not in list)', MULTCH_TEXT_DOMAIN ),
 						$current_model
 					)
 				)
@@ -2055,42 +2055,42 @@ class Multch_Admin_Settings {
 		$current_model  = (string) ( $settings['model'] ?? '' );
 
 		self::card_open(
-			__( 'AI provider', 'multiai-chatbot' ),
-			__( 'Use the WordPress AI Client (site-wide Connectors) or a local Ollama server.', 'multiai-chatbot' )
+			__( 'AI provider', MULTCH_TEXT_DOMAIN ),
+			__( 'Use the WordPress AI Client (site-wide Connectors) or a local Ollama server.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[provider]" id="multch-provider">
-						<option value="wordpress_ai" <?php selected( $provider, 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI (Connectors)', 'multiai-chatbot' ); ?></option>
+						<option value="wordpress_ai" <?php selected( $provider, 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI (Connectors)', MULTCH_TEXT_DOMAIN ); ?></option>
 						<option value="ollama" <?php selected( $provider, 'ollama' ); ?>>Ollama</option>
 					</select>
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
-				<th scope="row"><?php esc_html_e( 'Site connectors', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Site connectors', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<?php self::render_connectors_status_panel( $ai_state ); ?>
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
-				<th scope="row"><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Model', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<?php self::render_model_picker( $ai_state, $current_model, 'wordpress_ai' === $provider ); ?>
-					<p class="description" id="multch-model-desc"><?php esc_html_e( 'Models listed here come from connectors that are connected under Settings → Connectors.', 'multiai-chatbot' ); ?></p>
+					<p class="description" id="multch-model-desc"><?php esc_html_e( 'Models listed here come from connectors that are connected under Settings → Connectors.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
-				<th scope="row"><?php esc_html_e( 'Fallback models', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Fallback models', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" class="large-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model_candidates]" value="<?php echo esc_attr( (string) $settings['model_candidates'] ); ?>" />
-					<p class="description" id="multch-model-candidates-desc"><?php esc_html_e( 'Comma-separated model preferences if the primary model is unavailable.', 'multiai-chatbot' ); ?></p>
+					<p class="description" id="multch-model-candidates-desc"><?php esc_html_e( 'Comma-separated model preferences if the primary model is unavailable.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr class="multch-field-ollama">
-				<th scope="row"><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Model', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input
 						type="text"
@@ -2100,18 +2100,18 @@ class Multch_Admin_Settings {
 						value="<?php echo esc_attr( $current_model ); ?>"
 						<?php disabled( 'ollama' !== $provider ); ?>
 					/>
-					<p class="description"><?php esc_html_e( 'Ollama model name installed on your server (e.g. llama3).', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Ollama model name installed on your server (e.g. llama3).', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr class="multch-field-ollama">
-				<th scope="row"><?php esc_html_e( 'Ollama base URL', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Ollama base URL', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="url" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[ollama_base_url]" value="<?php echo esc_attr( (string) $settings['ollama_base_url'] ); ?>" />
-					<p class="description"><?php esc_html_e( 'Local Ollama server reachable from this WordPress host (default: http://127.0.0.1:11434).', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Local Ollama server reachable from this WordPress host (default: http://127.0.0.1:11434).', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Timeout (seconds)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Timeout (seconds)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" min="5" max="120" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[request_timeout]" value="<?php echo esc_attr( (string) $settings['request_timeout'] ); ?>" />
 				</td>
@@ -2134,12 +2134,12 @@ class Multch_Admin_Settings {
 			<div class="multch-admin-style-fields">
 		<?php
 		self::card_open(
-			__( 'Visual theme', 'multiai-chatbot' ),
-			__( 'Color palette and shapes. Typography is configured under Colors and shape.', 'multiai-chatbot' )
+			__( 'Visual theme', MULTCH_TEXT_DOMAIN ),
+			__( 'Color palette and shapes. Typography is configured under Colors and shape.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_preset]" id="multch-style-preset" value="<?php echo esc_attr( $preset ); ?>" />
-		<div class="multch-theme-grid" role="radiogroup" aria-label="<?php esc_attr_e( 'Theme', 'multiai-chatbot' ); ?>">
+		<div class="multch-theme-grid" role="radiogroup" aria-label="<?php esc_attr_e( 'Theme', MULTCH_TEXT_DOMAIN ); ?>">
 			<?php foreach ( self::style_presets() as $id ) : ?>
 				<?php
 				$meta = $preset_meta[ $id ] ?? array(
@@ -2180,45 +2180,45 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Colors and shape', 'multiai-chatbot' ),
-			__( 'Optional: override the selected preset.', 'multiai-chatbot' )
+			__( 'Colors and shape', MULTCH_TEXT_DOMAIN ),
+			__( 'Optional: override the selected preset.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<p class="multch-style-actions">
-			<button type="button" class="button button-secondary" id="multch-style-reset-overrides"><?php esc_html_e( 'Reset color overrides', 'multiai-chatbot' ); ?></button>
-			<button type="button" class="button button-secondary" id="multch-style-export"><?php esc_html_e( 'Export theme', 'multiai-chatbot' ); ?></button>
-			<button type="button" class="button button-secondary" id="multch-style-import"><?php esc_html_e( 'Import theme', 'multiai-chatbot' ); ?></button>
+			<button type="button" class="button button-secondary" id="multch-style-reset-overrides"><?php esc_html_e( 'Reset color overrides', MULTCH_TEXT_DOMAIN ); ?></button>
+			<button type="button" class="button button-secondary" id="multch-style-export"><?php esc_html_e( 'Export theme', MULTCH_TEXT_DOMAIN ); ?></button>
+			<button type="button" class="button button-secondary" id="multch-style-import"><?php esc_html_e( 'Import theme', MULTCH_TEXT_DOMAIN ); ?></button>
 			<input type="file" id="multch-style-import-file" accept="application/json,.json" hidden />
 		</p>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Primary color', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Primary color', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" class="multch-color-picker" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_primary]" value="<?php echo esc_attr( (string) $settings['style_primary'] ); ?>" placeholder="#2563eb" data-default-color="#2563eb" />
-					<p class="description"><?php esc_html_e( 'Send button, user bubbles, and accents.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Send button, user bubbles, and accents.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Accent color', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Accent color', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" class="multch-color-picker" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_accent]" value="<?php echo esc_attr( (string) $settings['style_accent'] ); ?>" placeholder="#7c3aed" data-default-color="#7c3aed" />
-					<p class="description"><?php esc_html_e( 'Floating button gradient.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Floating button gradient.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Background color', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Background color', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" class="multch-color-picker" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_bg]" value="<?php echo esc_attr( (string) ( $settings['style_bg'] ?? '' ) ); ?>" placeholder="" data-default-color="" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Text color', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Text color', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" class="multch-color-picker" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_fg]" value="<?php echo esc_attr( (string) ( $settings['style_fg'] ?? '' ) ); ?>" placeholder="" data-default-color="" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Font', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Font', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_font_family]">
 						<?php foreach ( self::style_font_family_labels() as $font_id => $font_label ) : ?>
@@ -2230,31 +2230,31 @@ class Multch_Admin_Settings {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Border radius', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Border radius', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_radius]" value="<?php echo esc_attr( (string) $settings['style_radius'] ); ?>" placeholder="1.5rem" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'E.g.: 0.75rem, 1.5rem, 16px', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'E.g.: 0.75rem, 1.5rem, 16px', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Panel width', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Panel width', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_panel_width]" value="<?php echo esc_attr( (string) ( $settings['style_panel_width'] ?? '' ) ); ?>" placeholder="380px" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'Empty = responsive width (max. 380px).', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Empty = responsive width (max. 380px).', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Panel max height', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Panel max height', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_panel_max_height]" value="<?php echo esc_attr( (string) ( $settings['style_panel_max_height'] ?? '' ) ); ?>" placeholder="70vh" class="regular-text" />
-					<p class="description"><?php esc_html_e( 'Limits the message area height. E.g.: 60vh, 480px', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Limits the message area height. E.g.: 60vh, 480px', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Stack order (z-index)', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Stack order (z-index)', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="number" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_z_index]" value="<?php echo esc_attr( (string) (int) ( $settings['style_z_index'] ?? 0 ) ); ?>" min="0" max="2147483646" step="1" class="small-text" />
-					<p class="description"><?php esc_html_e( '0 = default. Raise if another plugin covers the chat.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( '0 = default. Raise if another plugin covers the chat.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -2262,34 +2262,34 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Motion and automatic theme', 'multiai-chatbot' ),
-			__( 'Accessibility and system appearance.', 'multiai-chatbot' )
+			__( 'Motion and automatic theme', MULTCH_TEXT_DOMAIN ),
+			__( 'Accessibility and system appearance.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Reduce motion', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Reduce motion', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<label class="multch-admin-toggle">
 						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_reduce_motion]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_reduce_motion]" value="1" <?php checked( ! empty( $settings['style_reduce_motion'] ) ); ?> />
-						<span><?php esc_html_e( 'Disable launcher pulse animation', 'multiai-chatbot' ); ?></span>
+						<span><?php esc_html_e( 'Disable launcher pulse animation', MULTCH_TEXT_DOMAIN ); ?></span>
 					</label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Match system theme', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Match system theme', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<label class="multch-admin-toggle">
 						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_preset_auto]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_preset_auto]" value="1" id="multch-style-preset-auto" <?php checked( ! empty( $settings['style_preset_auto'] ) ); ?> />
-						<span><?php esc_html_e( 'Use dark preset when the visitor prefers dark mode', 'multiai-chatbot' ); ?></span>
+						<span><?php esc_html_e( 'Use dark preset when the visitor prefers dark mode', MULTCH_TEXT_DOMAIN ); ?></span>
 					</label>
-					<p class="description"><?php esc_html_e( 'Light mode uses the theme selected above.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Light mode uses the theme selected above.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Dark mode preset', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Dark mode preset', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<select name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_preset_auto_dark]">
 						<?php foreach ( self::style_presets() as $id ) : ?>
@@ -2302,10 +2302,10 @@ class Multch_Admin_Settings {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Custom CSS', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Custom CSS', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<textarea name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_custom_css]" rows="6" class="large-text code" placeholder="#multch-plugin-root .maicb-send { }"><?php echo esc_textarea( (string) ( $settings['style_custom_css'] ?? '' ) ); ?></textarea>
-					<p class="description"><?php esc_html_e( 'Scoped to the widget root. No @import. Max 8000 characters.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Scoped to the widget root. No @import. Max 8000 characters.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -2313,20 +2313,20 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Developer credit', 'multiai-chatbot' ),
-			__( 'Optional attribution shown inside the chat panel.', 'multiai-chatbot' )
+			__( 'Developer credit', MULTCH_TEXT_DOMAIN ),
+			__( 'Optional attribution shown inside the chat panel.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Show in chat', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Show in chat', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<label class="multch-admin-toggle">
 						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_credit]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_credit]" value="1" <?php checked( ! empty( $settings['style_show_credit'] ) ); ?> />
-						<span><?php esc_html_e( 'Show developer credit in chat', 'multiai-chatbot' ); ?></span>
+						<span><?php esc_html_e( 'Show developer credit in chat', MULTCH_TEXT_DOMAIN ); ?></span>
 					</label>
-					<p class="description"><?php esc_html_e( 'Adds a small line below the message box with the plugin name and a link. Off by default.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Adds a small line below the message box with the plugin name and a link. Off by default.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -2334,13 +2334,13 @@ class Multch_Admin_Settings {
 		self::card_close();
 
 		self::card_open(
-			__( 'Screen position', 'multiai-chatbot' ),
-			__( 'Where the panel and floating button appear on the site.', 'multiai-chatbot' )
+			__( 'Screen position', MULTCH_TEXT_DOMAIN ),
+			__( 'Where the panel and floating button appear on the site.', MULTCH_TEXT_DOMAIN )
 		);
 		?>
 		<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_position]" value="<?php echo esc_attr( $position ); ?>" id="multch-style-position-input" />
 		<div class="multch-position-picker">
-			<div class="multch-position-map" role="group" aria-label="<?php esc_attr_e( 'Widget position', 'multiai-chatbot' ); ?>">
+			<div class="multch-position-map" role="group" aria-label="<?php esc_attr_e( 'Widget position', MULTCH_TEXT_DOMAIN ); ?>">
 				<?php foreach ( self::style_positions() as $pos ) : ?>
 					<button type="button"
 						class="multch-position-btn<?php echo $position === $pos ? ' is-active' : ''; ?>"
@@ -2352,25 +2352,25 @@ class Multch_Admin_Settings {
 			</div>
 			<p class="multch-position-label" id="multch-position-label"><?php echo esc_html( $position_labels[ $position ] ?? $position ); ?></p>
 			<p class="description multch-position-picker__hint">
-				<?php esc_html_e( 'The preview closes the panel when you change position so you can see where the floating button will sit. Use “Open panel” to preview the chat window.', 'multiai-chatbot' ); ?>
+				<?php esc_html_e( 'The preview closes the panel when you change position so you can see where the floating button will sit. Use “Open panel” to preview the chat window.', MULTCH_TEXT_DOMAIN ); ?>
 			</p>
 		</div>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Edge margin', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Edge margin', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<input type="text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_offset]" value="<?php echo esc_attr( (string) ( $settings['style_offset'] ?? '1rem' ) ); ?>" placeholder="1rem" class="regular-text" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Floating button text', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Floating button text', MULTCH_TEXT_DOMAIN ); ?></th>
 				<td>
 					<label class="multch-admin-toggle">
 						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_launcher_label]" value="0" />
 						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_launcher_label]" value="1" <?php checked( ! empty( $settings['style_launcher_label'] ) ); ?> />
-						<span><?php esc_html_e( 'Show title next to the 💬 icon', 'multiai-chatbot' ); ?></span>
+						<span><?php esc_html_e( 'Show title next to the 💬 icon', MULTCH_TEXT_DOMAIN ); ?></span>
 					</label>
-					<p class="description"><?php esc_html_e( 'The title is configured under General → Widget header.', 'multiai-chatbot' ); ?></p>
+					<p class="description"><?php esc_html_e( 'The title is configured under General → Widget header.', MULTCH_TEXT_DOMAIN ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -2380,7 +2380,7 @@ class Multch_Admin_Settings {
 			</div>
 		<?php
 		self::render_content_preview_panel(
-			__( 'The preview reflects theme, position, and styles instantly. Save to apply them on the public site.', 'multiai-chatbot' ),
+			__( 'The preview reflects theme, position, and styles instantly. Save to apply them on the public site.', MULTCH_TEXT_DOMAIN ),
 			$position,
 			true
 		);
@@ -2441,19 +2441,19 @@ class Multch_Admin_Settings {
 			return;
 		}
 
-		echo '<nav class="multch-admin-tablenav multch-admin-tablenav--stats" aria-label="' . esc_attr__( 'Pagination', 'multiai-chatbot' ) . '">';
+		echo '<nav class="multch-admin-tablenav multch-admin-tablenav--stats" aria-label="' . esc_attr__( 'Pagination', MULTCH_TEXT_DOMAIN ) . '">';
 
 		if ( $page > 1 ) {
 			$prev_args          = $base_args;
 			$prev_args['paged'] = $page - 1;
-			echo '<a class="multch-admin-tablenav__prev" href="' . esc_url( self::build_stats_url( $prev_args ) ) . '">' . esc_html__( 'Previous', 'multiai-chatbot' ) . '</a>';
+			echo '<a class="multch-admin-tablenav__prev" href="' . esc_url( self::build_stats_url( $prev_args ) ) . '">' . esc_html__( 'Previous', MULTCH_TEXT_DOMAIN ) . '</a>';
 		}
 
 		echo '<span class="multch-admin-tablenav__status">';
 		echo esc_html(
 			sprintf(
 				/* translators: 1: current page, 2: total pages */
-				__( 'Page %1$d of %2$d', 'multiai-chatbot' ),
+				__( 'Page %1$d of %2$d', MULTCH_TEXT_DOMAIN ),
 				$page,
 				$pages
 			)
@@ -2475,7 +2475,7 @@ class Multch_Admin_Settings {
 		if ( $page < $pages ) {
 			$next_args          = $base_args;
 			$next_args['paged'] = $page + 1;
-			echo '<a class="multch-admin-tablenav__next" href="' . esc_url( self::build_stats_url( $next_args ) ) . '">' . esc_html__( 'Next', 'multiai-chatbot' ) . '</a>';
+			echo '<a class="multch-admin-tablenav__next" href="' . esc_url( self::build_stats_url( $next_args ) ) . '">' . esc_html__( 'Next', MULTCH_TEXT_DOMAIN ) . '</a>';
 		}
 
 		echo '</nav>';
@@ -2483,13 +2483,13 @@ class Multch_Admin_Settings {
 
 	private static function format_telemetry_status_label( string $status ): string {
 		$labels = array(
-			'success'         => __( 'Success', 'multiai-chatbot' ),
-			'cached'          => __( 'Cached', 'multiai-chatbot' ),
-			'error'           => __( 'Error', 'multiai-chatbot' ),
-			'rate_limited'    => __( 'Rate limited', 'multiai-chatbot' ),
-			'config_error'    => __( 'Configuration error', 'multiai-chatbot' ),
-			'invalid_request' => __( 'Invalid request', 'multiai-chatbot' ),
-			'ok'              => __( 'OK', 'multiai-chatbot' ),
+			'success'         => __( 'Success', MULTCH_TEXT_DOMAIN ),
+			'cached'          => __( 'Cached', MULTCH_TEXT_DOMAIN ),
+			'error'           => __( 'Error', MULTCH_TEXT_DOMAIN ),
+			'rate_limited'    => __( 'Rate limited', MULTCH_TEXT_DOMAIN ),
+			'config_error'    => __( 'Configuration error', MULTCH_TEXT_DOMAIN ),
+			'invalid_request' => __( 'Invalid request', MULTCH_TEXT_DOMAIN ),
+			'ok'              => __( 'OK', MULTCH_TEXT_DOMAIN ),
 		);
 
 		return $labels[ $status ] ?? $status;
@@ -2504,11 +2504,11 @@ class Multch_Admin_Settings {
 
 	private static function format_error_code_label( string $code ): string {
 		$labels = array(
-			'RATE_LIMIT_GENERAL'   => __( 'General limit', 'multiai-chatbot' ),
-			'RATE_LIMIT_MODEL'     => __( 'Model limit', 'multiai-chatbot' ),
-			'INVALID_REQUEST'      => __( 'Invalid request', 'multiai-chatbot' ),
-			'CONFIGURATION_ERROR'  => __( 'Configuration error', 'multiai-chatbot' ),
-			'SERVER_ERROR'         => __( 'Server error', 'multiai-chatbot' ),
+			'RATE_LIMIT_GENERAL'   => __( 'General limit', MULTCH_TEXT_DOMAIN ),
+			'RATE_LIMIT_MODEL'     => __( 'Model limit', MULTCH_TEXT_DOMAIN ),
+			'INVALID_REQUEST'      => __( 'Invalid request', MULTCH_TEXT_DOMAIN ),
+			'CONFIGURATION_ERROR'  => __( 'Configuration error', MULTCH_TEXT_DOMAIN ),
+			'SERVER_ERROR'         => __( 'Server error', MULTCH_TEXT_DOMAIN ),
 		);
 
 		return $labels[ $code ] ?? $code;
@@ -2560,11 +2560,11 @@ class Multch_Admin_Settings {
 		$totals    = $summary['totals'] ?? array();
 
 		$periods = array(
-			0   => __( 'All', 'multiai-chatbot' ),
-			7   => __( '7 days', 'multiai-chatbot' ),
-			30  => __( '30 days', 'multiai-chatbot' ),
-			90  => __( '90 days', 'multiai-chatbot' ),
-			365 => __( '365 days', 'multiai-chatbot' ),
+			0   => __( 'All', MULTCH_TEXT_DOMAIN ),
+			7   => __( '7 days', MULTCH_TEXT_DOMAIN ),
+			30  => __( '30 days', MULTCH_TEXT_DOMAIN ),
+			90  => __( '90 days', MULTCH_TEXT_DOMAIN ),
+			365 => __( '365 days', MULTCH_TEXT_DOMAIN ),
 		);
 
 		$export_url = wp_nonce_url(
@@ -2597,7 +2597,7 @@ class Multch_Admin_Settings {
 			echo esc_html(
 				sprintf(
 					/* translators: %d: number of deleted events */
-					__( 'Purge complete: %d events deleted.', 'multiai-chatbot' ),
+					__( 'Purge complete: %d events deleted.', MULTCH_TEXT_DOMAIN ),
 					$purged
 				)
 			);
@@ -2606,13 +2606,13 @@ class Multch_Admin_Settings {
 		?>
 		<div class="multch-admin-stats-toolbar">
 			<div class="multch-admin-stats-toolbar__intro">
-				<p><?php esc_html_e( 'Chatbot usage telemetry on your site.', 'multiai-chatbot' ); ?></p>
+				<p><?php esc_html_e( 'Chatbot usage telemetry on your site.', MULTCH_TEXT_DOMAIN ); ?></p>
 				<a class="multch-admin-stats-toolbar__link" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>">
-					<?php esc_html_e( 'View conversations for the period', 'multiai-chatbot' ); ?>
+					<?php esc_html_e( 'View conversations for the period', MULTCH_TEXT_DOMAIN ); ?>
 				</a>
 			</div>
 			<div class="multch-admin-stats-toolbar__actions">
-				<div class="multch-admin-pills" role="group" aria-label="<?php esc_attr_e( 'Period', 'multiai-chatbot' ); ?>">
+				<div class="multch-admin-pills" role="group" aria-label="<?php esc_attr_e( 'Period', MULTCH_TEXT_DOMAIN ); ?>">
 					<?php foreach ( $periods as $p => $label ) : ?>
 						<a href="<?php echo esc_url( self::build_stats_url( array_merge( $filters, array( 'days' => $p, 'paged' => 1 ) ) ) ); ?>"
 							class="<?php echo (int) $days === (int) $p ? 'is-active' : ''; ?>">
@@ -2620,10 +2620,10 @@ class Multch_Admin_Settings {
 						</a>
 					<?php endforeach; ?>
 				</div>
-				<a class="button multch-admin-export" href="<?php echo esc_url( $export_url ); ?>"><?php esc_html_e( 'Export CSV', 'multiai-chatbot' ); ?></a>
+				<a class="button multch-admin-export" href="<?php echo esc_url( $export_url ); ?>"><?php esc_html_e( 'Export CSV', MULTCH_TEXT_DOMAIN ); ?></a>
 				<?php if ( '' !== $purge_url ) : ?>
-					<a class="button button-secondary multch-admin-stats-purge" href="<?php echo esc_url( $purge_url ); ?>" data-confirm="<?php esc_attr_e( 'Purge events older than the configured retention period?', 'multiai-chatbot' ); ?>">
-						<?php esc_html_e( 'Purge old', 'multiai-chatbot' ); ?>
+					<a class="button button-secondary multch-admin-stats-purge" href="<?php echo esc_url( $purge_url ); ?>" data-confirm="<?php esc_attr_e( 'Purge events older than the configured retention period?', MULTCH_TEXT_DOMAIN ); ?>">
+						<?php esc_html_e( 'Purge old', MULTCH_TEXT_DOMAIN ); ?>
 					</a>
 				<?php endif; ?>
 			</div>
@@ -2631,31 +2631,31 @@ class Multch_Admin_Settings {
 
 		<div class="multch-admin-kpi-grid multch-admin-kpi-grid--stats">
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Total requests', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Total requests', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $totals['total_requests'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi multch-admin-kpi--success">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Successes', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Successes', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $totals['success_count'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Cached', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Cached', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $totals['cached_count'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi multch-admin-kpi--error">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Errors', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Errors', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $totals['error_count'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Success rate', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Success rate', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (float) ( $totals['success_rate'] ?? 0 ), 1 ) ); ?>%</span>
 			</div>
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Average latency', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Average latency', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (float) ( $totals['avg_latency_ms'] ?? 0 ), 0 ) ); ?> <small>ms</small></span>
 			</div>
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'P95 latency', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'P95 latency', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $totals['p95_latency_ms'] ?? 0 ) ) ); ?> <small>ms</small></span>
 			</div>
 		</div>
@@ -2663,7 +2663,7 @@ class Multch_Admin_Settings {
 		<?php if ( ! empty( $daily_series ) && $max_daily > 0 ) : ?>
 			<div class="multch-admin-card multch-admin-stats-series">
 				<div class="multch-admin-card__head">
-					<h2><?php esc_html_e( 'Daily activity', 'multiai-chatbot' ); ?></h2>
+					<h2><?php esc_html_e( 'Daily activity', MULTCH_TEXT_DOMAIN ); ?></h2>
 				</div>
 				<div class="multch-admin-card__body">
 					<div class="multch-admin-stats-bars">
@@ -2684,16 +2684,16 @@ class Multch_Admin_Settings {
 
 		<div class="multch-admin-stats-grid multch-admin-stats-grid--wide">
 			<div class="multch-admin-card">
-				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By status', 'multiai-chatbot' ); ?></h2></div>
+				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By status', MULTCH_TEXT_DOMAIN ); ?></h2></div>
 				<div class="multch-admin-card__body">
 					<table class="widefat striped">
-						<thead><tr><th><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></th><th><?php esc_html_e( 'Count', 'multiai-chatbot' ); ?></th></tr></thead>
+						<thead><tr><th><?php esc_html_e( 'Status', MULTCH_TEXT_DOMAIN ); ?></th><th><?php esc_html_e( 'Count', MULTCH_TEXT_DOMAIN ); ?></th></tr></thead>
 						<tbody>
 							<?php
 							$by_status = (array) ( $summary['by_status'] ?? array() );
 							if ( empty( $by_status ) ) :
 								?>
-								<tr><td colspan="2"><?php esc_html_e( 'No data in this period.', 'multiai-chatbot' ); ?></td></tr>
+								<tr><td colspan="2"><?php esc_html_e( 'No data in this period.', MULTCH_TEXT_DOMAIN ); ?></td></tr>
 							<?php else : ?>
 								<?php foreach ( $by_status as $row ) : ?>
 									<?php $st = (string) ( $row['status'] ?? '' ); ?>
@@ -2712,16 +2712,16 @@ class Multch_Admin_Settings {
 				</div>
 			</div>
 			<div class="multch-admin-card">
-				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By provider', 'multiai-chatbot' ); ?></h2></div>
+				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By provider', MULTCH_TEXT_DOMAIN ); ?></h2></div>
 				<div class="multch-admin-card__body">
 					<table class="widefat striped">
-						<thead><tr><th><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></th><th><?php esc_html_e( 'Count', 'multiai-chatbot' ); ?></th></tr></thead>
+						<thead><tr><th><?php esc_html_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?></th><th><?php esc_html_e( 'Count', MULTCH_TEXT_DOMAIN ); ?></th></tr></thead>
 						<tbody>
 							<?php
 							$by_provider = (array) ( $summary['by_provider'] ?? array() );
 							if ( empty( $by_provider ) ) :
 								?>
-								<tr><td colspan="2"><?php esc_html_e( 'No data in this period.', 'multiai-chatbot' ); ?></td></tr>
+								<tr><td colspan="2"><?php esc_html_e( 'No data in this period.', MULTCH_TEXT_DOMAIN ); ?></td></tr>
 							<?php else : ?>
 								<?php foreach ( $by_provider as $row ) : ?>
 									<?php $pv = (string) ( $row['provider'] ?? '' ); ?>
@@ -2740,14 +2740,14 @@ class Multch_Admin_Settings {
 				</div>
 			</div>
 			<div class="multch-admin-card">
-				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By model', 'multiai-chatbot' ); ?></h2></div>
+				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By model', MULTCH_TEXT_DOMAIN ); ?></h2></div>
 				<div class="multch-admin-card__body">
 					<table class="widefat striped">
 						<thead>
 							<tr>
-								<th><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
-								<th><?php esc_html_e( 'Count', 'multiai-chatbot' ); ?></th>
-								<th><?php esc_html_e( 'Avg. latency', 'multiai-chatbot' ); ?></th>
+								<th><?php esc_html_e( 'Model', MULTCH_TEXT_DOMAIN ); ?></th>
+								<th><?php esc_html_e( 'Count', MULTCH_TEXT_DOMAIN ); ?></th>
+								<th><?php esc_html_e( 'Avg. latency', MULTCH_TEXT_DOMAIN ); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -2755,7 +2755,7 @@ class Multch_Admin_Settings {
 							$by_model = (array) ( $summary['by_model'] ?? array() );
 							if ( empty( $by_model ) ) :
 								?>
-								<tr><td colspan="3"><?php esc_html_e( 'No data in this period.', 'multiai-chatbot' ); ?></td></tr>
+								<tr><td colspan="3"><?php esc_html_e( 'No data in this period.', MULTCH_TEXT_DOMAIN ); ?></td></tr>
 							<?php else : ?>
 								<?php foreach ( $by_model as $row ) : ?>
 									<?php $md = (string) ( $row['model'] ?? '' ); ?>
@@ -2775,16 +2775,16 @@ class Multch_Admin_Settings {
 				</div>
 			</div>
 			<div class="multch-admin-card">
-				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By error code', 'multiai-chatbot' ); ?></h2></div>
+				<div class="multch-admin-card__head"><h2><?php esc_html_e( 'By error code', MULTCH_TEXT_DOMAIN ); ?></h2></div>
 				<div class="multch-admin-card__body">
 					<table class="widefat striped">
-						<thead><tr><th><?php esc_html_e( 'Code', 'multiai-chatbot' ); ?></th><th><?php esc_html_e( 'Count', 'multiai-chatbot' ); ?></th></tr></thead>
+						<thead><tr><th><?php esc_html_e( 'Code', MULTCH_TEXT_DOMAIN ); ?></th><th><?php esc_html_e( 'Count', MULTCH_TEXT_DOMAIN ); ?></th></tr></thead>
 						<tbody>
 							<?php
 							$by_error = (array) ( $summary['by_error'] ?? array() );
 							if ( empty( $by_error ) ) :
 								?>
-								<tr><td colspan="2"><?php esc_html_e( 'No errors in this period.', 'multiai-chatbot' ); ?></td></tr>
+								<tr><td colspan="2"><?php esc_html_e( 'No errors in this period.', MULTCH_TEXT_DOMAIN ); ?></td></tr>
 							<?php else : ?>
 								<?php foreach ( $by_error as $row ) : ?>
 									<?php $ec = (string) ( $row['error_code'] ?? '' ); ?>
@@ -2806,13 +2806,13 @@ class Multch_Admin_Settings {
 
 		<div class="multch-admin-card multch-admin-events">
 			<div class="multch-admin-card__head">
-				<h2><?php esc_html_e( 'Events', 'multiai-chatbot' ); ?></h2>
+				<h2><?php esc_html_e( 'Events', MULTCH_TEXT_DOMAIN ); ?></h2>
 				<p>
 					<?php
 					echo esc_html(
 						sprintf(
 							/* translators: %s: number of events */
-							_n( '%s event in the period', '%s events in the period', $total, 'multiai-chatbot' ),
+							_n( '%s event in the period', '%s events in the period', $total, MULTCH_TEXT_DOMAIN ),
 							number_format_i18n( $total )
 						)
 					);
@@ -2825,10 +2825,10 @@ class Multch_Admin_Settings {
 					<input type="hidden" name="tab" value="stats" />
 					<input type="hidden" name="days" value="<?php echo esc_attr( (string) $days ); ?>" />
 					<div class="multch-admin-stats-filters__field">
-						<label for="multch-stats-provider"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></label>
+						<label for="multch-stats-provider"><?php esc_html_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-stats-provider" name="provider">
-							<option value="all"<?php selected( $filters['provider'], 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
-							<option value="wordpress_ai"<?php selected( $filters['provider'], 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $filters['provider'], 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="wordpress_ai"<?php selected( $filters['provider'], 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI', MULTCH_TEXT_DOMAIN ); ?></option>
 							<option value="gemini"<?php selected( $filters['provider'], 'gemini' ); ?>>Gemini</option>
 							<option value="deepseek"<?php selected( $filters['provider'], 'deepseek' ); ?>>DeepSeek</option>
 							<option value="ollama"<?php selected( $filters['provider'], 'ollama' ); ?>>Ollama</option>
@@ -2836,43 +2836,43 @@ class Multch_Admin_Settings {
 						</select>
 					</div>
 					<div class="multch-admin-stats-filters__field">
-						<label for="multch-stats-status"><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></label>
+						<label for="multch-stats-status"><?php esc_html_e( 'Status', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-stats-status" name="status">
-							<option value="all"<?php selected( $filters['status'], 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
-							<option value="success"<?php selected( $filters['status'], 'success' ); ?>><?php esc_html_e( 'Success', 'multiai-chatbot' ); ?></option>
-							<option value="cached"<?php selected( $filters['status'], 'cached' ); ?>><?php esc_html_e( 'Cached', 'multiai-chatbot' ); ?></option>
-							<option value="error"<?php selected( $filters['status'], 'error' ); ?>><?php esc_html_e( 'Error', 'multiai-chatbot' ); ?></option>
-							<option value="rate_limited"<?php selected( $filters['status'], 'rate_limited' ); ?>><?php esc_html_e( 'Rate limited', 'multiai-chatbot' ); ?></option>
-							<option value="config_error"<?php selected( $filters['status'], 'config_error' ); ?>><?php esc_html_e( 'Configuration error', 'multiai-chatbot' ); ?></option>
-							<option value="invalid_request"<?php selected( $filters['status'], 'invalid_request' ); ?>><?php esc_html_e( 'Invalid request', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $filters['status'], 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="success"<?php selected( $filters['status'], 'success' ); ?>><?php esc_html_e( 'Success', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="cached"<?php selected( $filters['status'], 'cached' ); ?>><?php esc_html_e( 'Cached', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="error"<?php selected( $filters['status'], 'error' ); ?>><?php esc_html_e( 'Error', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="rate_limited"<?php selected( $filters['status'], 'rate_limited' ); ?>><?php esc_html_e( 'Rate limited', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="config_error"<?php selected( $filters['status'], 'config_error' ); ?>><?php esc_html_e( 'Configuration error', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="invalid_request"<?php selected( $filters['status'], 'invalid_request' ); ?>><?php esc_html_e( 'Invalid request', MULTCH_TEXT_DOMAIN ); ?></option>
 						</select>
 					</div>
 					<div class="multch-admin-stats-filters__field">
-						<label for="multch-stats-model"><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></label>
+						<label for="multch-stats-model"><?php esc_html_e( 'Model', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-stats-model" name="model">
-							<option value="all"<?php selected( $filters['model'], 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $filters['model'], 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
 							<?php foreach ( $models as $model ) : ?>
 								<option value="<?php echo esc_attr( $model ); ?>"<?php selected( $filters['model'], $model ); ?>><?php echo esc_html( $model ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
 					<div class="multch-admin-stats-filters__field">
-						<label for="multch-stats-error"><?php esc_html_e( 'Error code', 'multiai-chatbot' ); ?></label>
+						<label for="multch-stats-error"><?php esc_html_e( 'Error code', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-stats-error" name="error_code">
-							<option value="all"<?php selected( $filters['error_code'], 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $filters['error_code'], 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
 							<?php foreach ( $error_codes as $code ) : ?>
 								<option value="<?php echo esc_attr( $code ); ?>"<?php selected( $filters['error_code'], $code ); ?>><?php echo esc_html( self::format_error_code_label( $code ) ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
 					<div class="multch-admin-stats-filters__field">
-						<label for="multch-stats-conversation"><?php esc_html_e( 'Conversation (ID)', 'multiai-chatbot' ); ?></label>
+						<label for="multch-stats-conversation"><?php esc_html_e( 'Conversation (ID)', MULTCH_TEXT_DOMAIN ); ?></label>
 						<input type="number" min="0" id="multch-stats-conversation" name="conversation_id" value="<?php echo esc_attr( (string) (int) $filters['conversation_id'] ); ?>" class="small-text" />
 					</div>
 					<div class="multch-admin-stats-filters__actions">
-						<button type="submit" class="button button-primary"><?php esc_html_e( 'Filter', 'multiai-chatbot' ); ?></button>
+						<button type="submit" class="button button-primary"><?php esc_html_e( 'Filter', MULTCH_TEXT_DOMAIN ); ?></button>
 						<?php if ( $has_filters ) : ?>
-							<a class="button" href="<?php echo esc_url( self::build_stats_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a>
+							<a class="button" href="<?php echo esc_url( self::build_stats_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', MULTCH_TEXT_DOMAIN ); ?></a>
 						<?php endif; ?>
 					</div>
 				</form>
@@ -2880,13 +2880,13 @@ class Multch_Admin_Settings {
 			<table class="widefat striped">
 				<thead>
 					<tr>
-						<th><?php esc_html_e( 'Date', 'multiai-chatbot' ); ?></th>
-						<th><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></th>
-						<th><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
-						<th><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></th>
-						<th><?php esc_html_e( 'Latency', 'multiai-chatbot' ); ?></th>
-						<th><?php esc_html_e( 'Error', 'multiai-chatbot' ); ?></th>
-						<th><?php esc_html_e( 'Conversation', 'multiai-chatbot' ); ?></th>
+						<th><?php esc_html_e( 'Date', MULTCH_TEXT_DOMAIN ); ?></th>
+						<th><?php esc_html_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?></th>
+						<th><?php esc_html_e( 'Model', MULTCH_TEXT_DOMAIN ); ?></th>
+						<th><?php esc_html_e( 'Status', MULTCH_TEXT_DOMAIN ); ?></th>
+						<th><?php esc_html_e( 'Latency', MULTCH_TEXT_DOMAIN ); ?></th>
+						<th><?php esc_html_e( 'Error', MULTCH_TEXT_DOMAIN ); ?></th>
+						<th><?php esc_html_e( 'Conversation', MULTCH_TEXT_DOMAIN ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -2894,9 +2894,9 @@ class Multch_Admin_Settings {
 						<tr>
 							<td colspan="7">
 								<?php if ( $has_filters ) : ?>
-									<?php esc_html_e( 'No results with these filters.', 'multiai-chatbot' ); ?>
+									<?php esc_html_e( 'No results with these filters.', MULTCH_TEXT_DOMAIN ); ?>
 								<?php else : ?>
-									<?php esc_html_e( 'No events in this period.', 'multiai-chatbot' ); ?>
+									<?php esc_html_e( 'No events in this period.', MULTCH_TEXT_DOMAIN ); ?>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -2983,19 +2983,19 @@ class Multch_Admin_Settings {
 			return;
 		}
 
-		echo '<nav class="multch-admin-tablenav multch-admin-tablenav--history" aria-label="' . esc_attr__( 'Pagination', 'multiai-chatbot' ) . '">';
+		echo '<nav class="multch-admin-tablenav multch-admin-tablenav--history" aria-label="' . esc_attr__( 'Pagination', MULTCH_TEXT_DOMAIN ) . '">';
 
 		if ( $page > 1 ) {
 			$prev_args           = $base_args;
 			$prev_args['paged']  = $page - 1;
-			echo '<a class="multch-admin-tablenav__prev" href="' . esc_url( self::build_history_url( $prev_args ) ) . '">' . esc_html__( 'Previous', 'multiai-chatbot' ) . '</a>';
+			echo '<a class="multch-admin-tablenav__prev" href="' . esc_url( self::build_history_url( $prev_args ) ) . '">' . esc_html__( 'Previous', MULTCH_TEXT_DOMAIN ) . '</a>';
 		}
 
 		echo '<span class="multch-admin-tablenav__status">';
 		echo esc_html(
 			sprintf(
 				/* translators: 1: current page, 2: total pages */
-				__( 'Page %1$d of %2$d', 'multiai-chatbot' ),
+				__( 'Page %1$d of %2$d', MULTCH_TEXT_DOMAIN ),
 				$page,
 				$pages
 			)
@@ -3017,7 +3017,7 @@ class Multch_Admin_Settings {
 		if ( $page < $pages ) {
 			$next_args          = $base_args;
 			$next_args['paged'] = $page + 1;
-			echo '<a class="multch-admin-tablenav__next" href="' . esc_url( self::build_history_url( $next_args ) ) . '">' . esc_html__( 'Next', 'multiai-chatbot' ) . '</a>';
+			echo '<a class="multch-admin-tablenav__next" href="' . esc_url( self::build_history_url( $next_args ) ) . '">' . esc_html__( 'Next', MULTCH_TEXT_DOMAIN ) . '</a>';
 		}
 
 		echo '</nav>';
@@ -3103,10 +3103,10 @@ class Multch_Admin_Settings {
 		$has_filters = '' !== $search || 'all' !== $provider || 'all' !== $status || 'all' !== (string) $filters['page_path'] || 'all' !== (string) $filters['search_in'];
 
 		$periods = array(
-			0   => __( 'All', 'multiai-chatbot' ),
-			7   => __( '7 days', 'multiai-chatbot' ),
-			30  => __( '30 days', 'multiai-chatbot' ),
-			90  => __( '90 days', 'multiai-chatbot' ),
+			0   => __( 'All', MULTCH_TEXT_DOMAIN ),
+			7   => __( '7 days', MULTCH_TEXT_DOMAIN ),
+			30  => __( '30 days', MULTCH_TEXT_DOMAIN ),
+			90  => __( '90 days', MULTCH_TEXT_DOMAIN ),
 		);
 
 		$export_url = wp_nonce_url(
@@ -3130,14 +3130,14 @@ class Multch_Admin_Settings {
 
 		$count_label = sprintf(
 			/* translators: %s: number of conversations */
-			_n( '%s conversation', '%s conversations', $total, 'multiai-chatbot' ),
+			_n( '%s conversation', '%s conversations', $total, MULTCH_TEXT_DOMAIN ),
 			number_format_i18n( $total )
 		);
 		$active_period = $periods[ $days ] ?? ( $days > 0 ? sprintf(
 			/* translators: %d: number of days */
-			__( '%d days', 'multiai-chatbot' ),
+			__( '%d days', MULTCH_TEXT_DOMAIN ),
 			$days
-		) : __( 'All', 'multiai-chatbot' ) );
+		) : __( 'All', MULTCH_TEXT_DOMAIN ) );
 
 		if ( isset( $_GET['multch_purged'] ) ) {
 			$purged_conv = isset( $_GET['purged_conversations'] ) ? (int) $_GET['purged_conversations'] : 0;
@@ -3146,7 +3146,7 @@ class Multch_Admin_Settings {
 			echo esc_html(
 				sprintf(
 					/* translators: 1: conversations deleted, 2: messages deleted */
-					__( 'Purge complete: %1$d conversations and %2$d messages deleted.', 'multiai-chatbot' ),
+					__( 'Purge complete: %1$d conversations and %2$d messages deleted.', MULTCH_TEXT_DOMAIN ),
 					$purged_conv,
 					$purged_msg
 				)
@@ -3156,19 +3156,19 @@ class Multch_Admin_Settings {
 		?>
 		<div class="multch-admin-kpi-grid multch-admin-kpi-grid--history">
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Conversations', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Conversations', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $stats['total'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi multch-admin-kpi--error">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'With error', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'With error', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $stats['errors'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Total messages', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Total messages', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (int) ( $stats['messages'] ?? 0 ) ) ); ?></span>
 			</div>
 			<div class="multch-admin-kpi">
-				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Avg. msgs/conv.', 'multiai-chatbot' ); ?></span>
+				<span class="multch-admin-kpi__label"><?php esc_html_e( 'Avg. msgs/conv.', MULTCH_TEXT_DOMAIN ); ?></span>
 				<span class="multch-admin-kpi__value"><?php echo esc_html( number_format_i18n( (float) ( $stats['avg_messages'] ?? 0 ), 1 ) ); ?></span>
 			</div>
 		</div>
@@ -3177,13 +3177,13 @@ class Multch_Admin_Settings {
 			<div class="multch-admin-card__head multch-admin-history-panel__head">
 				<div class="multch-admin-history-toolbar">
 					<div class="multch-admin-history-toolbar__intro">
-						<h2><?php esc_html_e( 'Conversations', 'multiai-chatbot' ); ?></h2>
+						<h2><?php esc_html_e( 'Conversations', MULTCH_TEXT_DOMAIN ); ?></h2>
 						<p>
 							<?php
 							echo esc_html(
 								sprintf(
 									/* translators: 1: conversation count label, 2: active period */
-									__( '%1$s · %2$s', 'multiai-chatbot' ),
+									__( '%1$s · %2$s', MULTCH_TEXT_DOMAIN ),
 									$count_label,
 									$active_period
 								)
@@ -3192,17 +3192,17 @@ class Multch_Admin_Settings {
 						</p>
 					</div>
 					<div class="multch-admin-history-toolbar__actions">
-						<a class="button multch-admin-export" href="<?php echo esc_url( $export_url ); ?>"><?php esc_html_e( 'Export CSV', 'multiai-chatbot' ); ?></a>
+						<a class="button multch-admin-export" href="<?php echo esc_url( $export_url ); ?>"><?php esc_html_e( 'Export CSV', MULTCH_TEXT_DOMAIN ); ?></a>
 						<?php if ( '' !== $purge_url ) : ?>
 							<a
 								class="button button-secondary multch-admin-history-purge"
 								href="<?php echo esc_url( $purge_url ); ?>"
-								data-confirm="<?php esc_attr_e( 'Purge conversations older than the configured retention period?', 'multiai-chatbot' ); ?>"
-							><?php esc_html_e( 'Purge old', 'multiai-chatbot' ); ?></a>
+								data-confirm="<?php esc_attr_e( 'Purge conversations older than the configured retention period?', MULTCH_TEXT_DOMAIN ); ?>"
+							><?php esc_html_e( 'Purge old', MULTCH_TEXT_DOMAIN ); ?></a>
 						<?php endif; ?>
 					</div>
 					<div class="multch-admin-history-toolbar__period">
-						<div class="multch-admin-pills multch-admin-pills--history" role="group" aria-label="<?php esc_attr_e( 'Period', 'multiai-chatbot' ); ?>">
+						<div class="multch-admin-pills multch-admin-pills--history" role="group" aria-label="<?php esc_attr_e( 'Period', MULTCH_TEXT_DOMAIN ); ?>">
 							<?php foreach ( $periods as $p => $label ) : ?>
 								<?php
 								$url = self::build_history_url(
@@ -3229,31 +3229,31 @@ class Multch_Admin_Settings {
 					<input type="hidden" name="tab" value="history" />
 					<input type="hidden" name="days" value="<?php echo esc_attr( (string) $days ); ?>" />
 					<div class="multch-admin-history-filters__field multch-admin-history-filters__field--search">
-						<label for="multch-history-search"><?php esc_html_e( 'Search', 'multiai-chatbot' ); ?></label>
-						<input type="search" id="multch-history-search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'ID, title, path, session, or message…', 'multiai-chatbot' ); ?>" />
+						<label for="multch-history-search"><?php esc_html_e( 'Search', MULTCH_TEXT_DOMAIN ); ?></label>
+						<input type="search" id="multch-history-search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'ID, title, path, session, or message…', MULTCH_TEXT_DOMAIN ); ?>" />
 					</div>
 					<div class="multch-admin-history-filters__field">
-						<label for="multch-history-search-in"><?php esc_html_e( 'Search in', 'multiai-chatbot' ); ?></label>
+						<label for="multch-history-search-in"><?php esc_html_e( 'Search in', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-history-search-in" name="search_in">
-							<option value="all"<?php selected( $filters['search_in'], 'all' ); ?>><?php esc_html_e( 'Metadata and messages', 'multiai-chatbot' ); ?></option>
-							<option value="meta"<?php selected( $filters['search_in'], 'meta' ); ?>><?php esc_html_e( 'Metadata only', 'multiai-chatbot' ); ?></option>
-							<option value="messages"<?php selected( $filters['search_in'], 'messages' ); ?>><?php esc_html_e( 'Messages only', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $filters['search_in'], 'all' ); ?>><?php esc_html_e( 'Metadata and messages', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="meta"<?php selected( $filters['search_in'], 'meta' ); ?>><?php esc_html_e( 'Metadata only', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="messages"<?php selected( $filters['search_in'], 'messages' ); ?>><?php esc_html_e( 'Messages only', MULTCH_TEXT_DOMAIN ); ?></option>
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__field">
-						<label for="multch-history-page-path"><?php esc_html_e( 'Path', 'multiai-chatbot' ); ?></label>
+						<label for="multch-history-page-path"><?php esc_html_e( 'Path', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-history-page-path" name="page_path">
-							<option value="all"<?php selected( $filters['page_path'], 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $filters['page_path'], 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
 							<?php foreach ( $paths as $path ) : ?>
 								<option value="<?php echo esc_attr( $path ); ?>"<?php selected( $filters['page_path'], $path ); ?>><?php echo esc_html( $path ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__field">
-						<label for="multch-history-provider"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></label>
+						<label for="multch-history-provider"><?php esc_html_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-history-provider" name="provider">
-							<option value="all"<?php selected( $provider, 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
-							<option value="wordpress_ai"<?php selected( $provider, 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $provider, 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="wordpress_ai"<?php selected( $provider, 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI', MULTCH_TEXT_DOMAIN ); ?></option>
 							<option value="gemini"<?php selected( $provider, 'gemini' ); ?>>Gemini</option>
 							<option value="deepseek"<?php selected( $provider, 'deepseek' ); ?>>DeepSeek</option>
 							<option value="ollama"<?php selected( $provider, 'ollama' ); ?>>Ollama</option>
@@ -3261,33 +3261,33 @@ class Multch_Admin_Settings {
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__field">
-						<label for="multch-history-status"><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></label>
+						<label for="multch-history-status"><?php esc_html_e( 'Status', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-history-status" name="status">
-							<option value="all"<?php selected( $status, 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
-							<option value="active"<?php selected( $status, 'active' ); ?>><?php esc_html_e( 'Active', 'multiai-chatbot' ); ?></option>
-							<option value="success"<?php selected( $status, 'success' ); ?>><?php esc_html_e( 'Success', 'multiai-chatbot' ); ?></option>
-							<option value="error"<?php selected( $status, 'error' ); ?>><?php esc_html_e( 'Error', 'multiai-chatbot' ); ?></option>
-							<option value="cached"<?php selected( $status, 'cached' ); ?>><?php esc_html_e( 'Cached', 'multiai-chatbot' ); ?></option>
+							<option value="all"<?php selected( $status, 'all' ); ?>><?php esc_html_e( 'All', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="active"<?php selected( $status, 'active' ); ?>><?php esc_html_e( 'Active', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="success"<?php selected( $status, 'success' ); ?>><?php esc_html_e( 'Success', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="error"<?php selected( $status, 'error' ); ?>><?php esc_html_e( 'Error', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="cached"<?php selected( $status, 'cached' ); ?>><?php esc_html_e( 'Cached', MULTCH_TEXT_DOMAIN ); ?></option>
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__field">
-						<label for="multch-history-orderby"><?php esc_html_e( 'Sort by', 'multiai-chatbot' ); ?></label>
+						<label for="multch-history-orderby"><?php esc_html_e( 'Sort by', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-history-orderby" name="orderby">
-							<option value="updated_at"<?php selected( $orderby, 'updated_at' ); ?>><?php esc_html_e( 'Last activity', 'multiai-chatbot' ); ?></option>
-							<option value="started_at"<?php selected( $orderby, 'started_at' ); ?>><?php esc_html_e( 'Start', 'multiai-chatbot' ); ?></option>
+							<option value="updated_at"<?php selected( $orderby, 'updated_at' ); ?>><?php esc_html_e( 'Last activity', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="started_at"<?php selected( $orderby, 'started_at' ); ?>><?php esc_html_e( 'Start', MULTCH_TEXT_DOMAIN ); ?></option>
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__field">
-						<label for="multch-history-order"><?php esc_html_e( 'Direction', 'multiai-chatbot' ); ?></label>
+						<label for="multch-history-order"><?php esc_html_e( 'Direction', MULTCH_TEXT_DOMAIN ); ?></label>
 						<select id="multch-history-order" name="order">
-							<option value="desc"<?php selected( $order, 'desc' ); ?>><?php esc_html_e( 'Newest first', 'multiai-chatbot' ); ?></option>
-							<option value="asc"<?php selected( $order, 'asc' ); ?>><?php esc_html_e( 'Oldest first', 'multiai-chatbot' ); ?></option>
+							<option value="desc"<?php selected( $order, 'desc' ); ?>><?php esc_html_e( 'Newest first', MULTCH_TEXT_DOMAIN ); ?></option>
+							<option value="asc"<?php selected( $order, 'asc' ); ?>><?php esc_html_e( 'Oldest first', MULTCH_TEXT_DOMAIN ); ?></option>
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__actions">
-						<button type="submit" class="button button-primary"><?php esc_html_e( 'Filter', 'multiai-chatbot' ); ?></button>
+						<button type="submit" class="button button-primary"><?php esc_html_e( 'Filter', MULTCH_TEXT_DOMAIN ); ?></button>
 						<?php if ( $has_filters ) : ?>
-							<a class="button" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a>
+							<a class="button" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', MULTCH_TEXT_DOMAIN ); ?></a>
 						<?php endif; ?>
 					</div>
 				</form>
@@ -3303,7 +3303,7 @@ class Multch_Admin_Settings {
 						echo esc_html(
 							sprintf(
 								/* translators: 1: current page, 2: total pages */
-								__( 'Page %1$d of %2$d', 'multiai-chatbot' ),
+								__( 'Page %1$d of %2$d', MULTCH_TEXT_DOMAIN ),
 								$page,
 								$pages
 							)
@@ -3317,21 +3317,21 @@ class Multch_Admin_Settings {
 				<div class="multch-admin-card__body multch-admin-history-empty">
 					<span class="multch-admin-history-empty__icon dashicons dashicons-format-chat" aria-hidden="true"></span>
 					<?php if ( $has_filters ) : ?>
-						<p><?php esc_html_e( 'No results with these filters.', 'multiai-chatbot' ); ?></p>
-						<p><a class="button" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a></p>
+						<p><?php esc_html_e( 'No results with these filters.', MULTCH_TEXT_DOMAIN ); ?></p>
+						<p><a class="button" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', MULTCH_TEXT_DOMAIN ); ?></a></p>
 					<?php else : ?>
-						<p><?php esc_html_e( 'No conversations in this period.', 'multiai-chatbot' ); ?></p>
+						<p><?php esc_html_e( 'No conversations in this period.', MULTCH_TEXT_DOMAIN ); ?></p>
 					<?php endif; ?>
 				</div>
 			<?php else : ?>
-				<div class="multch-admin-history-table" role="table" aria-label="<?php esc_attr_e( 'Conversation list', 'multiai-chatbot' ); ?>">
+				<div class="multch-admin-history-table" role="table" aria-label="<?php esc_attr_e( 'Conversation list', MULTCH_TEXT_DOMAIN ); ?>">
 					<div class="multch-admin-history-table__head" role="row">
 						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--icon" role="columnheader" aria-hidden="true"></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--title" role="columnheader"><?php esc_html_e( 'Conversation', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--status" role="columnheader"><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--provider" role="columnheader"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--date" role="columnheader"><?php esc_html_e( 'Updated', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--msgs" role="columnheader"><?php esc_html_e( 'Msgs', 'multiai-chatbot' ); ?></span>
+						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--title" role="columnheader"><?php esc_html_e( 'Conversation', MULTCH_TEXT_DOMAIN ); ?></span>
+						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--status" role="columnheader"><?php esc_html_e( 'Status', MULTCH_TEXT_DOMAIN ); ?></span>
+						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--provider" role="columnheader"><?php esc_html_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?></span>
+						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--date" role="columnheader"><?php esc_html_e( 'Updated', MULTCH_TEXT_DOMAIN ); ?></span>
+						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--msgs" role="columnheader"><?php esc_html_e( 'Msgs', MULTCH_TEXT_DOMAIN ); ?></span>
 						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--action" role="columnheader" aria-hidden="true"></span>
 					</div>
 					<div class="multch-admin-history-stack" id="multch-history-list" role="rowgroup">
@@ -3359,18 +3359,18 @@ class Multch_Admin_Settings {
 		check_ajax_referer( 'multch_history_detail', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'multiai-chatbot' ) ), 403 );
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', MULTCH_TEXT_DOMAIN ) ), 403 );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified via check_ajax_referer above.
 		$conversation_id = isset( $_GET['id'] ) ? (int) $_GET['id'] : 0;
 		if ( $conversation_id <= 0 ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid conversation.', 'multiai-chatbot' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Invalid conversation.', MULTCH_TEXT_DOMAIN ) ), 400 );
 		}
 
 		$conv = Multch_Chat_History::get_conversation( $conversation_id );
 		if ( ! $conv ) {
-			wp_send_json_error( array( 'message' => __( 'Conversation not found.', 'multiai-chatbot' ) ), 404 );
+			wp_send_json_error( array( 'message' => __( 'Conversation not found.', MULTCH_TEXT_DOMAIN ) ), 404 );
 		}
 
 		$messages = Multch_Chat_History::get_messages( $conversation_id );
@@ -3403,7 +3403,7 @@ private static function render_history_card( array $item, bool $expanded = false
 	$is_ok      = in_array( $status, array( 'success', 'active', 'cached' ), true );
 
 	if ( '' === $title ) {
-		$title = __( '(Untitled)', 'multiai-chatbot' );
+		$title = __( '(Untitled)', MULTCH_TEXT_DOMAIN );
 	}
 
 	$provider_label = self::format_history_provider_label( $provider, $model );
@@ -3463,7 +3463,7 @@ private static function render_history_card( array $item, bool $expanded = false
 				</span>
 			</span>
 
-			<span class="multch-admin-history-table__cell multch-admin-history-table__cell--provider" data-label="<?php esc_attr_e( 'Provider', 'multiai-chatbot' ); ?>">
+			<span class="multch-admin-history-table__cell multch-admin-history-table__cell--provider" data-label="<?php esc_attr_e( 'Provider', MULTCH_TEXT_DOMAIN ); ?>">
 				<span class="multch-admin-history-card__provider-stack">
 					<?php if ( '' !== $provider_name ) : ?>
 						<span class="multch-admin-history-card__provider-name"><?php echo esc_html( $provider_name ); ?></span>
@@ -3476,18 +3476,18 @@ private static function render_history_card( array $item, bool $expanded = false
 				</span>
 			</span>
 
-			<span class="multch-admin-history-table__cell multch-admin-history-table__cell--date" data-label="<?php esc_attr_e( 'Updated', 'multiai-chatbot' ); ?>">
+			<span class="multch-admin-history-table__cell multch-admin-history-table__cell--date" data-label="<?php esc_attr_e( 'Updated', MULTCH_TEXT_DOMAIN ); ?>">
 				<time datetime="<?php echo esc_attr( (string) ( $item['updated_at'] ?? '' ) ); ?>"><?php echo esc_html( $updated ); ?></time>
 				<?php if ( '' !== $relative ) : ?>
 					<span class="multch-admin-history-card__relative"><?php
 					/* translators: %s: human-readable time difference */
-					echo esc_html( sprintf( __( '%s ago', 'multiai-chatbot' ), $relative ) );
+					echo esc_html( sprintf( __( '%s ago', MULTCH_TEXT_DOMAIN ), $relative ) );
 					?></span>
 				<?php endif; ?>
-				<span class="multch-admin-history-card__duration" title="<?php esc_attr_e( 'Conversation duration', 'multiai-chatbot' ); ?>"><?php echo esc_html( $duration ); ?></span>
+				<span class="multch-admin-history-card__duration" title="<?php esc_attr_e( 'Conversation duration', MULTCH_TEXT_DOMAIN ); ?>"><?php echo esc_html( $duration ); ?></span>
 			</span>
 
-			<span class="multch-admin-history-table__cell multch-admin-history-table__cell--msgs" data-label="<?php esc_attr_e( 'Messages', 'multiai-chatbot' ); ?>">
+			<span class="multch-admin-history-table__cell multch-admin-history-table__cell--msgs" data-label="<?php esc_attr_e( 'Messages', MULTCH_TEXT_DOMAIN ); ?>">
 				<span class="multch-admin-history-card__msgs-count"><?php echo esc_html( number_format_i18n( $msg_count ) ); ?></span>
 			</span>
 
@@ -3502,7 +3502,7 @@ private static function render_history_card( array $item, bool $expanded = false
 			role="region"
 			<?php
 			/* translators: %s: conversation public ID */
-			$history_aria = sprintf( __( 'History of %s', 'multiai-chatbot' ), $public_id );
+			$history_aria = sprintf( __( 'History of %s', MULTCH_TEXT_DOMAIN ), $public_id );
 			?>
 			aria-label="<?php echo esc_attr( $history_aria ); ?>"
 			<?php echo $expanded ? '' : 'hidden'; ?>
@@ -3547,81 +3547,81 @@ private static function render_history_card_body( array $conv, array $messages )
 		<div class="multch-admin-history-detail__actions">
 			<?php if ( '' !== $public_id ) : ?>
 				<button type="button" class="button button-small multch-admin-history-copy" data-copy="<?php echo esc_attr( $public_id ); ?>">
-					<?php esc_html_e( 'Copy public ID', 'multiai-chatbot' ); ?>
+					<?php esc_html_e( 'Copy public ID', MULTCH_TEXT_DOMAIN ); ?>
 				</button>
 			<?php endif; ?>
 			<button type="button" class="button button-small multch-admin-history-copy" data-copy="<?php echo esc_attr( $link_url ); ?>">
-				<?php esc_html_e( 'Copy link', 'multiai-chatbot' ); ?>
+				<?php esc_html_e( 'Copy link', MULTCH_TEXT_DOMAIN ); ?>
 			</button>
 			<button type="button" class="button button-small button-link-delete multch-admin-history-delete" data-id="<?php echo esc_attr( (string) $conv_id ); ?>">
-				<?php esc_html_e( 'Delete', 'multiai-chatbot' ); ?>
+				<?php esc_html_e( 'Delete', MULTCH_TEXT_DOMAIN ); ?>
 			</button>
 		</div>
 
 		<dl class="multch-admin-history-detail__grid">
 			<div>
-				<dt><?php esc_html_e( 'Internal ID', 'multiai-chatbot' ); ?></dt>
+				<dt><?php esc_html_e( 'Internal ID', MULTCH_TEXT_DOMAIN ); ?></dt>
 				<dd>#<?php echo esc_html( (string) (int) ( $conv['id'] ?? 0 ) ); ?></dd>
 			</div>
 
 			<?php if ( '' !== $public_id ) : ?>
 				<div>
-					<dt><?php esc_html_e( 'Public ID', 'multiai-chatbot' ); ?></dt>
+					<dt><?php esc_html_e( 'Public ID', MULTCH_TEXT_DOMAIN ); ?></dt>
 					<dd><code><?php echo esc_html( $public_id ); ?></code></dd>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( '' !== $status ) : ?>
 				<div>
-					<dt><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></dt>
+					<dt><?php esc_html_e( 'Status', MULTCH_TEXT_DOMAIN ); ?></dt>
 					<dd><?php echo esc_html( self::format_history_status_label( $status ) ); ?></dd>
 				</div>
 			<?php endif; ?>
 
 			<div>
-				<dt><?php esc_html_e( 'Messages', 'multiai-chatbot' ); ?></dt>
+				<dt><?php esc_html_e( 'Messages', MULTCH_TEXT_DOMAIN ); ?></dt>
 				<dd><?php echo esc_html( number_format_i18n( $msg_count ) ); ?></dd>
 			</div>
 
 			<div>
-				<dt><?php esc_html_e( 'Start', 'multiai-chatbot' ); ?></dt>
+				<dt><?php esc_html_e( 'Start', MULTCH_TEXT_DOMAIN ); ?></dt>
 				<dd><?php echo esc_html( $started ); ?></dd>
 			</div>
 
 			<div>
-				<dt><?php esc_html_e( 'Last activity', 'multiai-chatbot' ); ?></dt>
+				<dt><?php esc_html_e( 'Last activity', MULTCH_TEXT_DOMAIN ); ?></dt>
 				<dd><?php echo esc_html( $updated ); ?></dd>
 			</div>
 
 			<div>
-				<dt><?php esc_html_e( 'Duration', 'multiai-chatbot' ); ?></dt>
+				<dt><?php esc_html_e( 'Duration', MULTCH_TEXT_DOMAIN ); ?></dt>
 				<dd><?php echo esc_html( $duration ); ?></dd>
 			</div>
 
 			<?php if ( '' !== $provider || '' !== $model ) : ?>
 				<div>
-					<dt><?php esc_html_e( 'Provider / model', 'multiai-chatbot' ); ?></dt>
+					<dt><?php esc_html_e( 'Provider / model', MULTCH_TEXT_DOMAIN ); ?></dt>
 					<dd><?php echo esc_html( self::format_history_provider_label( $provider, $model ) ); ?></dd>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( '' !== $session ) : ?>
 				<div>
-					<dt><?php esc_html_e( 'Session', 'multiai-chatbot' ); ?></dt>
+					<dt><?php esc_html_e( 'Session', MULTCH_TEXT_DOMAIN ); ?></dt>
 					<dd><code><?php echo esc_html( $session ); ?></code></dd>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( '' !== $page_path ) : ?>
 				<div class="multch-admin-history-detail__grid-wide">
-					<dt><?php esc_html_e( 'Path', 'multiai-chatbot' ); ?></dt>
+					<dt><?php esc_html_e( 'Path', MULTCH_TEXT_DOMAIN ); ?></dt>
 					<dd><?php echo esc_html( $page_path ); ?></dd>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( '' !== $page_url ) : ?>
 				<div class="multch-admin-history-detail__grid-wide">
-					<dt><?php esc_html_e( 'URL', 'multiai-chatbot' ); ?></dt>
+					<dt><?php esc_html_e( 'URL', MULTCH_TEXT_DOMAIN ); ?></dt>
 					<dd>
 						<a href="<?php echo esc_url( $page_url ); ?>" target="_blank" rel="noopener noreferrer">
 							<?php echo esc_html( $page_url ); ?>
@@ -3633,7 +3633,7 @@ private static function render_history_card_body( array $conv, array $messages )
 
 		<?php if ( ! empty( $telemetry_events ) ) : ?>
 			<div class="multch-admin-history-telemetry">
-				<h3 class="multch-admin-history-messages__title"><?php esc_html_e( 'Technical events', 'multiai-chatbot' ); ?></h3>
+				<h3 class="multch-admin-history-messages__title"><?php esc_html_e( 'Technical events', MULTCH_TEXT_DOMAIN ); ?></h3>
 				<ul class="multch-admin-history-telemetry__list">
 					<?php foreach ( $telemetry_events as $event ) : ?>
 						<li>
@@ -3649,13 +3649,13 @@ private static function render_history_card_body( array $conv, array $messages )
 					<?php endforeach; ?>
 				</ul>
 				<p class="description">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=multch-plugin&tab=stats' ) ); ?>"><?php esc_html_e( 'View all statistics', 'multiai-chatbot' ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=multch-plugin&tab=stats' ) ); ?>"><?php esc_html_e( 'View all statistics', MULTCH_TEXT_DOMAIN ); ?></a>
 				</p>
 			</div>
 		<?php endif; ?>
 
 		<div class="multch-admin-history-messages">
-			<h3 class="multch-admin-history-messages__title"><?php esc_html_e( 'Messages', 'multiai-chatbot' ); ?></h3>
+			<h3 class="multch-admin-history-messages__title"><?php esc_html_e( 'Messages', MULTCH_TEXT_DOMAIN ); ?></h3>
 			<?php self::render_history_messages_list( $messages ); ?>
 		</div>
 	</div>
@@ -3667,7 +3667,7 @@ private static function render_history_card_body( array $conv, array $messages )
  */
 private static function render_history_messages_list( array $messages ): void {
 	if ( empty( $messages ) ) {
-		echo '<p class="multch-admin-history-messages__empty">' . esc_html__( 'No saved messages.', 'multiai-chatbot' ) . '</p>';
+		echo '<p class="multch-admin-history-messages__empty">' . esc_html__( 'No saved messages.', MULTCH_TEXT_DOMAIN ) . '</p>';
 		return;
 	}
 	?>
@@ -3696,7 +3696,7 @@ private static function render_history_messages_list( array $messages ): void {
 				<div class="multch-admin-history-msg__content">
 				<div class="multch-admin-history-msg__head">
 					<span class="multch-admin-history-msg__role">
-						<?php echo esc_html( $is_assistant ? __( 'Assistant', 'multiai-chatbot' ) : __( 'User', 'multiai-chatbot' ) ); ?>
+						<?php echo esc_html( $is_assistant ? __( 'Assistant', MULTCH_TEXT_DOMAIN ) : __( 'User', MULTCH_TEXT_DOMAIN ) ); ?>
 					</span>
 
 					<time datetime="<?php echo esc_attr( (string) ( $msg['created_at'] ?? '' ) ); ?>">
@@ -3724,10 +3724,10 @@ private static function render_history_messages_list( array $messages ): void {
 
 private static function format_history_status_label( string $status ): string {
 	$labels = array(
-		'active'  => __( 'Active', 'multiai-chatbot' ),
-		'success' => __( 'Success', 'multiai-chatbot' ),
-		'error'   => __( 'Error', 'multiai-chatbot' ),
-		'cached'  => __( 'Cached', 'multiai-chatbot' ),
+		'active'  => __( 'Active', MULTCH_TEXT_DOMAIN ),
+		'success' => __( 'Success', MULTCH_TEXT_DOMAIN ),
+		'error'   => __( 'Error', MULTCH_TEXT_DOMAIN ),
+		'cached'  => __( 'Cached', MULTCH_TEXT_DOMAIN ),
 	);
 
 	return $labels[ $status ] ?? $status;
@@ -3735,7 +3735,7 @@ private static function format_history_status_label( string $status ): string {
 
 private static function format_history_provider_label( string $provider, string $model = '' ): string {
 	$labels = array(
-		'wordpress_ai'      => __( 'WordPress AI', 'multiai-chatbot' ),
+		'wordpress_ai'      => __( 'WordPress AI', MULTCH_TEXT_DOMAIN ),
 		'gemini'            => 'Gemini',
 		'deepseek'          => 'DeepSeek',
 		'ollama'            => 'Ollama',
@@ -3752,7 +3752,7 @@ private static function format_history_provider_label( string $provider, string 
 
 private static function format_history_provider_name( string $provider ): string {
 	$labels = array(
-		'wordpress_ai'      => __( 'WordPress AI', 'multiai-chatbot' ),
+		'wordpress_ai'      => __( 'WordPress AI', MULTCH_TEXT_DOMAIN ),
 		'gemini'            => 'Gemini',
 		'deepseek'          => 'DeepSeek',
 		'ollama'            => 'Ollama',

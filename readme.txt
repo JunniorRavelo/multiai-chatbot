@@ -187,6 +187,7 @@ Chat history uses anonymous session identifiers and is not linked to visitor ema
 == Changelog ==
 
 = 1.0.3 =
+* Text domain aligned with plugin slug (`multiai-chatbot`) via `MULTCH_TEXT_DOMAIN` constant.
 * Optional telemetry file log is limited to `wp-content/uploads/multiai-chatbot/` (replaces arbitrary `telemetry_log_path`).
 * Migrate cloud AI to the WordPress 7.0 AI Client (`wp_ai_client_prompt`) and **Settings → Connectors** instead of direct HTTP calls to third-party APIs.
 * Remove in-plugin API key and base URL fields for Gemini, DeepSeek, and OpenAI-compatible providers.

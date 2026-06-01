@@ -171,9 +171,9 @@ function multch_resolve_ai_connector_status( string $connector_id, array $connec
  */
 function multch_localize_connector_description( string $connector_id, string $fallback ): string {
 	$map = array(
-		'google'    => __( 'Text and image generation with Gemini and Imagen.', 'multiai-chatbot' ),
-		'anthropic' => __( 'Text generation with Claude.', 'multiai-chatbot' ),
-		'openai'    => __( 'Text and image generation with GPT and DALL·E.', 'multiai-chatbot' ),
+		'google'    => __( 'Text and image generation with Gemini and Imagen.', MULTCH_TEXT_DOMAIN ),
+		'anthropic' => __( 'Text generation with Claude.', MULTCH_TEXT_DOMAIN ),
+		'openai'    => __( 'Text and image generation with GPT and DALL·E.', MULTCH_TEXT_DOMAIN ),
 	);
 
 	return $map[ $connector_id ] ?? $fallback;
@@ -185,15 +185,15 @@ function multch_localize_connector_description( string $connector_id, string $fa
 function multch_ai_connector_status_label( string $status ): string {
 	switch ( $status ) {
 		case 'connected':
-			return __( 'Connected', 'multiai-chatbot' );
+			return __( 'Connected', MULTCH_TEXT_DOMAIN );
 		case 'not_configured':
-			return __( 'Not configured', 'multiai-chatbot' );
+			return __( 'Not configured', MULTCH_TEXT_DOMAIN );
 		case 'inactive':
-			return __( 'Plugin inactive', 'multiai-chatbot' );
+			return __( 'Plugin inactive', MULTCH_TEXT_DOMAIN );
 		case 'not_installed':
-			return __( 'Not installed', 'multiai-chatbot' );
+			return __( 'Not installed', MULTCH_TEXT_DOMAIN );
 		default:
-			return __( 'Unavailable', 'multiai-chatbot' );
+			return __( 'Unavailable', MULTCH_TEXT_DOMAIN );
 	}
 }
 
@@ -473,7 +473,7 @@ function multch_ai_client_generate_from_builder( $builder, array $preferences, s
 	if ( method_exists( $builder, 'is_supported_for_text_generation' ) && ! $builder->is_supported_for_text_generation() ) {
 		return new WP_Error(
 			'configuration_error',
-			__( 'No AI model is available. Open Settings → Connectors and connect a provider.', 'multiai-chatbot' ),
+			__( 'No AI model is available. Open Settings → Connectors and connect a provider.', MULTCH_TEXT_DOMAIN ),
 			array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 		);
 	}
@@ -510,7 +510,7 @@ function multch_ai_client_map_error( WP_Error $error ): WP_Error {
 	if ( str_contains( strtolower( $code ), 'rate' ) || 429 === $status ) {
 		return new WP_Error(
 			'rate_limit_model',
-			__( 'Provider rate limit reached. Please try again shortly.', 'multiai-chatbot' ),
+			__( 'Provider rate limit reached. Please try again shortly.', MULTCH_TEXT_DOMAIN ),
 			array(
 				'status'      => 429,
 				'error_code'  => 'RATE_LIMIT_MODEL_MINUTE',
@@ -522,7 +522,7 @@ function multch_ai_client_map_error( WP_Error $error ): WP_Error {
 	if ( str_contains( strtolower( $code ), 'config' ) || str_contains( strtolower( $message ), 'not configured' ) ) {
 		return new WP_Error(
 			'configuration_error',
-			__( 'No AI provider is configured. Open Settings → Connectors and connect a provider.', 'multiai-chatbot' ),
+			__( 'No AI provider is configured. Open Settings → Connectors and connect a provider.', MULTCH_TEXT_DOMAIN ),
 			array( 'status' => 503, 'error_code' => 'CONFIGURATION_ERROR' )
 		);
 	}
@@ -530,14 +530,14 @@ function multch_ai_client_map_error( WP_Error $error ): WP_Error {
 	if ( str_contains( strtolower( $code ), 'timeout' ) || str_contains( strtolower( $message ), 'timeout' ) ) {
 		return new WP_Error(
 			'provider_timeout',
-			__( 'Could not connect to the AI provider.', 'multiai-chatbot' ),
+			__( 'Could not connect to the AI provider.', MULTCH_TEXT_DOMAIN ),
 			array( 'status' => 504, 'error_code' => 'PROVIDER_TIMEOUT' )
 		);
 	}
 
 	return new WP_Error(
 		'provider_upstream',
-		'' !== $message ? $message : __( 'The AI provider returned an error.', 'multiai-chatbot' ),
+		'' !== $message ? $message : __( 'The AI provider returned an error.', MULTCH_TEXT_DOMAIN ),
 		array( 'status' => max( 400, min( 599, $status ) ), 'error_code' => $app_code )
 	);
 }

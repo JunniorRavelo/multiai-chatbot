@@ -45,10 +45,16 @@ class Multch_Plugin {
 	}
 
 	public function load_textdomain(): void {
-		$domain = 'multiai-chatbot';
+		$domain = multch_text_domain();
 		$locale = determine_locale();
-		$mofile = self::resolve_translation_file( $domain, $locale );
 
+		load_plugin_textdomain(
+			$domain,
+			false,
+			dirname( MULTCH_PLUGIN_BASENAME ) . '/languages'
+		);
+
+		$mofile = self::resolve_translation_file( $domain, $locale );
 		if ( $mofile ) {
 			load_textdomain( $domain, $mofile, $locale );
 		}

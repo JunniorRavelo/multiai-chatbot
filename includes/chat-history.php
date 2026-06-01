@@ -616,21 +616,21 @@ class Multch_Chat_History {
 		$seconds = $end - $start;
 		if ( $seconds < 60 ) {
 			/* translators: %d: seconds */
-			return sprintf( _n( '%d s', '%d s', $seconds, 'multiai-chatbot' ), $seconds );
+			return sprintf( _n( '%d s', '%d s', $seconds, MULTCH_TEXT_DOMAIN ), $seconds );
 		}
 		if ( $seconds < 3600 ) {
 			$mins = (int) floor( $seconds / 60 );
 			/* translators: %d: minutes */
-			return sprintf( _n( '%d min', '%d min', $mins, 'multiai-chatbot' ), $mins );
+			return sprintf( _n( '%d min', '%d min', $mins, MULTCH_TEXT_DOMAIN ), $mins );
 		}
 		$hours = (int) floor( $seconds / 3600 );
 		$mins  = (int) floor( ( $seconds % 3600 ) / 60 );
 		if ( $mins > 0 ) {
 			/* translators: 1: hours, 2: minutes */
-			return sprintf( __( '%1$dh %2$dmin', 'multiai-chatbot' ), $hours, $mins );
+			return sprintf( __( '%1$dh %2$dmin', MULTCH_TEXT_DOMAIN ), $hours, $mins );
 		}
 		/* translators: %d: hours */
-		return sprintf( _n( '%d h', '%d h', $hours, 'multiai-chatbot' ), $hours );
+		return sprintf( _n( '%d h', '%d h', $hours, MULTCH_TEXT_DOMAIN ), $hours );
 	}
 
 	/**
@@ -661,15 +661,15 @@ class Multch_Chat_History {
 		fputcsv(
 			$out,
 			array(
-				__( 'Public ID', 'multiai-chatbot' ),
-				__( 'Title', 'multiai-chatbot' ),
-				__( 'Provider', 'multiai-chatbot' ),
-				__( 'Model', 'multiai-chatbot' ),
-				__( 'Status', 'multiai-chatbot' ),
-				__( 'Messages', 'multiai-chatbot' ),
-				__( 'Path', 'multiai-chatbot' ),
-				__( 'Start', 'multiai-chatbot' ),
-				__( 'Last activity', 'multiai-chatbot' ),
+				__( 'Public ID', MULTCH_TEXT_DOMAIN ),
+				__( 'Title', MULTCH_TEXT_DOMAIN ),
+				__( 'Provider', MULTCH_TEXT_DOMAIN ),
+				__( 'Model', MULTCH_TEXT_DOMAIN ),
+				__( 'Status', MULTCH_TEXT_DOMAIN ),
+				__( 'Messages', MULTCH_TEXT_DOMAIN ),
+				__( 'Path', MULTCH_TEXT_DOMAIN ),
+				__( 'Start', MULTCH_TEXT_DOMAIN ),
+				__( 'Last activity', MULTCH_TEXT_DOMAIN ),
 			)
 		);
 
