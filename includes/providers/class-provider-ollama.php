@@ -56,7 +56,7 @@ class Multch_Provider_Ollama implements Multch_AI_Provider {
 		if ( is_wp_error( $response ) ) {
 			return new WP_Error(
 				'provider_timeout',
-				__( 'Could not connect to Ollama.', MULTCH_TEXT_DOMAIN ),
+				__( 'Could not connect to Ollama.', 'multiai-chatbot' ),
 				array( 'status' => 504, 'error_code' => 'PROVIDER_TIMEOUT' )
 			);
 		}
@@ -65,7 +65,7 @@ class Multch_Provider_Ollama implements Multch_AI_Provider {
 		if ( $code < 200 || $code >= 300 ) {
 			return new WP_Error(
 				'provider_upstream',
-				__( 'Ollama returned an error.', MULTCH_TEXT_DOMAIN ),
+				__( 'Ollama returned an error.', 'multiai-chatbot' ),
 				array( 'status' => 502, 'error_code' => 'PROVIDER_UPSTREAM' )
 			);
 		}
@@ -79,7 +79,7 @@ class Multch_Provider_Ollama implements Multch_AI_Provider {
 		if ( '' === $text ) {
 			return new WP_Error(
 				'model_temp_unavailable',
-				__( 'Ollama did not return a valid response.', MULTCH_TEXT_DOMAIN ),
+				__( 'Ollama did not return a valid response.', 'multiai-chatbot' ),
 				array( 'status' => 503, 'error_code' => 'MODEL_TEMP_UNAVAILABLE' )
 			);
 		}
