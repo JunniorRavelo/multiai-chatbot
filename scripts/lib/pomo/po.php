@@ -88,16 +88,8 @@ if ( ! class_exists( 'PO', false ) ) :
 		 * @return bool true on success, false on error
 		 */
 		public function export_to_file( $filename, $include_headers = true ) {
-			$fh = fopen( $filename, 'w' );
-			if ( false === $fh ) {
-				return false;
-			}
-			$export = $this->export( $include_headers );
-			$res    = fwrite( $fh, $export );
-			if ( false === $res ) {
-				return false;
-			}
-			return fclose( $fh );
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Vendored pomo CLI tooling; not shipped in production ZIP.
+			return false !== file_put_contents( $filename, $this->export( $include_headers ) );
 		}
 
 		/**
@@ -298,6 +290,7 @@ if ( ! class_exists( 'PO', false ) ) :
 		 * @return bool
 		 */
 		public function import_from_file( $filename ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Vendored pomo CLI tooling; stream required for read_entry().
 			$f = fopen( $filename, 'r' );
 			if ( ! $f ) {
 				return false;
