@@ -283,8 +283,8 @@ class Multch_Admin_Settings {
 	private static function admin_model_provider_descriptions(): array {
 		return array(
 			'wordpress_ai' => array(
-				'model'      => __( 'Preferred model ID (e.g. gemini-2.5-flash, gpt-4o-mini, claude-sonnet-4-6). WordPress picks the first available from your Connectors.', 'multiai-chatbot' ),
-				'candidates' => __( 'Comma-separated fallback models, tried one at a time only if the primary model fails (not on timeout). Remove models you do not want used.', 'multiai-chatbot' ),
+				'model'      => __( 'Primary model from your connected AI providers.', 'multiai-chatbot' ),
+				'candidates' => __( 'Used only if the primary model fails (not on timeout). Choose a different model than the primary.', 'multiai-chatbot' ),
 			),
 			'ollama'       => array(
 				'model'      => __( 'Name of the model installed in Ollama (e.g. llama3).', 'multiai-chatbot' ),
@@ -466,8 +466,13 @@ class Multch_Admin_Settings {
 			? $provider
 			: (string) ( $current['provider'] ?? 'wordpress_ai' );
 
-		$out['model']            = sanitize_text_field( $input['model'] ?? $current['model'] ?? $defaults['model'] );
-		$out['model_candidates'] = sanitize_text_field( $input['model_candidates'] ?? $current['model_candidates'] ?? $defaults['model_candidates'] );
+		$out['model'] = sanitize_text_field( $input['model'] ?? $current['model'] ?? $defaults['model'] );
+
+		if ( array_key_exists( 'model_fallback', $input ) ) {
+			$out['model_candidates'] = sanitize_text_field( (string) ( $input['model_fallback'] ?? '' ) );
+		} else {
+			$out['model_candidates'] = sanitize_text_field( $input['model_candidates'] ?? $current['model_candidates'] ?? $defaults['model_candidates'] );
+		}
 		$out['ollama_base_url']  = esc_url_raw( $input['ollama_base_url'] ?? $current['ollama_base_url'] ?? $defaults['ollama_base_url'] );
 		$out['request_timeout']  = max( 5, min( 120, (int) ( $input['request_timeout'] ?? $current['request_timeout'] ?? $defaults['request_timeout'] ) ) );
 
@@ -2035,15 +2040,36 @@ class Multch_Admin_Settings {
 
 	/**
 	 * @param array{connectors: list<array<string, string>>, models: list<array<string, string>>, has_connected: bool, client_available: bool} $ai_state
+	 * @param array{
+	 *     name?: string,
+	 *     id?: string,
+	 *     enabled?: bool,
+	 *     allow_automatic?: bool,
+	 *     empty_label?: string
+	 * } $args
 	 */
-	private static function render_model_picker( array $ai_state, string $current_model, bool $enabled = true ): void {
-		$models = is_array( $ai_state['models'] ?? null ) ? $ai_state['models'] : array();
-		$name   = self::OPTION_KEY . '[model]';
+	private static function render_model_picker( array $ai_state, string $current_model, array $args = array() ): void {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'name'             => self::OPTION_KEY . '[model]',
+				'id'               => 'multch-model',
+				'enabled'          => true,
+				'allow_automatic'  => true,
+				'empty_label'      => __( '— Automatic (first available) —', 'multiai-chatbot' ),
+			)
+		);
+
+		$name    = (string) $args['name'];
+		$id      = (string) $args['id'];
+		$enabled = (bool) $args['enabled'];
+		$models  = is_array( $ai_state['models'] ?? null ) ? $ai_state['models'] : array();
 
 		if ( empty( $models ) ) {
 			printf(
-				'<input type="text" class="regular-text" name="%1$s" id="multch-model" value="%2$s" autocomplete="off"%3$s />',
+				'<input type="text" class="regular-text" name="%1$s" id="%2$s" value="%3$s" autocomplete="off"%4$s />',
 				esc_attr( $name ),
+				esc_attr( $id ),
 				esc_attr( $current_model ),
 				$enabled ? '' : ' disabled="disabled"'
 			);
@@ -2065,24 +2091,28 @@ class Multch_Admin_Settings {
 			$by_provider[ $pid ]['models'][] = $row;
 		}
 
-		echo '<select class="regular-text" name="' . esc_attr( $name ) . '" id="multch-model"' . ( $enabled ? '' : ' disabled="disabled"' ) . '>';
-		echo '<option value="">' . esc_html__( '— Automatic (first available) —', 'multiai-chatbot' ) . '</option>';
+		echo '<select class="regular-text" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '"' . ( $enabled ? '' : ' disabled="disabled"' ) . '>';
+
+		printf(
+			'<option value="">%s</option>',
+			esc_html( (string) $args['empty_label'] )
+		);
 
 		$known_ids = array();
 		foreach ( $by_provider as $group ) {
 			echo '<optgroup label="' . esc_attr( (string) $group['label'] ) . '">';
 			foreach ( $group['models'] as $row ) {
-				$id = (string) ( $row['id'] ?? '' );
-				if ( '' === $id ) {
+				$model_id = (string) ( $row['id'] ?? '' );
+				if ( '' === $model_id ) {
 					continue;
 				}
-				$known_ids[] = $id;
-				$label       = (string) ( $row['name'] ?? $id );
+				$known_ids[] = $model_id;
+				$label       = (string) ( $row['name'] ?? $model_id );
 				printf(
 					'<option value="%1$s" %2$s>%3$s</option>',
-					esc_attr( $id ),
-					selected( $current_model, $id, false ),
-					esc_html( $label . ' (' . $id . ')' )
+					esc_attr( $model_id ),
+					selected( $current_model, $model_id, false ),
+					esc_html( $label . ' (' . $model_id . ')' )
 				);
 			}
 			echo '</optgroup>';
@@ -2117,7 +2147,11 @@ class Multch_Admin_Settings {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Refresh link only; form save uses options.php nonce.
 		$refresh_models = isset( $_GET['multch_refresh_models'] ) && '1' === (string) $_GET['multch_refresh_models'];
 		$ai_state       = multch_get_ai_connectors_admin_state( $refresh_models );
-		$current_model  = (string) ( $settings['model'] ?? '' );
+		$current_model    = (string) ( $settings['model'] ?? '' );
+		$fallback_model   = multch_ai_client_fallback_model( $settings );
+		$wp_models_active = 'wordpress_ai' === $provider;
+		$candidates_raw   = (string) ( $settings['model_candidates'] ?? '' );
+		$legacy_multi     = str_contains( $candidates_raw, ',' );
 
 		self::card_open(
 			__( 'AI provider', 'multiai-chatbot' ),
@@ -2151,17 +2185,51 @@ class Multch_Admin_Settings {
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
-				<th scope="row"><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Primary model', 'multiai-chatbot' ); ?></th>
 				<td>
-					<?php self::render_model_picker( $ai_state, $current_model, 'wordpress_ai' === $provider ); ?>
+					<?php
+					self::render_model_picker(
+						$ai_state,
+						$current_model,
+						array(
+							'enabled'         => $wp_models_active,
+							'allow_automatic' => true,
+						)
+					);
+					?>
 					<p class="description" id="multch-model-desc"><?php esc_html_e( 'Models listed here come from connectors that are connected under Settings → Connectors.', 'multiai-chatbot' ); ?></p>
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
-				<th scope="row"><?php esc_html_e( 'Fallback models', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Fallback model', 'multiai-chatbot' ); ?></th>
 				<td>
-					<input type="text" class="large-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model_candidates]" value="<?php echo esc_attr( (string) $settings['model_candidates'] ); ?>" />
-					<p class="description" id="multch-model-candidates-desc"><?php esc_html_e( 'Comma-separated fallback models, tried one at a time only if the primary model fails (not on timeout). Remove models you do not want used.', 'multiai-chatbot' ); ?></p>
+					<?php
+					self::render_model_picker(
+						$ai_state,
+						$fallback_model,
+						array(
+							'name'            => self::OPTION_KEY . '[model_fallback]',
+							'id'              => 'multch-model-fallback',
+							'enabled'         => $wp_models_active,
+							'allow_automatic' => true,
+							'empty_label'     => __( '— None —', 'multiai-chatbot' ),
+						)
+					);
+					?>
+					<p class="description" id="multch-model-candidates-desc"><?php esc_html_e( 'Used only if the primary model fails (not on timeout). Choose a different model than the primary.', 'multiai-chatbot' ); ?></p>
+					<?php if ( $legacy_multi ) : ?>
+						<p class="description">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %s: comma-separated legacy fallback model IDs */
+									__( 'Previously saved fallbacks: %s. Saving this tab keeps only the fallback selected above.', 'multiai-chatbot' ),
+									$candidates_raw
+								)
+							);
+							?>
+						</p>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr class="multch-field-ollama">

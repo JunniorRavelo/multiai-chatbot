@@ -386,7 +386,19 @@ function multch_ai_client_build_history_messages( array $messages ): array {
 }
 
 /**
- * Ordered model IDs to try: primary first, then comma-separated fallbacks (no duplicates).
+ * First fallback model ID from settings (legacy comma-separated values use the first entry).
+ *
+ * @param array<string, mixed> $settings
+ */
+function multch_ai_client_fallback_model( array $settings ): string {
+	$pool_raw = ! empty( $settings['model_candidates'] ) ? (string) $settings['model_candidates'] : '';
+	$pool     = array_filter( array_map( 'trim', explode( ',', $pool_raw ) ) );
+
+	return isset( $pool[0] ) ? (string) $pool[0] : '';
+}
+
+/**
+ * Ordered model IDs to try: primary first, then fallback(s) (no duplicates).
  *
  * @param array<string, mixed> $settings
  * @return list<string>

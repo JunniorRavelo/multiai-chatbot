@@ -12,6 +12,7 @@
   var modelDesc = document.getElementById("multch-model-desc");
   var candidatesDesc = document.getElementById("multch-model-candidates-desc");
   var wpModel = document.getElementById("multch-model");
+  var wpFallbackModel = document.getElementById("multch-model-fallback");
   var ollamaModel = document.getElementById("multch-model-ollama");
 
   function setFieldEnabled(el, enabled) {
@@ -34,6 +35,7 @@
     });
 
     setFieldEnabled(wpModel, isWp);
+    setFieldEnabled(wpFallbackModel, isWp);
     setFieldEnabled(ollamaModel, isOllama);
 
     if (modelDesc && descriptions[v]) {
