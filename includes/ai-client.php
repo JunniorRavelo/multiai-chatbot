@@ -31,6 +31,20 @@ function multch_connectors_admin_url(): string {
 }
 
 /**
+ * WordPress connectors registry (WP 7.0+). Empty when the API is unavailable.
+ *
+ * @return array<string, mixed>
+ */
+function multch_wp_get_connectors(): array {
+	if ( ! function_exists( 'wp_get_connectors' ) ) {
+		return array();
+	}
+
+	// phpcs:ignore wp_function_not_compatible_with_requires_wp -- Optional WP 7 API; guarded by function_exists() above.
+	return wp_get_connectors();
+}
+
+/**
  * Legacy cloud provider IDs migrated to the WordPress AI Client.
  *
  * @return list<string>
@@ -91,7 +105,7 @@ function multch_get_ai_connectors_admin_state( bool $refresh_models = false ): a
 	$connectors_out = array();
 	$has_connected  = false;
 
-	foreach ( wp_get_connectors() as $connector_id => $connector ) {
+	foreach ( multch_wp_get_connectors() as $connector_id => $connector ) {
 		if ( ! is_array( $connector ) || ( $connector['type'] ?? '' ) !== 'ai_provider' ) {
 			continue;
 		}
