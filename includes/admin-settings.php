@@ -1921,8 +1921,12 @@ class Multch_Admin_Settings {
 			}
 			echo '<div class="multch-connectors-panel__body">';
 			echo '<strong class="multch-connectors-panel__name">' . esc_html( (string) $connector['name'] ) . '</strong>';
-			if ( ! empty( $connector['description'] ) ) {
-				echo '<p class="multch-connectors-panel__desc">' . esc_html( (string) $connector['description'] ) . '</p>';
+			$description = multch_localize_connector_description(
+				(string) ( $connector['id'] ?? '' ),
+				(string) ( $connector['description'] ?? '' )
+			);
+			if ( '' !== $description ) {
+				echo '<p class="multch-connectors-panel__desc">' . esc_html( $description ) . '</p>';
 			}
 			echo '<span class="multch-connectors-panel__badge ' . esc_attr( $badge ) . '">' . esc_html( (string) ( $connector['status_label'] ?? '' ) ) . '</span>';
 			echo '</div></div>';
@@ -2048,7 +2052,7 @@ class Multch_Admin_Settings {
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
-				<th scope="row"><?php esc_html_e( 'Connectors', 'multiai-chatbot' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Site connectors', 'multiai-chatbot' ); ?></th>
 				<td>
 					<?php self::render_connectors_status_panel( $ai_state ); ?>
 				</td>

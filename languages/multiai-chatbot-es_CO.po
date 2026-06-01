@@ -1812,3 +1812,129 @@ msgstr "El modelo no devolvió una respuesta válida."
 #: includes/rest-api.php:127
 msgid "Use POST with the same body and headers as /chat."
 msgstr "Use POST con el mismo cuerpo y cabeceras que /chat."
+
+#: includes/admin-settings.php:2037
+msgid "Use the WordPress AI Client (site-wide Connectors) or a local Ollama server."
+msgstr "Use el cliente de IA de WordPress (Conectores del sitio) o un servidor Ollama local."
+
+#: includes/admin-settings.php:2045
+msgid "WordPress AI (Connectors)"
+msgstr "IA de WordPress (Conectores)"
+
+#: includes/admin-settings.php:2051
+msgid "Site connectors"
+msgstr "Conectores del sitio"
+
+#: includes/admin-settings.php:1893
+msgid "WordPress %s or newer is required for cloud AI via Connectors. You can still use Ollama below."
+msgstr "Se requiere WordPress %s o superior para la IA en la nube mediante Conectores. También puede usar Ollama abajo."
+
+#: includes/admin-settings.php:1905
+msgid "No AI connectors are registered yet. Open <a href=\"%s\">Settings → Connectors</a> to add a provider."
+msgstr "Aún no hay conectores de IA registrados. Abra <a href=\"%s\">Ajustes → Conectores</a> para añadir un proveedor."
+
+#: includes/admin-settings.php:1936
+msgid "Manage keys in <a href=\"%1$s\">Settings → Connectors</a>. <a href=\"%2$s\">Refresh model list</a>."
+msgstr "Gestione las claves en <a href=\"%1$s\">Ajustes → Conectores</a>. <a href=\"%2$s\">Actualizar lista de modelos</a>."
+
+#: includes/admin-settings.php:1945
+msgid "Connect at least one provider to enable cloud chat models."
+msgstr "Conecte al menos un proveedor para habilitar modelos de chat en la nube."
+
+#: includes/admin-settings.php:1964
+msgid "No models were returned yet. Enter a model ID manually or refresh the list after saving your connector."
+msgstr "Aún no se devolvieron modelos. Introduzca un ID de modelo manualmente o actualice la lista tras guardar su conector."
+
+#: includes/admin-settings.php:1982
+msgid "— Automatic (first available) —"
+msgstr "— Automático (primero disponible) —"
+
+#: includes/admin-settings.php:2011
+#, php-format
+msgid "Current: %s (not in list)"
+msgstr "Actual: %s (no está en la lista)"
+
+#: includes/admin-settings.php:2060
+msgid "Models listed here come from connectors that are connected under Settings → Connectors."
+msgstr "Los modelos listados provienen de los conectores activos en Ajustes → Conectores."
+
+#: includes/admin-settings.php:2064
+msgid "Fallback models"
+msgstr "Modelos de respaldo"
+
+#: includes/admin-settings.php:2067
+msgid "Comma-separated fallback model preferences if the primary model is unavailable."
+msgstr "Preferencias de modelos de respaldo separadas por comas si el modelo principal no está disponible."
+
+#: includes/admin-settings.php:285
+msgid "Preferred model ID (e.g. gemini-2.5-flash, gpt-4o-mini, claude-sonnet-4-6). WordPress picks the first available from your Connectors."
+msgstr "ID de modelo preferido (p. ej. gemini-2.5-flash, gpt-4o-mini, claude-sonnet-4-6). WordPress elige el primero disponible entre sus Conectores."
+
+#: includes/admin-settings.php:2088
+msgid "Local Ollama server reachable from this WordPress host (default: http://127.0.0.1:11434)."
+msgstr "Servidor Ollama local accesible desde este host de WordPress (predeterminado: http://127.0.0.1:11434)."
+
+#: includes/admin-settings.php:2081
+msgid "Ollama model name installed on your server (e.g. llama3)."
+msgstr "Nombre del modelo Ollama instalado en su servidor (p. ej. llama3)."
+
+#: includes/ai-client.php:191
+msgid "Connected"
+msgstr "Conectado"
+
+#: includes/ai-client.php:193
+msgid "Not configured"
+msgstr "No configurado"
+
+#: includes/ai-client.php:195
+msgid "Plugin inactive"
+msgstr "Plugin inactivo"
+
+#: includes/ai-client.php:197
+msgid "Not installed"
+msgstr "No instalado"
+
+#: includes/ai-client.php:199
+msgid "Unavailable"
+msgstr "No disponible"
+
+#: includes/ai-client.php:177
+msgid "Text and image generation with Gemini and Imagen."
+msgstr "Generación de texto e imágenes con Gemini e Imagen."
+
+#: includes/ai-client.php:178
+msgid "Text generation with Claude."
+msgstr "Generación de texto con Claude."
+
+#: includes/ai-client.php:179
+msgid "Text and image generation with GPT and DALL·E."
+msgstr "Generación de texto e imágenes con GPT y DALL·E."
+
+#: includes/admin-settings.php:316
+#, php-format
+msgid "Cloud AI requires WordPress %s or newer with the built-in AI Client, or choose Ollama for a local model."
+msgstr "La IA en la nube requiere WordPress %s o superior con el cliente de IA integrado, o elija Ollama para un modelo local."
+
+#: includes/providers/class-provider-wordpress-ai.php:21
+msgid "WordPress AI Client is not available. Use WordPress 7.0 or newer, or choose Ollama for a local model."
+msgstr "El cliente de IA de WordPress no está disponible. Use WordPress 7.0 o superior, o elija Ollama para un modelo local."
+
+#: includes/providers/class-provider-wordpress-ai.php:29
+msgid "WordPress AI Client libraries are not loaded."
+msgstr "Las bibliotecas del cliente de IA de WordPress no están cargadas."
+
+#: includes/providers/class-provider-wordpress-ai.php:60
+msgid "No AI model is available. Open Settings → Connectors and connect a provider."
+msgstr "No hay ningún modelo de IA disponible. Abra Ajustes → Conectores y conecte un proveedor."
+
+#: includes/ai-client.php:436
+msgid "No AI provider is configured. Open Settings → Connectors and connect a provider."
+msgstr "No hay ningún proveedor de IA configurado. Abra Ajustes → Conectores y conecte un proveedor."
+
+#: includes/admin-settings.php:3720
+msgid "WordPress AI"
+msgstr "IA de WordPress"
+
+#: includes/privacy.php:62
+msgid "To generate responses, the plugin sends chat content through the WordPress AI Client (using providers configured under Settings → Connectors) or to a self-hosted Ollama server you specify. This typically includes:"
+msgstr "Para generar respuestas, el plugin envía el contenido del chat mediante el cliente de IA de WordPress (usando proveedores configurados en Ajustes → Conectores) o a un servidor Ollama que usted indique. Suele incluir:"

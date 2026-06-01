@@ -167,6 +167,19 @@ function multch_resolve_ai_connector_status( string $connector_id, array $connec
 }
 
 /**
+ * Connector descriptions from core may follow the site locale inconsistently; provide plugin strings.
+ */
+function multch_localize_connector_description( string $connector_id, string $fallback ): string {
+	$map = array(
+		'google'    => __( 'Text and image generation with Gemini and Imagen.', 'multiai-chatbot' ),
+		'anthropic' => __( 'Text generation with Claude.', 'multiai-chatbot' ),
+		'openai'    => __( 'Text and image generation with GPT and DALL·E.', 'multiai-chatbot' ),
+	);
+
+	return $map[ $connector_id ] ?? $fallback;
+}
+
+/**
  * @return string Translated short label for connector status badges.
  */
 function multch_ai_connector_status_label( string $status ): string {
