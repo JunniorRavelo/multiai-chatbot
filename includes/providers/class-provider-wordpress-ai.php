@@ -43,7 +43,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		$preferences    = multch_ai_client_model_preferences( $settings );
 		$fallback_model = ! empty( $preferences[0] ) ? (string) $preferences[0] : 'wordpress-ai';
 
-		$builder = wp_ai_client_prompt( $split['latest'] )
+		$builder = multch_wp_ai_client_prompt( $split['latest'] )
 			->using_system_instruction( $system )
 			->using_temperature( 0.2 )
 			->using_max_tokens( 600 );
@@ -63,7 +63,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		}
 
 		// Retry without model preferences (e.g. invalid model id or unavailable fallback).
-		$retry_builder = wp_ai_client_prompt( $split['latest'] )
+		$retry_builder = multch_wp_ai_client_prompt( $split['latest'] )
 			->using_system_instruction( $system )
 			->using_temperature( 0.2 )
 			->using_max_tokens( 600 );

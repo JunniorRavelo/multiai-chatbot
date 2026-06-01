@@ -17,6 +17,21 @@ function multch_ai_client_available(): bool {
 }
 
 /**
+ * Start a WordPress AI Client prompt (WP 7.0+).
+ *
+ * @param string $prompt Latest user message.
+ * @return object|null Prompt builder, or null when the API is unavailable.
+ */
+function multch_wp_ai_client_prompt( string $prompt ) {
+	if ( ! function_exists( 'wp_ai_client_prompt' ) ) {
+		return null;
+	}
+
+	// phpcs:ignore wp_function_not_compatible_with_requires_wp -- Optional WP 7 API; guarded by function_exists() above.
+	return wp_ai_client_prompt( $prompt );
+}
+
+/**
  * Admin URL for Settings → Connectors (WordPress 7.0+).
  */
 function multch_connectors_admin_url(): string {
