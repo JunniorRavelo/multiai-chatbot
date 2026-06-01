@@ -726,23 +726,20 @@ class Chatbot_Chat_History {
 		}
 
 		$ids = self::sanitize_id_list( $ids );
-		$id_count = count( $ids );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; table name via %i placeholder; IN list built from intval IDs.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table purge; IN list is intval-only via sanitize_id_list().
 		$deleted_messages = (int) $wpdb->query(
 			$wpdb->prepare(
-				'DELETE FROM %i WHERE conversation_id IN (' . implode( ',', array_fill( 0, $id_count, '%d' ) ) . ')',
-				self::messages_table(),
-				...$ids
+				'DELETE FROM %i WHERE conversation_id IN (' . implode( ',', $ids ) . ')',
+				self::messages_table()
 			)
 		);
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table purge; table name via %i placeholder; IN list built from intval IDs.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table purge; IN list is intval-only via sanitize_id_list().
 		$deleted_conversations = (int) $wpdb->query(
 			$wpdb->prepare(
-				'DELETE FROM %i WHERE id IN (' . implode( ',', array_fill( 0, $id_count, '%d' ) ) . ')',
-				self::conversations_table(),
-				...$ids
+				'DELETE FROM %i WHERE id IN (' . implode( ',', $ids ) . ')',
+				self::conversations_table()
 			)
 		);
 
@@ -783,9 +780,8 @@ class Chatbot_Chat_History {
 		global $wpdb;
 
 		$msg_table = self::messages_table();
-		$id_count  = count( $conversation_ids );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table names via %i placeholders; IN list built from intval IDs.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table lookup; IN list is intval-only via sanitize_id_list().
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT m.conversation_id, m.content
@@ -793,13 +789,12 @@ class Chatbot_Chat_History {
 				INNER JOIN (
 					SELECT conversation_id, MIN(id) AS min_id
 					FROM %i
-					WHERE role = %s AND conversation_id IN (' . implode( ',', array_fill( 0, $id_count, '%d' ) ) . ')
+					WHERE role = %s AND conversation_id IN (' . implode( ',', $conversation_ids ) . ')
 					GROUP BY conversation_id
 				) first_msg ON m.id = first_msg.min_id',
 				$msg_table,
 				$msg_table,
-				'user',
-				...$conversation_ids
+				'user'
 			),
 			ARRAY_A
 		);
@@ -872,14 +867,11 @@ class Chatbot_Chat_History {
 
 		global $wpdb;
 
-		$id_count = count( $conversation_ids );
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder; IN list built from intval IDs.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table lookup; IN list is intval-only via sanitize_id_list().
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT id, public_id FROM %i WHERE id IN (' . implode( ',', array_fill( 0, $id_count, '%d' ) ) . ')',
-				self::conversations_table(),
-				...$conversation_ids
+				'SELECT id, public_id FROM %i WHERE id IN (' . implode( ',', $conversation_ids ) . ')',
+				self::conversations_table()
 			),
 			ARRAY_A
 		);
