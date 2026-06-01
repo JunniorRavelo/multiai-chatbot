@@ -3,7 +3,7 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: MultiAI ChatBot 1.0.0\n"
+"Project-Id-Version: MultiAI ChatBot 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiai-chatbot\n"
 "POT-Creation-Date: 2026-05-30T19:05:17+00:00\n"
 "PO-Revision-Date: 2026-05-30 12:00+0000\n"

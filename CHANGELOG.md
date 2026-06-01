@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Version bump to 1.0.1 for WordPress.org release.
 - `readme.txt`: document optional third-party AI services (Gemini, DeepSeek, OpenAI-compatible, Ollama) with what data is sent, when it is sent, and links to each provider's terms and privacy policies.
 
 ## 1.1.0

@@ -1,6 +1,6 @@
 # MultiAI ChatBot
 
-WordPress plugin that adds an AI chat widget (Gemini, DeepSeek, Ollama, or OpenAI-compatible), admin panel, and usage telemetry.
+**Version 1.0.1** · WordPress plugin that adds an AI chat widget (Gemini, DeepSeek, Ollama, or OpenAI-compatible), admin panel, and usage telemetry.
 
 ## Naming conventions (namespace)
 
