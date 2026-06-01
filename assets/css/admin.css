@@ -2,7 +2,7 @@
  * MultiAI ChatBot — WordPress admin panel
  */
 
-.chatbot-admin-wrap {
+.multch-admin-wrap {
   --cb-admin-primary: #2563eb;
   --cb-admin-primary-dark: #1d4ed8;
   --cb-admin-accent: #7c3aed;
@@ -19,12 +19,12 @@
   margin-top: 12px;
 }
 
-.chatbot-admin-wrap * {
+.multch-admin-wrap * {
   box-sizing: border-box;
 }
 
 /* Header */
-.chatbot-admin-header {
+.multch-admin-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -37,14 +37,14 @@
   background: var(--cb-admin-surface);
 }
 
-.chatbot-admin-header__brand {
+.multch-admin-header__brand {
   display: flex;
   align-items: center;
   gap: 0.65rem;
   min-width: 0;
 }
 
-.chatbot-admin-header__icon {
+.multch-admin-header__icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +58,7 @@
   flex-shrink: 0;
 }
 
-.chatbot-admin-header h1 {
+.multch-admin-header h1 {
   margin: 0;
   padding: 0;
   font-size: 1.125rem;
@@ -67,7 +67,7 @@
   color: #0f172a;
 }
 
-.chatbot-admin-badge {
+.multch-admin-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -78,7 +78,7 @@
   line-height: 1.2;
 }
 
-.chatbot-admin-badge::before {
+.multch-admin-badge::before {
   content: "";
   width: 6px;
   height: 6px;
@@ -86,26 +86,26 @@
   background: currentColor;
 }
 
-.chatbot-admin-badge--on {
+.multch-admin-badge--on {
   color: var(--cb-admin-success);
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
 }
 
-.chatbot-admin-badge--off {
+.multch-admin-badge--off {
   color: var(--cb-admin-muted);
   background: #f8fafc;
   border: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-badge--live {
+.multch-admin-badge--live {
   color: #1d4ed8;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
 }
 
 /* Tabs */
-.chatbot-admin-nav.nav-tab-wrapper {
+.multch-admin-nav.nav-tab-wrapper {
   margin: 0 0 1.25rem;
   padding: 0.35rem;
   border: 1px solid var(--cb-admin-border);
@@ -115,7 +115,7 @@
   border-bottom: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-nav .nav-tab {
+.multch-admin-nav .nav-tab {
   margin: 0 0.15rem;
   padding: 0.55rem 1rem;
   border: none;
@@ -127,52 +127,52 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.chatbot-admin-nav .nav-tab:hover {
+.multch-admin-nav .nav-tab:hover {
   background: var(--cb-admin-bg);
   color: #0f172a;
 }
 
-.chatbot-admin-nav .nav-tab-active,
-.chatbot-admin-nav .nav-tab-active:hover {
+.multch-admin-nav .nav-tab-active,
+.multch-admin-nav .nav-tab-active:hover {
   background: linear-gradient(135deg, var(--cb-admin-primary), color-mix(in srgb, var(--cb-admin-primary) 75%, var(--cb-admin-accent)));
   color: #fff;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
 }
 
 /* Layout */
-.chatbot-admin-form {
+.multch-admin-form {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-.chatbot-admin-body {
+.multch-admin-body {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.chatbot-admin-layout {
+.multch-admin-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.25rem;
 }
 
 @media (min-width: 900px) {
-  .chatbot-admin-layout--split {
+  .multch-admin-layout--split {
     grid-template-columns: minmax(0, 1fr) min(440px, 38vw);
     align-items: start;
   }
 }
 
 @media (min-width: 1200px) {
-  .chatbot-admin-layout--split {
+  .multch-admin-layout--split {
     grid-template-columns: minmax(0, 1.15fr) min(480px, 34vw);
   }
 }
 
 /* Cards */
-.chatbot-admin-card {
+.multch-admin-card {
   border: 1px solid var(--cb-admin-border);
   border-radius: var(--cb-admin-radius);
   background: var(--cb-admin-surface);
@@ -180,35 +180,35 @@
   overflow: hidden;
 }
 
-.chatbot-admin-card__head {
+.multch-admin-card__head {
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--cb-admin-border);
   background: #fafbfc;
 }
 
-.chatbot-admin-card__head h2 {
+.multch-admin-card__head h2 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
   color: #0f172a;
 }
 
-.chatbot-admin-card__head p {
+.multch-admin-card__head p {
   margin: 0.35rem 0 0;
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
   line-height: 1.45;
 }
 
-.chatbot-admin-card__body {
+.multch-admin-card__body {
   padding: 1.25rem;
 }
 
-.chatbot-admin-card__body .form-table {
+.multch-admin-card__body .form-table {
   margin: 0;
 }
 
-.chatbot-admin-card__body .form-table th {
+.multch-admin-card__body .form-table th {
   width: 200px;
   padding: 0.85rem 1rem 0.85rem 0;
   font-weight: 500;
@@ -216,63 +216,63 @@
   vertical-align: top;
 }
 
-.chatbot-admin-card__body .form-table td {
+.multch-admin-card__body .form-table td {
   padding: 0.65rem 0;
 }
 
-.chatbot-admin-card__body .form-table tr:first-child th,
-.chatbot-admin-card__body .form-table tr:first-child td {
+.multch-admin-card__body .form-table tr:first-child th,
+.multch-admin-card__body .form-table tr:first-child td {
   padding-top: 0;
 }
 
-.chatbot-admin-card__body .form-table tr:last-child th,
-.chatbot-admin-card__body .form-table tr:last-child td {
+.multch-admin-card__body .form-table tr:last-child th,
+.multch-admin-card__body .form-table tr:last-child td {
   padding-bottom: 0;
 }
 
-.chatbot-admin-card__body input[type="text"],
-.chatbot-admin-card__body input[type="url"],
-.chatbot-admin-card__body input[type="password"],
-.chatbot-admin-card__body input[type="number"],
-.chatbot-admin-card__body select,
-.chatbot-admin-card__body textarea {
+.multch-admin-card__body input[type="text"],
+.multch-admin-card__body input[type="url"],
+.multch-admin-card__body input[type="password"],
+.multch-admin-card__body input[type="number"],
+.multch-admin-card__body select,
+.multch-admin-card__body textarea {
   border-color: var(--cb-admin-border);
   border-radius: 8px;
   box-shadow: none;
 }
 
-.chatbot-admin-card__body input:focus,
-.chatbot-admin-card__body select:focus,
-.chatbot-admin-card__body textarea:focus {
+.multch-admin-card__body input:focus,
+.multch-admin-card__body select:focus,
+.multch-admin-card__body textarea:focus {
   border-color: var(--cb-admin-primary);
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-.chatbot-admin-card__body .description {
+.multch-admin-card__body .description {
   margin-top: 0.35rem;
   color: var(--cb-admin-muted);
   font-size: 0.8125rem;
 }
 
 /* Toggle rows */
-.chatbot-admin-toggle {
+.multch-admin-toggle {
   display: flex;
   align-items: flex-start;
   gap: 0.65rem;
   cursor: pointer;
 }
 
-.chatbot-admin-toggle input {
+.multch-admin-toggle input {
   margin-top: 0.2rem;
 }
 
-.chatbot-admin-toggle span {
+.multch-admin-toggle span {
   font-weight: 500;
   color: #0f172a;
 }
 
 /* Form divider + footer actions */
-.chatbot-admin-wrap form.chatbot-admin-form > .chatbot-admin-form-divider {
+.multch-admin-wrap form.multch-admin-form > .multch-admin-form-divider {
   display: block;
   flex-shrink: 0;
   height: 1.25rem;
@@ -286,7 +286,7 @@
   pointer-events: none;
 }
 
-.chatbot-admin-wrap form.chatbot-admin-form > .chatbot-admin-footer {
+.multch-admin-wrap form.multch-admin-form > .multch-admin-footer {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -298,7 +298,7 @@
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
-.chatbot-admin-footer .button-primary {
+.multch-admin-footer .button-primary {
   background: linear-gradient(135deg, var(--cb-admin-primary), var(--cb-admin-primary-dark));
   border-color: var(--cb-admin-primary-dark);
   border-radius: 8px;
@@ -307,18 +307,18 @@
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
-.chatbot-admin-footer .button-primary:hover {
+.multch-admin-footer .button-primary:hover {
   background: var(--cb-admin-primary-dark);
   border-color: var(--cb-admin-primary-dark);
 }
 
-.chatbot-admin-footer__hint {
+.multch-admin-footer__hint {
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
 }
 
 /* Donation footer */
-.chatbot-donation-footer {
+.multch-donation-footer {
   margin-top: 1.5rem;
   padding: 0.85rem 1.25rem;
   border: 1px solid var(--cb-admin-border);
@@ -326,33 +326,33 @@
   background: var(--cb-admin-surface);
 }
 
-.chatbot-donation-footer__inner {
+.multch-donation-footer__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 1.25rem;
 }
 
-.chatbot-donation-footer__text {
+.multch-donation-footer__text {
   margin: 0;
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
   white-space: nowrap;
 }
 
-.chatbot-donation-footer__heart {
+.multch-donation-footer__heart {
   color: #f43f5e;
   margin-right: 0.25rem;
 }
 
-.chatbot-donation-footer__chips {
+.multch-donation-footer__chips {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
 }
 
-.chatbot-donation-footer__chip {
+.multch-donation-footer__chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -369,11 +369,11 @@
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.chatbot-donation-footer__chip-label {
+.multch-donation-footer__chip-label {
   display: inline;
 }
 
-.chatbot-donation-footer__svg {
+.multch-donation-footer__svg {
   display: block;
   flex-shrink: 0;
   width: 14px !important;
@@ -381,7 +381,7 @@
 }
 
 /* Chips con URL activa */
-.chatbot-donation-footer__chip:not(.chatbot-donation-footer__chip--pending):hover {
+.multch-donation-footer__chip:not(.multch-donation-footer__chip--pending):hover {
   background: var(--cb-admin-surface);
   border-color: #94a3b8;
   color: #0f172a;
@@ -389,29 +389,29 @@
 }
 
 /* Chips sin URL todavía */
-.chatbot-donation-footer__chip--pending {
+.multch-donation-footer__chip--pending {
   opacity: 0.45;
   cursor: help;
 }
 
 @media (max-width: 600px) {
-  .chatbot-donation-footer__inner {
+  .multch-donation-footer__inner {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .chatbot-donation-footer__text {
+  .multch-donation-footer__text {
     white-space: normal;
   }
 }
 
 /* Style preview */
-.chatbot-admin-preview-card {
+.multch-admin-preview-card {
   position: sticky;
   top: 32px;
 }
 
-.chatbot-admin-preview__head {
+.multch-admin-preview__head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -419,16 +419,16 @@
   gap: 0.75rem;
 }
 
-.chatbot-admin-preview__head .button {
+.multch-admin-preview__head .button {
   flex-shrink: 0;
   border-radius: 8px;
 }
 
-.chatbot-admin-preview {
+.multch-admin-preview {
   margin: 0;
 }
 
-.chatbot-admin-preview__viewport {
+.multch-admin-preview__viewport {
   position: relative;
   height: min(480px, 58vh);
   min-height: 380px;
@@ -445,24 +445,24 @@
 
 /* Escritorio: simulador proporcional a la columna de preview */
 @media (min-width: 900px) {
-  .chatbot-admin-layout--split .chatbot-admin-preview__viewport {
+  .multch-admin-layout--split .multch-admin-preview__viewport {
     min-height: 400px;
     height: min(560px, calc(100vh - 12rem));
   }
 }
 
-.chatbot-admin-preview__viewport[data-preview-panel-open="true"] .chatbot-admin-preview__page-mock {
+.multch-admin-preview__viewport[data-preview-panel-open="true"] .multch-admin-preview__page-mock {
   opacity: 0.12;
 }
 
-.chatbot-admin-preview__viewport[data-preview-panel-open="true"]::before,
-.chatbot-admin-preview__viewport[data-preview-panel-open="true"]::after {
+.multch-admin-preview__viewport[data-preview-panel-open="true"]::before,
+.multch-admin-preview__viewport[data-preview-panel-open="true"]::after {
   opacity: 0.4;
 }
 
 /* Guías de posición (solo vista previa admin, no afecta el sitio público) */
-.chatbot-admin-preview__viewport::before,
-.chatbot-admin-preview__viewport::after {
+.multch-admin-preview__viewport::before,
+.multch-admin-preview__viewport::after {
   content: "";
   position: absolute;
   left: 0.65rem;
@@ -472,28 +472,28 @@
   border-top: 1px dashed rgba(37, 99, 235, 0.28);
 }
 
-.chatbot-admin-preview__viewport::before {
+.multch-admin-preview__viewport::before {
   top: 50%;
 }
 
-.chatbot-admin-preview__viewport::after {
+.multch-admin-preview__viewport::after {
   bottom: 4.25rem;
 }
 
-.chatbot-admin-preview__viewport[data-preview-position="center-right"]::before,
-.chatbot-admin-preview__viewport[data-preview-position="center-left"]::before {
+.multch-admin-preview__viewport[data-preview-position="center-right"]::before,
+.multch-admin-preview__viewport[data-preview-position="center-left"]::before {
   border-top-color: rgba(37, 99, 235, 0.55);
   border-top-width: 2px;
 }
 
-.chatbot-admin-preview__viewport[data-preview-position="bottom-right"]::after,
-.chatbot-admin-preview__viewport[data-preview-position="bottom-left"]::after,
-.chatbot-admin-preview__viewport[data-preview-position="bottom-center"]::after {
+.multch-admin-preview__viewport[data-preview-position="bottom-right"]::after,
+.multch-admin-preview__viewport[data-preview-position="bottom-left"]::after,
+.multch-admin-preview__viewport[data-preview-position="bottom-center"]::after {
   border-top-color: rgba(37, 99, 235, 0.55);
   border-top-width: 2px;
 }
 
-.chatbot-admin-preview__page-mock {
+.multch-admin-preview__page-mock {
   position: absolute;
   inset: 1rem 1.25rem auto;
   display: flex;
@@ -503,25 +503,25 @@
   pointer-events: none;
 }
 
-.chatbot-admin-preview__page-mock span {
+.multch-admin-preview__page-mock span {
   display: block;
   height: 0.55rem;
   border-radius: 4px;
   background: #cbd5e1;
 }
 
-.chatbot-admin-preview__page-mock span:nth-child(1) { width: 55%; }
-.chatbot-admin-preview__page-mock span:nth-child(2) { width: 80%; }
-.chatbot-admin-preview__page-mock span:nth-child(3) { width: 65%; }
+.multch-admin-preview__page-mock span:nth-child(1) { width: 55%; }
+.multch-admin-preview__page-mock span:nth-child(2) { width: 80%; }
+.multch-admin-preview__page-mock span:nth-child(3) { width: 65%; }
 
 /* Preview uses absolute positioning inside viewport */
 /* Aislar el widget del CSS global de wp-admin (.wrap h3, .wrap p, etc.) */
-#chatbot-preview-viewport #chatbot-style-preview .maicb-header {
+#multch-preview-viewport #multch-style-preview .maicb-header {
   background: var(--maicb-header-bg, color-mix(in srgb, var(--maicb-card) 85%, var(--maicb-primary) 5%));
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-header .maicb-header-title,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-header h3.maicb-header-title {
+#multch-preview-viewport #multch-style-preview .maicb-header .maicb-header-title,
+#multch-preview-viewport #multch-style-preview .maicb-header h3.maicb-header-title {
   margin: 0;
   padding: 0;
   font-size: 0.9375rem;
@@ -531,8 +531,8 @@
   line-height: 1.25;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-header .maicb-header-sub,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-header p.maicb-header-sub {
+#multch-preview-viewport #multch-style-preview .maicb-header .maicb-header-sub,
+#multch-preview-viewport #multch-style-preview .maicb-header p.maicb-header-sub {
   margin: 0.2rem 0 0;
   padding: 0;
   font-size: 0.72rem;
@@ -541,7 +541,7 @@
   line-height: 1.3;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel {
+#multch-preview-viewport #multch-style-preview .maicb-panel {
   background: var(--maicb-card) !important;
   color: var(--maicb-fg);
   border-color: var(--maicb-border);
@@ -550,96 +550,96 @@
   -webkit-backdrop-filter: none !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-messages {
+#multch-preview-viewport #multch-style-preview .maicb-messages {
   background: var(--maicb-body-bg, var(--maicb-bg)) !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header {
   color: #f8fafc;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header .maicb-header-title,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header h3.maicb-header-title {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header .maicb-header-title,
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header h3.maicb-header-title {
   font-weight: 600;
   color: #f8fafc !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header .maicb-header-sub,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header p.maicb-header-sub {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header .maicb-header-sub,
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header p.maicb-header-sub {
   color: #cbd5e1 !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header .maicb-icon-btn {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header .maicb-icon-btn {
   color: #cbd5e1 !important;
   background: rgba(255, 255, 255, 0.06);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-header .maicb-icon-btn:hover {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-header .maicb-icon-btn:hover {
   color: #f8fafc !important;
   background: rgba(255, 255, 255, 0.12);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header {
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header {
   color: #f5f3ff;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header .maicb-header-title,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header h3.maicb-header-title {
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header .maicb-header-title,
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header h3.maicb-header-title {
   font-weight: 600;
   color: #f5f3ff !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header .maicb-header-sub,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header p.maicb-header-sub {
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header .maicb-header-sub,
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header p.maicb-header-sub {
   color: #ddd6fe !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header .maicb-icon-btn {
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header .maicb-icon-btn {
   color: #ddd6fe !important;
   background: rgba(255, 255, 255, 0.06);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-header .maicb-icon-btn:hover {
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-header .maicb-icon-btn:hover {
   color: #f5f3ff !important;
   background: rgba(255, 255, 255, 0.12);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header {
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header {
   color: #f8fafc;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header .maicb-header-title,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header h3.maicb-header-title {
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header .maicb-header-title,
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header h3.maicb-header-title {
   font-weight: 600;
   color: #f8fafc !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header .maicb-header-sub,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header p.maicb-header-sub {
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header .maicb-header-sub,
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header p.maicb-header-sub {
   color: #cbd5e1 !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header .maicb-icon-btn {
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header .maicb-icon-btn {
   color: #cbd5e1 !important;
   background: rgba(255, 255, 255, 0.05);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-header .maicb-icon-btn:hover {
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-header .maicb-icon-btn:hover {
   color: #f8fafc !important;
   background: rgba(255, 255, 255, 0.1);
 }
 
 /* Preview — posicionamiento dentro del viewport (anula position:fixed del widget) */
-#chatbot-preview-viewport .maicb-preview-widget-host {
+#multch-preview-viewport .maicb-preview-widget-host {
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview {
+#multch-preview-viewport #multch-style-preview {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -647,8 +647,8 @@
   line-height: 1.45;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel {
+#multch-preview-viewport #multch-style-preview .maicb-launcher,
+#multch-preview-viewport #multch-style-preview .maicb-panel {
   position: absolute !important;
   pointer-events: auto;
   top: auto;
@@ -657,37 +657,37 @@
   bottom: auto;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher {
+#multch-preview-viewport #multch-style-preview .maicb-launcher {
   z-index: 2;
   font-size: 0.8125rem;
   padding: 0.4rem 0.75rem 0.4rem 0.4rem;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-right,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-right,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-left,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-left,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-center {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-bottom-right,
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-right,
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-bottom-left,
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-left,
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-center {
   bottom: var(--maicb-offset, 0.85rem) !important;
   top: auto !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-right,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-right {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-bottom-right,
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-right {
   right: var(--maicb-offset, 0.85rem) !important;
   left: auto !important;
   transform: none;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-bottom-left,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-left {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-bottom-left,
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-left {
   left: var(--maicb-offset, 0.85rem) !important;
   right: auto !important;
   top: auto !important;
   transform: none;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-center-right {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-center-right {
   right: var(--maicb-offset, 0.85rem) !important;
   left: auto !important;
   top: 50% !important;
@@ -695,7 +695,7 @@
   transform: translateY(-50%) !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-center-left {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-center-left {
   left: var(--maicb-offset, 0.85rem) !important;
   right: auto !important;
   top: 50% !important;
@@ -703,29 +703,29 @@
   transform: translateY(-50%) !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher-center {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher-center {
   left: 50% !important;
   right: auto !important;
   top: auto !important;
   transform: translateX(-50%);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher.maicb-launcher--icon-only {
+#multch-preview-viewport #multch-style-preview .maicb-launcher.maicb-launcher--icon-only {
   padding: 0.4rem;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher-icon-wrap,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher-icon {
+#multch-preview-viewport #multch-style-preview .maicb-launcher-icon-wrap,
+#multch-preview-viewport #multch-style-preview .maicb-launcher-icon {
   width: 2.25rem;
   height: 2.25rem;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-launcher-icon svg {
+#multch-preview-viewport #multch-style-preview .maicb-launcher-icon svg {
   width: 1.05rem;
   height: 1.05rem;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel {
+#multch-preview-viewport #multch-style-preview .maicb-panel {
   z-index: 3;
   width: min(var(--maicb-panel-width, 320px), calc(100% - 1.3rem));
   height: min(520px, calc(100% - var(--maicb-offset) - var(--maicb-preview-launcher-gap)));
@@ -735,21 +735,21 @@
   flex-direction: column;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-right {
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-bottom-right {
   right: var(--maicb-offset, 0.85rem) !important;
   bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
   left: auto !important;
   top: auto !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-left {
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-bottom-left {
   left: var(--maicb-offset, 0.85rem) !important;
   bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
   right: auto !important;
   top: auto !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-center {
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-bottom-center {
   left: 50% !important;
   bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
   right: auto !important;
@@ -757,19 +757,19 @@
   transform: translateX(-50%) !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-right {
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-center-right {
   right: var(--maicb-offset, 0.65rem) !important;
   left: auto !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-left {
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-center-left {
   left: var(--maicb-offset, 0.65rem) !important;
   right: auto !important;
 }
 
 /* Centro lateral: ocupa casi todo el alto (menos bandas vacías arriba/abajo) */
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-right,
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-left {
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-center-right,
+#multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-center-left {
   top: var(--maicb-offset, 0.65rem) !important;
   bottom: var(--maicb-offset, 0.65rem) !important;
   height: auto !important;
@@ -778,7 +778,7 @@
 }
 
 /* Anular reglas responsive globales de chatbot.css solo dentro del simulador */
-#chatbot-preview-viewport #chatbot-style-preview .maicb-panel:not([hidden]) {
+#multch-preview-viewport #multch-style-preview .maicb-panel:not([hidden]) {
   position: absolute !important;
   width: min(var(--maicb-panel-width, 320px), calc(100% - 1.75rem)) !important;
   max-width: calc(100% - 1.75rem) !important;
@@ -786,14 +786,14 @@
 }
 
 @container maicb-admin-preview (max-width: 300px) {
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel {
+  #multch-preview-viewport #multch-style-preview .maicb-panel {
     width: calc(100% - 1.1rem) !important;
     max-width: calc(100% - 1.1rem) !important;
   }
 }
 
 @media (max-width: 640px) {
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel:not([hidden]) {
+  #multch-preview-viewport #multch-style-preview .maicb-panel:not([hidden]) {
     top: auto !important;
     right: auto !important;
     bottom: auto !important;
@@ -806,8 +806,8 @@
     transform: none !important;
   }
 
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-right:not([hidden]),
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-center-left:not([hidden]) {
+  #multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-center-right:not([hidden]),
+  #multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-center-left:not([hidden]) {
     top: var(--maicb-offset, 0.65rem) !important;
     bottom: var(--maicb-offset, 0.65rem) !important;
     height: auto !important;
@@ -815,7 +815,7 @@
     transform: none !important;
   }
 
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-right:not([hidden]) {
+  #multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-bottom-right:not([hidden]) {
     top: auto !important;
     right: var(--maicb-offset, 0.85rem) !important;
     bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
@@ -823,7 +823,7 @@
     transform: none !important;
   }
 
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-left:not([hidden]) {
+  #multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-bottom-left:not([hidden]) {
     top: auto !important;
     left: var(--maicb-offset, 0.85rem) !important;
     bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
@@ -831,20 +831,20 @@
     transform: none !important;
   }
 
-  #chatbot-preview-viewport #chatbot-style-preview .maicb-panel.maicb-position-bottom-center:not([hidden]) {
+  #multch-preview-viewport #multch-style-preview .maicb-panel.maicb-position-bottom-center:not([hidden]) {
     left: 50% !important;
     bottom: calc(var(--maicb-offset, 0.85rem) + 3.25rem) !important;
     transform: translateX(-50%) !important;
   }
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-messages {
+#multch-preview-viewport #multch-style-preview .maicb-messages {
   flex: 1 1 auto;
   min-height: 0;
 }
 
 /* Composer — aislar del CSS de wp-admin (forms, textarea, .button) */
-#chatbot-preview-viewport #chatbot-style-preview .maicb-composer {
+#multch-preview-viewport #multch-style-preview .maicb-composer {
   flex-shrink: 0;
   display: block;
   margin: 0 !important;
@@ -856,7 +856,7 @@
   box-shadow: 0 -6px 20px -10px rgba(15, 23, 42, 0.12);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-composer-inner {
+#multch-preview-viewport #multch-style-preview .maicb-composer-inner {
   display: flex !important;
   align-items: flex-end;
   gap: 0.45rem;
@@ -870,14 +870,14 @@
     0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-composer-inner:focus-within {
+#multch-preview-viewport #multch-style-preview .maicb-composer-inner:focus-within {
   border-color: color-mix(in srgb, var(--maicb-primary) 42%, transparent);
   box-shadow:
     inset 0 1px 2px rgba(15, 23, 42, 0.04),
     0 0 0 3px color-mix(in srgb, var(--maicb-primary) 12%, transparent);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-input {
+#multch-preview-viewport #multch-style-preview .maicb-input {
   flex: 1 1 auto;
   width: auto !important;
   min-height: 2.25rem;
@@ -894,13 +894,13 @@
   line-height: 1.45;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-input:focus {
+#multch-preview-viewport #multch-style-preview .maicb-input:focus {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-send {
+#multch-preview-viewport #multch-style-preview .maicb-send {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -923,53 +923,53 @@
   box-shadow: 0 2px 10px color-mix(in srgb, var(--maicb-primary) 28%, transparent);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview .maicb-send svg {
+#multch-preview-viewport #multch-style-preview .maicb-send svg {
   width: 1rem;
   height: 1rem;
   margin-left: 0.05rem;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-composer,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-composer,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-composer {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-composer,
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-composer,
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-composer {
   border-top-color: rgba(148, 163, 184, 0.2) !important;
   box-shadow: 0 -8px 24px -12px rgba(0, 0, 0, 0.45);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-dark-glass .maicb-composer-inner,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-obsidian .maicb-composer-inner,
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-composer-inner {
+#multch-preview-viewport #multch-style-preview.maicb-preset-dark-glass .maicb-composer-inner,
+#multch-preview-viewport #multch-style-preview.maicb-preset-obsidian .maicb-composer-inner,
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-composer-inner {
   background: rgba(30, 41, 59, 0.72) !important;
   border-color: rgba(148, 163, 184, 0.22);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-plum .maicb-composer-inner {
+#multch-preview-viewport #multch-style-preview.maicb-preset-plum .maicb-composer-inner {
   background: rgba(46, 16, 101, 0.72) !important;
   border-color: rgba(167, 139, 250, 0.22);
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-minimal .maicb-composer-inner {
+#multch-preview-viewport #multch-style-preview.maicb-preset-minimal .maicb-composer-inner {
   border-radius: 0.625rem;
 }
 
-#chatbot-preview-viewport #chatbot-style-preview.maicb-preset-minimal .maicb-send {
+#multch-preview-viewport #multch-style-preview.maicb-preset-minimal .maicb-send {
   border-radius: 0.5rem !important;
 }
 
-.chatbot-admin-preview__viewport .maicb-preview-widget {
+.multch-admin-preview__viewport .maicb-preview-widget {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.chatbot-admin-preview__viewport .maicb-launcher,
-.chatbot-admin-preview__viewport .maicb-panel {
+.multch-admin-preview__viewport .maicb-launcher,
+.multch-admin-preview__viewport .maicb-panel {
   position: absolute !important;
   pointer-events: auto;
 }
 
-.chatbot-admin-preview__hint {
+.multch-admin-preview__hint {
   margin: 0.75rem 0 0;
   font-size: 0.75rem;
   color: var(--cb-admin-muted);
@@ -977,14 +977,14 @@
 }
 
 /* Theme preset cards */
-.chatbot-theme-grid {
+.multch-theme-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.65rem;
   margin-bottom: 0.75rem;
 }
 
-.chatbot-theme-card {
+.multch-theme-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -998,35 +998,35 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.chatbot-theme-card:hover {
+.multch-theme-card:hover {
   border-color: color-mix(in srgb, var(--cb-admin-primary) 55%, var(--cb-admin-border));
 }
 
-.chatbot-theme-card.is-active {
+.multch-theme-card.is-active {
   border-color: var(--cb-admin-primary);
   box-shadow: 0 0 0 1px var(--cb-admin-primary);
 }
 
-.chatbot-theme-card__swatches {
+.multch-theme-card__swatches {
   display: flex;
   gap: 0.25rem;
   width: 100%;
 }
 
-.chatbot-theme-card__swatch {
+.multch-theme-card__swatch {
   flex: 1;
   height: 1.25rem;
   border-radius: 4px;
   border: 1px solid rgba(15, 23, 42, 0.12);
 }
 
-.chatbot-theme-card__label {
+.multch-theme-card__label {
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--cb-admin-text);
 }
 
-.chatbot-theme-card__badge {
+.multch-theme-card__badge {
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -1035,29 +1035,29 @@
   border-radius: 4px;
 }
 
-.chatbot-theme-card__badge--light {
+.multch-theme-card__badge--light {
   background: #eff6ff;
   color: #1d4ed8;
 }
 
-.chatbot-theme-card__badge--dark {
+.multch-theme-card__badge--dark {
   background: #1e293b;
   color: #e2e8f0;
 }
 
-.chatbot-theme-card__badge--neutral {
+.multch-theme-card__badge--neutral {
   background: #f4f4f5;
   color: #52525b;
 }
 
-.chatbot-style-actions {
+.multch-style-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0 0 1rem;
 }
 
-.chatbot-admin-preview__contrast {
+.multch-admin-preview__contrast {
   margin: 0.5rem 0 0;
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
@@ -1067,11 +1067,11 @@
 }
 
 /* Position picker */
-.chatbot-position-picker {
+.multch-position-picker {
   margin-bottom: 0.5rem;
 }
 
-.chatbot-position-map {
+.multch-position-map {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 2.5rem);
@@ -1083,7 +1083,7 @@
   border: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-position-btn {
+.multch-position-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1095,7 +1095,7 @@
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.chatbot-position-btn::before {
+.multch-position-btn::before {
   content: "";
   width: 10px;
   height: 10px;
@@ -1104,49 +1104,49 @@
   transition: background 0.15s ease, transform 0.15s ease;
 }
 
-.chatbot-position-btn:hover::before {
+.multch-position-btn:hover::before {
   background: var(--cb-admin-primary);
   transform: scale(1.15);
 }
 
-.chatbot-position-btn.is-active {
+.multch-position-btn.is-active {
   border-color: var(--cb-admin-primary);
   background: #eff6ff;
 }
 
-.chatbot-position-btn.is-active::before {
+.multch-position-btn.is-active::before {
   background: var(--cb-admin-primary);
   transform: scale(1.2);
 }
 
-.chatbot-position-btn[data-position="center-left"] { grid-area: 2 / 1; }
-.chatbot-position-btn[data-position="bottom-left"] { grid-area: 3 / 1; }
-.chatbot-position-btn[data-position="bottom-center"] { grid-area: 3 / 2; }
-.chatbot-position-btn[data-position="bottom-right"] { grid-area: 3 / 3; }
-.chatbot-position-btn[data-position="center-right"] { grid-area: 2 / 3; }
+.multch-position-btn[data-position="center-left"] { grid-area: 2 / 1; }
+.multch-position-btn[data-position="bottom-left"] { grid-area: 3 / 1; }
+.multch-position-btn[data-position="bottom-center"] { grid-area: 3 / 2; }
+.multch-position-btn[data-position="bottom-right"] { grid-area: 3 / 3; }
+.multch-position-btn[data-position="center-right"] { grid-area: 2 / 3; }
 
-.chatbot-position-label {
+.multch-position-label {
   margin: 0.5rem 0 0;
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--cb-admin-primary);
 }
 
-.chatbot-position-picker__hint {
+.multch-position-picker__hint {
   margin: 0.35rem 0 0;
   max-width: 28rem;
 }
 
-.chatbot-admin-style-fields .wp-picker-container {
+.multch-admin-style-fields .wp-picker-container {
   display: inline-block;
 }
 
-.chatbot-admin-style-fields .wp-picker-container input[type="text"].wp-color-picker {
+.multch-admin-style-fields .wp-picker-container input[type="text"].wp-color-picker {
   width: 5.5rem !important;
 }
 
 /* Stats */
-.chatbot-admin-stats-toolbar {
+.multch-admin-stats-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -1155,47 +1155,47 @@
   margin-bottom: 1.25rem;
 }
 
-.chatbot-admin-stats-toolbar__intro {
+.multch-admin-stats-toolbar__intro {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
 
-.chatbot-admin-stats-toolbar__intro p {
+.multch-admin-stats-toolbar__intro p {
   margin: 0;
   font-size: 0.875rem;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-stats-toolbar__link {
+.multch-admin-stats-toolbar__link {
   font-size: 0.8125rem;
   font-weight: 500;
   text-decoration: none;
 }
 
-.chatbot-admin-stats-toolbar__actions {
+.multch-admin-stats-toolbar__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
 }
 
-.chatbot-admin-kpi-grid--stats {
+.multch-admin-kpi-grid--stats {
   margin-bottom: 1.25rem;
 }
 
 /* General tab */
-.chatbot-admin-general-fields {
+.multch-admin-general-fields {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.chatbot-admin-general-notice {
+.multch-admin-general-notice {
   color: #b45309;
 }
 
-.chatbot-admin-embed-box {
+.multch-admin-embed-box {
   margin-top: 1rem;
   padding: 1rem;
   border: 1px dashed var(--cb-admin-border);
@@ -1203,7 +1203,7 @@
   background: #f8fafc;
 }
 
-.chatbot-admin-embed-box__label {
+.multch-admin-embed-box__label {
   display: block;
   margin: 0 0 0.5rem;
   font-size: 0.8125rem;
@@ -1211,38 +1211,38 @@
   color: #334155;
 }
 
-.chatbot-admin-embed-box__row {
+.multch-admin-embed-box__row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
 }
 
-.chatbot-admin-embed-box__row input {
+.multch-admin-embed-box__row input {
   flex: 1 1 200px;
   margin: 0;
 }
 
-.chatbot-admin-char-count {
+.multch-admin-char-count {
   margin: 0.35rem 0 0;
   font-size: 0.75rem;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-char-count--warn {
+.multch-admin-char-count--warn {
   color: #b45309;
 }
 
-.chatbot-admin-char-count--over {
+.multch-admin-char-count--over {
   color: #b91c1c;
   font-weight: 600;
 }
 
-.chatbot-admin-field-actions {
+.multch-admin-field-actions {
   margin: 0.5rem 0 0;
 }
 
-.chatbot-admin-preview__disabled-overlay {
+.multch-admin-preview__disabled-overlay {
   position: absolute;
   inset: 0;
   z-index: 5;
@@ -1252,17 +1252,17 @@
   pointer-events: none;
 }
 
-.chatbot-admin-preview__disabled-overlay:not([hidden]) {
+.multch-admin-preview__disabled-overlay:not([hidden]) {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.chatbot-admin-preview__disabled-overlay[hidden] {
+.multch-admin-preview__disabled-overlay[hidden] {
   display: none !important;
 }
 
-.chatbot-admin-preview__disabled-overlay p {
+.multch-admin-preview__disabled-overlay p {
   margin: 0;
   max-width: 16rem;
   text-align: center;
@@ -1271,15 +1271,15 @@
   color: #f8fafc;
 }
 
-.chatbot-admin-preview__viewport {
+.multch-admin-preview__viewport {
   position: relative;
 }
 
-.chatbot-admin-preview__viewport--widget-off .maicb-preview-widget {
+.multch-admin-preview__viewport--widget-off .maicb-preview-widget {
   opacity: 0.72;
 }
 
-.chatbot-admin-preview__head {
+.multch-admin-preview__head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -1287,28 +1287,28 @@
   gap: 0.75rem;
 }
 
-.chatbot-admin-preview__head > div p {
+.multch-admin-preview__head > div p {
   margin: 0.35rem 0 0;
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
   line-height: 1.45;
 }
 
-.chatbot-admin-kpi small {
+.multch-admin-kpi small {
   font-size: 0.55em;
   font-weight: 600;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-stats-grid--wide {
+.multch-admin-stats-grid--wide {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
-.chatbot-admin-stats-series {
+.multch-admin-stats-series {
   margin-bottom: 1.25rem;
 }
 
-.chatbot-admin-stats-bars {
+.multch-admin-stats-bars {
   display: flex;
   align-items: flex-end;
   gap: 0.35rem;
@@ -1317,7 +1317,7 @@
   padding-bottom: 0.25rem;
 }
 
-.chatbot-admin-stats-bar {
+.multch-admin-stats-bar {
   flex: 1 1 0;
   min-width: 2rem;
   max-width: 3rem;
@@ -1327,62 +1327,62 @@
   gap: 0.35rem;
 }
 
-.chatbot-admin-stats-bar__fill {
+.multch-admin-stats-bar__fill {
   width: 100%;
   min-height: 4px;
   border-radius: 4px 4px 0 0;
   background: linear-gradient(180deg, var(--cb-admin-primary), #93c5fd);
 }
 
-.chatbot-admin-stats-bar__label {
+.multch-admin-stats-bar__label {
   font-size: 0.625rem;
   color: var(--cb-admin-muted);
   white-space: nowrap;
 }
 
-.chatbot-admin-stats-filters-wrap {
+.multch-admin-stats-filters-wrap {
   padding-top: 0;
   border-bottom: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-stats-filters {
+.multch-admin-stats-filters {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 0.75rem 1rem;
   padding: 0 1rem 1rem;
 }
 
-.chatbot-admin-stats-filters__field {
+.multch-admin-stats-filters__field {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.chatbot-admin-stats-filters__field label {
+.multch-admin-stats-filters__field label {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-stats-filters__field select,
-.chatbot-admin-stats-filters__field input {
+.multch-admin-stats-filters__field select,
+.multch-admin-stats-filters__field input {
   max-width: 100%;
 }
 
-.chatbot-admin-stats-filters__actions {
+.multch-admin-stats-filters__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 0.5rem;
 }
 
-.chatbot-admin-tablenav--stats {
+.multch-admin-tablenav--stats {
   align-items: center;
   justify-content: center;
   gap: 0.5rem 0.75rem;
 }
 
-.chatbot-admin-pills {
+.multch-admin-pills {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.35rem;
@@ -1392,7 +1392,7 @@
   border: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-pills a {
+.multch-admin-pills a {
   display: inline-block;
   padding: 0.35rem 0.85rem;
   border-radius: 7px;
@@ -1403,25 +1403,25 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.chatbot-admin-pills a:hover {
+.multch-admin-pills a:hover {
   color: #0f172a;
   background: var(--cb-admin-surface);
 }
 
-.chatbot-admin-pills a.is-active {
+.multch-admin-pills a.is-active {
   background: var(--cb-admin-surface);
   color: var(--cb-admin-primary);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
 }
 
-.chatbot-admin-kpi-grid {
+.multch-admin-kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 1.25rem;
 }
 
-.chatbot-admin-kpi {
+.multch-admin-kpi {
   padding: 1.1rem 1.2rem;
   border: 1px solid var(--cb-admin-border);
   border-radius: var(--cb-admin-radius);
@@ -1429,7 +1429,7 @@
   box-shadow: var(--cb-admin-shadow);
 }
 
-.chatbot-admin-kpi__label {
+.multch-admin-kpi__label {
   display: block;
   margin-bottom: 0.35rem;
   font-size: 0.75rem;
@@ -1439,55 +1439,55 @@
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-kpi__value {
+.multch-admin-kpi__value {
   font-size: 1.65rem;
   font-weight: 700;
   line-height: 1.2;
   color: #0f172a;
 }
 
-.chatbot-admin-kpi--success .chatbot-admin-kpi__value {
+.multch-admin-kpi--success .multch-admin-kpi__value {
   color: var(--cb-admin-success);
 }
 
-.chatbot-admin-kpi--error .chatbot-admin-kpi__value {
+.multch-admin-kpi--error .multch-admin-kpi__value {
   color: var(--cb-admin-error);
 }
 
-.chatbot-admin-stats-grid {
+.multch-admin-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
   margin-bottom: 1.25rem;
 }
 
-.chatbot-admin-stats-grid .chatbot-admin-card__body {
+.multch-admin-stats-grid .multch-admin-card__body {
   padding: 0;
 }
 
-.chatbot-admin-stats-grid table.widefat {
+.multch-admin-stats-grid table.widefat {
   margin: 0;
   border: none;
   box-shadow: none;
 }
 
-.chatbot-admin-stats-grid table.widefat th,
-.chatbot-admin-stats-grid table.widefat td {
+.multch-admin-stats-grid table.widefat th,
+.multch-admin-stats-grid table.widefat td {
   padding: 0.65rem 1rem;
 }
 
-.chatbot-admin-events .widefat {
+.multch-admin-events .widefat {
   border-radius: 0 0 var(--cb-admin-radius) var(--cb-admin-radius);
   border: none;
 }
 
-.chatbot-admin-events .widefat thead th {
+.multch-admin-events .widefat thead th {
   background: #fafbfc;
   font-weight: 600;
   color: #475569;
 }
 
-.chatbot-admin-status {
+.multch-admin-status {
   display: inline-block;
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
@@ -1496,25 +1496,25 @@
   text-transform: lowercase;
 }
 
-.chatbot-admin-status--ok {
+.multch-admin-status--ok {
   color: var(--cb-admin-success);
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
 }
 
-.chatbot-admin-status--cached {
+.multch-admin-status--cached {
   color: var(--cb-admin-warning);
   background: #fffbeb;
   border: 1px solid #fde68a;
 }
 
-.chatbot-admin-status--err {
+.multch-admin-status--err {
   color: var(--cb-admin-error);
   background: #fef2f2;
   border: 1px solid #fecaca;
 }
 
-.chatbot-admin-tablenav {
+.multch-admin-tablenav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
@@ -1523,7 +1523,7 @@
   background: #fafbfc;
 }
 
-.chatbot-admin-tablenav a {
+.multch-admin-tablenav a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1539,36 +1539,36 @@
   background: var(--cb-admin-surface);
 }
 
-.chatbot-admin-tablenav a:hover {
+.multch-admin-tablenav a:hover {
   color: var(--cb-admin-primary);
   border-color: var(--cb-admin-primary);
 }
 
-.chatbot-admin-tablenav a.is-active,
-.chatbot-admin-tablenav a.is-active:hover {
+.multch-admin-tablenav a.is-active,
+.multch-admin-tablenav a.is-active:hover {
   color: var(--cb-admin-primary);
   border-color: var(--cb-admin-primary);
   background: #eff6ff;
 }
 
-.chatbot-admin-export.btn {
+.multch-admin-export.btn {
   border-radius: 8px;
 }
 
 /* Historial */
-.chatbot-admin-history-panel {
+.multch-admin-history-panel {
   margin-bottom: 1.25rem;
 }
 
-.chatbot-admin-history-panel__head {
+.multch-admin-history-panel__head {
   padding: 0;
 }
 
-.chatbot-admin-history-panel__filters {
+.multch-admin-history-panel__filters {
   border-top: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-history-toolbar {
+.multch-admin-history-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1577,18 +1577,18 @@
   padding: 1rem 1.25rem;
 }
 
-.chatbot-admin-history-toolbar__intro {
+.multch-admin-history-toolbar__intro {
   min-width: 0;
   flex: 1 1 auto;
 }
 
 @media (min-width: 783px) {
-  .chatbot-admin-history-toolbar__intro {
+  .multch-admin-history-toolbar__intro {
     flex: 1 1 12rem;
   }
 }
 
-.chatbot-admin-history-toolbar__intro h2 {
+.multch-admin-history-toolbar__intro h2 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
@@ -1596,14 +1596,14 @@
   line-height: 1.3;
 }
 
-.chatbot-admin-history-toolbar__intro p {
+.multch-admin-history-toolbar__intro p {
   margin: 0.25rem 0 0;
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
   line-height: 1.45;
 }
 
-.chatbot-admin-history-toolbar__period {
+.multch-admin-history-toolbar__period {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1611,42 +1611,42 @@
   flex-shrink: 0;
 }
 
-.chatbot-admin-history-toolbar__period-label {
+.multch-admin-history-toolbar__period-label {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-pills--history {
+.multch-admin-pills--history {
   flex-wrap: wrap;
 }
 
-.chatbot-admin-history-filters {
+.multch-admin-history-filters {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.75rem 1rem;
   align-items: end;
 }
 
-.chatbot-admin-history-filters__field {
+.multch-admin-history-filters__field {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   min-width: 0;
 }
 
-.chatbot-admin-history-filters__field--search {
+.multch-admin-history-filters__field--search {
   grid-column: span 2;
 }
 
-.chatbot-admin-history-filters__field label {
+.multch-admin-history-filters__field label {
   font-size: 0.75rem;
   font-weight: 600;
   color: #475569;
 }
 
-.chatbot-admin-history-filters__field input[type="search"],
-.chatbot-admin-history-filters__field select {
+.multch-admin-history-filters__field input[type="search"],
+.multch-admin-history-filters__field select {
   width: 100%;
   max-width: 100%;
   min-height: 36px;
@@ -1656,13 +1656,13 @@
   background: #fff;
 }
 
-.chatbot-admin-history-filters__field input:focus,
-.chatbot-admin-history-filters__field select:focus {
+.multch-admin-history-filters__field input:focus,
+.multch-admin-history-filters__field select:focus {
   border-color: var(--cb-admin-primary);
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
 }
 
-.chatbot-admin-history-filters__actions {
+.multch-admin-history-filters__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -1671,11 +1671,11 @@
   justify-content: flex-end;
 }
 
-.chatbot-admin-history-list {
+.multch-admin-history-list {
   margin-bottom: 1.25rem;
 }
 
-.chatbot-admin-history-list__head {
+.multch-admin-history-list__head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1685,20 +1685,20 @@
   padding-bottom: 0.75rem;
 }
 
-.chatbot-admin-history-list__head h2 {
+.multch-admin-history-list__head h2 {
   margin: 0;
   font-size: 0.9375rem;
   font-weight: 600;
   color: #0f172a;
 }
 
-.chatbot-admin-history-list__head p {
+.multch-admin-history-list__head p {
   margin: 0;
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-empty {
+.multch-admin-history-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1709,7 +1709,7 @@
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-empty__icon {
+.multch-admin-history-empty__icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1721,7 +1721,7 @@
   font-size: 1.25rem !important;
 }
 
-.chatbot-admin-history-empty p {
+.multch-admin-history-empty p {
   margin: 0;
   max-width: 24rem;
   font-size: 0.875rem;
@@ -1729,11 +1729,11 @@
 }
 
 /* Tabla / grid del listado */
-.chatbot-admin-history-table {
+.multch-admin-history-table {
   --cb-history-grid: 2.75rem minmax(0, 1.75fr) 6.5rem minmax(0, 1fr) 7.25rem 3.25rem 2.25rem;
 }
 
-.chatbot-admin-history-table__head {
+.multch-admin-history-table__head {
   display: grid;
   grid-template-columns: var(--cb-history-grid);
   align-items: center;
@@ -1743,7 +1743,7 @@
   background: #f8fafc;
 }
 
-.chatbot-admin-history-table__head .chatbot-admin-history-table__cell {
+.multch-admin-history-table__head .multch-admin-history-table__cell {
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -1752,33 +1752,33 @@
   white-space: nowrap;
 }
 
-.chatbot-admin-history-table__cell {
+.multch-admin-history-table__cell {
   min-width: 0;
 }
 
-.chatbot-admin-history-table__cell--icon,
-.chatbot-admin-history-table__cell--action {
+.multch-admin-history-table__cell--icon,
+.multch-admin-history-table__cell--action {
   justify-self: center;
 }
 
-.chatbot-admin-history-table__cell--status,
-.chatbot-admin-history-table__cell--msgs {
+.multch-admin-history-table__cell--status,
+.multch-admin-history-table__cell--msgs {
   justify-self: start;
 }
 
-.chatbot-admin-history-table__cell--date {
+.multch-admin-history-table__cell--date {
   justify-self: end;
   text-align: right;
 }
 
-.chatbot-admin-history-stack {
+.multch-admin-history-stack {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 0.65rem;
 }
 
-.chatbot-admin-history-card {
+.multch-admin-history-card {
   --cb-history-accent: var(--cb-admin-primary);
   position: relative;
   overflow: hidden;
@@ -1789,11 +1789,11 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-.chatbot-admin-history-card:last-child {
+.multch-admin-history-card:last-child {
   border-bottom: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-history-card::before {
+.multch-admin-history-card::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
@@ -1802,31 +1802,31 @@
   border-radius: 10px 0 0 10px;
 }
 
-.chatbot-admin-history-card--success,
-.chatbot-admin-history-card--active {
+.multch-admin-history-card--success,
+.multch-admin-history-card--active {
   --cb-history-accent: var(--cb-admin-success);
 }
 
-.chatbot-admin-history-card--cached {
+.multch-admin-history-card--cached {
   --cb-history-accent: var(--cb-admin-warning);
 }
 
-.chatbot-admin-history-card--error {
+.multch-admin-history-card--error {
   --cb-history-accent: var(--cb-admin-error);
 }
 
-.chatbot-admin-history-card:hover {
+.multch-admin-history-card:hover {
   border-color: #cbd5e1;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 }
 
-.chatbot-admin-history-card.is-open {
+.multch-admin-history-card.is-open {
   border-color: #bfdbfe;
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
   background: #fafcff;
 }
 
-.chatbot-admin-history-card__toggle {
+.multch-admin-history-card__toggle {
   display: grid;
   grid-template-columns: var(--cb-history-grid);
   align-items: center;
@@ -1843,21 +1843,21 @@
   line-height: 1.45;
 }
 
-.chatbot-admin-history-card__toggle:hover {
+.multch-admin-history-card__toggle:hover {
   background: rgba(248, 250, 252, 0.85);
 }
 
-.chatbot-admin-history-card.is-open > .chatbot-admin-history-card__toggle {
+.multch-admin-history-card.is-open > .multch-admin-history-card__toggle {
   border-bottom: 1px solid var(--cb-admin-border);
   background: rgba(248, 250, 252, 0.65);
 }
 
-.chatbot-admin-history-card__toggle:focus-visible {
+.multch-admin-history-card__toggle:focus-visible {
   outline: 2px solid var(--cb-admin-primary);
   outline-offset: -2px;
 }
 
-.chatbot-admin-history-card__avatar {
+.multch-admin-history-card__avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1869,71 +1869,71 @@
   flex-shrink: 0;
 }
 
-.chatbot-admin-history-card__avatar-label {
+.multch-admin-history-card__avatar-label {
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   color: color-mix(in srgb, var(--cb-history-accent) 75%, #0f172a);
 }
 
-.chatbot-admin-history-card[data-provider="gemini"] .chatbot-admin-history-card__avatar {
+.multch-admin-history-card[data-provider="gemini"] .multch-admin-history-card__avatar {
   background: linear-gradient(145deg, #4285f4 0%, #34a853 100%);
   border-color: transparent;
 }
 
-.chatbot-admin-history-card[data-provider="gemini"] .chatbot-admin-history-card__avatar-label {
+.multch-admin-history-card[data-provider="gemini"] .multch-admin-history-card__avatar-label {
   color: #fff;
 }
 
-.chatbot-admin-history-card[data-provider="deepseek"] .chatbot-admin-history-card__avatar {
+.multch-admin-history-card[data-provider="deepseek"] .multch-admin-history-card__avatar {
   background: linear-gradient(145deg, #0ea5e9 0%, #6366f1 100%);
   border-color: transparent;
 }
 
-.chatbot-admin-history-card[data-provider="deepseek"] .chatbot-admin-history-card__avatar-label {
+.multch-admin-history-card[data-provider="deepseek"] .multch-admin-history-card__avatar-label {
   color: #fff;
 }
 
-.chatbot-admin-history-card[data-provider="ollama"] .chatbot-admin-history-card__avatar {
+.multch-admin-history-card[data-provider="ollama"] .multch-admin-history-card__avatar {
   background: linear-gradient(145deg, #64748b 0%, #334155 100%);
   border-color: transparent;
 }
 
-.chatbot-admin-history-card[data-provider="ollama"] .chatbot-admin-history-card__avatar-label {
+.multch-admin-history-card[data-provider="ollama"] .multch-admin-history-card__avatar-label {
   color: #fff;
 }
 
-.chatbot-admin-history-card[data-provider="openai_compatible"] .chatbot-admin-history-card__avatar {
+.multch-admin-history-card[data-provider="openai_compatible"] .multch-admin-history-card__avatar {
   background: linear-gradient(145deg, #10a37f 0%, #059669 100%);
   border-color: transparent;
 }
 
-.chatbot-admin-history-card[data-provider="openai_compatible"] .chatbot-admin-history-card__avatar-label {
+.multch-admin-history-card[data-provider="openai_compatible"] .multch-admin-history-card__avatar-label {
   color: #fff;
 }
 
-.chatbot-admin-history-table__cell--title {
+.multch-admin-history-table__cell--title {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   min-width: 0;
 }
 
-.chatbot-admin-history-card__content {
+.multch-admin-history-card__content {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   min-width: 0;
 }
 
-.chatbot-admin-history-card__headline {
+.multch-admin-history-card__headline {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.65rem 1rem;
 }
 
-.chatbot-admin-history-card__title {
+.multch-admin-history-card__title {
   display: block;
   min-width: 0;
   margin: 0;
@@ -1946,7 +1946,7 @@
   text-overflow: ellipsis;
 }
 
-.chatbot-admin-history-card__sub {
+.multch-admin-history-card__sub {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1954,21 +1954,21 @@
   min-width: 0;
 }
 
-.chatbot-admin-history-card__provider-stack {
+.multch-admin-history-card__provider-stack {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   min-width: 0;
 }
 
-.chatbot-admin-history-card__provider-name {
+.multch-admin-history-card__provider-name {
   font-size: 0.8125rem;
   font-weight: 600;
   color: #334155;
   line-height: 1.25;
 }
 
-.chatbot-admin-history-card__model {
+.multch-admin-history-card__model {
   display: block;
   max-width: 100%;
   font-size: 0.6875rem;
@@ -1980,7 +1980,7 @@
   text-overflow: ellipsis;
 }
 
-.chatbot-admin-history-table__cell--date time {
+.multch-admin-history-table__cell--date time {
   display: block;
   font-size: 0.75rem;
   font-weight: 500;
@@ -1989,7 +1989,7 @@
   white-space: nowrap;
 }
 
-.chatbot-admin-history-card__msgs-count {
+.multch-admin-history-card__msgs-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2005,7 +2005,7 @@
   line-height: 1;
 }
 
-.chatbot-admin-history-card__status {
+.multch-admin-history-card__status {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -2020,7 +2020,7 @@
   border: 1px solid transparent;
 }
 
-.chatbot-admin-history-card__status-dot {
+.multch-admin-history-card__status-dot {
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
@@ -2028,32 +2028,32 @@
   opacity: 0.85;
 }
 
-.chatbot-admin-history-card__status--ok {
+.multch-admin-history-card__status--ok {
   color: var(--cb-admin-success);
   background: #ecfdf5;
   border-color: #a7f3d0;
 }
 
-.chatbot-admin-history-card__status--cached {
+.multch-admin-history-card__status--cached {
   color: var(--cb-admin-warning);
   background: #fffbeb;
   border-color: #fde68a;
 }
 
-.chatbot-admin-history-card__status--err {
+.multch-admin-history-card__status--err {
   color: var(--cb-admin-error);
   background: #fef2f2;
   border-color: #fecaca;
 }
 
-.chatbot-admin-history-card__meta {
+.multch-admin-history-card__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem 0.85rem;
 }
 
-.chatbot-admin-history-card__meta-item {
+.multch-admin-history-card__meta-item {
   display: inline-flex;
   align-items: baseline;
   gap: 0.35rem;
@@ -2062,29 +2062,29 @@
   line-height: 1.4;
 }
 
-.chatbot-admin-history-card__meta-item:not(:last-child)::after {
+.multch-admin-history-card__meta-item:not(:last-child)::after {
   content: "";
   display: none;
 }
 
-.chatbot-admin-history-card__meta-label {
+.multch-admin-history-card__meta-label {
   color: var(--cb-admin-muted);
   font-weight: 500;
   white-space: nowrap;
 }
 
-.chatbot-admin-history-card__meta-label::after {
+.multch-admin-history-card__meta-label::after {
   content: ":";
 }
 
-.chatbot-admin-history-card__meta-value {
+.multch-admin-history-card__meta-value {
   color: #334155;
   font-weight: 500;
   min-width: 0;
   word-break: break-word;
 }
 
-.chatbot-admin-history-card__foot {
+.multch-admin-history-card__foot {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2092,7 +2092,7 @@
   min-width: 0;
 }
 
-.chatbot-admin-history-card__ref {
+.multch-admin-history-card__ref {
   display: inline-block;
   max-width: 100%;
   padding: 0.2rem 0.45rem;
@@ -2108,14 +2108,14 @@
   text-overflow: ellipsis;
 }
 
-.chatbot-admin-history-card__tags {
+.multch-admin-history-card__tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
   min-width: 0;
 }
 
-.chatbot-admin-history-tag {
+.multch-admin-history-tag {
   display: inline-flex;
   align-items: center;
   max-width: 100%;
@@ -2132,7 +2132,7 @@
   text-overflow: ellipsis;
 }
 
-.chatbot-admin-history-tag--path {
+.multch-admin-history-tag--path {
   max-width: 100%;
   background: #eff6ff;
   border-color: #dbeafe;
@@ -2140,11 +2140,11 @@
   font-size: 0.6875rem;
 }
 
-.chatbot-admin-history-tag--session {
+.multch-admin-history-tag--session {
   background: var(--cb-admin-bg);
 }
 
-.chatbot-admin-history-card__chevron {
+.multch-admin-history-card__chevron {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2157,7 +2157,7 @@
   transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.chatbot-admin-history-card__chevron::before {
+.multch-admin-history-card__chevron::before {
   content: "";
   width: 0.4rem;
   height: 0.4rem;
@@ -2167,52 +2167,52 @@
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
-.chatbot-admin-history-card__toggle:hover .chatbot-admin-history-card__chevron {
+.multch-admin-history-card__toggle:hover .multch-admin-history-card__chevron {
   border-color: #bfdbfe;
   background: #f8fafc;
 }
 
-.chatbot-admin-history-card.is-open .chatbot-admin-history-card__chevron {
+.multch-admin-history-card.is-open .multch-admin-history-card__chevron {
   border-color: #bfdbfe;
   background: #eff6ff;
 }
 
-.chatbot-admin-history-card.is-open .chatbot-admin-history-card__chevron::before {
+.multch-admin-history-card.is-open .multch-admin-history-card__chevron::before {
   border-color: var(--cb-admin-primary);
   transform: rotate(-135deg) translate(-1px, -1px);
 }
 
-.chatbot-admin-history-card__panel {
+.multch-admin-history-card__panel {
   background: #fafbfc;
 }
 
-.chatbot-admin-history-card__body {
+.multch-admin-history-card__body {
   padding: 1rem 1.15rem 1.15rem;
 }
 
-.chatbot-admin-history-card__loading,
-.chatbot-admin-history-card__error {
+.multch-admin-history-card__loading,
+.multch-admin-history-card__error {
   padding: 1.25rem 1rem;
   font-size: 0.875rem;
   text-align: center;
 }
 
-.chatbot-admin-history-card__loading {
+.multch-admin-history-card__loading {
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-card__error {
+.multch-admin-history-card__error {
   color: var(--cb-admin-error);
 }
 
-.chatbot-admin-history-detail__grid {
+.multch-admin-history-detail__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 0.65rem;
   margin: 0 0 1rem;
 }
 
-.chatbot-admin-history-detail__grid > div {
+.multch-admin-history-detail__grid > div {
   min-width: 0;
   padding: 0.65rem 0.75rem;
   border-radius: 8px;
@@ -2220,11 +2220,11 @@
   background: #fff;
 }
 
-.chatbot-admin-history-detail__grid-wide {
+.multch-admin-history-detail__grid-wide {
   grid-column: 1 / -1;
 }
 
-.chatbot-admin-history-detail__grid dt {
+.multch-admin-history-detail__grid dt {
   margin: 0;
   font-size: 0.6875rem;
   font-weight: 600;
@@ -2233,7 +2233,7 @@
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-detail__grid dd {
+.multch-admin-history-detail__grid dd {
   margin: 0.2rem 0 0;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -2242,7 +2242,7 @@
   word-break: break-word;
 }
 
-.chatbot-admin-history-detail__grid dd code {
+.multch-admin-history-detail__grid dd code {
   display: inline-block;
   max-width: 100%;
   padding: 0.2rem 0.4rem;
@@ -2256,29 +2256,29 @@
   text-overflow: ellipsis;
 }
 
-.chatbot-admin-history-detail__grid dd a {
+.multch-admin-history-detail__grid dd a {
   word-break: break-all;
 }
 
-.chatbot-admin-history-messages {
+.multch-admin-history-messages {
   padding-top: 0.75rem;
   border-top: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-history-messages__title {
+.multch-admin-history-messages__title {
   margin: 0 0 0.75rem;
   font-size: 0.8125rem;
   font-weight: 600;
   color: #334155;
 }
 
-.chatbot-admin-history-messages__empty {
+.multch-admin-history-messages__empty {
   margin: 0;
   font-size: 0.875rem;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-messages__list {
+.multch-admin-history-messages__list {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -2287,7 +2287,7 @@
   padding-right: 0.15rem;
 }
 
-.chatbot-admin-history-msg {
+.multch-admin-history-msg {
   display: flex;
   gap: 0.55rem;
   align-items: flex-start;
@@ -2297,26 +2297,26 @@
   background: #fff;
 }
 
-.chatbot-admin-history-msg--user {
+.multch-admin-history-msg--user {
   margin-right: 0;
 }
 
-.chatbot-admin-history-msg--assistant {
+.multch-admin-history-msg--assistant {
   background: #f8fafc;
   border-color: #dbeafe;
 }
 
 @media (min-width: 640px) {
-  .chatbot-admin-history-msg--user {
+  .multch-admin-history-msg--user {
     margin-right: 2rem;
   }
 
-  .chatbot-admin-history-msg--assistant {
+  .multch-admin-history-msg--assistant {
     margin-left: 2rem;
   }
 }
 
-.chatbot-admin-history-msg__head {
+.multch-admin-history-msg__head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2326,7 +2326,7 @@
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-msg__role {
+.multch-admin-history-msg__role {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -2336,7 +2336,7 @@
   font-size: 0.6875rem;
 }
 
-.chatbot-admin-history-msg__role::before {
+.multch-admin-history-msg__role::before {
   content: "";
   width: 0.35rem;
   height: 0.35rem;
@@ -2344,45 +2344,45 @@
   background: currentColor;
 }
 
-.chatbot-admin-history-msg--user .chatbot-admin-history-msg__role {
+.multch-admin-history-msg--user .multch-admin-history-msg__role {
   color: #475569;
   background: var(--cb-admin-bg);
   border: 1px solid var(--cb-admin-border);
 }
 
-.chatbot-admin-history-msg--assistant .chatbot-admin-history-msg__role {
+.multch-admin-history-msg--assistant .multch-admin-history-msg__role {
   color: #1d4ed8;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
 }
 
-.chatbot-admin-kpi-grid--history {
+.multch-admin-kpi-grid--history {
   margin-bottom: 1rem;
 }
 
-.chatbot-admin-history-toolbar__actions {
+.multch-admin-history-toolbar__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
 }
 
-.chatbot-admin-history-card__relative,
-.chatbot-admin-history-card__duration {
+.multch-admin-history-card__relative,
+.multch-admin-history-card__duration {
   display: block;
   margin-top: 0.15rem;
   font-size: 0.6875rem;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-history-detail__actions {
+.multch-admin-history-detail__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-bottom: 0.85rem;
 }
 
-.chatbot-admin-history-telemetry {
+.multch-admin-history-telemetry {
   margin-bottom: 1rem;
   padding: 0.75rem 0.85rem;
   border: 1px solid var(--cb-admin-border);
@@ -2390,7 +2390,7 @@
   background: #fafbfc;
 }
 
-.chatbot-admin-history-telemetry__list {
+.multch-admin-history-telemetry__list {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2400,14 +2400,14 @@
   font-size: 0.8125rem;
 }
 
-.chatbot-admin-history-telemetry__list li {
+.multch-admin-history-telemetry__list li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem 0.5rem;
 }
 
-.chatbot-admin-history-msg__avatar {
+.multch-admin-history-msg__avatar {
   flex: 0 0 auto;
   width: 1.75rem;
   height: 1.75rem;
@@ -2423,40 +2423,40 @@
   border: 1px solid #bfdbfe;
 }
 
-.chatbot-admin-history-msg__content {
+.multch-admin-history-msg__content {
   flex: 1;
   min-width: 0;
 }
 
-.chatbot-admin-history-msg__latency {
+.multch-admin-history-msg__latency {
   font-size: 0.6875rem;
   color: var(--cb-admin-muted);
 }
 
-.chatbot-admin-tablenav--history {
+.multch-admin-tablenav--history {
   align-items: center;
   justify-content: center;
   gap: 0.5rem 0.75rem;
 }
 
-.chatbot-admin-tablenav__status {
+.multch-admin-tablenav__status {
   font-size: 0.8125rem;
   color: var(--cb-admin-muted);
   font-weight: 500;
 }
 
-.chatbot-admin-tablenav__pages {
+.multch-admin-tablenav__pages {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.35rem;
 }
 
-.chatbot-admin-tablenav__prev,
-.chatbot-admin-tablenav__next {
+.multch-admin-tablenav__prev,
+.multch-admin-tablenav__next {
   font-weight: 600;
 }
 
-.chatbot-admin-history-msg__body {
+.multch-admin-history-msg__body {
   font-size: 0.875rem;
   line-height: 1.55;
   white-space: pre-wrap;
@@ -2466,75 +2466,75 @@
 
 /* Responsive — Historial */
 @media (max-width: 960px) {
-  .chatbot-admin-history-toolbar {
+  .multch-admin-history-toolbar {
     gap: 0.75rem 1rem;
     padding: 0.75rem 1rem;
   }
 
-  .chatbot-admin-history-panel__filters {
+  .multch-admin-history-panel__filters {
     padding: 0.85rem 1rem;
   }
 
-  .chatbot-admin-history-filters {
+  .multch-admin-history-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .chatbot-admin-history-filters__field--search,
-  .chatbot-admin-history-filters__actions {
+  .multch-admin-history-filters__field--search,
+  .multch-admin-history-filters__actions {
     grid-column: 1 / -1;
   }
 
-  .chatbot-admin-history-filters__actions {
+  .multch-admin-history-filters__actions {
     justify-content: flex-start;
   }
 
-  .chatbot-admin-history-table {
+  .multch-admin-history-table {
     --cb-history-grid: 2.5rem minmax(0, 1.4fr) 5.75rem minmax(0, 0.85fr) 6.25rem 2.75rem 2rem;
   }
 }
 
 @media (max-width: 782px) {
-  .chatbot-admin-history-toolbar {
+  .multch-admin-history-toolbar {
     flex-direction: column;
     align-items: stretch;
     gap: 0.55rem;
     padding: 0.6rem 0.65rem;
   }
 
-  .chatbot-admin-history-toolbar__intro {
+  .multch-admin-history-toolbar__intro {
     flex: 0 0 auto;
   }
 
-  .chatbot-admin-history-toolbar__intro h2 {
+  .multch-admin-history-toolbar__intro h2 {
     font-size: 0.9375rem;
   }
 
-  .chatbot-admin-history-toolbar__intro p {
+  .multch-admin-history-toolbar__intro p {
     margin-top: 0.15rem;
     font-size: 0.75rem;
     line-height: 1.35;
   }
 
-  .chatbot-admin-history-toolbar__actions {
+  .multch-admin-history-toolbar__actions {
     gap: 0.4rem;
   }
 
-  .chatbot-admin-history-toolbar__actions .button {
+  .multch-admin-history-toolbar__actions .button {
     flex: 1 1 auto;
     justify-content: center;
     text-align: center;
   }
 
-  .chatbot-admin-history-panel__filters {
+  .multch-admin-history-panel__filters {
     padding: 0.65rem 0.65rem 0.75rem;
   }
 
-  .chatbot-admin-history-toolbar__period {
+  .multch-admin-history-toolbar__period {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .chatbot-admin-pills--history {
+  .multch-admin-pills--history {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -2542,34 +2542,34 @@
     scrollbar-width: none;
   }
 
-  .chatbot-admin-pills--history::-webkit-scrollbar {
+  .multch-admin-pills--history::-webkit-scrollbar {
     display: none;
   }
 
-  .chatbot-admin-pills--history a {
+  .multch-admin-pills--history a {
     flex: 1 1 0;
     text-align: center;
     min-width: 4.5rem;
   }
 
-  .chatbot-admin-history-filters {
+  .multch-admin-history-filters {
     grid-template-columns: 1fr;
   }
 
-  .chatbot-admin-history-table {
+  .multch-admin-history-table {
     --cb-history-grid: 1fr;
   }
 
-  .chatbot-admin-history-table__head {
+  .multch-admin-history-table__head {
     display: none;
   }
 
-  .chatbot-admin-history-stack {
+  .multch-admin-history-stack {
     padding: 0.5rem;
     gap: 0.65rem;
   }
 
-  .chatbot-admin-history-card__toggle {
+  .multch-admin-history-card__toggle {
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
       "icon title action"
@@ -2579,28 +2579,28 @@
     padding: 0.85rem;
   }
 
-  .chatbot-admin-history-table__cell--icon {
+  .multch-admin-history-table__cell--icon {
     grid-area: icon;
     align-self: start;
   }
 
-  .chatbot-admin-history-table__cell--title {
+  .multch-admin-history-table__cell--title {
     grid-area: title;
   }
 
-  .chatbot-admin-history-table__cell--action {
+  .multch-admin-history-table__cell--action {
     grid-area: action;
     align-self: center;
   }
 
-  .chatbot-admin-history-table__cell--status {
+  .multch-admin-history-table__cell--status {
     grid-area: status;
     justify-self: start;
   }
 
-  .chatbot-admin-history-table__cell--provider,
-  .chatbot-admin-history-table__cell--date,
-  .chatbot-admin-history-table__cell--msgs {
+  .multch-admin-history-table__cell--provider,
+  .multch-admin-history-table__cell--date,
+  .multch-admin-history-table__cell--msgs {
     grid-column: 1 / -1;
     display: flex;
     align-items: center;
@@ -2609,9 +2609,9 @@
     border-top: 1px dashed #e2e8f0;
   }
 
-  .chatbot-admin-history-table__cell--provider::before,
-  .chatbot-admin-history-table__cell--date::before,
-  .chatbot-admin-history-table__cell--msgs::before {
+  .multch-admin-history-table__cell--provider::before,
+  .multch-admin-history-table__cell--date::before,
+  .multch-admin-history-table__cell--msgs::before {
     content: attr(data-label);
     flex-shrink: 0;
     min-width: 4.75rem;
@@ -2622,16 +2622,16 @@
     color: #94a3b8;
   }
 
-  .chatbot-admin-history-table__cell--date {
+  .multch-admin-history-table__cell--date {
     justify-self: stretch;
     text-align: left;
   }
 
-  .chatbot-admin-history-table__cell--date time {
+  .multch-admin-history-table__cell--date time {
     white-space: normal;
   }
 
-  .chatbot-admin-history-card__title {
+  .multch-admin-history-card__title {
     white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -2639,43 +2639,43 @@
     overflow: hidden;
   }
 
-  .chatbot-admin-history-card__headline {
+  .multch-admin-history-card__headline {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.35rem;
   }
 
-  .chatbot-admin-history-card__meta {
+  .multch-admin-history-card__meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
   }
 
-  .chatbot-admin-history-card__foot {
+  .multch-admin-history-card__foot {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .chatbot-admin-history-card__body {
+  .multch-admin-history-card__body {
     padding: 0.85rem;
   }
 
-  .chatbot-admin-history-detail__grid {
+  .multch-admin-history-detail__grid {
     grid-template-columns: 1fr;
   }
 
-  .chatbot-admin-history-messages__list {
+  .multch-admin-history-messages__list {
     max-height: min(55vh, 420px);
   }
 }
 
 /* Notices inside wrap */
-.chatbot-admin-wrap .notice {
+.multch-admin-wrap .notice {
   margin: 0 0 1rem;
   border-radius: 8px;
 }
 
-.chatbot-admin-notice {
+.multch-admin-notice {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -2685,22 +2685,22 @@
   border-radius: 10px;
   border: 1px solid transparent;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-  animation: chatbot-admin-notice-in 0.35s ease;
+  animation: multch-admin-notice-in 0.35s ease;
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
-.chatbot-admin-notice.is-dismissed {
+.multch-admin-notice.is-dismissed {
   opacity: 0;
   transform: translateY(-6px);
   pointer-events: none;
 }
 
-.chatbot-admin-notice__content {
+.multch-admin-notice__content {
   flex: 1;
   min-width: 0;
 }
 
-.chatbot-admin-notice__title {
+.multch-admin-notice__title {
   display: block;
   margin: 0 0 0.2rem;
   font-size: 0.8125rem;
@@ -2709,13 +2709,13 @@
   text-transform: uppercase;
 }
 
-.chatbot-admin-notice__text {
+.multch-admin-notice__text {
   margin: 0;
   font-size: 0.9375rem;
   line-height: 1.45;
 }
 
-.chatbot-admin-notice__dismiss {
+.multch-admin-notice__dismiss {
   flex-shrink: 0;
   width: 1.75rem;
   height: 1.75rem;
@@ -2732,38 +2732,38 @@
   transition: opacity 0.15s ease, background-color 0.15s ease;
 }
 
-.chatbot-admin-notice__dismiss:hover,
-.chatbot-admin-notice__dismiss:focus-visible {
+.multch-admin-notice__dismiss:hover,
+.multch-admin-notice__dismiss:focus-visible {
   opacity: 1;
   background: rgba(15, 23, 42, 0.08);
   outline: none;
 }
 
-.chatbot-admin-notice--success {
+.multch-admin-notice--success {
   background: #ecfdf5;
   border-color: #6ee7b7;
   color: #065f46;
 }
 
-.chatbot-admin-notice--error {
+.multch-admin-notice--error {
   background: #fef2f2;
   border-color: #fca5a5;
   color: #991b1b;
 }
 
-.chatbot-admin-notice--warning {
+.multch-admin-notice--warning {
   background: #fffbeb;
   border-color: #fcd34d;
   color: #92400e;
 }
 
-.chatbot-admin-notice--info {
+.multch-admin-notice--info {
   background: #eff6ff;
   border-color: #93c5fd;
   color: #1e40af;
 }
 
-@keyframes chatbot-admin-notice-in {
+@keyframes multch-admin-notice-in {
   from {
     opacity: 0;
     transform: translateY(-8px);

@@ -5,7 +5,7 @@ Tags: chatbot, ai, gemini, live chat, customer support
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ Connect the chat to your preferred AI provider, customize appearance without cod
 = Key features =
 
 * **Multiple AI providers:** Google Gemini, DeepSeek, Ollama (local), and any OpenAI-compatible API.
-* **Global widget or shortcode:** Show the chat site-wide or only where you insert `[chatbot_widget]`.
+* **Global widget or shortcode:** Show the chat site-wide or only where you insert `[multch_widget]`.
 * **Floating and inline modes:** Floating button with slide-out panel or embedded chat in page content.
 * **Streaming responses:** Progressive replies for a more natural experience (optional).
 * **8 visual themes:** Sapphire, Midnight, Monochrome, Aqua, Ember, Emerald, Amethyst, and Plum.
@@ -48,16 +48,16 @@ Connect the chat to your preferred AI provider, customize appearance without cod
 
 = Shortcodes =
 
-`[chatbot_widget]` — Floating widget (default).
+`[multch_widget]` — Floating widget (default).
 
-`[chatbot_widget mode="inline"]` — Embedded panel in content.
+`[multch_widget mode="inline"]` — Embedded panel in content.
 
-Optional style attributes (override global settings): `preset`, `position`, `primary`, `accent`, `radius`, `offset`, `panel_width`, `bg`, `fg`. Example: `[chatbot_widget preset="ocean" position="bottom-left"]`.
+Optional style attributes (override global settings): `preset`, `position`, `primary`, `accent`, `radius`, `offset`, `panel_width`, `bg`, `fg`. Example: `[multch_widget preset="ocean" position="bottom-left"]`.
 
 = REST API =
 
-* `POST /wp-json/chatbot-plugin/v1/chat` — JSON response.
-* `POST /chatbot-plugin/v1/chat/stream` — Text streaming.
+* `POST /wp-json/multch/v1/chat` — JSON response.
+* `POST /multch/v1/chat/stream` — Text streaming.
 
 The API key is always handled on the server; the frontend only uses the WordPress nonce.
 
@@ -91,11 +91,11 @@ No. All model requests go through the WordPress backend. The frontend only sends
 
 = Can I define the API key in wp-config.php? =
 
-Yes. You can use constants such as `CHATBOT_GEMINI_API_KEY`, `CHATBOT_DEEPSEEK_API_KEY`, or `CHATBOT_OPENAI_API_KEY` for better security in production.
+Yes. You can use constants such as `MULTCH_GEMINI_API_KEY`, `MULTCH_DEEPSEEK_API_KEY`, or `MULTCH_OPENAI_API_KEY` for better security in production.
 
 = How do I show the chat on only one page? =
 
-Disable the global widget under **General** and insert the shortcode `[chatbot_widget]` on the desired page or post.
+Disable the global widget under **General** and insert the shortcode `[multch_widget]` on the desired page or post.
 
 = Are conversations stored? =
 
@@ -105,9 +105,9 @@ Yes. Each exchange is stored in the database with a public ID (format `CB-AAAA-M
 
 The `uninstall.php` routine removes:
 
-* Database tables: `chatbot_events`, conversation and message tables.
-* Plugin options: `chatbot_plugin_settings` and database version options.
-* Scheduled cron jobs: `chatbot_purge_history`, `chatbot_purge_telemetry`.
+* Database tables: `multch_events`, conversation and message tables.
+* Plugin options: `multch_plugin_settings` and database version options.
+* Scheduled cron jobs: `multch_purge_history`, `multch_purge_telemetry`.
 * Plugin transients: response cache, rate limits, violations, and suspension flags.
 
 External log files configured via `telemetry_log_path` pointing outside the plugin directory are **not** deleted automatically.
@@ -176,8 +176,8 @@ This plugin does **not** contact the plugin author's servers for analytics, lice
 = What data is stored locally? =
 
 * **Conversations:** chat messages and metadata in custom database tables.
-* **Telemetry:** request events (provider, model, status, latency) in `chatbot_events`.
-* **Settings:** plugin configuration in `chatbot_plugin_settings`.
+* **Telemetry:** request events (provider, model, status, latency) in `multch_events`.
+* **Settings:** plugin configuration in `multch_plugin_settings`.
 * **Temporary data:** rate-limit and response-cache transients (`chatbot_*`).
 
 = What data is sent to third parties? =
@@ -221,7 +221,7 @@ Chat history uses anonymous session identifiers and is not linked to visitor ema
 * Interactive admin preview.
 * Response streaming, rate limiting, and telemetry with CSV export.
 * Conversation history with public ID and AJAX detail.
-* Shortcodes `[chatbot_widget]` and `[chatbot_widget mode="inline"]`.
+* Shortcodes `[multch_widget]` and `[multch_widget mode="inline"]`.
 * REST API for JSON chat and streaming.
 
 == Upgrade Notice ==

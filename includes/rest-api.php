@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Rest_Api {
+class Multch_Rest_Api {
 
 	public static function init(): void {
 		add_action( 'rest_api_init', array( __CLASS__, 'register_routes' ) );
@@ -18,17 +18,17 @@ class Chatbot_Rest_Api {
 
 	public static function register_routes(): void {
 		register_rest_route(
-			'chatbot-plugin/v1',
+			'multch/v1',
 			'/chat',
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( 'Chatbot_Api_Handler', 'handle_chat' ),
+				'callback'            => array( 'Multch_Api_Handler', 'handle_chat' ),
 				'permission_callback' => array( __CLASS__, 'permission_callback' ),
 			)
 		);
 
 		register_rest_route(
-			'chatbot-plugin/v1',
+			'multch/v1',
 			'/chat/stream',
 			array(
 				'methods'             => 'POST',
@@ -43,8 +43,8 @@ class Chatbot_Rest_Api {
 	 */
 	public static function register_stream_rewrite(): void {
 		add_rewrite_rule(
-			'^chatbot-plugin/v1/chat/stream/?$',
-			'index.php?chatbot_stream=1',
+			'^multch/v1/chat/stream/?$',
+			'index.php?multch_stream=1',
 			'top'
 		);
 	}
@@ -54,12 +54,12 @@ class Chatbot_Rest_Api {
 	 * @return array<int, string>
 	 */
 	public static function add_query_vars( array $vars ): array {
-		$vars[] = 'chatbot_stream';
+		$vars[] = 'multch_stream';
 		return $vars;
 	}
 
 	public static function maybe_handle_stream(): void {
-		if ( ! get_query_var( 'chatbot_stream' ) ) {
+		if ( ! get_query_var( 'multch_stream' ) ) {
 			return;
 		}
 
@@ -68,7 +68,7 @@ class Chatbot_Rest_Api {
 			exit;
 		}
 
-		$request = new WP_REST_Request( 'POST', '/chatbot-plugin/v1/chat/stream' );
+		$request = new WP_REST_Request( 'POST', '/multch/v1/chat/stream' );
 		$raw     = file_get_contents( 'php://input' );
 		if ( $raw ) {
 			$request->set_body( $raw );
@@ -84,7 +84,7 @@ class Chatbot_Rest_Api {
 			$request->set_header( 'x-wp-nonce', $nonce );
 		}
 
-		Chatbot_Api_Handler::dispatch_stream( $request );
+		Multch_Api_Handler::dispatch_stream( $request );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Chatbot_Rest_Api {
 	 */
 	public static function permission_callback( WP_REST_Request $request ) {
 		$nonce = $request->get_header( 'x-wp-nonce' );
-		if ( ! Chatbot_Api_Handler::verify_nonce( $nonce ) ) {
+		if ( ! Multch_Api_Handler::verify_nonce( $nonce ) ) {
 			return new WP_Error(
 				'forbidden',
 				__( 'Invalid nonce.', 'multiai-chatbot' ),
@@ -100,8 +100,8 @@ class Chatbot_Rest_Api {
 			);
 		}
 
-		$settings = Chatbot_Plugin::get_settings();
-		if ( ! Chatbot_Api_Handler::verify_origin( $settings ) ) {
+		$settings = Multch_Plugin::get_settings();
+		if ( ! Multch_Api_Handler::verify_origin( $settings ) ) {
 			return new WP_Error(
 				'forbidden',
 				__( 'Origin not allowed.', 'multiai-chatbot' ),
@@ -116,14 +116,14 @@ class Chatbot_Rest_Api {
 	 * Inform clients that stream is at rewrite URL (same nonce rules).
 	 */
 	public static function stream_info( WP_REST_Request $request ): WP_REST_Response {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
 			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ), 404 );
 		}
 
 		return new WP_REST_Response(
 			array(
-				'streamUrl' => home_url( '/chatbot-plugin/v1/chat/stream' ),
+				'streamUrl' => home_url( '/multch/v1/chat/stream' ),
 				'hint'      => __( 'Use POST with the same body and headers as /chat.', 'multiai-chatbot' ),
 			),
 			200

@@ -26,7 +26,7 @@
    */
   function create(userCfg) {
     var cfg = userCfg || {};
-    var optionKey = cfg.optionKey || "chatbot_plugin_settings";
+    var optionKey = cfg.optionKey || "multch_plugin_settings";
     var mode = cfg.mode === "general" ? "general" : "style";
     var PRESETS =
       Array.isArray(cfg.presets) && cfg.presets.length ? cfg.presets : DEFAULT_PRESETS;
@@ -371,7 +371,7 @@
     }
 
     function updateContrastWarning(wrap, settings) {
-      var el = document.getElementById("chatbot-preview-contrast");
+      var el = document.getElementById("multch-preview-contrast");
       if (!el) return;
       var primary =
         settings.primary || getComputedStyle(wrap).getPropertyValue("--maicb-primary").trim();
@@ -395,22 +395,22 @@
     }
 
     function updatePositionButtons(position) {
-      document.querySelectorAll(".chatbot-position-btn").forEach(function (btn) {
+      document.querySelectorAll(".multch-position-btn").forEach(function (btn) {
         btn.classList.toggle("is-active", btn.dataset.position === position);
       });
-      var label = document.getElementById("chatbot-position-label");
+      var label = document.getElementById("multch-position-label");
       if (label && cfg.positionLabels && cfg.positionLabels[position]) {
         label.textContent = cfg.positionLabels[position];
       }
-      var viewport = document.getElementById("chatbot-preview-viewport");
+      var viewport = document.getElementById("multch-preview-viewport");
       if (viewport) {
         viewport.setAttribute("data-preview-position", position);
       }
     }
 
     function updateWidgetDisabledOverlay() {
-      var overlay = document.getElementById("chatbot-preview-disabled-overlay");
-      var textEl = document.getElementById("chatbot-preview-disabled-text");
+      var overlay = document.getElementById("multch-preview-disabled-overlay");
+      var textEl = document.getElementById("multch-preview-disabled-text");
       if (!overlay) return;
       var disabled = mode === "general" && !isWidgetEnabled();
       overlay.hidden = !disabled;
@@ -420,9 +420,9 @@
           "Global widget is disabled. The preview shows how copy would look if enabled."
         );
       }
-      var viewport = document.getElementById("chatbot-preview-viewport");
+      var viewport = document.getElementById("multch-preview-viewport");
       if (viewport) {
-        viewport.classList.toggle("chatbot-admin-preview__viewport--widget-off", disabled);
+        viewport.classList.toggle("multch-admin-preview__viewport--widget-off", disabled);
       }
     }
 
@@ -519,19 +519,19 @@
     }
 
     function updatePresetDesc(presetId) {
-      var desc = document.getElementById("chatbot-style-preset-desc");
+      var desc = document.getElementById("multch-style-preset-desc");
       if (!desc) return;
       var meta = PRESET_META[presetId];
       desc.textContent = meta && meta.desc ? meta.desc : "";
     }
 
     function syncPresetCards(presetId) {
-      document.querySelectorAll(".chatbot-theme-card").forEach(function (card) {
+      document.querySelectorAll(".multch-theme-card").forEach(function (card) {
         var active = card.dataset.preset === presetId;
         card.classList.toggle("is-active", active);
         card.setAttribute("aria-checked", active ? "true" : "false");
       });
-      var hidden = document.getElementById("chatbot-style-preset");
+      var hidden = document.getElementById("multch-style-preset");
       if (hidden) hidden.value = presetId;
       updatePresetDesc(presetId);
     }
@@ -547,7 +547,7 @@
 
       var wrap = document.createElement("div");
       wrap.className = "maicb-widget maicb-wrap maicb-preview-widget";
-      wrap.id = "chatbot-style-preview";
+      wrap.id = "multch-style-preview";
 
       var settings = readSettings();
       applyPresetClasses(wrap, settings);
@@ -585,7 +585,7 @@
         isOpen = open;
         panel.hidden = !open;
         launcher.hidden = open;
-        var vp = document.getElementById("chatbot-preview-viewport");
+        var vp = document.getElementById("multch-preview-viewport");
         if (vp) {
           vp.setAttribute("data-preview-panel-open", open ? "true" : "false");
         }
@@ -604,7 +604,7 @@
         e.preventDefault();
       });
 
-      var toggleBtn = document.getElementById("chatbot-preview-toggle");
+      var toggleBtn = document.getElementById("multch-preview-toggle");
       if (toggleBtn) {
         toggleBtn.addEventListener("click", function () {
           setOpen(!isOpen);
@@ -636,7 +636,7 @@
     }
 
     function boot() {
-      var viewport = document.getElementById("chatbot-preview-viewport");
+      var viewport = document.getElementById("multch-preview-viewport");
       if (!viewport) return null;
 
       var refs = buildPreviewDOM(viewport);
@@ -661,7 +661,7 @@
     };
   }
 
-  global.ChatbotAdminPreview = {
+  global.MultchAdminPreview = {
     create: create,
     DEFAULT_PRESETS: DEFAULT_PRESETS,
   };

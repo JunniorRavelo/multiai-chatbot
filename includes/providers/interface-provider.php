@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-interface Chatbot_AI_Provider {
+interface Multch_AI_Provider {
 
 	/**
 	 * @param string               $system   System instruction.

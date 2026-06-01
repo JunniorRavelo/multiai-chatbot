@@ -4,7 +4,7 @@
 
 ## Naming conventions (namespace)
 
-The public widget uses the `maicb-*` class prefix and the `#chatbot-plugin-root` container with `data-maicb-root`. See [docs/NAMING.md](docs/NAMING.md). Before publishing, run `./scripts/check-namespace`.
+The public widget uses the `maicb-*` class prefix and the `#multch-plugin-root` container with `data-maicb-root`. See [docs/NAMING.md](docs/NAMING.md). Before publishing, run `./scripts/check-namespace`.
 
 ## Requirements
 
@@ -63,7 +63,7 @@ This runs `./scripts/package-plugin`, confirms the ZIP excludes `scripts/`, `.gi
 - Optional constant in `wp-config.php`:
 
 ```php
-define( 'CHATBOT_GEMINI_API_KEY', 'your-key' );
+define( 'MULTCH_GEMINI_API_KEY', 'your-key' );
 ```
 
 ### DeepSeek
@@ -75,7 +75,7 @@ define( 'CHATBOT_GEMINI_API_KEY', 'your-key' );
 - Optional constant in `wp-config.php`:
 
 ```php
-define( 'CHATBOT_DEEPSEEK_API_KEY', 'your-key' );
+define( 'MULTCH_DEEPSEEK_API_KEY', 'your-key' );
 ```
 
 Get your API key at [platform.deepseek.com](https://platform.deepseek.com/).
@@ -94,7 +94,7 @@ Get your API key at [platform.deepseek.com](https://platform.deepseek.com/).
 - Optional constant:
 
 ```php
-define( 'CHATBOT_OPENAI_API_KEY', 'your-key' );
+define( 'MULTCH_OPENAI_API_KEY', 'your-key' );
 ```
 
 ## Site usage
@@ -106,8 +106,8 @@ Enable **Show site-wide** on the General tab. The widget loads on `wp_footer`.
 ### Shortcode
 
 ```
-[chatbot_widget]
-[chatbot_widget mode="inline"]
+[multch_widget]
+[multch_widget mode="inline"]
 ```
 
 - `floating` (default): floating button + panel
@@ -136,8 +136,8 @@ Presets available on the **Chat Style** tab (visual selector with preview):
 **Per-page style via shortcode:**
 
 ```
-[chatbot_widget preset="ocean" position="bottom-left"]
-[chatbot_widget mode="inline" primary="#059669"]
+[multch_widget preset="ocean" position="bottom-left"]
+[multch_widget mode="inline" primary="#059669"]
 ```
 
 Export/import theme JSON from the admin (Chat Style tab).
@@ -152,8 +152,8 @@ Export/import theme JSON from the admin (Chat Style tab).
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/wp-json/chatbot-plugin/v1/chat` | POST | JSON response `{ answer, meta }` |
-| `/chatbot-plugin/v1/chat/stream` | POST | Simulated streaming (`text/plain`) |
+| `/wp-json/multch/v1/chat` | POST | JSON response `{ answer, meta }` |
+| `/multch/v1/chat/stream` | POST | Simulated streaming (`text/plain`) |
 
 Required headers:
 
@@ -199,7 +199,7 @@ uninstall.php
 
 ## Conversation history
 
-Each user/assistant exchange is stored in `{prefix}chatbot_conversations` and `{prefix}chatbot_messages`.
+Each user/assistant exchange is stored in `{prefix}multch_conversations` and `{prefix}multch_messages`.
 
 - **Public ID:** `CB-2026-05-29-14-35-42` (date and time in the site timezone)
 - **Internal ID:** auto-increment number for administration
@@ -208,7 +208,7 @@ Each user/assistant exchange is stored in `{prefix}chatbot_conversations` and `{
 
 ## Telemetry
 
-Each chat request logs an event in the `{prefix}chatbot_events` table:
+Each chat request logs an event in the `{prefix}multch_events` table:
 
 - Provider, model, status, latency, error code
 - Session hash (no plain IP address)

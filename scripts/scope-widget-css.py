@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Prefix unscoped .maicb- rules in chatbot.css with #chatbot-plugin-root and #chatbot-style-preview."""
+"""Prefix unscoped .maicb- rules in chatbot.css with #multch-plugin-root and #multch-style-preview."""
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
 CSS = Path(__file__).resolve().parents[1] / "assets/css/chatbot.css"
-ROOTS = ("#chatbot-plugin-root", "#chatbot-style-preview")
+ROOTS = ("#multch-plugin-root", "#multch-style-preview")
 
 def needs_scope(selector: str) -> bool:
     s = selector.strip()
     if not s or s.startswith("@") or s.startswith("/*"):
         return False
-    if s.startswith("#chatbot-plugin-root") or s.startswith("#chatbot-style-preview"):
+    if s.startswith("#multch-plugin-root") or s.startswith("#multch-style-preview"):
         return False
     if s.startswith(".maicb-") or ".maicb-preset-" in s:
         return True
@@ -26,7 +26,7 @@ def scope_selector(selector: str) -> str:
     parts = [p.strip() for p in selector.split(",")]
     out: list[str] = []
     for part in parts:
-        if part.startswith("#chatbot-plugin-root") or part.startswith("#chatbot-style-preview"):
+        if part.startswith("#multch-plugin-root") or part.startswith("#multch-style-preview"):
             out.append(part)
         else:
             for root in ROOTS:

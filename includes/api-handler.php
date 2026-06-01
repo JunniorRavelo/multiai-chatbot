@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Api_Handler {
+class Multch_Api_Handler {
 
 	/**
 	 * @param WP_REST_Request $request
@@ -15,9 +15,9 @@ class Chatbot_Api_Handler {
 	 */
 	public static function handle_chat( WP_REST_Request $request ) {
 		$started = microtime( true );
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		$session_id = self::get_session_id( $request );
-		$session_hash = Chatbot_Telemetry::hash_session( $session_id );
+		$session_hash = Multch_Telemetry::hash_session( $session_id );
 
 		$rate_check = self::enforce_rate_limit( $settings );
 		if ( $rate_check instanceof WP_REST_Response ) {
@@ -66,7 +66,7 @@ class Chatbot_Api_Handler {
 		$cache_ttl = isset( $settings['cache_ttl_seconds'] ) ? max( 0, (int) $settings['cache_ttl_seconds'] ) : 0;
 		$cache_key = '';
 		if ( $cache_ttl > 0 ) {
-			$cache_key = 'chatbot_resp_' . md5(
+			$cache_key = 'multch_resp_' . md5(
 				$system . '|' . wp_json_encode( $messages ) . '|' . $provider_id . '|' . ( $settings['model'] ?? '' )
 			);
 			$cached = get_transient( $cache_key );
@@ -176,7 +176,7 @@ class Chatbot_Api_Handler {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public static function handle_stream( WP_REST_Request $request ) {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
 			return new WP_REST_Response( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ), 404 );
 		}
@@ -225,7 +225,7 @@ class Chatbot_Api_Handler {
 	 * Stream response as plain text (custom dispatch).
 	 */
 	public static function dispatch_stream( WP_REST_Request $request ): void {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		if ( empty( $settings['streaming_enabled'] ) ) {
 			status_header( 404 );
 			echo wp_json_encode( array( 'error' => __( 'Streaming disabled.', 'multiai-chatbot' ) ) );
@@ -377,7 +377,7 @@ class Chatbot_Api_Handler {
 		}
 
 		if ( '' === $base ) {
-			$internal = new WP_REST_Request( 'POST', '/chatbot-plugin/v1/chat' );
+			$internal = new WP_REST_Request( 'POST', '/multch/v1/chat' );
 			$internal->set_body( $request->get_body() );
 			$internal->set_header( 'Content-Type', 'application/json' );
 			if ( '' !== $session ) {
@@ -389,7 +389,7 @@ class Chatbot_Api_Handler {
 			return rest_do_request( $internal );
 		}
 
-		$url = $base . '/wp-json/chatbot-plugin/v1/chat';
+		$url = $base . '/wp-json/multch/v1/chat';
 		$headers = array(
 			'Content-Type' => 'application/json',
 		);
@@ -458,18 +458,18 @@ class Chatbot_Api_Handler {
 	}
 
 	/**
-	 * @return Chatbot_AI_Provider|WP_Error
+	 * @return Multch_AI_Provider|WP_Error
 	 */
 	private static function get_provider( string $id ) {
 		switch ( $id ) {
 			case 'gemini':
-				return new Chatbot_Provider_Gemini();
+				return new Multch_Provider_Gemini();
 			case 'ollama':
-				return new Chatbot_Provider_Ollama();
+				return new Multch_Provider_Ollama();
 			case 'openai_compatible':
-				return new Chatbot_Provider_OpenAI();
+				return new Multch_Provider_OpenAI();
 			case 'deepseek':
-				return new Chatbot_Provider_DeepSeek();
+				return new Multch_Provider_DeepSeek();
 			default:
 				return new WP_Error(
 					'configuration_error',
@@ -537,7 +537,7 @@ class Chatbot_Api_Handler {
 	 * @return array{id: int, public_id: string}|null
 	 */
 	private static function resolve_history_conversation( string $session_hash, array $parsed, string $provider_id ): ?array {
-		$conv = Chatbot_Chat_History::resolve_conversation(
+		$conv = Multch_Chat_History::resolve_conversation(
 			$session_hash,
 			$parsed['conversation_id'] ?? '',
 			array(
@@ -569,7 +569,7 @@ class Chatbot_Api_Handler {
 			return;
 		}
 
-		Chatbot_Chat_History::add_message(
+		Multch_Chat_History::add_message(
 			$conversation['id'],
 			'user',
 			$user_message,
@@ -580,7 +580,7 @@ class Chatbot_Api_Handler {
 			)
 		);
 
-		Chatbot_Chat_History::add_message(
+		Multch_Chat_History::add_message(
 			$conversation['id'],
 			'assistant',
 			$assistant_message,
@@ -632,7 +632,7 @@ class Chatbot_Api_Handler {
 		$ip      = self::get_client_ip();
 		$ip_hash = md5( $ip );
 
-		if ( false !== get_transient( 'chatbot_suspend_' . $ip_hash ) ) {
+		if ( false !== get_transient( 'multch_suspend_' . $ip_hash ) ) {
 			$suspend_seconds = max( 60, (int) ( $settings['ip_suspend_seconds'] ?? 900 ) );
 			return new WP_REST_Response(
 				array(
@@ -646,13 +646,13 @@ class Chatbot_Api_Handler {
 
 		$checks = array(
 			array(
-				'key'    => 'chatbot_rl_min_' . $ip_hash,
+				'key'    => 'multch_rl_min_' . $ip_hash,
 				'limit'  => max( 1, (int) ( $settings['rate_limit_per_minute'] ?? 10 ) ),
 				'window' => MINUTE_IN_SECONDS,
 				'code'   => 'RATE_LIMIT_GENERAL',
 			),
 			array(
-				'key'    => 'chatbot_rl_day_' . $ip_hash,
+				'key'    => 'multch_rl_day_' . $ip_hash,
 				'limit'  => max( 1, (int) ( $settings['rate_limit_per_day'] ?? 30 ) ),
 				'window' => DAY_IN_SECONDS,
 				'code'   => 'RATE_LIMIT_GENERAL',
@@ -677,13 +677,13 @@ class Chatbot_Api_Handler {
 	private static function enforce_model_rate_limit( array $settings ) {
 		$checks = array(
 			array(
-				'key'    => 'chatbot_rl_model_min',
+				'key'    => 'multch_rl_model_min',
 				'limit'  => max( 1, (int) ( $settings['rate_limit_model_per_minute'] ?? 6 ) ),
 				'window' => MINUTE_IN_SECONDS,
 				'code'   => 'RATE_LIMIT_MODEL',
 			),
 			array(
-				'key'    => 'chatbot_rl_model_day',
+				'key'    => 'multch_rl_model_day',
 				'limit'  => max( 1, (int) ( $settings['rate_limit_model_per_day'] ?? 24 ) ),
 				'window' => DAY_IN_SECONDS,
 				'code'   => 'RATE_LIMIT_MODEL',
@@ -740,7 +740,7 @@ class Chatbot_Api_Handler {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log(
 				sprintf(
-					'[chatbot-plugin-wp] Soft rate limit warning for %1$s: %2$d/%3$d',
+					'[multch-plugin] Soft rate limit warning for %1$s: %2$d/%3$d',
 					$key,
 					$count,
 					$limit
@@ -753,13 +753,13 @@ class Chatbot_Api_Handler {
 	 * @param array<string, mixed> $settings
 	 */
 	private static function record_rate_violation( string $ip_hash, array $settings ): void {
-		$key       = 'chatbot_violations_' . $ip_hash;
+		$key       = 'multch_violations_' . $ip_hash;
 		$count     = (int) get_transient( $key ) + 1;
 		$threshold = max( 1, (int) ( $settings['ip_suspend_after_violations'] ?? 3 ) );
 		$suspend   = max( 60, (int) ( $settings['ip_suspend_seconds'] ?? 900 ) );
 
 		if ( $count >= $threshold ) {
-			set_transient( 'chatbot_suspend_' . $ip_hash, time() + $suspend, $suspend );
+			set_transient( 'multch_suspend_' . $ip_hash, time() + $suspend, $suspend );
 			delete_transient( $key );
 			return;
 		}
@@ -788,7 +788,7 @@ class Chatbot_Api_Handler {
 	 * @param array{id: int, public_id: string}|null $conversation
 	 */
 	private static function record_event( string $session_hash, array $settings, string $model, string $status, int $latency_ms, string $error_code = '', ?array $conversation = null ): void {
-		Chatbot_Telemetry::record(
+		Multch_Telemetry::record(
 			array(
 				'session_hash'    => $session_hash,
 				'provider'        => ! empty( $settings['provider'] ) ? (string) $settings['provider'] : 'gemini',

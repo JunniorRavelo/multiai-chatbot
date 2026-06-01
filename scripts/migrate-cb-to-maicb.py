@@ -14,8 +14,8 @@ SKIP_PREFIX = (
     "/*",
     " *",
     "}",
-    "#chatbot-plugin-root",
-    "#chatbot-style-preview",
+    "#multch-plugin-root",
+    "#multch-style-preview",
     "@keyframes",
     "@media",
 )
@@ -44,12 +44,12 @@ def scope_selector_line(line: str) -> str:
                 if p.startswith("#"):
                     scoped.append(p)
                 else:
-                    scoped.append(f"#chatbot-plugin-root {p}")
-                    scoped.append(f"#chatbot-style-preview {p}")
+                    scoped.append(f"#multch-plugin-root {p}")
+                    scoped.append(f"#multch-style-preview {p}")
             return ",\n".join(scoped) + " {\n" if line.rstrip().endswith("{") else ",\n".join(scoped)
         return (
-            f"#chatbot-plugin-root {sel},\n"
-            f"#chatbot-style-preview {sel}"
+            f"#multch-plugin-root {sel},\n"
+            f"#multch-style-preview {sel}"
             + (" {" if line.rstrip().endswith("{") else "")
         )
     return line

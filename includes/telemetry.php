@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Telemetry {
+class Multch_Telemetry {
 
 	const DB_VERSION = '1.1';
 
@@ -20,7 +20,7 @@ class Chatbot_Telemetry {
 
 	public static function table_name(): string {
 		global $wpdb;
-		return $wpdb->prefix . 'chatbot_events';
+		return $wpdb->prefix . 'multch_events';
 	}
 
 	public static function create_table(): void {
@@ -49,11 +49,11 @@ class Chatbot_Telemetry {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
-		update_option( 'chatbot_plugin_telemetry_db_version', self::DB_VERSION );
+		update_option( 'multch_plugin_telemetry_db_version', self::DB_VERSION );
 	}
 
 	public static function maybe_upgrade(): void {
-		if ( self::DB_VERSION !== get_option( 'chatbot_plugin_telemetry_db_version', '' ) ) {
+		if ( self::DB_VERSION !== get_option( 'multch_plugin_telemetry_db_version', '' ) ) {
 			self::create_table();
 		}
 	}
@@ -70,8 +70,8 @@ class Chatbot_Telemetry {
 		$wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-				$wpdb->esc_like( '_transient_chatbot_' ) . '%',
-				$wpdb->esc_like( '_transient_timeout_chatbot_' ) . '%'
+				$wpdb->esc_like( '_transient_multch_' ) . '%',
+				$wpdb->esc_like( '_transient_timeout_multch_' ) . '%'
 			)
 		);
 	}
@@ -157,7 +157,7 @@ class Chatbot_Telemetry {
 	 * @param array<string, mixed> $row
 	 */
 	private static function maybe_append_file_log( array $row ): void {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		$path     = ! empty( $settings['telemetry_log_path'] ) ? (string) $settings['telemetry_log_path'] : '';
 
 		if ( '' === $path ) {
@@ -515,7 +515,7 @@ class Chatbot_Telemetry {
 	}
 
 	public static function run_retention_purge(): void {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		$days     = isset( $settings['telemetry_retention_days'] ) ? (int) $settings['telemetry_retention_days'] : 0;
 		if ( $days <= 0 ) {
 			return;

@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  const cfg = window.chatbotHistoryAdmin || {};
-  const list = document.getElementById("chatbot-history-list");
+  const cfg = window.multchHistoryAdmin || {};
+  const list = document.getElementById("multch-history-list");
 
   if (!list) {
     return;
@@ -29,8 +29,8 @@
   }
 
   function closeCard(card) {
-    const toggle = card.querySelector(".chatbot-admin-history-card__toggle");
-    const panel = card.querySelector(".chatbot-admin-history-card__panel");
+    const toggle = card.querySelector(".multch-admin-history-card__toggle");
+    const panel = card.querySelector(".multch-admin-history-card__panel");
 
     card.classList.remove("is-open");
     if (toggle) {
@@ -43,15 +43,15 @@
 
   function renderError(panel, conversationId, onRetry) {
     panel.innerHTML =
-      '<div class="chatbot-admin-history-card__error">' +
+      '<div class="multch-admin-history-card__error">' +
       t("error", "Could not load the conversation.") +
-      ' <button type="button" class="button button-small chatbot-admin-history-retry" data-id="' +
+      ' <button type="button" class="button button-small multch-admin-history-retry" data-id="' +
       String(conversationId) +
       '">' +
       t("retry", "Retry") +
       "</button></div>";
 
-    const retryBtn = panel.querySelector(".chatbot-admin-history-retry");
+    const retryBtn = panel.querySelector(".multch-admin-history-retry");
     if (retryBtn && typeof onRetry === "function") {
       retryBtn.addEventListener("click", onRetry);
     }
@@ -59,7 +59,7 @@
 
   function loadDetail(card, options) {
     const opts = options || {};
-    const panel = card.querySelector(".chatbot-admin-history-card__panel");
+    const panel = card.querySelector(".multch-admin-history-card__panel");
     const conversationId = card.getAttribute("data-conversation-id");
 
     if (!panel || !conversationId) {
@@ -67,12 +67,12 @@
     }
 
     panel.innerHTML =
-      '<div class="chatbot-admin-history-card__loading">' +
+      '<div class="multch-admin-history-card__loading">' +
       t("loading", "Loading messages…") +
       "</div>";
 
     const requestUrl = new URL(cfg.ajaxUrl || "/wp-admin/admin-ajax.php", window.location.origin);
-    requestUrl.searchParams.set("action", "chatbot_history_detail");
+    requestUrl.searchParams.set("action", "multch_history_detail");
     requestUrl.searchParams.set("nonce", cfg.nonce || "");
     requestUrl.searchParams.set("id", conversationId);
 
@@ -107,15 +107,15 @@
 
   function openCard(card, options) {
     const opts = options || {};
-    const toggle = card.querySelector(".chatbot-admin-history-card__toggle");
-    const panel = card.querySelector(".chatbot-admin-history-card__panel");
+    const toggle = card.querySelector(".multch-admin-history-card__toggle");
+    const panel = card.querySelector(".multch-admin-history-card__panel");
     const conversationId = card.getAttribute("data-conversation-id");
 
     if (!toggle || !panel || !conversationId) {
       return;
     }
 
-    list.querySelectorAll(".chatbot-admin-history-card.is-open").forEach(function (other) {
+    list.querySelectorAll(".multch-admin-history-card.is-open").forEach(function (other) {
       if (other !== card) {
         closeCard(other);
       }
@@ -131,7 +131,7 @@
 
     const needsLoad =
       card.getAttribute("data-loaded") !== "1" ||
-      !panel.querySelector(".chatbot-admin-history-card__body");
+      !panel.querySelector(".multch-admin-history-card__body");
 
     if (!needsLoad) {
       if (opts.scroll) {
@@ -188,7 +188,7 @@
     }
 
     const body = new URLSearchParams();
-    body.set("action", "chatbot_delete_conversation");
+    body.set("action", "multch_delete_conversation");
     body.set("nonce", cfg.deleteNonce || "");
     body.set("id", String(conversationId));
 
@@ -216,7 +216,7 @@
   }
 
   list.addEventListener("click", function (event) {
-    const copyBtn = event.target.closest(".chatbot-admin-history-copy");
+    const copyBtn = event.target.closest(".multch-admin-history-copy");
     if (copyBtn && list.contains(copyBtn)) {
       event.preventDefault();
       event.stopPropagation();
@@ -224,23 +224,23 @@
       return;
     }
 
-    const deleteBtn = event.target.closest(".chatbot-admin-history-delete");
+    const deleteBtn = event.target.closest(".multch-admin-history-delete");
     if (deleteBtn && list.contains(deleteBtn)) {
       event.preventDefault();
       event.stopPropagation();
-      const card = deleteBtn.closest(".chatbot-admin-history-card");
+      const card = deleteBtn.closest(".multch-admin-history-card");
       if (card) {
         deleteConversation(card, deleteBtn.getAttribute("data-id"));
       }
       return;
     }
 
-    const toggle = event.target.closest(".chatbot-admin-history-card__toggle");
+    const toggle = event.target.closest(".multch-admin-history-card__toggle");
     if (!toggle || !list.contains(toggle)) {
       return;
     }
 
-    const card = toggle.closest(".chatbot-admin-history-card");
+    const card = toggle.closest(".multch-admin-history-card");
     if (!card) {
       return;
     }
@@ -254,7 +254,7 @@
     openCard(card, { scroll: true });
   });
 
-  document.querySelectorAll(".chatbot-admin-history-purge").forEach(function (link) {
+  document.querySelectorAll(".multch-admin-history-purge").forEach(function (link) {
     link.addEventListener("click", function (event) {
       const message = link.getAttribute("data-confirm");
       if (message && !window.confirm(message)) {
@@ -263,12 +263,12 @@
     });
   });
 
-  const initial = list.querySelector(".chatbot-admin-history-card.is-open");
+  const initial = list.querySelector(".multch-admin-history-card.is-open");
   if (initial) {
     const conversationId = initial.getAttribute("data-conversation-id");
-    const panel = initial.querySelector(".chatbot-admin-history-card__panel");
+    const panel = initial.querySelector(".multch-admin-history-card__panel");
 
-    if (panel && !panel.querySelector(".chatbot-admin-history-card__body")) {
+    if (panel && !panel.querySelector(".multch-admin-history-card__body")) {
       openCard(initial, { skipUrl: true, scroll: false });
     }
 

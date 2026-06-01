@@ -19,7 +19,7 @@
 	}
 
 	function initNotice(notice) {
-		var dismissBtn = notice.querySelector('.chatbot-admin-notice__dismiss');
+		var dismissBtn = notice.querySelector('.multch-admin-notice__dismiss');
 
 		if (dismissBtn) {
 			dismissBtn.addEventListener('click', function () {
@@ -34,5 +34,5 @@
 		}
 	}
 
-	document.querySelectorAll('.chatbot-admin-notice').forEach(initNotice);
+	document.querySelectorAll('.multch-admin-notice').forEach(initNotice);
 })();

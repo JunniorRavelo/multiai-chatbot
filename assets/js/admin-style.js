@@ -1,9 +1,9 @@
 (function () {
   "use strict";
 
-  var cfg = window.chatbotStylePreview || {};
-  var api = window.ChatbotAdminPreview
-    ? window.ChatbotAdminPreview.create(Object.assign({}, cfg, { mode: "style" }))
+  var cfg = window.multchStylePreview || {};
+  var api = window.MultchAdminPreview
+    ? window.MultchAdminPreview.create(Object.assign({}, cfg, { mode: "style" }))
     : null;
 
   if (!api) {
@@ -34,7 +34,7 @@
   function syncPreviewOpenState(refs, open) {
     if (!refs || typeof refs.setOpen !== "function") return;
     refs.setOpen(open);
-    var toggleBtn = document.getElementById("chatbot-preview-toggle");
+    var toggleBtn = document.getElementById("multch-preview-toggle");
     if (toggleBtn) {
       toggleBtn.setAttribute("aria-pressed", open ? "true" : "false");
       toggleBtn.textContent = open
@@ -154,7 +154,7 @@
       }
     );
 
-    document.querySelectorAll(".chatbot-theme-card").forEach(function (card) {
+    document.querySelectorAll(".multch-theme-card").forEach(function (card) {
       card.addEventListener("click", function () {
         var presetId = card.dataset.preset;
         api.syncPresetCards(presetId);
@@ -162,7 +162,7 @@
       });
     });
 
-    document.querySelectorAll(".chatbot-position-btn").forEach(function (btn) {
+    document.querySelectorAll(".multch-position-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         syncPositionInput(btn.dataset.position);
         syncPreviewOpenState(refs, false);
@@ -170,20 +170,20 @@
       });
     });
 
-    var resetBtn = document.getElementById("chatbot-style-reset-overrides");
+    var resetBtn = document.getElementById("multch-style-reset-overrides");
     if (resetBtn) {
       resetBtn.addEventListener("click", function () {
         resetOverrides(refs);
       });
     }
 
-    var exportBtn = document.getElementById("chatbot-style-export");
+    var exportBtn = document.getElementById("multch-style-export");
     if (exportBtn) {
       exportBtn.addEventListener("click", exportTheme);
     }
 
-    var importBtn = document.getElementById("chatbot-style-import");
-    var importFile = document.getElementById("chatbot-style-import-file");
+    var importBtn = document.getElementById("multch-style-import");
+    var importFile = document.getElementById("multch-style-import-file");
     if (importBtn && importFile) {
       importBtn.addEventListener("click", function () {
         importFile.click();
@@ -200,7 +200,7 @@
   function initColorPickers(onChange) {
     if (typeof jQuery === "undefined" || !jQuery.fn.wpColorPicker) return;
 
-    jQuery(".chatbot-color-picker").each(function () {
+    jQuery(".multch-color-picker").each(function () {
       var $input = jQuery(this);
       if ($input.hasClass("wp-color-picker")) return;
 

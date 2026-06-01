@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Provider_Ollama implements Chatbot_AI_Provider {
+class Multch_Provider_Ollama implements Multch_AI_Provider {
 
 	/**
 	 * @param array<int, array{role: string, content: string}> $messages

@@ -1,14 +1,14 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "chatbot-plugin-session-v1";
-  const OPEN_KEY = "chatbot-plugin-open-state-v1";
-  const SESSION_KEY = "chatbot-plugin-anon-id";
-  const CONV_KEY = "chatbot-plugin-conversation-v1";
+  const STORAGE_KEY = "multch-plugin-session-v1";
+  const OPEN_KEY = "multch-plugin-open-state-v1";
+  const SESSION_KEY = "multch-plugin-anon-id";
+  const CONV_KEY = "multch-plugin-conversation-v1";
   const HISTORY_TTL_MS = 24 * 60 * 60 * 1000;
   const MAX_MESSAGES = 60;
 
-  const config = window.chatbotPluginConfig || {};
+  const config = window.multchPluginConfig || {};
   const i18n = config.i18n || {};
   const ROOT_SELECTOR = "[data-maicb-root]";
 
@@ -53,7 +53,7 @@
       root.dataset.maicbRoot = "1";
     }
     if (!root.id) {
-      root.id = "chatbot-plugin-root";
+      root.id = "multch-plugin-root";
     }
     if (!root.classList.contains("maicb-root")) {
       root.classList.add("maicb-root");
@@ -828,7 +828,7 @@
   function boot() {
     const roots = document.querySelectorAll(ROOT_SELECTOR);
     roots.forEach(initRoot);
-    document.querySelectorAll('[id^="chatbot-plugin-root"]:not([data-maicb-root])').forEach((legacy) => {
+    document.querySelectorAll('[id^="multch-plugin-root"]:not([data-maicb-root])').forEach((legacy) => {
       legacy.dataset.maicbRoot = "1";
       initRoot(legacy);
     });

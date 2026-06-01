@@ -1,9 +1,9 @@
 (function () {
   "use strict";
 
-  var cfg = window.chatbotGeneralPreview || {};
-  var api = window.ChatbotAdminPreview
-    ? window.ChatbotAdminPreview.create(Object.assign({}, cfg, { mode: "general" }))
+  var cfg = window.multchGeneralPreview || {};
+  var api = window.MultchAdminPreview
+    ? window.MultchAdminPreview.create(Object.assign({}, cfg, { mode: "general" }))
     : null;
 
   if (!api) {
@@ -29,18 +29,18 @@
     var len = input.value.length;
     counter.textContent = charCountLabel(len, max);
     counter.classList.remove(
-      "chatbot-admin-char-count--warn",
-      "chatbot-admin-char-count--over"
+      "multch-admin-char-count--warn",
+      "multch-admin-char-count--over"
     );
     if (len >= max) {
-      counter.classList.add("chatbot-admin-char-count--over");
+      counter.classList.add("multch-admin-char-count--over");
     } else if (len >= max * 0.9) {
-      counter.classList.add("chatbot-admin-char-count--warn");
+      counter.classList.add("multch-admin-char-count--warn");
     }
   }
 
   function initCharCounters() {
-    document.querySelectorAll(".chatbot-admin-char-field").forEach(function (input) {
+    document.querySelectorAll(".multch-admin-char-field").forEach(function (input) {
       updateCharCount(input);
       input.addEventListener("input", function () {
         updateCharCount(input);
@@ -49,15 +49,15 @@
   }
 
   function copyShortcode() {
-    var text = cfg.shortcode || "[chatbot_widget]";
-    var input = document.getElementById("chatbot-shortcode-display");
+    var text = cfg.shortcode || "[multch_widget]";
+    var input = document.getElementById("multch-shortcode-display");
     if (input) {
       input.value = text;
       input.select();
     }
 
     function onSuccess() {
-      var btn = document.getElementById("chatbot-copy-shortcode");
+      var btn = document.getElementById("multch-copy-shortcode");
       if (!btn) return;
       var original = btn.textContent;
       btn.textContent = i18n("copied", "Copied");
@@ -94,7 +94,7 @@
         return;
       }
       var target = api.field(
-        fieldId === "chatbot-restore-welcome" ? "welcome_message" : "system_prompt"
+        fieldId === "multch-restore-welcome" ? "welcome_message" : "system_prompt"
       );
       if (target) {
         target.value = btn.getAttribute("data-default") || "";
@@ -123,13 +123,13 @@
       });
     }
 
-    var copyBtn = document.getElementById("chatbot-copy-shortcode");
+    var copyBtn = document.getElementById("multch-copy-shortcode");
     if (copyBtn) {
       copyBtn.addEventListener("click", copyShortcode);
     }
 
-    restoreField("chatbot-restore-welcome", "restoreWelcome");
-    restoreField("chatbot-restore-system-prompt", "restoreSystemPrompt");
+    restoreField("multch-restore-welcome", "restoreWelcome");
+    restoreField("multch-restore-system-prompt", "restoreSystemPrompt");
   }
 
   function boot() {

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Privacy {
+class Multch_Privacy {
 
 	public static function init(): void {
 		add_action( 'admin_init', array( __CLASS__, 'register_privacy_content' ) );
@@ -27,7 +27,7 @@ class Chatbot_Privacy {
 	}
 
 	private static function get_policy_content(): string {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		$history_days = isset( $settings['history_retention_days'] ) ? (int) $settings['history_retention_days'] : 0;
 		$telemetry_days = isset( $settings['telemetry_retention_days'] ) ? (int) $settings['telemetry_retention_days'] : 0;
 
@@ -84,4 +84,4 @@ class Chatbot_Privacy {
 	}
 }
 
-Chatbot_Privacy::init();
+Multch_Privacy::init();

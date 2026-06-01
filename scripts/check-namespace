@@ -29,7 +29,7 @@ while IFS= read -r line; do
 done < <(grep -nE '^\.maicb-' assets/css/chatbot.css 2>/dev/null || true)
 
 # Widget cb- in admin preview block only (not --cb-admin)
-if grep -nE '#chatbot-style-preview.*\.cb-|#chatbot-preview.*\.cb-' assets/css/admin.css 2>/dev/null; then
+if grep -nE '#multch-style-preview.*\.cb-|#multch-preview.*\.cb-' assets/css/admin.css 2>/dev/null; then
   fail "Found deprecated .cb- in admin preview CSS."
 fi
 

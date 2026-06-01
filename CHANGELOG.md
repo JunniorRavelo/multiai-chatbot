@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.2
+
+### Changed
+
+- Unique plugin prefix `multch` / `MULTCH_` for PHP classes, hooks, options, transients, REST routes (`multch/v1`), shortcode (`[multch_widget]`), and script handles (WordPress.org naming guidelines).
+- Automatic migration from legacy `chatbot_*` options, database tables, and cron events on upgrade.
+- `CHATBOT_*` constants in `wp-config.php` remain supported as fallbacks for `MULTCH_*`.
+
+### Breaking (upgrade notes)
+
+- Shortcode is now `[multch_widget]` (replace `[chatbot_widget]` in content).
+- REST base path is `/wp-json/multch/v1/` (was `chatbot-plugin/v1`).
+- Admin screen slug: `admin.php?page=multch-plugin`.
+
 ## 1.0.1
 
 ### Changed
@@ -13,15 +27,15 @@
 
 - Widget CSS classes migrated from `cb-*` to `maicb-*` (MultiAI ChatBot) to reduce collisions with themes and other plugins.
 - CSS custom properties renamed from `--cb-*` to `--maicb-*` on the public widget.
-- Widget styles are scoped under `#chatbot-plugin-root` and `#chatbot-style-preview`.
+- Widget styles are scoped under `#multch-plugin-root` and `#multch-style-preview`.
 - Widget roots expose `data-maicb-root`; critical controls use `data-maicb` hooks for JavaScript.
-- Multiple widget instances receive unique root IDs (`chatbot-plugin-root-2`, etc.).
+- Multiple widget instances receive unique root IDs (`multch-plugin-root-2`, etc.).
 
 ### Added
 
 - [docs/NAMING.md](docs/NAMING.md) naming conventions.
 - `scripts/check-namespace` audit script.
-- WordPress filters: `chatbot_plugin_root_id`, `chatbot_widget_class_prefix`.
+- WordPress filters: `multch_plugin_root_id`, `multch_widget_class_prefix`.
 
 ### Removed
 

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Chat_History {
+class Multch_Chat_History {
 
 	const DB_VERSION = '1.0';
 
@@ -18,7 +18,7 @@ class Chatbot_Chat_History {
 	 */
 	public static function conversations_table(): string {
 		global $wpdb;
-		return $wpdb->prefix . 'chatbot_conversations';
+		return $wpdb->prefix . 'multch_conversations';
 	}
 
 	/**
@@ -26,7 +26,7 @@ class Chatbot_Chat_History {
 	 */
 	public static function messages_table(): string {
 		global $wpdb;
-		return $wpdb->prefix . 'chatbot_messages';
+		return $wpdb->prefix . 'multch_messages';
 	}
 
 	public static function create_tables(): void {
@@ -73,17 +73,17 @@ class Chatbot_Chat_History {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
 
-		update_option( 'chatbot_plugin_history_db_version', self::DB_VERSION );
+		update_option( 'multch_plugin_history_db_version', self::DB_VERSION );
 	}
 
 	public static function maybe_upgrade(): void {
-		if ( self::DB_VERSION !== get_option( 'chatbot_plugin_history_db_version', '' ) ) {
+		if ( self::DB_VERSION !== get_option( 'multch_plugin_history_db_version', '' ) ) {
 			self::create_tables();
 		}
 	}
 
 	public static function generate_public_id(): string {
-		$base = 'CB-' . wp_date( 'Y-m-d-H-i-s' );
+		$base = 'MCH-' . wp_date( 'Y-m-d-H-i-s' );
 		if ( ! self::public_id_exists( $base ) ) {
 			return $base;
 		}
@@ -200,7 +200,7 @@ class Chatbot_Chat_History {
 			) ?: null;
 		}
 
-		if ( preg_match( '/^CB-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}/', $ref ) ) {
+		if ( preg_match( '/^(?:MCH|CB)-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}/', $ref ) ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table lookup; table name via %i placeholder.
 			return $wpdb->get_row(
 				$wpdb->prepare(
@@ -647,7 +647,7 @@ class Chatbot_Chat_History {
 			)
 		);
 
-		$filename = 'chatbot-history-' . gmdate( 'Y-m-d-His' ) . '.csv';
+		$filename = 'multch-history-' . gmdate( 'Y-m-d-His' ) . '.csv';
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -813,7 +813,7 @@ class Chatbot_Chat_History {
 	}
 
 	public static function run_retention_purge(): void {
-		$settings = Chatbot_Plugin::get_settings();
+		$settings = Multch_Plugin::get_settings();
 		$days     = isset( $settings['history_retention_days'] ) ? (int) $settings['history_retention_days'] : 0;
 		if ( $days <= 0 ) {
 			return;
@@ -895,6 +895,6 @@ class Chatbot_Chat_History {
 		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', self::messages_table() ) );
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Required on uninstall; table names from plugin helpers via %i.
 		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', self::conversations_table() ) );
-		delete_option( 'chatbot_plugin_history_db_version' );
+		delete_option( 'multch_plugin_history_db_version' );
 	}
 }

@@ -7,11 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Plugin {
+class Multch_Plugin {
 
-	private static ?Chatbot_Plugin $instance = null;
+	private static ?Multch_Plugin $instance = null;
 
-	public static function instance(): Chatbot_Plugin {
+	public static function instance(): Multch_Plugin {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -22,24 +22,25 @@ class Chatbot_Plugin {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 0 );
 
-		Chatbot_Admin_Settings::init();
-		Chatbot_Rest_Api::init();
-		Chatbot_Enqueue::init();
+		Multch_Admin_Settings::init();
+		Multch_Rest_Api::init();
+		Multch_Enqueue::init();
 	}
 
 	public function init(): void {
-		Chatbot_Chat_History::maybe_upgrade();
-		Chatbot_Telemetry::maybe_upgrade();
-		Chatbot_Admin_Settings::maybe_merge_settings();
-		add_action( 'chatbot_purge_history', array( 'Chatbot_Chat_History', 'run_retention_purge' ) );
-		add_action( 'chatbot_purge_telemetry', array( 'Chatbot_Telemetry', 'run_retention_purge' ) );
+		Multch_Migration::maybe_migrate();
+		Multch_Chat_History::maybe_upgrade();
+		Multch_Telemetry::maybe_upgrade();
+		Multch_Admin_Settings::maybe_merge_settings();
+		add_action( 'multch_purge_history', array( 'Multch_Chat_History', 'run_retention_purge' ) );
+		add_action( 'multch_purge_telemetry', array( 'Multch_Telemetry', 'run_retention_purge' ) );
 
-		if ( ! wp_next_scheduled( 'chatbot_purge_history' ) ) {
-			wp_schedule_event( time(), 'daily', 'chatbot_purge_history' );
+		if ( ! wp_next_scheduled( 'multch_purge_history' ) ) {
+			wp_schedule_event( time(), 'daily', 'multch_purge_history' );
 		}
 
-		if ( ! wp_next_scheduled( 'chatbot_purge_telemetry' ) ) {
-			wp_schedule_event( time(), 'daily', 'chatbot_purge_telemetry' );
+		if ( ! wp_next_scheduled( 'multch_purge_telemetry' ) ) {
+			wp_schedule_event( time(), 'daily', 'multch_purge_telemetry' );
 		}
 	}
 
@@ -72,7 +73,7 @@ class Chatbot_Plugin {
 				return $wp_lang_mofile;
 			}
 
-			$plugin_mofile = CHATBOT_PLUGIN_PATH . 'languages/' . $mofile_name;
+			$plugin_mofile = MULTCH_PLUGIN_PATH . 'languages/' . $mofile_name;
 			if ( is_readable( $plugin_mofile ) ) {
 				return $plugin_mofile;
 			}
@@ -82,31 +83,32 @@ class Chatbot_Plugin {
 	}
 
 	public static function activate(): void {
-		Chatbot_Telemetry::create_table();
-		Chatbot_Chat_History::create_tables();
+		Multch_Migration::maybe_migrate();
+		Multch_Telemetry::create_table();
+		Multch_Chat_History::create_tables();
 
-		$stored = get_option( 'chatbot_plugin_settings', false );
+		$stored = get_option( 'multch_plugin_settings', false );
 		if ( false === $stored ) {
-			add_option( 'chatbot_plugin_settings', Chatbot_Admin_Settings::default_settings() );
+			add_option( 'multch_plugin_settings', Multch_Admin_Settings::default_settings() );
 		} else {
-			Chatbot_Admin_Settings::maybe_merge_settings();
+			Multch_Admin_Settings::maybe_merge_settings();
 		}
 
-		if ( ! wp_next_scheduled( 'chatbot_purge_history' ) ) {
-			wp_schedule_event( time(), 'daily', 'chatbot_purge_history' );
+		if ( ! wp_next_scheduled( 'multch_purge_history' ) ) {
+			wp_schedule_event( time(), 'daily', 'multch_purge_history' );
 		}
 
-		if ( ! wp_next_scheduled( 'chatbot_purge_telemetry' ) ) {
-			wp_schedule_event( time(), 'daily', 'chatbot_purge_telemetry' );
+		if ( ! wp_next_scheduled( 'multch_purge_telemetry' ) ) {
+			wp_schedule_event( time(), 'daily', 'multch_purge_telemetry' );
 		}
 
-		Chatbot_Rest_Api::register_stream_rewrite();
+		Multch_Rest_Api::register_stream_rewrite();
 		flush_rewrite_rules();
 	}
 
 	public static function deactivate(): void {
-		wp_clear_scheduled_hook( 'chatbot_purge_history' );
-		wp_clear_scheduled_hook( 'chatbot_purge_telemetry' );
+		wp_clear_scheduled_hook( 'multch_purge_history' );
+		wp_clear_scheduled_hook( 'multch_purge_telemetry' );
 		flush_rewrite_rules();
 	}
 
@@ -114,11 +116,11 @@ class Chatbot_Plugin {
 	 * @return array<string, mixed>
 	 */
 	public static function get_settings(): array {
-		$settings = get_option( 'chatbot_plugin_settings', array() );
+		$settings = get_option( 'multch_plugin_settings', array() );
 		if ( ! is_array( $settings ) ) {
 			$settings = array();
 		}
-		$settings = wp_parse_args( $settings, Chatbot_Admin_Settings::default_settings() );
+		$settings = wp_parse_args( $settings, Multch_Admin_Settings::default_settings() );
 		return self::apply_constant_overrides( $settings );
 	}
 
@@ -130,6 +132,27 @@ class Chatbot_Plugin {
 	 */
 	private static function apply_constant_overrides( array $settings ): array {
 		$string_map = array(
+			'allowed_origins'             => 'MULTCH_ALLOWED_ORIGINS',
+			'cache_ttl_seconds'           => 'MULTCH_CACHE_TTL_SECONDS',
+			'telemetry_log_path'          => 'MULTCH_TELEMETRY_LOG_PATH',
+			'rate_limit_per_minute'       => 'MULTCH_RATE_LIMIT_PER_MINUTE',
+			'rate_limit_per_day'          => 'MULTCH_RATE_LIMIT_PER_DAY',
+			'rate_limit_model_per_minute' => 'MULTCH_RATE_LIMIT_MODEL_PER_MINUTE',
+			'rate_limit_model_per_day'    => 'MULTCH_RATE_LIMIT_MODEL_PER_DAY',
+			'rate_limit_soft_threshold'   => 'MULTCH_RATE_LIMIT_SOFT_THRESHOLD',
+			'ip_suspend_after_violations' => 'MULTCH_IP_SUSPEND_AFTER_VIOLATIONS',
+			'ip_suspend_seconds'          => 'MULTCH_IP_SUSPEND_SECONDS',
+			'internal_chat_base_url'      => 'MULTCH_INTERNAL_CHAT_BASE_URL',
+			'provider'                    => 'MULTCH_PROVIDER',
+			'model'                       => 'MULTCH_MODEL',
+			'model_candidates'            => 'MULTCH_MODEL_CANDIDATES',
+			'widget_title'                => 'MULTCH_WIDGET_TITLE',
+			'widget_subtitle'             => 'MULTCH_WIDGET_SUBTITLE',
+			'welcome_message'             => 'MULTCH_WELCOME_MESSAGE',
+			'system_prompt'               => 'MULTCH_SYSTEM_PROMPT',
+		);
+
+		$legacy_map = array(
 			'allowed_origins'             => 'CHATBOT_ALLOWED_ORIGINS',
 			'cache_ttl_seconds'           => 'CHATBOT_CACHE_TTL_SECONDS',
 			'telemetry_log_path'          => 'CHATBOT_TELEMETRY_LOG_PATH',
@@ -151,25 +174,27 @@ class Chatbot_Plugin {
 		);
 
 		foreach ( $string_map as $key => $constant ) {
-			if ( defined( $constant ) && '' !== (string) constant( $constant ) ) {
-				$settings[ $key ] = constant( $constant );
+			$legacy = $legacy_map[ $key ] ?? null;
+			$value  = multch_resolve_constant( $constant, $legacy );
+			if ( '' !== $value ) {
+				$settings[ $key ] = $value;
 			}
 		}
 
-		if ( defined( 'CHATBOT_GEMINI_MODEL' ) && '' !== (string) CHATBOT_GEMINI_MODEL && ! defined( 'CHATBOT_MODEL' ) ) {
+		if ( '' !== multch_resolve_constant( 'MULTCH_GEMINI_MODEL', 'CHATBOT_GEMINI_MODEL' ) && '' === multch_resolve_constant( 'MULTCH_MODEL', 'CHATBOT_MODEL' ) ) {
 			if ( ( $settings['provider'] ?? '' ) === 'gemini' ) {
-				$settings['model'] = (string) CHATBOT_GEMINI_MODEL;
+				$settings['model'] = multch_resolve_constant( 'MULTCH_GEMINI_MODEL', 'CHATBOT_GEMINI_MODEL' );
 			}
 		}
 
-		if ( defined( 'CHATBOT_GEMINI_MODEL_CANDIDATES' ) && '' !== (string) CHATBOT_GEMINI_MODEL_CANDIDATES && ! defined( 'CHATBOT_MODEL_CANDIDATES' ) ) {
+		if ( '' !== multch_resolve_constant( 'MULTCH_GEMINI_MODEL_CANDIDATES', 'CHATBOT_GEMINI_MODEL_CANDIDATES' ) && '' === multch_resolve_constant( 'MULTCH_MODEL_CANDIDATES', 'CHATBOT_MODEL_CANDIDATES' ) ) {
 			if ( ( $settings['provider'] ?? '' ) === 'gemini' ) {
-				$settings['model_candidates'] = (string) CHATBOT_GEMINI_MODEL_CANDIDATES;
+				$settings['model_candidates'] = multch_resolve_constant( 'MULTCH_GEMINI_MODEL_CANDIDATES', 'CHATBOT_GEMINI_MODEL_CANDIDATES' );
 			}
 		}
 
-		if ( defined( 'CHATBOT_STREAMING_ENABLED' ) ) {
-			$settings['streaming_enabled'] = (bool) CHATBOT_STREAMING_ENABLED;
+		if ( defined( 'MULTCH_STREAMING_ENABLED' ) || defined( 'CHATBOT_STREAMING_ENABLED' ) ) {
+			$settings['streaming_enabled'] = multch_constant_is_true( 'MULTCH_STREAMING_ENABLED', 'CHATBOT_STREAMING_ENABLED' );
 		}
 
 		return $settings;

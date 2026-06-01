@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Chatbot_Provider_Gemini implements Chatbot_AI_Provider {
+class Multch_Provider_Gemini implements Multch_AI_Provider {
 
 	/**
 	 * @param array<int, array{role: string, content: string}> $messages
@@ -105,8 +105,9 @@ class Chatbot_Provider_Gemini implements Chatbot_AI_Provider {
 	 * @param array<string, mixed> $settings
 	 */
 	private static function resolve_api_key( array $settings ): string {
-		if ( defined( 'CHATBOT_GEMINI_API_KEY' ) && CHATBOT_GEMINI_API_KEY ) {
-			return (string) CHATBOT_GEMINI_API_KEY;
+		$from_config = multch_resolve_constant( 'MULTCH_GEMINI_API_KEY', 'CHATBOT_GEMINI_API_KEY' );
+		if ( '' !== $from_config ) {
+			return $from_config;
 		}
 		return ! empty( $settings['api_key'] ) ? (string) $settings['api_key'] : '';
 	}
