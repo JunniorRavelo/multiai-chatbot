@@ -11,6 +11,9 @@ class Multch_Plugin {
 
 	private static ?Multch_Plugin $instance = null;
 
+	/** @var array<string, mixed>|null */
+	private static ?array $settings_cache = null;
+
 	public static function instance(): Multch_Plugin {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -19,6 +22,9 @@ class Multch_Plugin {
 	}
 
 	private function __construct() {
+		add_action( 'multch_purge_history', array( 'Multch_Chat_History', 'run_retention_purge' ) );
+		add_action( 'multch_purge_telemetry', array( 'Multch_Telemetry', 'run_retention_purge' ) );
+
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 0 );
 
@@ -31,9 +37,12 @@ class Multch_Plugin {
 		Multch_Migration::maybe_migrate();
 		Multch_Chat_History::maybe_upgrade();
 		Multch_Telemetry::maybe_upgrade();
-		Multch_Admin_Settings::maybe_merge_settings();
-		add_action( 'multch_purge_history', array( 'Multch_Chat_History', 'run_retention_purge' ) );
-		add_action( 'multch_purge_telemetry', array( 'Multch_Telemetry', 'run_retention_purge' ) );
+
+		if ( is_admin() ) {
+			Multch_Admin_Settings::maybe_merge_settings();
+		} elseif ( '1' !== get_option( 'multch_settings_autoload_off', '' ) ) {
+			Multch_Admin_Settings::ensure_option_autoload_off();
+		}
 
 		if ( ! wp_next_scheduled( 'multch_purge_history' ) ) {
 			wp_schedule_event( time(), 'daily', 'multch_purge_history' );
@@ -95,9 +104,10 @@ class Multch_Plugin {
 
 		$stored = get_option( 'multch_plugin_settings', false );
 		if ( false === $stored ) {
-			add_option( 'multch_plugin_settings', Multch_Admin_Settings::default_settings() );
+			add_option( 'multch_plugin_settings', Multch_Admin_Settings::default_settings(), '', false );
 		} else {
 			Multch_Admin_Settings::maybe_merge_settings();
+			Multch_Admin_Settings::ensure_option_autoload_off();
 		}
 
 		if ( ! wp_next_scheduled( 'multch_purge_history' ) ) {
@@ -122,12 +132,22 @@ class Multch_Plugin {
 	 * @return array<string, mixed>
 	 */
 	public static function get_settings(): array {
+		if ( null !== self::$settings_cache ) {
+			return self::$settings_cache;
+		}
+
 		$settings = get_option( 'multch_plugin_settings', array() );
 		if ( ! is_array( $settings ) ) {
 			$settings = array();
 		}
-		$settings = wp_parse_args( $settings, Multch_Admin_Settings::default_settings() );
-		return self::apply_constant_overrides( $settings );
+		$settings                 = wp_parse_args( $settings, Multch_Admin_Settings::default_settings() );
+		self::$settings_cache     = self::apply_constant_overrides( $settings );
+
+		return self::$settings_cache;
+	}
+
+	public static function clear_settings_cache(): void {
+		self::$settings_cache = null;
 	}
 
 	/**

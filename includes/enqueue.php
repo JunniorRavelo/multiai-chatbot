@@ -81,9 +81,7 @@ class Multch_Enqueue {
 			'multch-plugin',
 			MULTCH_PLUGIN_URL . 'assets/css/chatbot.css',
 			array(),
-			file_exists( MULTCH_PLUGIN_PATH . 'assets/css/chatbot.css' )
-				? (string) filemtime( MULTCH_PLUGIN_PATH . 'assets/css/chatbot.css' )
-				: MULTCH_PLUGIN_VERSION
+			MULTCH_PLUGIN_VERSION
 		);
 
 		$custom_css = trim( (string) ( $settings['style_custom_css'] ?? '' ) );
@@ -95,9 +93,7 @@ class Multch_Enqueue {
 			'multch-plugin',
 			MULTCH_PLUGIN_URL . 'assets/js/chatbot.js',
 			array(),
-			file_exists( MULTCH_PLUGIN_PATH . 'assets/js/chatbot.js' )
-				? (string) filemtime( MULTCH_PLUGIN_PATH . 'assets/js/chatbot.js' )
-				: MULTCH_PLUGIN_VERSION,
+			MULTCH_PLUGIN_VERSION,
 			true
 		);
 

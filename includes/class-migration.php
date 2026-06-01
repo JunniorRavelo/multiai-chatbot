@@ -105,6 +105,7 @@ class Multch_Migration {
 		unset( $stored['api_key'], $stored['openai_base_url'], $stored['deepseek_base_url'] );
 
 		update_option( Multch_Admin_Settings::OPTION_KEY, wp_parse_args( $stored, Multch_Admin_Settings::default_settings() ), false );
+		Multch_Plugin::clear_settings_cache();
 		update_option( 'multch_ai_client_migration_done', '1', false );
 	}
 

@@ -253,17 +253,16 @@ class Multch_Chat_History {
 		$updates    = array(
 			'updated_at' => $now,
 		);
-		$formats    = array( '%s' );
+		$formats = array( '%s' );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table name from plugin helper via %i placeholder.
-		$updates['message_count'] = (int) $wpdb->get_var(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Atomic increment avoids COUNT(*) per message.
+		$wpdb->query(
 			$wpdb->prepare(
-				'SELECT COUNT(*) FROM %i WHERE conversation_id = %d',
-				self::messages_table(),
+				'UPDATE %i SET message_count = message_count + 1 WHERE id = %d',
+				$conv_table,
 				$conversation_id
 			)
 		);
-		$formats[] = '%d';
 
 		if ( 'user' === $role ) {
 			$title = self::truncate_title( $content );

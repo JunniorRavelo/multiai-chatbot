@@ -148,6 +148,8 @@ class Multch_Admin_Settings {
 			);
 		}
 
+		Multch_Plugin::clear_settings_cache();
+
 		return wp_parse_args( $out, $defaults );
 	}
 
@@ -180,7 +182,46 @@ class Multch_Admin_Settings {
 
 		if ( $merged !== $stored ) {
 			update_option( self::OPTION_KEY, $merged, false );
+			Multch_Plugin::clear_settings_cache();
 		}
+
+		self::ensure_option_autoload_off();
+	}
+
+	/**
+	 * Evita cargar el array de settings en cada request vía autoload de alloptions.
+	 */
+	public static function ensure_option_autoload_off(): void {
+		if ( '1' === get_option( 'multch_settings_autoload_off', '' ) ) {
+			return;
+		}
+
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time autoload fix for existing installs.
+		$autoload = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT autoload FROM {$wpdb->options} WHERE option_name = %s LIMIT 1",
+				self::OPTION_KEY
+			)
+		);
+
+		if ( in_array( (string) $autoload, array( 'yes', 'on', 'auto' ), true ) ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->update(
+			$wpdb->options,
+			array( 'autoload' => 'off' ),
+			array( 'option_name' => self::OPTION_KEY ),
+				array( '%s' ),
+				array( '%s' )
+			);
+
+			wp_cache_delete( 'alloptions', 'options' );
+			wp_cache_delete( 'notoptions', 'options' );
+			wp_cache_delete( self::OPTION_KEY, 'options' );
+		}
+
+		update_option( 'multch_settings_autoload_off', '1', true );
 	}
 
 	/**
