@@ -11,16 +11,30 @@
 
   var modelDesc = document.getElementById("multch-model-desc");
   var candidatesDesc = document.getElementById("multch-model-candidates-desc");
+  var wpModel = document.getElementById("multch-model");
+  var ollamaModel = document.getElementById("multch-model-ollama");
+
+  function setFieldEnabled(el, enabled) {
+    if (!el) {
+      return;
+    }
+    el.disabled = !enabled;
+  }
 
   function toggle() {
     var v = sel.value;
+    var isWp = v === "wordpress_ai";
+    var isOllama = v === "ollama";
 
     document.querySelectorAll(".multch-field-wordpress-ai").forEach(function (el) {
-      el.style.display = v === "wordpress_ai" ? "" : "none";
+      el.style.display = isWp ? "" : "none";
     });
     document.querySelectorAll(".multch-field-ollama").forEach(function (el) {
-      el.style.display = v === "ollama" ? "" : "none";
+      el.style.display = isOllama ? "" : "none";
     });
+
+    setFieldEnabled(wpModel, isWp);
+    setFieldEnabled(ollamaModel, isOllama);
 
     if (modelDesc && descriptions[v]) {
       modelDesc.textContent = descriptions[v].model || "";

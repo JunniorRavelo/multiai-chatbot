@@ -254,6 +254,72 @@
   font-size: 0.8125rem;
 }
 
+/* Connectors status (Model tab) */
+.multch-connectors-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.multch-connectors-panel__card {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  border: 1px solid var(--cb-admin-border, #dcdcde);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.multch-connectors-panel__logo {
+  flex-shrink: 0;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.multch-connectors-panel__name {
+  display: block;
+  font-size: 0.9375rem;
+  margin-bottom: 0.2rem;
+}
+
+.multch-connectors-panel__desc {
+  margin: 0 0 0.45rem;
+  font-size: 0.8125rem;
+  color: var(--cb-admin-muted, #646970);
+  line-height: 1.35;
+}
+
+.multch-connectors-panel__badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.multch-connectors-panel__badge--connected {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.multch-connectors-panel__badge--not_configured {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.multch-connectors-panel__badge--inactive,
+.multch-connectors-panel__badge--not_installed,
+.multch-connectors-panel__badge--unavailable {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.multch-connectors-panel__actions {
+  margin-top: 0.25rem;
+}
+
 /* Toggle rows */
 .multch-admin-toggle {
   display: flex;

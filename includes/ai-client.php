@@ -40,6 +40,248 @@ function multch_legacy_cloud_provider_ids(): array {
 }
 
 /**
+ * Whether an AI connector has credentials and is ready in the WP AI Client registry.
+ */
+function multch_is_ai_connector_connected( string $connector_id ): bool {
+	if ( ! class_exists( 'WordPress\AiClient\AiClient' ) ) {
+		return false;
+	}
+
+	try {
+		$registry = \WordPress\AiClient\AiClient::defaultRegistry();
+		return $registry->hasProvider( $connector_id ) && $registry->isProviderConfigured( $connector_id );
+	} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		return false;
+	}
+}
+
+/**
+ * AI connectors for the admin Model tab (mirrors Settings → Connectors status).
+ *
+ * @return array{
+ *     connectors: list<array{
+ *         id: string,
+ *         name: string,
+ *         description: string,
+ *         logo_url: string,
+ *         status: string,
+ *         status_label: string
+ *     }>,
+ *     models: list<array{id: string, name: string, provider_id: string, provider_name: string}>,
+ *     has_connected: bool,
+ *     client_available: bool
+ * }
+ */
+function multch_get_ai_connectors_admin_state( bool $refresh_models = false ): array {
+	$empty = array(
+		'connectors'         => array(),
+		'models'             => array(),
+		'has_connected'      => false,
+		'client_available'   => multch_ai_client_available(),
+	);
+
+	if ( ! function_exists( 'wp_get_connectors' ) ) {
+		return $empty;
+	}
+
+	if ( $refresh_models ) {
+		delete_transient( 'multch_ai_models_cache' );
+	}
+
+	$connectors_out = array();
+	$has_connected  = false;
+
+	foreach ( wp_get_connectors() as $connector_id => $connector ) {
+		if ( ! is_array( $connector ) || ( $connector['type'] ?? '' ) !== 'ai_provider' ) {
+			continue;
+		}
+
+		$status = multch_resolve_ai_connector_status( (string) $connector_id, $connector );
+		if ( 'connected' === $status ) {
+			$has_connected = true;
+		}
+
+		$connectors_out[] = array(
+			'id'            => (string) $connector_id,
+			'name'          => (string) ( $connector['name'] ?? $connector_id ),
+			'description'   => (string) ( $connector['description'] ?? '' ),
+			'logo_url'      => (string) ( $connector['logo_url'] ?? '' ),
+			'status'        => $status,
+			'status_label'  => multch_ai_connector_status_label( $status ),
+		);
+	}
+
+	$models = multch_get_available_text_models_for_admin();
+
+	return array(
+		'connectors'       => $connectors_out,
+		'models'           => $models,
+		'has_connected'    => $has_connected,
+		'client_available' => multch_ai_client_available(),
+	);
+}
+
+/**
+ * @param array<string, mixed> $connector Connector data from wp_get_connectors().
+ */
+function multch_resolve_ai_connector_status( string $connector_id, array $connector ): string {
+	$plugin = is_array( $connector['plugin'] ?? null ) ? $connector['plugin'] : array();
+	$file   = (string) ( $plugin['file'] ?? '' );
+
+	if ( '' !== $file ) {
+		$path = wp_normalize_path( WP_PLUGIN_DIR . '/' . $file );
+		if ( ! file_exists( $path ) ) {
+			return 'not_installed';
+		}
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		if ( ! is_plugin_active( $file ) ) {
+			return 'inactive';
+		}
+	} elseif ( isset( $plugin['is_active'] ) && is_callable( $plugin['is_active'] ) ) {
+		if ( ! (bool) call_user_func( $plugin['is_active'] ) ) {
+			return 'inactive';
+		}
+	}
+
+	if ( ! class_exists( 'WordPress\AiClient\AiClient' ) ) {
+		return 'unavailable';
+	}
+
+	try {
+		$registry = \WordPress\AiClient\AiClient::defaultRegistry();
+		if ( ! $registry->hasProvider( $connector_id ) ) {
+			return 'unavailable';
+		}
+		if ( $registry->isProviderConfigured( $connector_id ) ) {
+			return 'connected';
+		}
+	} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		return 'unavailable';
+	}
+
+	return 'not_configured';
+}
+
+/**
+ * @return string Translated short label for connector status badges.
+ */
+function multch_ai_connector_status_label( string $status ): string {
+	switch ( $status ) {
+		case 'connected':
+			return __( 'Connected', 'multiai-chatbot' );
+		case 'not_configured':
+			return __( 'Not configured', 'multiai-chatbot' );
+		case 'inactive':
+			return __( 'Plugin inactive', 'multiai-chatbot' );
+		case 'not_installed':
+			return __( 'Not installed', 'multiai-chatbot' );
+		default:
+			return __( 'Unavailable', 'multiai-chatbot' );
+	}
+}
+
+/**
+ * Text-generation models from configured connectors (cached briefly for admin).
+ *
+ * @return list<array{id: string, name: string, provider_id: string, provider_name: string}>
+ */
+function multch_get_available_text_models_for_admin(): array {
+	$cached = get_transient( 'multch_ai_models_cache' );
+	if ( is_array( $cached ) ) {
+		return $cached;
+	}
+
+	if ( ! class_exists( 'WordPress\AiClient\AiClient' )
+		|| ! class_exists( 'WordPress\AiClient\Providers\Models\DTO\ModelRequirements' )
+		|| ! class_exists( 'WordPress\AiClient\Providers\Models\Enums\CapabilityEnum' ) ) {
+		return array();
+	}
+
+	$models = array();
+
+	try {
+		$capability_class = 'WordPress\AiClient\Providers\Models\Enums\CapabilityEnum';
+		$requirements_class = 'WordPress\AiClient\Providers\Models\DTO\ModelRequirements';
+
+		$requirements = new $requirements_class(
+			array(
+				$capability_class::textGeneration(),
+				$capability_class::chatHistory(),
+			),
+			array()
+		);
+
+		$registry = \WordPress\AiClient\AiClient::defaultRegistry();
+		$groups   = $registry->findModelsMetadataForSupport( $requirements );
+
+		foreach ( $groups as $group ) {
+			if ( ! is_object( $group ) ) {
+				continue;
+			}
+
+			$provider_meta = method_exists( $group, 'getProvider' ) ? $group->getProvider() : null;
+
+			$provider_id   = 'unknown';
+			$provider_name = 'unknown';
+			if ( is_object( $provider_meta ) ) {
+				if ( method_exists( $provider_meta, 'getId' ) ) {
+					$provider_id = (string) $provider_meta->getId();
+				}
+				if ( method_exists( $provider_meta, 'getName' ) ) {
+					$provider_name = (string) $provider_meta->getName();
+				}
+			}
+
+			if ( ! multch_is_ai_connector_connected( $provider_id ) ) {
+				continue;
+			}
+
+			$model_list = method_exists( $group, 'getModels' ) ? $group->getModels() : array();
+			foreach ( $model_list as $model_meta ) {
+				if ( ! is_object( $model_meta ) || ! method_exists( $model_meta, 'getId' ) ) {
+					continue;
+				}
+				$model_id = trim( (string) $model_meta->getId() );
+				if ( '' === $model_id ) {
+					continue;
+				}
+				$model_name = method_exists( $model_meta, 'getName' )
+					? trim( (string) $model_meta->getName() )
+					: $model_id;
+
+				$models[] = array(
+					'id'            => $model_id,
+					'name'          => '' !== $model_name ? $model_name : $model_id,
+					'provider_id'   => $provider_id,
+					'provider_name' => $provider_name,
+				);
+			}
+		}
+	} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		$models = array();
+	}
+
+	// Deduplicate by model id, preserve first provider association.
+	$seen = array();
+	$unique = array();
+	foreach ( $models as $row ) {
+		if ( isset( $seen[ $row['id'] ] ) ) {
+			continue;
+		}
+		$seen[ $row['id'] ] = true;
+		$unique[]           = $row;
+	}
+
+	set_transient( 'multch_ai_models_cache', $unique, 5 * MINUTE_IN_SECONDS );
+
+	return $unique;
+}
+
+/**
  * @param array<int, array{role: string, content: string}> $messages
  * @return array{latest: string, history: list<object>}
  */

@@ -470,6 +470,8 @@ class Multch_Admin_Settings {
 		$out['request_timeout']  = max( 5, min( 120, (int) ( $input['request_timeout'] ?? $current['request_timeout'] ?? $defaults['request_timeout'] ) ) );
 
 		unset( $out['api_key'], $out['openai_base_url'], $out['deepseek_base_url'] );
+
+		delete_transient( 'multch_ai_models_cache' );
 	}
 
 	/**
@@ -1871,6 +1873,152 @@ class Multch_Admin_Settings {
 	}
 
 	/**
+	 * @param array{connectors: list<array<string, string>>, models: list<array<string, string>>, has_connected: bool, client_available: bool} $ai_state
+	 */
+	private static function render_connectors_status_panel( array $ai_state ): void {
+		$connectors_url = multch_connectors_admin_url();
+		$refresh_url    = add_query_arg(
+			array(
+				'page'                   => 'multch-plugin',
+				'tab'                    => 'model',
+				'multch_refresh_models'  => '1',
+			),
+			admin_url( 'admin.php' )
+		);
+
+		if ( empty( $ai_state['client_available'] ) ) {
+			echo '<p class="description">' . esc_html(
+				sprintf(
+					/* translators: %s: WordPress version number. */
+					__( 'WordPress %s or newer is required for cloud AI via Connectors. You can still use Ollama below.', 'multiai-chatbot' ),
+					'7.0'
+				)
+			) . '</p>';
+			return;
+		}
+
+		if ( empty( $ai_state['connectors'] ) ) {
+			echo '<p class="description">';
+			printf(
+				wp_kses(
+					/* translators: %s: Settings → Connectors URL. */
+					__( 'No AI connectors are registered yet. Open <a href="%s">Settings → Connectors</a> to add a provider.', 'multiai-chatbot' ),
+					array( 'a' => array( 'href' => array() ) )
+				),
+				esc_url( $connectors_url )
+			);
+			echo '</p>';
+			return;
+		}
+
+		echo '<div class="multch-connectors-panel">';
+		foreach ( $ai_state['connectors'] as $connector ) {
+			$status = (string) ( $connector['status'] ?? '' );
+			$badge  = 'multch-connectors-panel__badge--' . sanitize_html_class( $status );
+			echo '<div class="multch-connectors-panel__card">';
+			if ( ! empty( $connector['logo_url'] ) ) {
+				echo '<img class="multch-connectors-panel__logo" src="' . esc_url( (string) $connector['logo_url'] ) . '" alt="" width="32" height="32" />';
+			}
+			echo '<div class="multch-connectors-panel__body">';
+			echo '<strong class="multch-connectors-panel__name">' . esc_html( (string) $connector['name'] ) . '</strong>';
+			if ( ! empty( $connector['description'] ) ) {
+				echo '<p class="multch-connectors-panel__desc">' . esc_html( (string) $connector['description'] ) . '</p>';
+			}
+			echo '<span class="multch-connectors-panel__badge ' . esc_attr( $badge ) . '">' . esc_html( (string) ( $connector['status_label'] ?? '' ) ) . '</span>';
+			echo '</div></div>';
+		}
+		echo '</div>';
+
+		echo '<p class="description multch-connectors-panel__actions">';
+		printf(
+			wp_kses(
+				/* translators: 1: Connectors settings URL, 2: refresh models URL. */
+				__( 'Manage keys in <a href="%1$s">Settings → Connectors</a>. <a href="%2$s">Refresh model list</a>.', 'multiai-chatbot' ),
+				array( 'a' => array( 'href' => array() ) )
+			),
+			esc_url( $connectors_url ),
+			esc_url( $refresh_url )
+		);
+		echo '</p>';
+
+		if ( empty( $ai_state['has_connected'] ) ) {
+			echo '<p class="description"><em>' . esc_html__( 'Connect at least one provider to enable cloud chat models.', 'multiai-chatbot' ) . '</em></p>';
+		}
+	}
+
+	/**
+	 * @param array{connectors: list<array<string, string>>, models: list<array<string, string>>, has_connected: bool, client_available: bool} $ai_state
+	 */
+	private static function render_model_picker( array $ai_state, string $current_model, bool $enabled = true ): void {
+		$models = is_array( $ai_state['models'] ?? null ) ? $ai_state['models'] : array();
+		$name   = self::OPTION_KEY . '[model]';
+
+		if ( empty( $models ) ) {
+			printf(
+				'<input type="text" class="regular-text" name="%1$s" id="multch-model" value="%2$s" autocomplete="off"%3$s />',
+				esc_attr( $name ),
+				esc_attr( $current_model ),
+				$enabled ? '' : ' disabled="disabled"'
+			);
+			if ( ! empty( $ai_state['has_connected'] ) ) {
+				echo '<p class="description">' . esc_html__( 'No models were returned yet. Enter a model ID manually or refresh the list after saving your connector.', 'multiai-chatbot' ) . '</p>';
+			}
+			return;
+		}
+
+		$by_provider = array();
+		foreach ( $models as $row ) {
+			$pid = (string) ( $row['provider_id'] ?? 'other' );
+			if ( ! isset( $by_provider[ $pid ] ) ) {
+				$by_provider[ $pid ] = array(
+					'label'  => (string) ( $row['provider_name'] ?? $pid ),
+					'models' => array(),
+				);
+			}
+			$by_provider[ $pid ]['models'][] = $row;
+		}
+
+		echo '<select class="regular-text" name="' . esc_attr( $name ) . '" id="multch-model"' . ( $enabled ? '' : ' disabled="disabled"' ) . '>';
+		echo '<option value="">' . esc_html__( '— Automatic (first available) —', 'multiai-chatbot' ) . '</option>';
+
+		$known_ids = array();
+		foreach ( $by_provider as $group ) {
+			echo '<optgroup label="' . esc_attr( (string) $group['label'] ) . '">';
+			foreach ( $group['models'] as $row ) {
+				$id = (string) ( $row['id'] ?? '' );
+				if ( '' === $id ) {
+					continue;
+				}
+				$known_ids[] = $id;
+				$label       = (string) ( $row['name'] ?? $id );
+				printf(
+					'<option value="%1$s" %2$s>%3$s</option>',
+					esc_attr( $id ),
+					selected( $current_model, $id, false ),
+					esc_html( $label . ' (' . $id . ')' )
+				);
+			}
+			echo '</optgroup>';
+		}
+
+		if ( '' !== $current_model && ! in_array( $current_model, $known_ids, true ) ) {
+			printf(
+				'<option value="%1$s" selected>%2$s</option>',
+				esc_attr( $current_model ),
+				esc_html(
+					sprintf(
+						/* translators: %s: model ID saved in settings but not in the current connector list */
+						__( 'Current: %s (not in list)', 'multiai-chatbot' ),
+						$current_model
+					)
+				)
+			);
+		}
+
+		echo '</select>';
+	}
+
+	/**
 	 * @param array<string, mixed> $settings
 	 */
 	private static function render_model_fields( array $settings ): void {
@@ -1878,6 +2026,11 @@ class Multch_Admin_Settings {
 		if ( in_array( $provider, multch_legacy_cloud_provider_ids(), true ) ) {
 			$provider = 'wordpress_ai';
 		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Refresh link only; form save uses options.php nonce.
+		$refresh_models = isset( $_GET['multch_refresh_models'] ) && '1' === (string) $_GET['multch_refresh_models'];
+		$ai_state       = multch_get_ai_connectors_admin_state( $refresh_models );
+		$current_model  = (string) ( $settings['model'] ?? '' );
 
 		self::card_open(
 			__( 'AI provider', 'multiai-chatbot' ),
@@ -1897,25 +2050,14 @@ class Multch_Admin_Settings {
 			<tr class="multch-field-wordpress-ai">
 				<th scope="row"><?php esc_html_e( 'Connectors', 'multiai-chatbot' ); ?></th>
 				<td>
-					<p class="description">
-						<?php
-						printf(
-							wp_kses(
-								/* translators: %s: Settings → Connectors admin URL. */
-								__( 'API keys and cloud providers are configured once under <a href="%s">Settings → Connectors</a>. This plugin does not store provider credentials.', 'multiai-chatbot' ),
-								array( 'a' => array( 'href' => array() ) )
-							),
-							esc_url( multch_connectors_admin_url() )
-						);
-						?>
-					</p>
+					<?php self::render_connectors_status_panel( $ai_state ); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="multch-field-wordpress-ai">
 				<th scope="row"><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
 				<td>
-					<input type="text" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model]" id="multch-model" value="<?php echo esc_attr( (string) $settings['model'] ); ?>" />
-					<p class="description" id="multch-model-desc"><?php esc_html_e( 'Preferred model ID for WordPress AI or Ollama model name.', 'multiai-chatbot' ); ?></p>
+					<?php self::render_model_picker( $ai_state, $current_model, 'wordpress_ai' === $provider ); ?>
+					<p class="description" id="multch-model-desc"><?php esc_html_e( 'Models listed here come from connectors that are connected under Settings → Connectors.', 'multiai-chatbot' ); ?></p>
 				</td>
 			</tr>
 			<tr class="multch-field-wordpress-ai">
@@ -1923,6 +2065,20 @@ class Multch_Admin_Settings {
 				<td>
 					<input type="text" class="large-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model_candidates]" value="<?php echo esc_attr( (string) $settings['model_candidates'] ); ?>" />
 					<p class="description" id="multch-model-candidates-desc"><?php esc_html_e( 'Comma-separated model preferences if the primary model is unavailable.', 'multiai-chatbot' ); ?></p>
+				</td>
+			</tr>
+			<tr class="multch-field-ollama">
+				<th scope="row"><?php esc_html_e( 'Model', 'multiai-chatbot' ); ?></th>
+				<td>
+					<input
+						type="text"
+						class="regular-text"
+						name="<?php echo esc_attr( self::OPTION_KEY ); ?>[model]"
+						id="multch-model-ollama"
+						value="<?php echo esc_attr( $current_model ); ?>"
+						<?php disabled( 'ollama' !== $provider ); ?>
+					/>
+					<p class="description"><?php esc_html_e( 'Ollama model name installed on your server (e.g. llama3).', 'multiai-chatbot' ); ?></p>
 				</td>
 			</tr>
 			<tr class="multch-field-ollama">
