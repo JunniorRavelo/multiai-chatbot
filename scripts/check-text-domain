@@ -44,6 +44,17 @@ for path in sorted(root.rglob("*.php")):
             f"unexpected text domain {domain!r} (expected {expected!r})"
         )
 
+main_php = root / "multiai-chatbot.php"
+if main_php.is_file():
+    main_text = main_php.read_text(encoding="utf-8", errors="replace")
+    if re.search(
+        r"define\s*\(\s*['\"]MULTCH_TEXT_DOMAIN['\"]\s*,\s*MULTCH_TEXT_DOMAIN\s*\)",
+        main_text,
+    ):
+        errors.append(
+            f"{main_php.relative_to(root)}: MULTCH_TEXT_DOMAIN must be defined with the string 'multiai-chatbot', not self-reference"
+        )
+
 if errors:
     print("check-text-domain: FAILED", file=sys.stderr)
     for line in errors[:40]:

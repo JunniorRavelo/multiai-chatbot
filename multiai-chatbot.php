@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'MULTCH_PLUGIN_VERSION', '1.0.3' );
-define( 'MULTCH_TEXT_DOMAIN', MULTCH_TEXT_DOMAIN );
+define( 'MULTCH_TEXT_DOMAIN', 'multiai-chatbot' );
 define( 'MULTCH_PLUGIN_FILE', __FILE__ );
 define( 'MULTCH_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MULTCH_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
