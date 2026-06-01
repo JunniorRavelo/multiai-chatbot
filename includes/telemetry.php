@@ -11,8 +11,8 @@ class Multch_Telemetry {
 
 	const DB_VERSION = '1.1';
 
-	/** @var string Uploads subdirectory for optional file logs (not the plugin folder). */
-	const UPLOADS_SUBDIR = MULTCH_TEXT_DOMAIN;
+	/** @var string Uploads subdirectory for optional file logs (matches Text Domain / MULTCH_TEXT_DOMAIN). */
+	const UPLOADS_SUBDIR = 'multiai-chatbot';
 
 	const LOG_FILENAME = 'telemetry.log';
 

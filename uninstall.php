@@ -7,6 +7,11 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
+// Required before telemetry.php (class constant UPLOADS_SUBDIR); main plugin file is not loaded on uninstall.
+if ( ! defined( 'MULTCH_TEXT_DOMAIN' ) ) {
+	define( 'MULTCH_TEXT_DOMAIN', 'multiai-chatbot' );
+}
+
 require_once __DIR__ . '/includes/config-constants.php';
 require_once __DIR__ . '/includes/telemetry.php';
 require_once __DIR__ . '/includes/chat-history.php';

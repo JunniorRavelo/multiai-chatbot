@@ -34,14 +34,22 @@ function multch_wp_ai_client_prompt( string $prompt ) {
  * Admin URL for Settings → Connectors (WordPress 7.0+).
  */
 function multch_connectors_admin_url(): string {
+	$menu_slugs = array( 'options-connectors', 'wp-connectors' );
+
 	if ( function_exists( 'menu_page_url' ) ) {
-		$url = menu_page_url( 'wp-connectors', false );
-		if ( is_string( $url ) && '' !== $url ) {
-			return $url;
+		foreach ( $menu_slugs as $menu_slug ) {
+			$url = menu_page_url( $menu_slug, false );
+			if ( is_string( $url ) && '' !== $url ) {
+				return $url;
+			}
 		}
 	}
 
-	return admin_url( 'options-general.php?page=wp-connectors' );
+	if ( is_readable( ABSPATH . 'wp-admin/options-connectors.php' ) ) {
+		return admin_url( 'options-connectors.php' );
+	}
+
+	return admin_url( 'options-general.php?page=options-connectors' );
 }
 
 /**
