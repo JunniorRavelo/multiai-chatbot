@@ -5,7 +5,7 @@ Tags: chatbot, ai, gemini, live chat, customer support
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,65 @@ The `uninstall.php` routine removes:
 
 External log files configured via `telemetry_log_path` pointing outside the plugin directory are **not** deleted automatically.
 
+== External services ==
+
+This plugin relies on **optional** third-party AI services chosen by the site administrator. The plugin author does not host these services and does not receive visitor chat data. External calls occur only after you configure a provider under **MultiAI ChatBot → AI Model** and a visitor uses the chat widget on your site.
+
+= When is data sent? =
+
+Data is transmitted to the configured AI provider **when a visitor sends a message** in the chat widget (REST or streaming endpoint on your WordPress site). The plugin does not send chat content to external servers in the background or on page load.
+
+Typical payload per request:
+
+* The visitor's message and recent conversation context (stored locally for continuity).
+* The system prompt from plugin settings.
+* Provider and model identifiers required to generate a reply.
+
+The plugin also stores conversations and technical telemetry **on your WordPress server** (see == Privacy == below). That local data is not sent to the plugin author.
+
+= Administrator consent =
+
+By installing the plugin, entering an API key (where required), and selecting a provider, the site administrator authorizes the plugin to forward visitor messages to that provider's API. Visitors should be informed through your site's privacy policy; the plugin adds suggested privacy policy text under **Settings → Privacy**.
+
+= Google Gemini (optional) =
+
+* **Service:** Google Gemini API (`generativelanguage.googleapis.com`).
+* **Used for:** Generating AI chat replies when Gemini is selected in plugin settings.
+* **Data sent:** Chat messages, conversation context, and system prompt, as described above, when a visitor sends a message.
+* **Terms of service:** https://ai.google.dev/gemini-api/terms
+* **Privacy policy:** https://policies.google.com/privacy
+* **Related:** https://developers.google.com/terms (Google APIs Terms of Service)
+
+= DeepSeek (optional) =
+
+* **Service:** DeepSeek API (`api.deepseek.com` by default; configurable base URL).
+* **Used for:** Generating AI chat replies when DeepSeek is selected in plugin settings.
+* **Data sent:** Chat messages, conversation context, and system prompt when a visitor sends a message.
+* **Terms of service:** https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html
+* **Privacy policy:** https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html
+
+= OpenAI-compatible APIs (optional) =
+
+* **Service:** Any HTTP API compatible with the OpenAI Chat Completions format (default: `api.openai.com`, including OpenAI, Azure OpenAI, or other hosts you configure).
+* **Used for:** Generating AI chat replies when an OpenAI-compatible provider is selected in plugin settings.
+* **Data sent:** Chat messages, conversation context, and system prompt when a visitor sends a message.
+* **OpenAI terms of service:** https://openai.com/api/policies/service-terms
+* **OpenAI privacy policy:** https://openai.com/policies/privacy-policy
+* **Note:** If you use a non-OpenAI host (for example Azure or a private gateway), that operator's terms and privacy policy apply to data sent to that endpoint.
+
+= Ollama (optional) =
+
+* **Service:** Ollama HTTP API on a server you control (default: `http://127.0.0.1:11434`; configurable in plugin settings).
+* **Used for:** Running models locally or on your infrastructure without a cloud API key.
+* **Data sent:** Chat messages, conversation context, and system prompt to the Ollama base URL you configure when a visitor sends a message. Data stays on (or transits to) the server you operate unless you point the URL to a third-party host.
+* **Ollama website terms:** https://ollama.com/terms
+* **Ollama website privacy:** https://ollama.com/privacy
+* **Note:** Self-hosted Ollama does not use Ollama's cloud by default; review your own hosting and compliance obligations.
+
+= Services not used by this plugin =
+
+This plugin does **not** contact the plugin author's servers for analytics, licensing, or chat processing. Donation links in the WordPress admin are ordinary hyperlinks opened only if an administrator clicks them. Optional developer credit in the frontend chat is **disabled by default** and must be enabled in **Chat Style** settings.
+
 == Privacy ==
 
 = What data is stored locally? =
@@ -123,7 +182,7 @@ External log files configured via `telemetry_log_path` pointing outside the plug
 
 = What data is sent to third parties? =
 
-When a visitor sends a chat message, the plugin forwards content to the AI provider configured by the site administrator (Google Gemini, DeepSeek, Ollama, or an OpenAI-compatible API). This typically includes the visitor message, recent conversation context, and the system prompt from plugin settings.
+When a visitor sends a chat message, the plugin forwards content to the AI provider configured by the site administrator (Google Gemini, DeepSeek, Ollama, or an OpenAI-compatible API). This typically includes the visitor message, recent conversation context, and the system prompt from plugin settings. See == External services == for each provider, timing of transmission, and links to terms and privacy policies.
 
 = Who is responsible for compliance? =
 
@@ -151,6 +210,9 @@ Chat history uses anonymous session identifiers and is not linked to visitor ema
 
 == Changelog ==
 
+= 1.0.1 =
+* Document external AI services in readme (purpose, data sent, when sent, terms and privacy links per provider).
+
 = 1.0.0 =
 * Initial release.
 * AI chat widget (Gemini, DeepSeek, Ollama, OpenAI-compatible).
@@ -163,6 +225,9 @@ Chat history uses anonymous session identifiers and is not linked to visitor ema
 * REST API for JSON chat and streaming.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Readme update: third-party AI service documentation for WordPress.org compliance. No code changes required for existing installations.
 
 = 1.0.0 =
 First public release of the plugin.
