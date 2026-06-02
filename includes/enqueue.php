@@ -107,9 +107,18 @@ class Multch_Enqueue {
 				'streamUrl'      => esc_url_raw( home_url( '/multch/v1/chat/stream' ) ),
 				'nonce'          => wp_create_nonce( 'wp_rest' ),
 				'streaming'      => ! empty( $settings['streaming_enabled'] ),
-				'welcomeMessage' => (string) ( $settings['welcome_message'] ?? '' ),
-				'widgetTitle'    => (string) ( $settings['widget_title'] ?? 'AI Agent' ),
-				'widgetSubtitle' => (string) ( $settings['widget_subtitle'] ?? '' ),
+				'welcomeMessage' => Multch_Admin_Settings::localize_general_setting_value(
+					'welcome_message',
+					(string) ( $settings['welcome_message'] ?? '' )
+				),
+				'widgetTitle'    => Multch_Admin_Settings::localize_general_setting_value(
+					'widget_title',
+					(string) ( $settings['widget_title'] ?? 'AI Agent' )
+				),
+				'widgetSubtitle' => Multch_Admin_Settings::localize_general_setting_value(
+					'widget_subtitle',
+					(string) ( $settings['widget_subtitle'] ?? '' )
+				),
 				'style'          => $style,
 				'credit'         => Multch_Admin_Settings::developer_credit_for_js(),
 				'mode'           => $mode,

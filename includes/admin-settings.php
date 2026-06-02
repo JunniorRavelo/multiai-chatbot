@@ -265,6 +265,72 @@ class Multch_Admin_Settings {
 	}
 
 	/**
+	 * Claves de General cuyo valor canónico en BD está en inglés y puede mostrarse traducido.
+	 *
+	 * @return list<string>
+	 */
+	public static function general_i18n_setting_keys(): array {
+		return array(
+			'widget_title',
+			'widget_subtitle',
+			'welcome_message',
+			'system_prompt',
+		);
+	}
+
+	/**
+	 * Valores por defecto en inglés (canónicos en BD).
+	 *
+	 * @return array<string, string>
+	 */
+	public static function canonical_general_defaults(): array {
+		$defaults = self::default_settings();
+		$out      = array();
+
+		foreach ( self::general_i18n_setting_keys() as $key ) {
+			$out[ $key ] = (string) ( $defaults[ $key ] ?? '' );
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Muestra el valor traducido en admin y frontend si aún es el default canónico en inglés.
+	 */
+	public static function localize_general_setting_value( string $key, string $value ): string {
+		$canonical  = self::canonical_general_defaults();
+		$translated = self::translated_general_defaults();
+
+		if ( ! isset( $canonical[ $key ], $translated[ $key ] ) ) {
+			return $value;
+		}
+
+		if ( $value === $canonical[ $key ] || $value === $translated[ $key ] ) {
+			return $translated[ $key ];
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Al guardar, persiste el default canónico en inglés si el usuario dejó el texto traducido por defecto.
+	 */
+	public static function canonicalize_general_setting_value( string $key, string $value ): string {
+		$canonical  = self::canonical_general_defaults();
+		$translated = self::translated_general_defaults();
+
+		if ( ! isset( $canonical[ $key ], $translated[ $key ] ) ) {
+			return $value;
+		}
+
+		if ( $value === $translated[ $key ] || $value === $canonical[ $key ] ) {
+			return $canonical[ $key ];
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Cadenas i18n compartidas del preview del admin (Estilo y General).
 	 *
 	 * @return array<string, string>
@@ -466,21 +532,33 @@ class Multch_Admin_Settings {
 		$out['stats_history_enabled'] = self::sanitize_checkbox( $input, $current, 'stats_history_enabled', (bool) $defaults['stats_history_enabled'] );
 		$out['streaming_enabled'] = self::sanitize_checkbox( $input, $current, 'streaming_enabled', (bool) $defaults['streaming_enabled'] );
 
-		$out['welcome_message'] = self::truncate_setting_string(
-			sanitize_textarea_field( $input['welcome_message'] ?? $current['welcome_message'] ?? $defaults['welcome_message'] ),
-			$limits['welcome_message']
+		$out['welcome_message'] = self::canonicalize_general_setting_value(
+			'welcome_message',
+			self::truncate_setting_string(
+				sanitize_textarea_field( $input['welcome_message'] ?? $current['welcome_message'] ?? $defaults['welcome_message'] ),
+				$limits['welcome_message']
+			)
 		);
-		$out['system_prompt'] = self::truncate_setting_string(
-			sanitize_textarea_field( $input['system_prompt'] ?? $current['system_prompt'] ?? $defaults['system_prompt'] ),
-			$limits['system_prompt']
+		$out['system_prompt'] = self::canonicalize_general_setting_value(
+			'system_prompt',
+			self::truncate_setting_string(
+				sanitize_textarea_field( $input['system_prompt'] ?? $current['system_prompt'] ?? $defaults['system_prompt'] ),
+				$limits['system_prompt']
+			)
 		);
-		$out['widget_title'] = self::truncate_setting_string(
-			sanitize_text_field( $input['widget_title'] ?? $current['widget_title'] ?? $defaults['widget_title'] ),
-			$limits['widget_title']
+		$out['widget_title'] = self::canonicalize_general_setting_value(
+			'widget_title',
+			self::truncate_setting_string(
+				sanitize_text_field( $input['widget_title'] ?? $current['widget_title'] ?? $defaults['widget_title'] ),
+				$limits['widget_title']
+			)
 		);
-		$out['widget_subtitle'] = self::truncate_setting_string(
-			sanitize_text_field( $input['widget_subtitle'] ?? $current['widget_subtitle'] ?? $defaults['widget_subtitle'] ),
-			$limits['widget_subtitle']
+		$out['widget_subtitle'] = self::canonicalize_general_setting_value(
+			'widget_subtitle',
+			self::truncate_setting_string(
+				sanitize_text_field( $input['widget_subtitle'] ?? $current['widget_subtitle'] ?? $defaults['widget_subtitle'] ),
+				$limits['widget_subtitle']
+			)
 		);
 
 		if ( ! empty( $out['widget_enabled'] ) && '' === trim( (string) $out['widget_title'] ) ) {
@@ -924,9 +1002,9 @@ class Multch_Admin_Settings {
 					'presets'         => self::style_presets(),
 					'presetMeta'      => $preset_meta_for_js,
 					'exportKeys'      => self::style_export_keys(),
-					'widgetTitle'     => (string) ( $settings['widget_title'] ?? '' ),
-					'widgetSubtitle'  => (string) ( $settings['widget_subtitle'] ?? '' ),
-					'welcomeMessage'  => (string) ( $settings['welcome_message'] ?? '' ),
+					'widgetTitle'     => self::localize_general_setting_value( 'widget_title', (string) ( $settings['widget_title'] ?? '' ) ),
+					'widgetSubtitle'  => self::localize_general_setting_value( 'widget_subtitle', (string) ( $settings['widget_subtitle'] ?? '' ) ),
+					'welcomeMessage'  => self::localize_general_setting_value( 'welcome_message', (string) ( $settings['welcome_message'] ?? '' ) ),
 					'defaults'        => self::translated_general_defaults(),
 					'generalFieldNames' => array(
 						'widget_title',
@@ -1690,6 +1768,10 @@ class Multch_Admin_Settings {
 	private static function render_general_fields( array $settings ): void {
 		$display_defaults = self::translated_general_defaults();
 		$limits           = self::general_field_limits();
+		$display_title    = self::localize_general_setting_value( 'widget_title', (string) ( $settings['widget_title'] ?? '' ) );
+		$display_subtitle = self::localize_general_setting_value( 'widget_subtitle', (string) ( $settings['widget_subtitle'] ?? '' ) );
+		$display_welcome  = self::localize_general_setting_value( 'welcome_message', (string) ( $settings['welcome_message'] ?? '' ) );
+		$display_prompt   = self::localize_general_setting_value( 'system_prompt', (string) ( $settings['system_prompt'] ?? '' ) );
 		$widget_on    = ! empty( $settings['widget_enabled'] );
 		$streaming_on = ! empty( $settings['streaming_enabled'] );
 		$position     = sanitize_key( (string) ( $settings['style_position'] ?? 'bottom-right' ) );
@@ -1747,7 +1829,7 @@ class Multch_Admin_Settings {
 						class="regular-text multch-admin-char-field"
 						name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_title]"
 						id="multch-widget-title"
-						value="<?php echo esc_attr( (string) $settings['widget_title'] ); ?>"
+						value="<?php echo esc_attr( $display_title ); ?>"
 						maxlength="<?php echo esc_attr( (string) $limits['widget_title'] ); ?>"
 						placeholder="<?php echo esc_attr( (string) $display_defaults['widget_title'] ); ?>"
 						data-char-max="<?php echo esc_attr( (string) $limits['widget_title'] ); ?>"
@@ -1763,7 +1845,7 @@ class Multch_Admin_Settings {
 						class="regular-text multch-admin-char-field"
 						name="<?php echo esc_attr( self::OPTION_KEY ); ?>[widget_subtitle]"
 						id="multch-widget-subtitle"
-						value="<?php echo esc_attr( (string) $settings['widget_subtitle'] ); ?>"
+						value="<?php echo esc_attr( $display_subtitle ); ?>"
 						maxlength="<?php echo esc_attr( (string) $limits['widget_subtitle'] ); ?>"
 						placeholder="<?php echo esc_attr( (string) $display_defaults['widget_subtitle'] ); ?>"
 						data-char-max="<?php echo esc_attr( (string) $limits['widget_subtitle'] ); ?>"
@@ -1783,7 +1865,7 @@ class Multch_Admin_Settings {
 						maxlength="<?php echo esc_attr( (string) $limits['welcome_message'] ); ?>"
 						placeholder="<?php echo esc_attr( (string) $display_defaults['welcome_message'] ); ?>"
 						data-char-max="<?php echo esc_attr( (string) $limits['welcome_message'] ); ?>"
-					><?php echo esc_textarea( (string) $settings['welcome_message'] ); ?></textarea>
+					><?php echo esc_textarea( $display_welcome ); ?></textarea>
 					<p class="multch-admin-char-count" data-char-for="multch-welcome-message" aria-live="polite"></p>
 					<p class="description"><?php esc_html_e( 'First message visitors see when they open the chat. Visible to everyone.', 'multiai-chatbot' ); ?></p>
 					<p class="multch-admin-field-actions">
@@ -1814,7 +1896,7 @@ class Multch_Admin_Settings {
 						maxlength="<?php echo esc_attr( (string) $limits['system_prompt'] ); ?>"
 						placeholder="<?php echo esc_attr( (string) $display_defaults['system_prompt'] ); ?>"
 						data-char-max="<?php echo esc_attr( (string) $limits['system_prompt'] ); ?>"
-					><?php echo esc_textarea( (string) $settings['system_prompt'] ); ?></textarea>
+					><?php echo esc_textarea( $display_prompt ); ?></textarea>
 					<p class="multch-admin-char-count" data-char-for="multch-system-prompt" aria-live="polite"></p>
 					<p class="description">
 						<?php esc_html_e( 'Defines tone, scope, and safety. Not shown in the chat UI.', 'multiai-chatbot' ); ?>
