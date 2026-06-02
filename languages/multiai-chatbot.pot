@@ -1442,7 +1442,7 @@ msgstr[1] ""
 msgid "Title"
 msgstr ""
 
-#: includes/donation-footer.php:52
+#: includes/donation-footer.php:51
 msgid "Support the plugin"
 msgstr ""
 
@@ -1478,11 +1478,11 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: includes/donation-footer.php:87
+#: includes/donation-footer.php:88
 msgid "Write a review on WordPress.org"
 msgstr ""
 
-#: includes/donation-footer.php:90
+#: includes/donation-footer.php:91
 msgid "Review"
 msgstr ""
 

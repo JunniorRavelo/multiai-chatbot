@@ -40,7 +40,7 @@
 		function flashCopied() {
 			var label = button.querySelector('.multch-donation-footer__chip-label');
 			var original = label ? label.textContent : '';
-			var copiedLabel = button.getAttribute('data-copied-label') || 'Copied';
+			var copiedLabel = button.getAttribute('data-copied-label') || button.textContent || '';
 
 			button.classList.add('is-copied');
 			if (label) {

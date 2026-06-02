@@ -1626,7 +1626,7 @@ msgstr[1] "%d h"
 msgid "Title"
 msgstr "Título"
 
-#: includes/donation-footer.php:52
+#: includes/donation-footer.php:51
 msgid "Support the plugin"
 msgstr "Apoye el plugin"
 
@@ -1662,11 +1662,11 @@ msgstr "Copiar enlace del plugin para compartir"
 msgid "Share"
 msgstr "Compartir"
 
-#: includes/donation-footer.php:87
+#: includes/donation-footer.php:88
 msgid "Write a review on WordPress.org"
 msgstr "Escribir una reseña en WordPress.org"
 
-#: includes/donation-footer.php:90
+#: includes/donation-footer.php:91
 msgid "Review"
 msgstr "Reseña"
 
