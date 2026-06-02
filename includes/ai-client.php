@@ -596,7 +596,21 @@ function multch_ai_client_is_provider_text_substitute( string $model ): bool {
 		}
 	}
 
-	return (bool) preg_match( '/^(gemini|gpt|claude|deepseek|llama)/', $model );
+	return (bool) preg_match( '/^(gemini|gemma|gpt|claude|deepseek|llama)/', $model );
+}
+
+/**
+ * @param string $model Model ID.
+ */
+function multch_ai_client_is_gemma_model( string $model ): bool {
+	return str_starts_with( multch_ai_client_normalize_model_id( $model ), 'gemma' );
+}
+
+/**
+ * @param string $model Model ID.
+ */
+function multch_ai_client_is_gemini_model( string $model ): bool {
+	return str_starts_with( multch_ai_client_normalize_model_id( $model ), 'gemini' );
 }
 
 /**
@@ -682,17 +696,65 @@ function multch_ai_client_is_provider_rate_limit_error( WP_Error $error ): bool 
 
 /**
  * User-facing error after primary, fallback, and optional Google automatic attempts all hit quota.
+ *
+ * @param string       $model_primary
+ * @param list<string> $chain
  */
-function multch_ai_client_quota_exhausted_error(): WP_Error {
+function multch_ai_client_quota_exhausted_error( string $model_primary = '', array $chain = array() ): WP_Error {
+	if ( multch_ai_client_is_gemma_model( $model_primary ) ) {
+		$fallback = isset( $chain[1] ) ? (string) $chain[1] : '';
+		$message  = '' !== $fallback
+			? sprintf(
+				/* translators: 1: primary model ID, 2: fallback model ID */
+				__( 'The primary model %1$s could not be used and the Gemini fallback %2$s hit API quota. Check Settings → Connectors, wait for Gemini quota to reset, or set a non-Gemini fallback.', 'multiai-chatbot' ),
+				$model_primary,
+				$fallback
+			)
+			: sprintf(
+				/* translators: %s: primary model ID */
+				__( 'The primary model %s could not be used. Check Settings → Connectors and that the model ID is available for your API key.', 'multiai-chatbot' ),
+				$model_primary
+			);
+
+		return new WP_Error(
+			'quota_exhausted',
+			$message,
+			array(
+				'status'      => 429,
+				'error_code'  => 'QUOTA_EXHAUSTED',
+				'retry_after' => 120,
+			)
+		);
+	}
+
 	return new WP_Error(
 		'quota_exhausted',
-		__( 'Google API quota was reached. The chat tried your primary model, fallback, and (if enabled) an automatic Google model. Wait a few minutes or choose other models in MultiAI ChatBot → AI Model.', 'multiai-chatbot' ),
+		__( 'Google API quota was reached for the Gemini models in your chain. Wait a few minutes or choose other models in MultiAI ChatBot → AI Model.', 'multiai-chatbot' ),
 		array(
 			'status'      => 429,
 			'error_code'  => 'QUOTA_EXHAUSTED',
 			'retry_after' => 120,
 		)
 	);
+}
+
+/**
+ * True only when every logged attempt failed due to quota / rate limits.
+ *
+ * @param list<array{model: string, error_code: string, message?: string}> $attempt_log
+ */
+function multch_ai_client_attempts_all_quota_only( array $attempt_log ): bool {
+	if ( empty( $attempt_log ) ) {
+		return false;
+	}
+
+	foreach ( $attempt_log as $row ) {
+		if ( empty( $row['message'] ) || ! multch_ai_client_message_indicates_quota( (string) $row['message'] ) ) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 /**

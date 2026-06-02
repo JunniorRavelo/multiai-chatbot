@@ -2279,3 +2279,15 @@ msgstr "Los ajustes del modelo están sobrescritos por constantes en wp-config.p
 #: includes/admin-settings.php:328
 msgid "Primary model from your connected AI providers."
 msgstr "Modelo principal de sus proveedores de IA conectados."
+
+#: includes/ai-client.php
+msgid "The primary model %1$s could not be used and the Gemini fallback %2$s hit API quota. Check Settings → Connectors, wait for Gemini quota to reset, or set a non-Gemini fallback."
+msgstr "No se pudo usar el modelo principal %1$s y el respaldo Gemini %2$s alcanzó la cuota de la API. Revise Ajustes → Conectores, espere a que se restablezca la cuota de Gemini o elija un respaldo que no sea Gemini."
+
+#: includes/ai-client.php
+msgid "The primary model %s could not be used. Check Settings → Connectors and that the model ID is available for your API key."
+msgstr "No se pudo usar el modelo principal %s. Revise Ajustes → Conectores y que el ID del modelo esté disponible para su clave API."
+
+#: includes/ai-client.php
+msgid "Google API quota was reached for the Gemini models in your chain. Wait a few minutes or choose other models in MultiAI ChatBot → AI Model."
+msgstr "Se alcanzó la cuota de la API de Google en los modelos Gemini de su cadena. Espere unos minutos o elija otros modelos en MultiAI ChatBot → Modelo IA."

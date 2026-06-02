@@ -242,6 +242,13 @@
     if (
       /quota|too many requests|\b429\b|exceeded your current/i.test(message)
     ) {
+      if (
+        /could not be used|Gemini fallback|primary model|Settings → Connectors/i.test(
+          message
+        )
+      ) {
+        return message;
+      }
       return (
         (i18n && i18n.quotaExhausted) ||
         "Google API quota was reached. Wait a few minutes or change models in the plugin settings."
