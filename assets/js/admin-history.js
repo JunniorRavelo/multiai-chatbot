@@ -178,7 +178,7 @@
       document.execCommand("copy");
       flashSuccess();
     } catch (err) {
-      window.prompt(t("copyFailed", "No se pudo copiar."), text);
+      window.prompt(t("copyFailed", "Could not copy."), text);
     }
     document.body.removeChild(area);
   }
