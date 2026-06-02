@@ -47,11 +47,11 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		$last_result   = null;
 
 		foreach ( $attempts as $index => $model_id ) {
-			$is_last   = ( $index === count( $attempts ) - 1 );
-			$builder   = $this->create_builder( $system, $split );
-			$prefs     = '' !== $model_id ? array( $model_id ) : array();
-			$fallback  = '' !== $model_id ? $model_id : 'wordpress-ai';
-			$result    = multch_ai_client_generate_from_builder( $builder, $prefs, $fallback );
+			$is_last  = ( $index === count( $attempts ) - 1 );
+			$builder  = $this->create_builder( $system, $split );
+			$prefs    = '' !== $model_id ? array( $model_id ) : array();
+			$fallback = '' !== $model_id ? $model_id : 'wordpress-ai';
+			$result   = multch_ai_client_generate_from_builder( $builder, $prefs, $fallback );
 
 			if ( is_wp_error( $result ) ) {
 				$last_error = $result;
@@ -62,11 +62,59 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 			}
 
 			$last_result = $result;
-			if ( '' !== $result['text'] ) {
-				$result['model_primary']  = $model_primary;
-				$result['used_fallback']  = $index > 0 && '' !== $model_primary;
-				return $result;
+			if ( '' === $result['text'] ) {
+				continue;
 			}
+
+			$actual_model    = (string) ( $result['model'] ?? '' );
+			$requested_model = (string) ( $result['model_requested'] ?? $model_id );
+			$substituted     = ! empty( $result['model_substituted'] );
+
+			if ( '' !== $actual_model && ! multch_ai_client_is_allowed_response_model( $actual_model, $requested_model, $chain ) ) {
+				$last_error = new WP_Error(
+					'model_substituted',
+					sprintf(
+						/* translators: 1: model ID used by the provider, 2: model ID that was requested */
+						__( 'The provider switched to %1$s instead of %2$s. That model is not in your primary/fallback list. Update AI Model settings.', 'multiai-chatbot' ),
+						$actual_model,
+						$requested_model
+					),
+					array( 'status' => 503, 'error_code' => 'MODEL_NOT_ALLOWED' )
+				);
+				if ( $is_last || ! multch_ai_client_should_try_next_model( $last_error ) ) {
+					return $last_error;
+				}
+				continue;
+			}
+
+			if ( $substituted ) {
+				$actual_index = multch_ai_client_chain_index_of( $actual_model, $chain );
+				if ( $actual_index > $index ) {
+					$result['model_primary'] = '' !== $model_primary ? $model_primary : $requested_model;
+					$result['used_fallback'] = true;
+					return $result;
+				}
+
+				if ( ! $is_last ) {
+					$last_error = new WP_Error(
+						'model_substituted',
+						sprintf(
+							/* translators: 1: model ID used by the provider, 2: model ID that was requested */
+							__( 'Model %2$s is unavailable; trying the next configured model.', 'multiai-chatbot' ),
+							$actual_model,
+							$requested_model
+						),
+						array( 'status' => 503, 'error_code' => 'MODEL_SUBSTITUTED' )
+					);
+					continue;
+				}
+			}
+
+			$result['model_primary'] = '' !== $model_primary ? $model_primary : $requested_model;
+			$result['used_fallback'] = ( $index > 0 && '' !== $model_primary )
+				|| ( $substituted && '' !== $model_primary && ! multch_ai_client_models_match( $model_primary, $actual_model ) );
+
+			return $result;
 		}
 
 		if ( is_array( $last_result ) ) {

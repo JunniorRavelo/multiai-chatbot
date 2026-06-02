@@ -448,7 +448,11 @@ function multch_ai_client_should_try_next_model( WP_Error $error ): bool {
 
 	$data   = $error->get_error_data();
 	$status = is_array( $data ) && isset( $data['status'] ) ? (int) $data['status'] : 0;
-	if ( in_array( $status, array( 404, 429 ), true ) ) {
+	if ( in_array( $status, array( 403, 404, 429 ), true ) ) {
+		return true;
+	}
+
+	if ( 'model_substituted' === $code ) {
 		return true;
 	}
 
@@ -457,7 +461,109 @@ function multch_ai_client_should_try_next_model( WP_Error $error ): bool {
 	return str_contains( $message, 'not found' )
 		|| str_contains( $message, 'unavailable' )
 		|| str_contains( $message, 'does not exist' )
-		|| str_contains( $message, 'invalid model' );
+		|| str_contains( $message, 'invalid model' )
+		|| str_contains( $message, 'permission' )
+		|| str_contains( $message, 'forbidden' )
+		|| str_contains( $message, 'not enabled' )
+		|| str_contains( $message, 'access denied' )
+		|| str_contains( $message, 'quota' )
+		|| str_contains( $message, 'billing' );
+}
+
+/**
+ * Normalizes a model ID for comparison.
+ */
+function multch_ai_client_normalize_model_id( string $model ): string {
+	return strtolower( trim( $model ) );
+}
+
+/**
+ * Whether two model IDs refer to the same model (exact or prefix match).
+ */
+function multch_ai_client_models_match( string $a, string $b ): bool {
+	$a = multch_ai_client_normalize_model_id( $a );
+	$b = multch_ai_client_normalize_model_id( $b );
+
+	if ( '' === $a || '' === $b ) {
+		return false;
+	}
+
+	if ( $a === $b ) {
+		return true;
+	}
+
+	return str_starts_with( $a, $b . '-' ) || str_starts_with( $b, $a . '-' );
+}
+
+/**
+ * @param list<string> $chain Configured primary + fallback model IDs.
+ */
+function multch_ai_client_is_model_in_chain( string $model, array $chain ): bool {
+	$model = multch_ai_client_normalize_model_id( $model );
+	if ( '' === $model ) {
+		return false;
+	}
+
+	if ( empty( $chain ) ) {
+		return true;
+	}
+
+	foreach ( $chain as $candidate ) {
+		if ( multch_ai_client_models_match( $model, (string) $candidate ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Rejects specialty models (image, TTS, etc.) unless explicitly listed in the chain.
+ *
+ * @param list<string> $chain
+ */
+function multch_ai_client_is_allowed_response_model( string $model, string $requested, array $chain ): bool {
+	if ( ! multch_ai_client_is_model_in_chain( $model, $chain ) ) {
+		return false;
+	}
+
+	$specialty_markers = array( '-image', '-tts', '-audio', '-vision', '-video' );
+	$model_lower       = multch_ai_client_normalize_model_id( $model );
+
+	foreach ( $specialty_markers as $marker ) {
+		if ( ! str_contains( $model_lower, $marker ) ) {
+			continue;
+		}
+
+		if ( multch_ai_client_models_match( $model, $requested ) ) {
+			return true;
+		}
+
+		foreach ( $chain as $candidate ) {
+			if ( str_contains( multch_ai_client_normalize_model_id( (string) $candidate ), $marker ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Index of a model in the configured chain, or -1 when not listed.
+ *
+ * @param list<string> $chain
+ */
+function multch_ai_client_chain_index_of( string $model, array $chain ): int {
+	foreach ( $chain as $index => $candidate ) {
+		if ( multch_ai_client_models_match( $model, (string) $candidate ) ) {
+			return (int) $index;
+		}
+	}
+
+	return -1;
 }
 
 /**
@@ -617,7 +723,7 @@ function multch_ai_client_model_meta_from_result( array $result ): array {
  * @param object               $builder     WP_AI_Client_Prompt_Builder instance.
  * @param list<string>         $preferences One model ID per attempt (pass a single ID, not the full fallback chain).
  * @param string               $fallback_model
- * @return array{text: string, model: string}|WP_Error
+ * @return array{text: string, model: string, model_requested?: string, model_substituted?: bool}|WP_Error
  */
 function multch_ai_client_generate_from_builder( $builder, array $preferences, string $fallback_model ) {
 	if ( ! empty( $preferences ) && method_exists( $builder, 'using_model_preference' ) ) {
@@ -638,15 +744,20 @@ function multch_ai_client_generate_from_builder( $builder, array $preferences, s
 		return multch_ai_client_map_error( $result );
 	}
 
-	$text = multch_ai_client_extract_text( $result );
-	// When a model ID was requested, trust it over connector metadata (often reports a default model).
-	$model = ! empty( $preferences )
-		? trim( (string) $preferences[0] )
-		: multch_ai_client_extract_model( $result, $fallback_model );
+	$text      = multch_ai_client_extract_text( $result );
+	$requested = ! empty( $preferences ) ? trim( (string) $preferences[0] ) : '';
+	$actual    = multch_ai_client_extract_model( $result, '' );
+	if ( '' === $actual ) {
+		$actual = '' !== $requested ? $requested : $fallback_model;
+	}
+
+	$substituted = '' !== $requested && '' !== $actual && ! multch_ai_client_models_match( $requested, $actual );
 
 	return array(
-		'text'  => $text,
-		'model' => $model,
+		'text'              => $text,
+		'model'             => $actual,
+		'model_requested'   => $requested,
+		'model_substituted' => $substituted,
 	);
 }
 
