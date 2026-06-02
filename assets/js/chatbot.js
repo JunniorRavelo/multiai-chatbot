@@ -213,8 +213,9 @@
   function mapErrorMessage(code) {
     const map = {
       RATE_LIMIT_GENERAL: "Too many requests. Please wait a moment.",
-      RATE_LIMIT_MODEL_MINUTE: "The model per-minute limit was reached. Try again shortly.",
-      RATE_LIMIT_MODEL_DAILY: "The model daily limit was reached. Try again later.",
+      RATE_LIMIT_MODEL_MINUTE: "This site’s chat limit for AI messages was reached. Wait a moment before sending another.",
+      RATE_LIMIT_MODEL_DAILY: "This site’s daily chat limit for AI messages was reached. Try again later.",
+      RATE_LIMIT_PROVIDER: "The AI provider rate limit was reached. Try again shortly.",
       MODEL_ALL_EXHAUSTED: "All models are temporarily saturated.",
       MODEL_TEMP_UNAVAILABLE: "The model did not return a valid response. Check Connectors and the model in AI Model settings.",
       PROVIDER_TIMEOUT: "The provider took too long to respond.",

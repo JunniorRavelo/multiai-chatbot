@@ -76,7 +76,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		}
 
 		if ( is_array( $last_result ) && '' !== trim( (string) ( $last_result['text'] ?? '' ) ) ) {
-			return multch_ai_client_finalize_provider_result( $last_result, $model_primary, 0 );
+			return multch_ai_client_finalize_provider_result( $last_result, $model_primary, 0, $chain );
 		}
 
 		if ( $last_error instanceof WP_Error ) {
@@ -128,7 +128,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		if ( $substituted ) {
 			$actual_index = multch_ai_client_chain_index_of( $actual_model, $chain );
 			if ( $actual_index > $index && multch_ai_client_is_allowed_response_model( $actual_model, (string) $chain[ $actual_index ], $chain ) ) {
-				return multch_ai_client_finalize_provider_result( $result, $model_primary, $actual_index );
+				return multch_ai_client_finalize_provider_result( $result, $model_primary, $actual_index, $chain );
 			}
 		}
 
@@ -149,13 +149,13 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 				);
 			}
 
-			return multch_ai_client_finalize_provider_result( $result, $model_primary, $index );
+			return multch_ai_client_finalize_provider_result( $result, $model_primary, $index, $chain );
 		}
 
 		if ( $allow_google_any && $is_last && multch_ai_client_is_provider_text_substitute( $actual_model ) ) {
 			$result['fallback_configured'] = $model_id;
 			$result['provider_rerouted']   = true;
-			return multch_ai_client_finalize_provider_result( $result, $model_primary, max( 1, $index ) );
+			return multch_ai_client_finalize_provider_result( $result, $model_primary, max( 1, $index ), $chain );
 		}
 
 		return new WP_Error(
@@ -209,7 +209,7 @@ class Multch_Provider_WordPress_AI implements Multch_AI_Provider {
 		}
 		$result['google_auto_reroute'] = true;
 
-		return multch_ai_client_finalize_provider_result( $result, $model_primary, max( 1, count( $chain ) - 1 ) );
+		return multch_ai_client_finalize_provider_result( $result, $model_primary, max( 1, count( $chain ) - 1 ), $chain );
 	}
 
 	/**

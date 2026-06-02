@@ -601,12 +601,64 @@ function multch_ai_client_is_provider_text_substitute( string $model ): bool {
 
 /**
  * @param array{text: string, model: string, model_primary?: string, used_fallback?: bool, fallback_configured?: string, provider_rerouted?: bool} $result
+ * @param list<string>                                                                                              $chain
  */
-function multch_ai_client_finalize_provider_result( array $result, string $model_primary, int $index ): array {
+function multch_ai_client_finalize_provider_result( array $result, string $model_primary, int $index, array $chain = array() ): array {
 	$result['model_primary'] = $model_primary;
 	$result['used_fallback'] = $index > 0 && '' !== $model_primary;
 
+	if ( $index > 0 && isset( $chain[ $index ] ) ) {
+		$result['fallback_configured'] = (string) $chain[ $index ];
+	}
+
 	return $result;
+}
+
+/**
+ * Whether a provider error is a real quota / rate-limit (not every HTTP 429).
+ */
+function multch_ai_client_is_provider_rate_limit_error( WP_Error $error ): bool {
+	$data    = $error->get_error_data();
+	$status  = is_array( $data ) && isset( $data['status'] ) ? (int) $data['status'] : 0;
+	$code    = strtolower( $error->get_error_code() );
+	$message = strtolower( $error->get_error_message() );
+
+	if ( 429 !== $status ) {
+		return false;
+	}
+
+	$code_needles = array(
+		'rate_limit',
+		'rate_limit_exceeded',
+		'too_many_requests',
+		'resource_exhausted',
+		'quota_exceeded',
+	);
+
+	foreach ( $code_needles as $needle ) {
+		if ( str_contains( $code, $needle ) ) {
+			return true;
+		}
+	}
+
+	$message_needles = array(
+		'rate limit',
+		'rate-limit',
+		'too many requests',
+		'resource exhausted',
+		'quota exceeded',
+		'exceeded your current quota',
+		'requests per minute',
+		'requests per day',
+	);
+
+	foreach ( $message_needles as $needle ) {
+		if ( str_contains( $message, $needle ) ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -853,13 +905,15 @@ function multch_ai_client_map_error( WP_Error $error ): WP_Error {
 		$status = (int) $data['status'];
 	}
 
-	if ( str_contains( strtolower( $code ), 'rate' ) || 429 === $status ) {
+	if ( multch_ai_client_is_provider_rate_limit_error( $error ) ) {
 		return new WP_Error(
 			'rate_limit_model',
-			__( 'Provider rate limit reached. Please try again shortly.', 'multiai-chatbot' ),
+			'' !== $message
+				? $message
+				: __( 'The AI provider rate limit was reached for this model. Please try again shortly.', 'multiai-chatbot' ),
 			array(
 				'status'      => 429,
-				'error_code'  => 'RATE_LIMIT_MODEL_MINUTE',
+				'error_code'  => 'RATE_LIMIT_PROVIDER',
 				'retry_after' => 60,
 			)
 		);

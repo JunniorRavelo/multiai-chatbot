@@ -91,7 +91,7 @@ class Multch_Api_Handler {
 			}
 		}
 
-		$model_limit = self::enforce_model_rate_limit( $settings );
+		$model_limit = self::enforce_model_rate_limit( $settings, $session_hash );
 		if ( $model_limit instanceof WP_REST_Response ) {
 			self::record_event( $session_hash, $settings, '', 'rate_limited', (int) ( ( microtime( true ) - $started ) * 1000 ), 'RATE_LIMIT_MODEL' );
 			return $model_limit;
@@ -698,7 +698,7 @@ class Multch_Api_Handler {
 		);
 
 		foreach ( $checks as $check ) {
-			$result = self::check_and_increment_limit( $check, $settings );
+			$result = self::check_and_increment_limit( $check, $settings, false );
 			if ( $result instanceof WP_REST_Response ) {
 				self::record_rate_violation( $ip_hash, $settings );
 				return $result;
@@ -712,24 +712,31 @@ class Multch_Api_Handler {
 	 * @param array<string, mixed> $settings
 	 * @return true|WP_REST_Response
 	 */
-	private static function enforce_model_rate_limit( array $settings ) {
+	/**
+	 * Per-visitor session limits for AI calls (one user message = one increment, regardless of fallback retries).
+	 *
+	 * @param array<string, mixed> $settings
+	 */
+	private static function enforce_model_rate_limit( array $settings, string $session_hash ) {
+		$scope = '' !== $session_hash ? $session_hash : 'global';
+
 		$checks = array(
 			array(
-				'key'    => 'multch_rl_model_min',
+				'key'    => 'multch_rl_model_min_' . $scope,
 				'limit'  => max( 1, (int) ( $settings['rate_limit_model_per_minute'] ?? 6 ) ),
 				'window' => MINUTE_IN_SECONDS,
-				'code'   => 'RATE_LIMIT_MODEL',
+				'code'   => 'RATE_LIMIT_MODEL_MINUTE',
 			),
 			array(
-				'key'    => 'multch_rl_model_day',
+				'key'    => 'multch_rl_model_day_' . $scope,
 				'limit'  => max( 1, (int) ( $settings['rate_limit_model_per_day'] ?? 24 ) ),
 				'window' => DAY_IN_SECONDS,
-				'code'   => 'RATE_LIMIT_MODEL',
+				'code'   => 'RATE_LIMIT_MODEL_DAILY',
 			),
 		);
 
 		foreach ( $checks as $check ) {
-			$result = self::check_and_increment_limit( $check, $settings );
+			$result = self::check_and_increment_limit( $check, $settings, true );
 			if ( $result instanceof WP_REST_Response ) {
 				return $result;
 			}
@@ -743,7 +750,7 @@ class Multch_Api_Handler {
 	 * @param array<string, mixed>                                       $settings
 	 * @return true|WP_REST_Response
 	 */
-	private static function check_and_increment_limit( array $check, array $settings ) {
+	private static function check_and_increment_limit( array $check, array $settings, bool $is_model_limit = false ) {
 		$key    = $check['key'];
 		$limit  = $check['limit'];
 		$window = $check['window'];
@@ -752,9 +759,13 @@ class Multch_Api_Handler {
 		self::maybe_log_soft_limit( $key, $count, $limit, (float) ( $settings['rate_limit_soft_threshold'] ?? 0.8 ) );
 
 		if ( $count >= $limit ) {
+			$error_message = $is_model_limit
+				? __( 'This site’s chat limit for AI messages was reached. Wait a moment before sending another message, or ask the administrator to adjust limits under MultiAI ChatBot → Security.', 'multiai-chatbot' )
+				: __( 'Too many requests. Please wait a moment.', 'multiai-chatbot' );
+
 			return new WP_REST_Response(
 				array(
-					'error'      => __( 'Too many requests. Please wait a moment.', 'multiai-chatbot' ),
+					'error'      => $error_message,
 					'errorCode'  => $check['code'],
 					'retryAfter' => $window,
 				),
