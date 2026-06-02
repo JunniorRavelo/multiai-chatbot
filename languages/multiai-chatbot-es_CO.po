@@ -2103,13 +2103,13 @@ msgstr "Controle quién puede acceder a la API del chat, cómo se cachean las re
 msgid "Review rate-limited traffic in Statistics"
 msgstr "Revise el tráfico limitado por tasa en Estadísticas"
 
-#: includes/admin-settings.php:2170
-msgid "wp-config.php overrides"
-msgstr "Sobrescrituras en wp-config.php"
+#: includes/admin-settings.php
+msgid "Some settings are read-only"
+msgstr "Algunos ajustes son de solo lectura"
 
-#: includes/admin-settings.php:2172
-msgid "Some security values are locked by constants in wp-config.php. The fields below may not reflect what the chat uses until those constants are updated or removed."
-msgstr "Algunos valores de seguridad están bloqueados por constantes en wp-config.php. Los campos siguientes pueden no reflejar lo que usa el chat hasta que se actualicen o eliminen esas constantes."
+#: includes/admin-settings.php
+msgid "Your host or server configuration defines some values on this screen. They cannot be changed here; contact your site administrator if you need to update them."
+msgstr "Su alojamiento o la configuración del servidor define algunos valores de esta pantalla. No se pueden cambiar aquí; contacte con el administrador del sitio si necesita modificarlos."
 
 #: includes/admin-settings.php:2180
 msgid "Cache TTL"
@@ -2141,12 +2141,12 @@ msgstr "Presets de caché"
 
 #. translators: %s: site home URL
 #: includes/admin-settings.php:2226
-msgid "Comma-separated URLs. Leave empty to allow this site only (%s). Equivalent to MULTCH_ALLOWED_ORIGINS."
-msgstr "URLs separadas por comas. Déjelo vacío para permitir solo este sitio (%s). Equivalente a MULTCH_ALLOWED_ORIGINS."
+msgid "Comma-separated URLs. Leave empty to allow only this site (%s)."
+msgstr "URLs separadas por comas. Déjelo vacío para permitir solo este sitio (%s)."
 
-#: includes/admin-settings.php:2278
-msgid "0 disables the cache. Equivalent to MULTCH_CACHE_TTL_SECONDS."
-msgstr "0 desactiva la caché. Equivalente a MULTCH_CACHE_TTL_SECONDS."
+#: includes/admin-settings.php
+msgid "Enter 0 to disable response caching."
+msgstr "Introduzca 0 para desactivar la caché de respuestas."
 
 #: includes/admin-settings.php:2281
 msgid "Telemetry file log"
@@ -2162,8 +2162,32 @@ msgid "File location: %s"
 msgstr "Ubicación del archivo: %s"
 
 #: includes/admin-settings.php:2304
-msgid "Requires statistics and history under General. Can be forced via MULTCH_TELEMETRY_FILE_LOG in wp-config.php."
-msgstr "Requiere estadísticas e historial en General. Puede forzarse con MULTCH_TELEMETRY_FILE_LOG en wp-config.php."
+msgid "Also save a copy of events to a log file"
+msgstr "Guardar también una copia de los eventos en un archivo de registro"
+
+msgid "Log file: %s"
+msgstr "Archivo de registro: %s"
+
+msgid "Optional. Database statistics use the same preference as “Store statistics and history” in General. Enable this only if you need a JSONL file for external tools."
+msgstr "Opcional. Las estadísticas en base de datos siguen la misma preferencia que «Guardar estadísticas e historial» en General. Actívelo solo si necesita un archivo JSONL para herramientas externas."
+
+msgid "Turn on <a href=\"%s\">Store statistics and history</a> in General before enabling a file log."
+msgstr "Active <a href=\"%s\">Guardar estadísticas e historial</a> en General antes de habilitar un registro en archivo."
+
+msgid "Maximum chat requests per visitor IP each minute."
+msgstr "Máximo de solicitudes de chat por IP de visitante cada minuto."
+
+msgid "Maximum chat requests per visitor IP per day."
+msgstr "Máximo de solicitudes de chat por IP de visitante al día."
+
+msgid "Maximum AI calls shared across all visitors each minute."
+msgstr "Máximo de llamadas a la IA compartidas entre todos los visitantes cada minuto."
+
+msgid "Maximum AI calls shared across all visitors per day."
+msgstr "Máximo de llamadas a la IA compartidas entre todos los visitantes al día."
+
+msgid "How many limit violations before the visitor IP is temporarily blocked."
+msgstr "Cuántas infracciones del límite antes de bloquear temporalmente la IP del visitante."
 
 #: includes/admin-settings.php:2323
 msgid "0 = keep indefinitely. Older conversations are purged daily."
@@ -2210,26 +2234,6 @@ msgstr "Llamadas / día"
 msgid "Fraction of the limit (0.1–1) at which a warning is logged."
 msgstr "Fracción del límite (0,1–1) a partir de la cual se registra una advertencia."
 
-#: includes/admin-settings.php:2378
-msgid "MULTCH_RATE_LIMIT_PER_MINUTE"
-msgstr "MULTCH_RATE_LIMIT_PER_MINUTE"
-
-#: includes/admin-settings.php:2391
-msgid "MULTCH_RATE_LIMIT_PER_DAY"
-msgstr "MULTCH_RATE_LIMIT_PER_DAY"
-
-#: includes/admin-settings.php:2410
-msgid "MULTCH_RATE_LIMIT_MODEL_PER_MINUTE"
-msgstr "MULTCH_RATE_LIMIT_MODEL_PER_MINUTE"
-
-#: includes/admin-settings.php:2423
-msgid "MULTCH_RATE_LIMIT_MODEL_PER_DAY"
-msgstr "MULTCH_RATE_LIMIT_MODEL_PER_DAY"
-
-#: includes/admin-settings.php:2456
-msgid "MULTCH_IP_SUSPEND_AFTER_VIOLATIONS"
-msgstr "MULTCH_IP_SUSPEND_AFTER_VIOLATIONS"
-
 #. translators: 1: hours, 2: minutes
 #: includes/admin-settings.php:1941
 msgid "%1$d h %2$d min"
@@ -2273,8 +2277,6 @@ msgid "Order: (1) primary model, (2) fallback model, (3) whatever text model Goo
 msgstr "Orden: (1) modelo principal, (2) modelo de respaldo, (3) el modelo de texto que devuelva Google. El modelo mostrado en el chat y las estadísticas reflejará el modelo realmente usado."
 
 #: includes/admin-settings.php:2685
-msgid "Model settings are overridden by constants in wp-config.php (MULTCH_MODEL, MULTCH_MODEL_CANDIDATES, or MULTCH_GEMINI_*). Values shown here may not match what the chat uses until those constants are updated or removed."
-msgstr "Los ajustes del modelo están sobrescritos por constantes en wp-config.php (MULTCH_MODEL, MULTCH_MODEL_CANDIDATES o MULTCH_GEMINI_*). Los valores mostrados aquí pueden no coincidir con los que usa el chat hasta que se actualicen o eliminen esas constantes."
 
 #: includes/admin-settings.php:328
 msgid "Primary model from your connected AI providers."
