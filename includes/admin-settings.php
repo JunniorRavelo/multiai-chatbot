@@ -21,6 +21,7 @@ class Multch_Admin_Settings {
 		add_action( 'admin_post_multch_purge_history', array( __CLASS__, 'purge_history' ) );
 		add_action( 'admin_post_multch_purge_telemetry', array( __CLASS__, 'purge_telemetry' ) );
 		add_action( 'wp_ajax_multch_history_detail', array( __CLASS__, 'ajax_history_detail' ) );
+		add_action( 'wp_ajax_multch_history_export_json', array( __CLASS__, 'ajax_history_export_json' ) );
 		add_action( 'wp_ajax_multch_delete_conversation', array( __CLASS__, 'ajax_delete_conversation' ) );
 		add_filter( 'wp_redirect', array( __CLASS__, 'preserve_tab_on_settings_redirect' ), 10, 2 );
 	}
@@ -1168,6 +1169,9 @@ class Multch_Admin_Settings {
 						'error'        => __( 'Could not load the conversation.', 'multiai-chatbot' ),
 						'retry'        => __( 'Retry', 'multiai-chatbot' ),
 						'copied'       => __( 'Copied', 'multiai-chatbot' ),
+						'copyJson'     => __( 'Copy JSON', 'multiai-chatbot' ),
+						'copyJsonLoading' => __( 'Preparing JSON…', 'multiai-chatbot' ),
+						'copyJsonFailed' => __( 'Could not load conversation JSON.', 'multiai-chatbot' ),
 						'copyFailed'   => __( 'Could not copy.', 'multiai-chatbot' ),
 						'deleteConfirm' => __( 'Delete this conversation and all its messages?', 'multiai-chatbot' ),
 						'deleteFailed' => __( 'Could not delete the conversation.', 'multiai-chatbot' ),
@@ -4213,6 +4217,93 @@ class Multch_Admin_Settings {
 		wp_send_json_success( array( 'html' => $html ) );
 	}
 
+	public static function ajax_history_export_json(): void {
+		check_ajax_referer( 'multch_history_detail', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'multiai-chatbot' ) ), 403 );
+		}
+
+		if ( ! Multch_Plugin::is_stats_history_enabled() ) {
+			wp_send_json_error( array( 'message' => __( 'Statistics and history are disabled.', 'multiai-chatbot' ) ), 403 );
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified via check_ajax_referer above.
+		$conversation_id = isset( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+		if ( $conversation_id <= 0 ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid conversation.', 'multiai-chatbot' ) ), 400 );
+		}
+
+		$conv = Multch_Chat_History::get_conversation( $conversation_id );
+		if ( ! $conv ) {
+			wp_send_json_error( array( 'message' => __( 'Conversation not found.', 'multiai-chatbot' ) ), 404 );
+		}
+
+		$messages = Multch_Chat_History::get_messages( $conversation_id );
+		$export   = self::build_history_export_payload( $conv, $messages );
+
+		wp_send_json_success( array( 'export' => $export ) );
+	}
+
+	/**
+	 * Full conversation snapshot for clipboard export (no UI truncation).
+	 *
+	 * @param array<string, mixed>           $conv
+	 * @param array<int, array<string, mixed>> $messages
+	 * @return array<string, mixed>
+	 */
+	private static function build_history_export_payload( array $conv, array $messages ): array {
+		$conv_id = (int) ( $conv['id'] ?? 0 );
+
+		$conversation = array();
+		foreach ( $conv as $key => $value ) {
+			if ( 'message_count' === $key ) {
+				$conversation[ $key ] = (int) $value;
+				continue;
+			}
+			if ( 'id' === $key ) {
+				$conversation[ $key ] = (int) $value;
+				continue;
+			}
+			$conversation[ (string) $key ] = is_scalar( $value ) || null === $value ? $value : (string) $value;
+		}
+
+		$export_messages = array();
+		foreach ( $messages as $msg ) {
+			$row = array(
+				'id'              => (int) ( $msg['id'] ?? 0 ),
+				'conversation_id' => (int) ( $msg['conversation_id'] ?? 0 ),
+				'role'            => (string) ( $msg['role'] ?? '' ),
+				'content'         => (string) ( $msg['content'] ?? '' ),
+				'status'          => (string) ( $msg['status'] ?? '' ),
+				'latency_ms'      => (int) ( $msg['latency_ms'] ?? 0 ),
+				'created_at'      => (string) ( $msg['created_at'] ?? '' ),
+			);
+
+			$meta = array();
+			if ( ! empty( $msg['meta_json'] ) ) {
+				$decoded = json_decode( (string) $msg['meta_json'], true );
+				if ( is_array( $decoded ) ) {
+					$meta = $decoded;
+				}
+			}
+			if ( ! empty( $meta ) ) {
+				$row['meta'] = $meta;
+			}
+
+			$export_messages[] = $row;
+		}
+
+		$telemetry = Multch_Telemetry::get_events_by_conversation( $conv_id, 500 );
+
+		return array(
+			'exported_at'  => gmdate( 'c' ),
+			'conversation' => $conversation,
+			'messages'     => $export_messages,
+			'telemetry'    => $telemetry,
+		);
+	}
+
 	/**
  * @param array<string, mixed> $item
  */
@@ -4383,6 +4474,9 @@ private static function render_history_card_body( array $conv, array $messages )
 			<?php endif; ?>
 			<button type="button" class="button button-small multch-admin-history-copy" data-copy="<?php echo esc_attr( $link_url ); ?>">
 				<?php esc_html_e( 'Copy link', 'multiai-chatbot' ); ?>
+			</button>
+			<button type="button" class="button button-small multch-admin-history-copy-json" data-id="<?php echo esc_attr( (string) $conv_id ); ?>">
+				<?php esc_html_e( 'Copy JSON', 'multiai-chatbot' ); ?>
 			</button>
 			<button type="button" class="button button-small button-link-delete multch-admin-history-delete" data-id="<?php echo esc_attr( (string) $conv_id ); ?>">
 				<?php esc_html_e( 'Delete', 'multiai-chatbot' ); ?>

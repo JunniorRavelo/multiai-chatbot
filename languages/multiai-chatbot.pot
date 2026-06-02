@@ -1311,6 +1311,18 @@ msgstr ""
 msgid "Copy link"
 msgstr ""
 
+#: includes/admin-settings.php
+msgid "Copy JSON"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Preparing JSON…"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Could not load conversation JSON."
+msgstr ""
+
 #: includes/admin-settings.php:2611
 msgid "Delete"
 msgstr ""

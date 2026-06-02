@@ -1492,6 +1492,18 @@ msgstr "Copiar ID público"
 msgid "Copy link"
 msgstr "Copiar enlace"
 
+#: includes/admin-settings.php
+msgid "Copy JSON"
+msgstr "Copiar JSON"
+
+#: includes/admin-settings.php
+msgid "Preparing JSON…"
+msgstr "Preparando JSON…"
+
+#: includes/admin-settings.php
+msgid "Could not load conversation JSON."
+msgstr "No se pudo cargar el JSON de la conversación."
+
 #: includes/admin-settings.php:2611
 msgid "Delete"
 msgstr "Eliminar"

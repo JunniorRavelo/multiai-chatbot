@@ -143,7 +143,7 @@
     loadDetail(card, opts);
   }
 
-  function copyText(text, button) {
+  function copyText(text, button, restoreLabel) {
     if (!text) {
       return;
     }
@@ -152,7 +152,8 @@
       if (!button) {
         return;
       }
-      const original = button.textContent;
+      const original =
+        typeof restoreLabel === "string" ? restoreLabel : button.textContent;
       button.textContent = t("copied", "Copied");
       window.setTimeout(function () {
         button.textContent = original;
@@ -180,6 +181,49 @@
       window.prompt(t("copyFailed", "No se pudo copiar."), text);
     }
     document.body.removeChild(area);
+  }
+
+  function copyConversationJson(button) {
+    const conversationId = button.getAttribute("data-id");
+    if (!conversationId) {
+      return;
+    }
+
+    const original = button.textContent;
+    button.disabled = true;
+    button.textContent = t("copyJsonLoading", "Preparing JSON…");
+
+    const requestUrl = new URL(cfg.ajaxUrl || "/wp-admin/admin-ajax.php", window.location.origin);
+    requestUrl.searchParams.set("action", "multch_history_export_json");
+    requestUrl.searchParams.set("nonce", cfg.nonce || "");
+    requestUrl.searchParams.set("id", conversationId);
+
+    fetch(requestUrl.toString(), {
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (payload) {
+        if (!payload || !payload.success || !payload.data || !payload.data.export) {
+          throw new Error("invalid_response");
+        }
+
+        const text = JSON.stringify(payload.data.export, null, 2);
+        copyText(text, button, original);
+      })
+      .catch(function () {
+        window.alert(t("copyJsonFailed", "Could not load conversation JSON."));
+      })
+      .finally(function () {
+        button.disabled = false;
+        if (button.textContent === t("copyJsonLoading", "Preparing JSON…")) {
+          button.textContent = original;
+        }
+      });
   }
 
   function deleteConversation(card, conversationId) {
@@ -221,6 +265,14 @@
       event.preventDefault();
       event.stopPropagation();
       copyText(copyBtn.getAttribute("data-copy") || "", copyBtn);
+      return;
+    }
+
+    const copyJsonBtn = event.target.closest(".multch-admin-history-copy-json");
+    if (copyJsonBtn && list.contains(copyJsonBtn)) {
+      event.preventDefault();
+      event.stopPropagation();
+      copyConversationJson(copyJsonBtn);
       return;
     }
 
