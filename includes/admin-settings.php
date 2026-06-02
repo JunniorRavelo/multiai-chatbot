@@ -131,24 +131,6 @@ class Multch_Admin_Settings {
 				break;
 		}
 
-		$has_errors = ! empty(
-			array_filter(
-				get_settings_errors( 'multch_plugin_group' ),
-				static function ( $error ) {
-					return 'error' === ( $error['type'] ?? '' );
-				}
-			)
-		);
-
-		if ( ! $has_errors ) {
-			add_settings_error(
-				'multch_plugin_group',
-				'multch_settings_saved',
-				__( 'Changes saved successfully.', 'multiai-chatbot' ),
-				'success'
-			);
-		}
-
 		Multch_Plugin::clear_settings_cache();
 
 		return wp_parse_args( $out, $defaults );
@@ -1612,18 +1594,17 @@ class Multch_Admin_Settings {
 			);
 		}
 
-		$errors = self::consume_settings_errors( 'multch_plugin_group' );
+		$errors = self::dedupe_settings_errors( self::consume_settings_errors( 'multch_plugin_group' ) );
 
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- settings-updated is set by options.php after verified save.
-		if ( empty( $errors ) && isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- settings-updated is set by options.php after verified save.
+		$save_succeeded = isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'];
+
+		if ( $save_succeeded ) {
 			self::render_admin_notice(
 				__( 'Changes saved successfully.', 'multiai-chatbot' ),
 				'success'
 			);
-			// phpcs:enable WordPress.Security.NonceVerification.Recommended
-			return;
 		}
-		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		foreach ( $errors as $error ) {
 			$type = (string) ( $error['type'] ?? 'info' );
@@ -1633,9 +1614,34 @@ class Multch_Admin_Settings {
 			if ( 'updated' === $type ) {
 				$type = 'success';
 			}
+			if ( $save_succeeded && in_array( $type, array( 'success', 'updated' ), true ) ) {
+				continue;
+			}
 
 			self::render_admin_notice( (string) ( $error['message'] ?? '' ), $type );
 		}
+	}
+
+	/**
+	 * Evita avisos duplicados si el sanitize se ejecuta más de una vez en el mismo guardado.
+	 *
+	 * @param list<array<string, mixed>> $errors
+	 * @return list<array<string, mixed>>
+	 */
+	private static function dedupe_settings_errors( array $errors ): array {
+		$seen   = array();
+		$unique = array();
+
+		foreach ( $errors as $error ) {
+			$key = (string) ( $error['code'] ?? '' ) . '|' . (string) ( $error['type'] ?? '' ) . '|' . (string) ( $error['message'] ?? '' );
+			if ( isset( $seen[ $key ] ) ) {
+				continue;
+			}
+			$seen[ $key ] = true;
+			$unique[]     = $error;
+		}
+
+		return $unique;
 	}
 
 	/**
