@@ -1193,42 +1193,47 @@
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
 }
 
+.maicb-widget .maicb-thinking-dot,
 #multch-plugin-root .maicb-thinking-dot,
 #multch-style-preview .maicb-thinking-dot {
-  width: 0.42rem;
-  height: 0.42rem;
+  display: inline-block;
+  width: 0.52rem;
+  height: 0.52rem;
   border-radius: 50%;
-  background: var(--maicb-muted);
-  animation: maicb-thinking-bounce 1.4s ease-in-out infinite;
+  background: var(--maicb-primary, #2563eb);
+  animation: maicb-thinking-bounce 1.15s ease-in-out infinite;
   will-change: transform, opacity;
 }
 
+.maicb-widget .maicb-thinking-dot:nth-child(1),
 #multch-plugin-root .maicb-thinking-dot:nth-child(1),
 #multch-style-preview .maicb-thinking-dot:nth-child(1) {
   animation-delay: 0s;
 }
 
+.maicb-widget .maicb-thinking-dot:nth-child(2),
 #multch-plugin-root .maicb-thinking-dot:nth-child(2),
 #multch-style-preview .maicb-thinking-dot:nth-child(2) {
-  animation-delay: 0.2s;
+  animation-delay: 0.18s;
 }
 
+.maicb-widget .maicb-thinking-dot:nth-child(3),
 #multch-plugin-root .maicb-thinking-dot:nth-child(3),
 #multch-style-preview .maicb-thinking-dot:nth-child(3) {
-  animation-delay: 0.4s;
+  animation-delay: 0.36s;
 }
 
 @keyframes maicb-thinking-bounce {
   0%,
-  60%,
+  55%,
   100% {
     opacity: 0.35;
-    transform: translateY(0) scale(0.85);
+    transform: translateY(0) scale(0.7);
   }
 
-  30% {
+  28% {
     opacity: 1;
-    transform: translateY(-4px) scale(1);
+    transform: translateY(-6px) scale(1.15);
   }
 }
 
@@ -1626,6 +1631,13 @@
   opacity: 0;
 }
 
+.maicb-widget.maicb-reduce-motion .maicb-thinking-dot,
+#multch-plugin-root .maicb-reduce-motion .maicb-thinking-dot,
+#multch-style-preview .maicb-reduce-motion .maicb-thinking-dot {
+  animation: maicb-thinking-fade 1.6s ease-in-out infinite;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #multch-plugin-root .maicb-launcher-pulse,
   #multch-style-preview .maicb-launcher-pulse {
@@ -1633,9 +1645,11 @@
     opacity: 0;
   }
 
+  .maicb-widget .maicb-thinking-dot,
   #multch-plugin-root .maicb-thinking-dot,
   #multch-style-preview .maicb-thinking-dot {
-    animation: maicb-thinking-fade 1.8s ease-in-out infinite;
+    animation: maicb-thinking-fade 1.6s ease-in-out infinite;
+    transform: none;
   }
 }
 

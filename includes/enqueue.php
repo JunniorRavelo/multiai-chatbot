@@ -77,11 +77,21 @@ class Multch_Enqueue {
 
 		$settings = Multch_Plugin::get_settings();
 
+		$css_path = MULTCH_PLUGIN_PATH . 'assets/css/chatbot.css';
+		$css_ver  = file_exists( $css_path )
+			? (string) filemtime( $css_path )
+			: MULTCH_PLUGIN_VERSION;
+
+		$js_path = MULTCH_PLUGIN_PATH . 'assets/js/chatbot.js';
+		$js_ver  = file_exists( $js_path )
+			? (string) filemtime( $js_path )
+			: MULTCH_PLUGIN_VERSION;
+
 		wp_enqueue_style(
 			'multch-plugin',
 			MULTCH_PLUGIN_URL . 'assets/css/chatbot.css',
 			array(),
-			MULTCH_PLUGIN_VERSION
+			$css_ver
 		);
 
 		$custom_css = trim( (string) ( $settings['style_custom_css'] ?? '' ) );
@@ -93,7 +103,7 @@ class Multch_Enqueue {
 			'multch-plugin',
 			MULTCH_PLUGIN_URL . 'assets/js/chatbot.js',
 			array(),
-			MULTCH_PLUGIN_VERSION,
+			$js_ver,
 			true
 		);
 

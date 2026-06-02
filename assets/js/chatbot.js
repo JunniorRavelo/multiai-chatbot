@@ -12,6 +12,37 @@
   const i18n = config.i18n || {};
   const ROOT_SELECTOR = "[data-maicb-root]";
 
+  function injectThinkingAnimationStyles() {
+    if (document.getElementById("maicb-thinking-keyframes")) {
+      return;
+    }
+    const style = document.createElement("style");
+    style.id = "maicb-thinking-keyframes";
+    style.textContent =
+      "@keyframes maicb-thinking-bounce{" +
+      "0%,55%,100%{opacity:.35;transform:translateY(0) scale(.7)}" +
+      "28%{opacity:1;transform:translateY(-6px) scale(1.15)}" +
+      "}" +
+      "@keyframes maicb-thinking-fade{" +
+      "0%,100%{opacity:.35}50%{opacity:1}" +
+      "}" +
+      ".maicb-widget .maicb-thinking-dot{" +
+      "display:inline-block;width:.52rem;height:.52rem;border-radius:50%;" +
+      "background:var(--maicb-primary,#2563eb);" +
+      "animation:maicb-thinking-bounce 1.15s ease-in-out infinite;" +
+      "}" +
+      ".maicb-widget .maicb-thinking-dot:nth-child(2){animation-delay:.18s}" +
+      ".maicb-widget .maicb-thinking-dot:nth-child(3){animation-delay:.36s}" +
+      ".maicb-widget.maicb-reduce-motion .maicb-thinking-dot{" +
+      "animation:maicb-thinking-fade 1.6s ease-in-out infinite;transform:none}" +
+      "@media (prefers-reduced-motion:reduce){" +
+      ".maicb-widget .maicb-thinking-dot{animation:maicb-thinking-fade 1.6s ease-in-out infinite;transform:none}" +
+      "}";
+    document.head.appendChild(style);
+  }
+
+  injectThinkingAnimationStyles();
+
   function q(scope, name) {
     return scope.querySelector('[data-maicb="' + name + '"]');
   }
@@ -635,6 +666,27 @@
     }
 
     function renderMessages() {
+      const pendingIndex = isSending
+        ? messages.findIndex(
+            (msg, index) =>
+              msg.role === "assistant" &&
+              !(msg.content || "").trim() &&
+              index === messages.length - 1
+          )
+        : -1;
+
+      if (pendingIndex >= 0) {
+        const rows = messagesEl.querySelectorAll(".maicb-msg-row");
+        if (
+          rows.length === messages.length &&
+          rows[pendingIndex] &&
+          rows[pendingIndex].querySelector(".maicb-msg-pending")
+        ) {
+          scrollToBottom();
+          return;
+        }
+      }
+
       messagesEl.innerHTML = "";
       messages.forEach((msg, index) => {
         const showThinking =
