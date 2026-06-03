@@ -2,6 +2,11 @@
  * MultiAI ChatBot — WordPress admin panel
  */
 
+/* Menos hueco bajo el panel: WP reserva ~65px para #wpfooter en todas las pantallas de ajustes */
+body.toplevel_page_multch-plugin #wpbody-content {
+  padding-bottom: 1.5rem;
+}
+
 .multch-admin-wrap {
   --cb-admin-primary: #2563eb;
   --cb-admin-primary-dark: #1d4ed8;
@@ -16,7 +21,8 @@
   --cb-admin-radius: 12px;
   --cb-admin-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px -8px rgba(15, 23, 42, 0.12);
   max-width: 1100px;
-  margin-top: 12px;
+  margin: 12px 0 0;
+  padding-bottom: 0;
 }
 
 .multch-admin-wrap * {
@@ -511,9 +517,9 @@
 .multch-admin-wrap form.multch-admin-form > .multch-admin-form-divider {
   display: block;
   flex-shrink: 0;
-  height: 1.25rem;
-  min-height: 1.25rem;
-  margin: 1rem 0 0;
+  height: 0;
+  min-height: 0;
+  margin: 0.75rem 0 0;
   padding: 0;
   border: 0;
   border-top: 1px solid var(--cb-admin-border);
@@ -526,8 +532,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 0;
-  padding: 1.25rem 1.5rem;
+  margin: 0.75rem 0 0;
+  padding: 0.85rem 1rem;
   border: 1px solid var(--cb-admin-border);
   border-radius: var(--cb-admin-radius);
   background: var(--cb-admin-bg);
@@ -555,8 +561,8 @@
 
 /* Donation footer */
 .multch-donation-footer {
-  margin-top: 1.5rem;
-  padding: 1rem 1.25rem;
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--cb-admin-border);
   border-radius: var(--cb-admin-radius);
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
@@ -668,8 +674,8 @@ button.multch-donation-footer__chip {
 /* Laptop / narrow admin column: compact block, hide secondary copy */
 @media (max-width: 960px) {
   .multch-donation-footer {
-    margin-top: 1rem;
-    padding: 0.65rem 0.85rem;
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.85rem;
   }
 
   .multch-donation-footer__inner {
@@ -1761,7 +1767,8 @@ button.multch-donation-footer__chip {
     flex-direction: column;
     align-items: stretch;
     gap: 0.6rem;
-    padding: 0.85rem 1rem;
+    margin-top: 0.65rem;
+    padding: 0.75rem 0.85rem;
   }
 
   .multch-admin-footer .button-primary {

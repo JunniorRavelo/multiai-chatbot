@@ -1585,7 +1585,6 @@ class Multch_Admin_Settings {
 						class="multch-admin-form-divider"
 						role="presentation"
 						aria-hidden="true"
-						style="display:block;height:1.25rem;min-height:1.25rem;margin-top:1rem;border-top:1px solid #e2e8f0;box-sizing:border-box;"
 					></div>
 
 					<div class="multch-admin-footer">
