@@ -1968,9 +1968,13 @@ msgstr "El modelo no devolvió una respuesta válida."
 msgid "Use POST with the same body and headers as /chat."
 msgstr "Use POST con el mismo cuerpo y cabeceras que /chat."
 
-#: includes/admin-settings.php:2037
+#: includes/admin-settings.php:2889
 msgid "Use the WordPress AI Client (site-wide Connectors) or a local Ollama server."
 msgstr "Use el cliente de IA de WordPress (Conectores del sitio) o un servidor Ollama local."
+
+#: includes/admin-settings.php:2889
+msgid "Use WordPress Connectors, your own Google AI API key, or a local Ollama server."
+msgstr "Use Conectores de WordPress, su propia clave API de Google IA (Gemini) o un servidor Ollama local."
 
 #: includes/admin-settings.php:2045
 msgid "WordPress AI (Connectors)"
@@ -2400,3 +2404,59 @@ msgstr "No se pudo usar el modelo principal %s. Revise Ajustes → Conectores y 
 #: includes/ai-client.php
 msgid "Google API quota was reached for the Gemini models in your chain. Wait a few minutes or choose other models in MultiAI ChatBot → AI Model."
 msgstr "Se alcanzó la cuota de la API de Google en los modelos Gemini de su cadena. Espere unos minutos o elija otros modelos en MultiAI ChatBot → Modelo IA."
+
+#: includes/admin-settings.php:2903
+msgid "Google IA"
+msgstr "Google IA"
+
+#: includes/admin-settings.php:2976
+msgid "Google AI (Gemini) API key used for chat requests. Model IDs come from the same list as WordPress Connectors."
+msgstr "Clave API de Google IA (Gemini) para las solicitudes de chat. Los ID de modelo son los mismos que en Conectores de WordPress."
+
+#: includes/admin-settings.php:2979
+msgid "The API key is defined in server configuration and cannot be changed here."
+msgstr "La clave API está definida en la configuración del servidor y no puede cambiarse aquí."
+
+#: includes/admin-settings.php:449
+msgid "Primary Gemini model ID from the list (same IDs as WordPress Connectors)."
+msgstr "ID del modelo Gemini principal de la lista (los mismos ID que en Conectores de WordPress)."
+
+#: includes/admin-settings.php:450
+msgid "Used if the primary model fails (quota, rate limits, or unavailability)."
+msgstr "Se usa si el modelo principal falla (cuota, límites de tasa o indisponibilidad)."
+
+#: includes/admin-settings.php:2995
+msgid "— Select model —"
+msgstr "— Seleccionar modelo —"
+
+#: includes/providers/class-provider-google-ia.php:22
+msgid "Google AI API key is not configured."
+msgstr "La clave API de Google IA no está configurada."
+
+#: includes/providers/class-provider-google-ia.php:64
+msgid "No Google AI model is configured."
+msgstr "No hay ningún modelo de Google IA configurado."
+
+#: includes/providers/class-provider-google-ia.php:111
+msgid "Could not reach the Google AI API."
+msgstr "No se pudo contactar con la API de Google IA."
+
+#: includes/providers/class-provider-google-ia.php:120
+msgid "Google AI rate limit reached. Try again shortly or switch to the fallback model."
+msgstr "Se alcanzó el límite de tasa de Google IA. Espere un momento o use el modelo de respaldo."
+
+#: includes/providers/class-provider-google-ia.php:127
+msgid "The selected Google AI model is not available."
+msgstr "El modelo de Google IA seleccionado no está disponible."
+
+#: includes/providers/class-provider-google-ia.php:134
+msgid "Google AI returned an unexpected response."
+msgstr "Google IA devolvió una respuesta inesperada."
+
+#: includes/providers/class-provider-google-ia.php:151
+msgid "Google AI returned an empty response."
+msgstr "Google IA devolvió una respuesta vacía."
+
+#: includes/privacy.php:65
+msgid "To generate responses, the plugin sends chat content through the WordPress AI Client (using providers configured under Settings → Connectors), the Google Generative Language API when Google IA is configured, or to a self-hosted Ollama server you specify. This typically includes:"
+msgstr "Para generar respuestas, el plugin envía el contenido del chat mediante el cliente de IA de WordPress (proveedores configurados en Ajustes → Conectores), la API Generative Language de Google cuando está configurado Google IA, o al servidor Ollama autohospedado que indique. Suele incluir:"
