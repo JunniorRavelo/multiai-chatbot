@@ -779,8 +779,8 @@ button.multch-donation-footer__chip {
 
 .multch-admin-preview__viewport {
   position: relative;
-  height: min(480px, 58vh);
-  min-height: 380px;
+  height: min(520px, 62vh);
+  min-height: 420px;
   border-radius: var(--cb-admin-radius);
   /* Fondo neutro claro: evita que el panel semi-transparente + backdrop-filter se vea gris sucio */
   background: linear-gradient(180deg, #f8fafc 0%, #ffffff 55%, #ffffff 100%);
@@ -795,8 +795,8 @@ button.multch-donation-footer__chip {
 /* Escritorio: simulador proporcional a la columna de preview */
 @media (min-width: 900px) {
   .multch-admin-layout--split .multch-admin-preview__viewport {
-    min-height: 400px;
-    height: min(560px, calc(100vh - 12rem));
+    min-height: 480px;
+    height: min(640px, calc(100vh - 10rem));
   }
 }
 
@@ -1754,8 +1754,8 @@ button.multch-donation-footer__chip {
   }
 
   .multch-admin-preview__viewport {
-    min-height: 240px;
-    height: min(320px, 42vh);
+    min-height: 320px;
+    height: min(420px, 55vh);
   }
 
   .multch-admin-preview__hint {
@@ -1788,8 +1788,8 @@ button.multch-donation-footer__chip {
 
 @media (max-width: 480px) {
   .multch-admin-preview__viewport {
-    min-height: 200px;
-    height: min(280px, 38vh);
+    min-height: 300px;
+    height: min(380px, 52vh);
   }
 }
 
