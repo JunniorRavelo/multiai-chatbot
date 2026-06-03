@@ -1,50 +1,89 @@
-/* Contenedor del widget real en la landing (modo inline embebido) */
+/* Vista previa estática: mini sitio + botón flotante (panel cerrado) */
 
 .hero-widget-host {
   position: relative;
   max-width: 400px;
   width: 100%;
+  min-height: 360px;
+  aspect-ratio: 10 / 11;
   margin-inline: auto;
   border-radius: 1.25rem;
   overflow: hidden;
   box-shadow: 0 18px 44px -18px rgba(15, 23, 42, 0.25);
   border: 1px solid rgba(15, 23, 42, 0.1);
-  background: #fff;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-site-mock {
+  position: absolute;
+  inset: 0;
+  padding: 1rem 1.15rem 5.5rem;
+}
+
+.hero-site-mock__chrome {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-site-mock__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.hero-site-mock__hero {
+  height: 72px;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(124, 58, 237, 0.08));
+  border: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+.hero-site-mock__line {
+  height: 10px;
+  border-radius: 999px;
+  margin-bottom: 0.55rem;
+  background: rgba(15, 23, 42, 0.07);
+  width: 88%;
+}
+
+.hero-site-mock__line--wide {
+  width: 100%;
+}
+
+.hero-site-mock__line--short {
+  width: 58%;
 }
 
 .hero-widget-host #multch-style-preview {
-  position: relative;
-  display: block;
-  width: 100%;
-  --maicb-z-base: 1;
+  position: absolute;
+  inset: 0;
+  --maicb-z-base: 2;
+  --maicb-offset: 0.85rem;
+  font-size: 14px;
+  line-height: 1.45;
+  pointer-events: none;
 }
 
-.hero-widget-host #multch-style-preview .maicb-inline-wrap .maicb-panel {
-  position: relative;
-  top: auto;
-  right: auto;
-  bottom: auto;
-  left: auto;
-  transform: none;
-  width: 100%;
-  max-width: 100%;
-  height: min(520px, 70vh);
-  min-height: 420px;
-  margin: 0;
-  border-radius: 0;
-  border: 0;
-  box-shadow: none;
+.hero-widget-host #multch-style-preview .maicb-launcher {
+  position: absolute !important;
+  top: auto !important;
+  left: auto !important;
+  right: var(--maicb-offset, 0.85rem) !important;
+  bottom: var(--maicb-offset, 0.85rem) !important;
+  transform: none !important;
+  cursor: default;
+  pointer-events: none;
 }
 
-.hero-widget-host #multch-style-preview .maicb-messages {
-  min-height: 240px;
+.hero-widget-host #multch-style-preview .maicb-panel {
+  display: none !important;
 }
 
-.hero-widget-host #multch-style-preview .maicb-composer {
-  border-top: 1px solid var(--maicb-border);
-}
-
-.hero-widget-host .hero-widget-note,
 .hero-widget-column .hero-widget-note {
   margin: 0.65rem 0 0;
   font-size: 0.78rem;
