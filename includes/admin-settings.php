@@ -2276,7 +2276,6 @@ class Multch_Admin_Settings {
 		$suspend_after         = (int) ( $settings['ip_suspend_after_violations'] ?? 3 );
 		$suspend_seconds       = (int) ( $settings['ip_suspend_seconds'] ?? 900 );
 		$stats_enabled         = ! empty( $settings['stats_history_enabled'] );
-		$stats_url             = self::build_stats_url( array( 'status' => 'rate_limited', 'paged' => 1 ) );
 		$constant_overrides    = self::security_constant_overridden_keys();
 		$log_path              = Multch_Telemetry::get_file_log_path();
 		$cache_presets         = array(
@@ -2285,20 +2284,7 @@ class Multch_Admin_Settings {
 			1800 => __( '30 min', 'multiai-chatbot' ),
 			3600 => __( '1 hour', 'multiai-chatbot' ),
 		);
-		?>
-		<div class="multch-admin-security-toolbar">
-			<div class="multch-admin-security-toolbar__intro">
-				<h2><?php esc_html_e( 'Endpoint protection', 'multiai-chatbot' ); ?></h2>
-				<p><?php esc_html_e( 'Control who can access the chat API, how responses are cached, and how abuse is throttled.', 'multiai-chatbot' ); ?></p>
-				<?php if ( $stats_enabled ) : ?>
-					<a class="multch-admin-stats-toolbar__link" href="<?php echo esc_url( $stats_url ); ?>">
-						<?php esc_html_e( 'Review rate-limited traffic in Statistics', 'multiai-chatbot' ); ?>
-					</a>
-				<?php endif; ?>
-			</div>
-		</div>
 
-		<?php
 		if ( ! empty( $constant_overrides ) ) {
 			self::render_admin_external_config_notice();
 		}
