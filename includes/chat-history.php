@@ -342,6 +342,10 @@ class Multch_Chat_History {
 				$placeholders = implode( ', ', array_fill( 0, count( $wp_providers ), '%s' ) );
 				$where[]      = "{$alias}.provider IN ({$placeholders})";
 				$params       = array_merge( $params, $wp_providers );
+			} elseif ( 'google_ia' === $provider ) {
+				$where[]  = "{$alias}.provider IN (%s, %s)";
+				$params[] = 'google_ia';
+				$params[] = 'gemini';
 			} else {
 				$where[]  = "{$alias}.provider = %s";
 				$params[] = $provider;

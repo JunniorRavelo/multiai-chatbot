@@ -3822,11 +3822,9 @@ class Multch_Admin_Settings {
 						<label for="multch-stats-provider"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></label>
 						<select id="multch-stats-provider" name="provider">
 							<option value="all"<?php selected( $filters['provider'], 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
-							<option value="wordpress_ai"<?php selected( $filters['provider'], 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI', 'multiai-chatbot' ); ?></option>
-							<option value="gemini"<?php selected( $filters['provider'], 'gemini' ); ?>>Gemini</option>
-							<option value="deepseek"<?php selected( $filters['provider'], 'deepseek' ); ?>>DeepSeek</option>
-							<option value="ollama"<?php selected( $filters['provider'], 'ollama' ); ?>>Ollama</option>
-							<option value="openai_compatible"<?php selected( $filters['provider'], 'openai_compatible' ); ?>>OpenAI-compatible</option>
+							<?php foreach ( self::admin_ai_provider_filter_options() as $provider_id => $provider_label ) : ?>
+								<option value="<?php echo esc_attr( $provider_id ); ?>"<?php selected( $filters['provider'], $provider_id ); ?>><?php echo esc_html( $provider_label ); ?></option>
+							<?php endforeach; ?>
 						</select>
 					</div>
 					<div class="multch-admin-stats-filters__field">
@@ -3945,7 +3943,10 @@ class Multch_Admin_Settings {
 		if ( in_array( $provider, multch_legacy_cloud_provider_ids(), true ) ) {
 			$provider = 'wordpress_ai';
 		}
-		if ( ! in_array( $provider, array( 'all', 'wordpress_ai', 'ollama' ), true ) ) {
+		if ( 'gemini' === $provider ) {
+			$provider = 'google_ia';
+		}
+		if ( ! in_array( $provider, array_merge( array( 'all' ), self::admin_ai_provider_filter_ids() ), true ) ) {
 			$provider = 'all';
 		}
 
@@ -4253,8 +4254,9 @@ class Multch_Admin_Settings {
 						<label for="multch-history-provider"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></label>
 						<select id="multch-history-provider" name="provider">
 							<option value="all"<?php selected( $provider, 'all' ); ?>><?php esc_html_e( 'All', 'multiai-chatbot' ); ?></option>
-							<option value="wordpress_ai"<?php selected( $provider, 'wordpress_ai' ); ?>><?php esc_html_e( 'WordPress AI (Connectors)', 'multiai-chatbot' ); ?></option>
-							<option value="ollama"<?php selected( $provider, 'ollama' ); ?>>Ollama</option>
+							<?php foreach ( self::admin_ai_provider_filter_options() as $provider_id => $provider_label ) : ?>
+								<option value="<?php echo esc_attr( $provider_id ); ?>"<?php selected( $provider, $provider_id ); ?>><?php echo esc_html( $provider_label ); ?></option>
+							<?php endforeach; ?>
 						</select>
 					</div>
 					<div class="multch-admin-history-filters__field">
@@ -4894,9 +4896,33 @@ private static function format_history_status_label( string $status ): string {
 	return $labels[ $status ] ?? $status;
 }
 
+/**
+ * Provider options for History and Statistics admin filters.
+ *
+ * @return array<string, string> Provider ID => label.
+ */
+private static function admin_ai_provider_filter_options(): array {
+	return array(
+		'wordpress_ai' => __( 'WordPress AI (Connectors)', 'multiai-chatbot' ),
+		'google_ia'    => __( 'Google IA', 'multiai-chatbot' ),
+		'ollama'       => 'Ollama',
+	);
+}
+
+/**
+ * @return list<string>
+ */
+private static function admin_ai_provider_filter_ids(): array {
+	return array_keys( self::admin_ai_provider_filter_options() );
+}
+
 private static function normalize_history_provider_id( string $provider ): string {
 	if ( in_array( $provider, multch_legacy_cloud_provider_ids(), true ) ) {
 		return 'wordpress_ai';
+	}
+
+	if ( 'gemini' === $provider ) {
+		return 'google_ia';
 	}
 
 	return $provider;
@@ -4904,10 +4930,7 @@ private static function normalize_history_provider_id( string $provider ): strin
 
 private static function format_history_provider_label( string $provider, string $model = '' ): string {
 	$provider = self::normalize_history_provider_id( $provider );
-	$labels   = array(
-		'wordpress_ai' => __( 'WordPress AI (Connectors)', 'multiai-chatbot' ),
-		'ollama'       => 'Ollama',
-	);
+	$labels   = self::admin_ai_provider_filter_options();
 
 	$label = $labels[ $provider ] ?? $provider;
 	if ( '' === $label ) {
@@ -4921,6 +4944,7 @@ private static function format_history_provider_name( string $provider ): string
 	$provider = self::normalize_history_provider_id( $provider );
 	$labels   = array(
 		'wordpress_ai' => __( 'WordPress AI', 'multiai-chatbot' ),
+		'google_ia'    => __( 'Google IA', 'multiai-chatbot' ),
 		'ollama'       => 'Ollama',
 	);
 
@@ -4931,6 +4955,7 @@ private static function format_history_provider_avatar( string $provider ): stri
 	$provider = self::normalize_history_provider_id( $provider );
 	$labels   = array(
 		'wordpress_ai' => 'WP',
+		'google_ia'    => 'G',
 		'ollama'       => 'O',
 	);
 

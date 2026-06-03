@@ -99,8 +99,19 @@ class Multch_Telemetry {
 
 		$provider = isset( $args['provider'] ) ? sanitize_key( (string) $args['provider'] ) : '';
 		if ( '' !== $provider && 'all' !== $provider ) {
-			$where[]  = 'provider = %s';
-			$params[] = $provider;
+			if ( 'wordpress_ai' === $provider ) {
+				$wp_providers = array_merge( array( 'wordpress_ai' ), multch_legacy_cloud_provider_ids() );
+				$placeholders = implode( ', ', array_fill( 0, count( $wp_providers ), '%s' ) );
+				$where[]      = "provider IN ({$placeholders})";
+				$params       = array_merge( $params, $wp_providers );
+			} elseif ( 'google_ia' === $provider ) {
+				$where[]  = 'provider IN (%s, %s)';
+				$params[] = 'google_ia';
+				$params[] = 'gemini';
+			} else {
+				$where[]  = 'provider = %s';
+				$params[] = $provider;
+			}
 		}
 
 		$status = isset( $args['status'] ) ? sanitize_key( (string) $args['status'] ) : '';

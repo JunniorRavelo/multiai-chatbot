@@ -2414,12 +2414,14 @@ button.multch-donation-footer__chip {
   color: color-mix(in srgb, var(--cb-history-accent) 75%, #0f172a);
 }
 
-.multch-admin-history-card[data-provider="gemini"] .multch-admin-history-card__avatar {
+.multch-admin-history-card[data-provider="gemini"] .multch-admin-history-card__avatar,
+.multch-admin-history-card[data-provider="google_ia"] .multch-admin-history-card__avatar {
   background: linear-gradient(145deg, #4285f4 0%, #34a853 100%);
   border-color: transparent;
 }
 
-.multch-admin-history-card[data-provider="gemini"] .multch-admin-history-card__avatar-label {
+.multch-admin-history-card[data-provider="gemini"] .multch-admin-history-card__avatar-label,
+.multch-admin-history-card[data-provider="google_ia"] .multch-admin-history-card__avatar-label {
   color: #fff;
 }
 
