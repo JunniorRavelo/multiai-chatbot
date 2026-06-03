@@ -111,6 +111,9 @@
 			if (wrap) {
 				wrap.classList.add('is-dirty');
 			}
+			if (dock) {
+				dock.classList.add('is-dirty');
+			}
 			if (topStatus) {
 				topStatus.hidden = false;
 			}
@@ -135,10 +138,6 @@
 
 		if (!dock || !wrap) {
 			return;
-		}
-
-		if (dock.parentNode !== document.body) {
-			document.body.appendChild(dock);
 		}
 
 		var layoutScheduled = false;

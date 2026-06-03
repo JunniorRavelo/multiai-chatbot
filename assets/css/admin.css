@@ -562,7 +562,8 @@
 }
 
 .multch-admin-wrap.is-dirty .multch-admin-save-bar--top .button-primary,
-.multch-admin-wrap.is-dirty .multch-admin-save-dock .button-primary {
+.multch-admin-wrap.is-dirty .multch-admin-save-dock .button-primary,
+.multch-admin-save-dock.is-dirty .button-primary {
   box-shadow:
     0 0 0 2px rgba(37, 99, 235, 0.2),
     0 2px 10px rgba(37, 99, 235, 0.35);
@@ -570,6 +571,11 @@
 
 /* Fixed save dock (bottom) — position synced to #wpcontent via admin-feedback.js */
 .multch-admin-save-dock {
+  --cb-admin-primary: #2563eb;
+  --cb-admin-primary-dark: #1d4ed8;
+  --cb-admin-warning: #d97706;
+  --cb-admin-muted: #64748b;
+  --cb-admin-border: #e2e8f0;
   position: fixed;
   bottom: 0;
   z-index: 100;
@@ -628,7 +634,8 @@
   box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
 }
 
-.multch-admin-wrap.is-dirty .multch-admin-save-dock__status {
+.multch-admin-wrap.is-dirty .multch-admin-save-dock__status,
+.multch-admin-save-dock.is-dirty .multch-admin-save-dock__status {
   display: inline-flex;
 }
 
@@ -640,7 +647,8 @@
   white-space: nowrap;
 }
 
-.multch-admin-wrap.is-dirty .multch-admin-save-dock__shortcut {
+.multch-admin-wrap.is-dirty .multch-admin-save-dock__shortcut,
+.multch-admin-save-dock.is-dirty .multch-admin-save-dock__shortcut {
   display: none;
 }
 
@@ -670,9 +678,11 @@
 }
 
 .multch-admin-save-bar .button-primary,
-.multch-admin-save-dock .button-primary {
-  background: linear-gradient(135deg, var(--cb-admin-primary), var(--cb-admin-primary-dark));
-  border-color: var(--cb-admin-primary-dark);
+.multch-admin-save-dock .button.button-primary,
+.multch-admin-save-dock input[type="submit"].button-primary {
+  background: linear-gradient(135deg, var(--cb-admin-primary), var(--cb-admin-primary-dark)) !important;
+  border-color: var(--cb-admin-primary-dark) !important;
+  color: #fff !important;
   border-radius: 10px;
   padding: 0.35rem 1.25rem;
   font-weight: 600;
@@ -681,12 +691,15 @@
 }
 
 .multch-admin-save-bar .button-primary:hover,
-.multch-admin-save-dock .button-primary:hover {
-  background: var(--cb-admin-primary-dark);
-  border-color: var(--cb-admin-primary-dark);
+.multch-admin-save-dock .button.button-primary:hover,
+.multch-admin-save-dock input[type="submit"].button-primary:hover {
+  background: var(--cb-admin-primary-dark) !important;
+  border-color: var(--cb-admin-primary-dark) !important;
+  color: #fff !important;
 }
 
-.multch-admin-save-dock .button-primary:active {
+.multch-admin-save-dock .button.button-primary:active,
+.multch-admin-save-dock input[type="submit"].button-primary:active {
   transform: translateY(1px);
 }
 
@@ -1944,22 +1957,26 @@ button.multch-donation-footer__chip {
     width: 100%;
   }
 
-  .multch-admin-save-dock__actions .button-primary {
+  .multch-admin-save-dock__actions .button.button-primary,
+  .multch-admin-save-dock__actions input[type="submit"].button-primary {
     width: 100%;
     min-height: 44px;
     text-align: center;
   }
 
-  .multch-admin-wrap.is-dirty .multch-admin-save-dock__inner {
+  .multch-admin-wrap.is-dirty .multch-admin-save-dock__inner,
+  .multch-admin-save-dock.is-dirty .multch-admin-save-dock__inner {
     flex-wrap: wrap;
   }
 
-  .multch-admin-wrap.is-dirty .multch-admin-save-dock__meta {
+  .multch-admin-wrap.is-dirty .multch-admin-save-dock__meta,
+  .multch-admin-save-dock.is-dirty .multch-admin-save-dock__meta {
     flex: 1 1 100%;
     justify-content: center;
   }
 
-  .multch-admin-wrap.is-dirty .multch-admin-save-dock__actions {
+  .multch-admin-wrap.is-dirty .multch-admin-save-dock__actions,
+  .multch-admin-save-dock.is-dirty .multch-admin-save-dock__actions {
     flex: 1 1 100%;
   }
 }
