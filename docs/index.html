@@ -2,6 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function () {
+      var k = "multch-docs-lang", l;
+      try { l = localStorage.getItem(k); } catch (e) { l = null; }
+      if (l !== "es" && l !== "en") {
+        var n = (navigator.language || "en").toLowerCase();
+        l = n.indexOf("es") === 0 ? "es" : "en";
+      }
+      document.documentElement.lang = l;
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="MultiAI ChatBot — Plugin de WordPress con widget de chat IA. Conectores, Google Gemini, Ollama, estilos personalizables, historial y telemetría.">
   <meta name="author" content="J. Santiago Ravelo Velasco">
@@ -141,6 +152,39 @@
     }
 
     .btn-outline:hover { color: var(--primary); border-color: rgba(37, 99, 235, 0.35); }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .lang-switch__btn {
+      padding: 0.4rem 0.65rem;
+      border: none;
+      background: transparent;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1.2;
+    }
+
+    .lang-switch__btn:hover { color: var(--primary); }
+
+    .lang-switch__btn.is-active {
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary-dark);
+    }
 
     /* Hero */
     .hero {
@@ -769,15 +813,21 @@
         </span>
         MultiAI ChatBot
       </a>
-      <nav class="nav" aria-label="Navegación principal">
-        <a href="#caracteristicas">Características</a>
-        <a href="#proveedores">Proveedores IA</a>
-        <a href="#estilos">Estilos</a>
-        <a href="#instalacion">Instalación</a>
-        <a href="#apoyo">Apoyar</a>
-        <a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">GitHub</a>
+      <nav class="nav" aria-label="Navegación principal" data-i18n-aria="nav.label">
+        <a href="#caracteristicas" data-i18n="nav.features">Características</a>
+        <a href="#proveedores" data-i18n="nav.providers">Proveedores IA</a>
+        <a href="#estilos" data-i18n="nav.styles">Estilos</a>
+        <a href="#instalacion" data-i18n="nav.install">Instalación</a>
+        <a href="#apoyo" data-i18n="nav.support">Apoyar</a>
+        <a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
       </nav>
-      <a class="btn btn-primary" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener">Instalar gratis</a>
+      <div class="header-actions">
+        <div class="lang-switch" role="group" data-i18n-aria="lang.switchLabel">
+          <button type="button" class="lang-switch__btn" data-lang="es" aria-pressed="false">ES</button>
+          <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="btn btn-primary" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener" data-i18n="header.install">Instalar gratis</a>
+      </div>
     </div>
   </header>
 
@@ -785,30 +835,30 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <span class="badge">v1.0.4 · WordPress 6.2+ · PHP 8.0+</span>
-          <h1>Asistente de IA para <span>WordPress</span></h1>
-          <p class="hero-lead">
+          <span class="badge" data-i18n="hero.badge">v1.0.4 · WordPress 6.2+ · PHP 8.0+</span>
+          <h1 data-i18n-html="hero.title">Asistente de IA para <span>WordPress</span></h1>
+          <p class="hero-lead" data-i18n-html="hero.lead">
             <strong>MultiAI ChatBot</strong> añade un widget de chat inteligente a tu sitio web.
             Conecta modelos de IA mediante Conectores de WordPress, tu propia clave de Google Gemini u Ollama local.
             Personaliza la apariencia, revisa conversaciones y exporta estadísticas — todo desde el panel de WordPress.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener">
+            <a class="btn btn-primary" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener" data-i18n="hero.ctaInstall">
               Instalar en WordPress.org
             </a>
-            <a class="btn btn-outline" href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">Ver en GitHub</a>
+            <a class="btn btn-outline" href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener" data-i18n="hero.ctaGithub">Ver en GitHub</a>
           </div>
           <div class="hero-meta">
-            <span><strong>GPL-2.0+</strong> · Código abierto</span>
-            <span><strong>3</strong> proveedores de IA</span>
-            <span><strong>9</strong> temas visuales</span>
-            <span>Traducción <strong>ES</strong></span>
+            <span data-i18n-html="hero.meta1"><strong>GPL-2.0+</strong> · Código abierto</span>
+            <span data-i18n-html="hero.meta2"><strong>3</strong> proveedores de IA</span>
+            <span data-i18n-html="hero.meta3"><strong>9</strong> temas visuales</span>
+            <span data-i18n-html="hero.meta4">Traducción <strong>ES</strong></span>
           </div>
         </div>
 
         <div class="hero-widget-column">
-          <div class="hero-widget-host" id="hero-widget-host" aria-label="Vista previa del widget MultiAI ChatBot"></div>
-          <p class="hero-widget-note">Vista previa interactiva · la demo rota preguntas y se reinicia sola</p>
+          <div class="hero-widget-host" id="hero-widget-host" data-i18n-aria="hero.widgetHostLabel" aria-label="Vista previa del widget MultiAI ChatBot"></div>
+          <p class="hero-widget-note" data-i18n="hero.widgetNote">Vista previa interactiva · la demo rota preguntas y se reinicia sola</p>
         </div>
       </div>
     </section>
@@ -816,48 +866,48 @@
     <section id="caracteristicas">
       <div class="container">
         <div class="section-header">
-          <h2>Todo lo que necesitas en un solo plugin</h2>
-          <p>Widget flotante o embebido, respuestas en streaming, historial opcional y telemetría — sin exponer credenciales al navegador.</p>
+          <h2 data-i18n="features.title">Todo lo que necesitas en un solo plugin</h2>
+          <p data-i18n="features.subtitle">Widget flotante o embebido, respuestas en streaming, historial opcional y telemetría — sin exponer credenciales al navegador.</p>
         </div>
 
         <div class="grid-3">
           <article class="card">
             <div class="card-icon" style="background:rgba(37,99,235,0.12);">🤖</div>
-            <h3>Múltiples proveedores IA</h3>
-            <p>IA de WordPress (Conectores), Google IA con tu clave Gemini u Ollama local. Un proveedor activo a la vez.</p>
+            <h3 data-i18n="features.card1.title">Múltiples proveedores IA</h3>
+            <p data-i18n-html="features.card1.text">IA de WordPress (Conectores), Google IA con tu clave Gemini u Ollama local. Un proveedor activo a la vez.</p>
           </article>
           <article class="card">
             <div class="card-icon" style="background:rgba(124,58,237,0.12);">🎨</div>
-            <h3>9 temas visuales</h3>
-            <p>Zafiro, Medianoche, Obsidiana, Monocromo, Aqua, Brasa, Esmeralda, Amatista y Ciruela. Colores, posición y radio personalizables.</p>
+            <h3 data-i18n="features.card2.title">9 temas visuales</h3>
+            <p data-i18n="features.card2.text">Zafiro, Medianoche, Obsidiana, Monocromo, Aqua, Brasa, Esmeralda, Amatista y Ciruela. Colores, posición y radio personalizables.</p>
           </article>
           <article class="card">
             <div class="card-icon" style="background:rgba(5,150,105,0.12);">📊</div>
-            <h3>Estadísticas e historial</h3>
-            <p>Telemetría de latencia, errores y modelos usados. Historial de conversaciones con filtros y exportación CSV (opcional; desactivado por defecto).</p>
+            <h3 data-i18n="features.card3.title">Estadísticas e historial</h3>
+            <p data-i18n="features.card3.text">Telemetría de latencia, errores y modelos usados. Historial de conversaciones con filtros y exportación CSV (opcional; desactivado por defecto).</p>
           </article>
           <article class="card">
             <div class="card-icon" style="background:rgba(217,119,6,0.12);">⚡</div>
-            <h3>Respuestas en streaming</h3>
-            <p>Respuestas progresivas para una experiencia más natural. Activable desde la pestaña General del panel de administración.</p>
+            <h3 data-i18n="features.card4.title">Respuestas en streaming</h3>
+            <p data-i18n="features.card4.text">Respuestas progresivas para una experiencia más natural. Activable desde la pestaña General del panel de administración.</p>
           </article>
           <article class="card">
             <div class="card-icon" style="background:rgba(220,38,38,0.1);">🔒</div>
-            <h3>Seguridad integrada</h3>
-            <p>Límite de peticiones por IP, orígenes permitidos, suspensión por abuso. Las claves API nunca llegan al navegador del visitante.</p>
+            <h3 data-i18n="features.card5.title">Seguridad integrada</h3>
+            <p data-i18n="features.card5.text">Límite de peticiones por IP, orígenes permitidos, suspensión por abuso. Las claves API nunca llegan al navegador del visitante.</p>
           </article>
           <article class="card">
             <div class="card-icon" style="background:rgba(99,102,241,0.12);">🧩</div>
-            <h3>Widget global o shortcode</h3>
-            <p>Activa el chat en todo el sitio o inserta <code>[multch_widget]</code> solo donde lo necesites, en modo flotante o en línea.</p>
+            <h3 data-i18n="features.card6.title">Widget global o shortcode</h3>
+            <p data-i18n-html="features.card6.text">Activa el chat en todo el sitio o inserta <code>[multch_widget]</code> solo donde lo necesites, en modo flotante o en línea.</p>
           </article>
         </div>
 
         <div class="req-bar">
-          <div class="req-item"><strong>WordPress 6.2+</strong>Probado hasta 7.0</div>
-          <div class="req-item"><strong>PHP 8.0+</strong>Requerido</div>
-          <div class="req-item"><strong>REST API</strong><code>/multch/v1/</code></div>
-          <div class="req-item"><strong>Traducciones</strong>es_ES · es_CO</div>
+          <div class="req-item" data-i18n-html="req.wp"><strong>WordPress 6.2+</strong>Probado hasta 7.0</div>
+          <div class="req-item" data-i18n-html="req.php"><strong>PHP 8.0+</strong>Requerido</div>
+          <div class="req-item" data-i18n-html="req.rest"><strong>REST API</strong><code>/multch/v1/</code></div>
+          <div class="req-item" data-i18n-html="req.i18n"><strong>Traducciones</strong>es_ES · es_CO</div>
         </div>
       </div>
     </section>
@@ -865,45 +915,45 @@
     <section id="proveedores">
       <div class="container">
         <div class="section-header">
-          <h2>Elige tu proveedor de IA</h2>
-          <p>Configura un proveedor en <strong>MultiAI ChatBot → Modelo de IA</strong>. Los datos del visitante solo se envían cuando alguien usa el chat.</p>
+          <h2 data-i18n="providers.title">Elige tu proveedor de IA</h2>
+          <p data-i18n-html="providers.subtitle">Configura un proveedor en <strong>MultiAI ChatBot → Modelo de IA</strong>. Los datos del visitante solo se envían cuando alguien usa el chat.</p>
         </div>
 
         <div class="providers-grid">
           <article class="provider-card recommended">
-            <span class="provider-tag">Recomendado</span>
-            <h3>IA de WordPress</h3>
+            <span class="provider-tag" data-i18n="providers.recommended">Recomendado</span>
+            <h3 data-i18n="providers.wp.title">IA de WordPress</h3>
             <p class="provider-id">wordpress_ai</p>
             <ul>
-              <li>Usa el cliente de IA de WordPress 7.0+</li>
-              <li>OpenAI, Google Gemini o Anthropic vía Conectores</li>
-              <li>Claves en <strong>Ajustes → Conectores</strong></li>
-              <li>Modelo principal y de respaldo configurables</li>
-              <li>Respaldo automático a Google si falla</li>
+              <li data-i18n="providers.wp.li1">Usa el cliente de IA de WordPress 7.0+</li>
+              <li data-i18n="providers.wp.li2">OpenAI, Google Gemini o Anthropic vía Conectores</li>
+              <li data-i18n-html="providers.wp.li3">Claves en <strong>Ajustes → Conectores</strong></li>
+              <li data-i18n="providers.wp.li4">Modelo principal y de respaldo configurables</li>
+              <li data-i18n="providers.wp.li5">Respaldo automático a Google si falla</li>
             </ul>
           </article>
 
           <article class="provider-card">
-            <h3>Google IA</h3>
+            <h3 data-i18n="providers.google.title">Google IA</h3>
             <p class="provider-id">google_ia</p>
             <ul>
-              <li>Tu propia clave de Google Gemini</li>
-              <li>Llamadas directas a la API de Google</li>
-              <li>Modelos del catálogo de Conectores</li>
-              <li>Clave en el administrador o en <code>wp-config.php</code></li>
-              <li>Modelo principal y de respaldo</li>
+              <li data-i18n="providers.google.li1">Tu propia clave de Google Gemini</li>
+              <li data-i18n="providers.google.li2">Llamadas directas a la API de Google</li>
+              <li data-i18n="providers.google.li3">Modelos del catálogo de Conectores</li>
+              <li data-i18n-html="providers.google.li4">Clave en el administrador o en <code>wp-config.php</code></li>
+              <li data-i18n="providers.google.li5">Modelo principal y de respaldo</li>
             </ul>
           </article>
 
           <article class="provider-card">
-            <h3>Ollama</h3>
+            <h3 data-i18n="providers.ollama.title">Ollama</h3>
             <p class="provider-id">ollama</p>
             <ul>
-              <li>Modelos locales en tu infraestructura</li>
-              <li>Sin claves API en el plugin</li>
-              <li>URL por defecto: <code>127.0.0.1:11434</code></li>
-              <li>Ideal para privacidad y desarrollo</li>
-              <li>Ej.: llama3, mistral, gemma…</li>
+              <li data-i18n="providers.ollama.li1">Modelos locales en tu infraestructura</li>
+              <li data-i18n="providers.ollama.li2">Sin claves API en el plugin</li>
+              <li data-i18n-html="providers.ollama.li3">URL por defecto: <code>127.0.0.1:11434</code></li>
+              <li data-i18n="providers.ollama.li4">Ideal para privacidad y desarrollo</li>
+              <li data-i18n="providers.ollama.li5">Ej.: llama3, mistral, gemma…</li>
             </ul>
           </article>
         </div>
@@ -913,20 +963,20 @@
     <section id="estilos">
       <div class="container">
         <div class="section-header">
-          <h2>Personaliza la apariencia</h2>
-          <p>Los mismos <strong>9 temas visuales</strong> que en el plugin, en <strong>MultiAI ChatBot → Estilo del chat → Tema visual</strong>.</p>
+          <h2 data-i18n="styles.title">Personaliza la apariencia</h2>
+          <p data-i18n-html="styles.subtitle">Los mismos <strong>9 temas visuales</strong> que en el plugin, en <strong>MultiAI ChatBot → Estilo del chat → Tema visual</strong>.</p>
         </div>
 
         <div class="theme-panel">
-          <div class="theme-grid" role="list" aria-label="Temas visuales disponibles">
-            <article class="theme-card is-featured" role="listitem" aria-label="Zafiro, tema predeterminado">
+          <div class="theme-grid" role="list" data-i18n-aria="styles.themesLabel" aria-label="Temas visuales disponibles">
+            <article class="theme-card is-featured" role="listitem" data-i18n-aria="styles.sapphireAria" aria-label="Zafiro, tema predeterminado">
               <span class="theme-card__swatches" aria-hidden="true">
                 <span class="theme-card__swatch" style="background:#2563eb"></span>
                 <span class="theme-card__swatch" style="background:#6366f1"></span>
                 <span class="theme-card__swatch" style="background:#ffffff"></span>
               </span>
               <span class="theme-card__label">Zafiro</span>
-              <span class="theme-card__badge theme-card__badge--light">Claro</span>
+              <span class="theme-card__badge theme-card__badge--light" data-i18n="theme.badge.light">Claro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -935,7 +985,7 @@
                 <span class="theme-card__swatch" style="background:#0f172a"></span>
               </span>
               <span class="theme-card__label">Medianoche</span>
-              <span class="theme-card__badge theme-card__badge--dark">Oscuro</span>
+              <span class="theme-card__badge theme-card__badge--dark" data-i18n="theme.badge.dark">Oscuro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -944,7 +994,7 @@
                 <span class="theme-card__swatch" style="background:#0c1117"></span>
               </span>
               <span class="theme-card__label">Obsidiana</span>
-              <span class="theme-card__badge theme-card__badge--dark">Oscuro</span>
+              <span class="theme-card__badge theme-card__badge--dark" data-i18n="theme.badge.dark">Oscuro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -953,7 +1003,7 @@
                 <span class="theme-card__swatch" style="background:#ffffff"></span>
               </span>
               <span class="theme-card__label">Monocromo</span>
-              <span class="theme-card__badge theme-card__badge--neutral">Neutro</span>
+              <span class="theme-card__badge theme-card__badge--neutral" data-i18n="theme.badge.neutral">Neutro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -962,7 +1012,7 @@
                 <span class="theme-card__swatch" style="background:#f0fdff"></span>
               </span>
               <span class="theme-card__label">Aqua</span>
-              <span class="theme-card__badge theme-card__badge--light">Claro</span>
+              <span class="theme-card__badge theme-card__badge--light" data-i18n="theme.badge.light">Claro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -971,7 +1021,7 @@
                 <span class="theme-card__swatch" style="background:#fff7ed"></span>
               </span>
               <span class="theme-card__label">Brasa</span>
-              <span class="theme-card__badge theme-card__badge--light">Claro</span>
+              <span class="theme-card__badge theme-card__badge--light" data-i18n="theme.badge.light">Claro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -980,7 +1030,7 @@
                 <span class="theme-card__swatch" style="background:#ecfdf5"></span>
               </span>
               <span class="theme-card__label">Esmeralda</span>
-              <span class="theme-card__badge theme-card__badge--light">Claro</span>
+              <span class="theme-card__badge theme-card__badge--light" data-i18n="theme.badge.light">Claro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -989,7 +1039,7 @@
                 <span class="theme-card__swatch" style="background:#faf5ff"></span>
               </span>
               <span class="theme-card__label">Amatista</span>
-              <span class="theme-card__badge theme-card__badge--light">Claro</span>
+              <span class="theme-card__badge theme-card__badge--light" data-i18n="theme.badge.light">Claro</span>
             </article>
             <article class="theme-card" role="listitem">
               <span class="theme-card__swatches" aria-hidden="true">
@@ -998,17 +1048,17 @@
                 <span class="theme-card__swatch" style="background:#1e1b4b"></span>
               </span>
               <span class="theme-card__label">Ciruela</span>
-              <span class="theme-card__badge theme-card__badge--dark">Oscuro</span>
+              <span class="theme-card__badge theme-card__badge--dark" data-i18n="theme.badge.dark">Oscuro</span>
             </article>
           </div>
 
-          <p class="theme-sample-desc">Azul índigo con violeta suave — el tema <strong>Zafiro</strong> viene seleccionado por defecto.</p>
+          <p class="theme-sample-desc" data-i18n-html="styles.sampleDesc">Azul índigo con violeta suave — el tema <strong>Zafiro</strong> viene seleccionado por defecto.</p>
 
-          <p class="theme-extras">
+          <p class="theme-extras" data-i18n-html="styles.extras">
             Vista previa en vivo · Exportar e importar JSON · Colores y posición personalizables · Shortcode <code>[multch_widget]</code>
           </p>
 
-          <pre class="code-block theme-shortcode"><span class="comment">// Shortcode (atributos en inglés)</span>
+          <pre class="code-block theme-shortcode"><span class="comment" data-i18n="styles.shortcodeComment">// Shortcode (atributos en inglés)</span>
 [multch_widget preset=<span class="string">"ocean"</span> position=<span class="string">"bottom-left"</span>]
 [multch_widget mode=<span class="string">"inline"</span> primary=<span class="string">"#059669"</span>]</pre>
         </div>
@@ -1018,43 +1068,43 @@
     <section id="admin">
       <div class="container">
         <div class="section-header">
-          <h2>Panel de administración completo</h2>
-          <p>Gestiona todo desde el menú <strong>MultiAI ChatBot</strong> en el escritorio de WordPress.</p>
+          <h2 data-i18n="admin.title">Panel de administración completo</h2>
+          <p data-i18n-html="admin.subtitle">Gestiona todo desde el menú <strong>MultiAI ChatBot</strong> en el escritorio de WordPress.</p>
         </div>
 
-        <div class="admin-tabs" aria-label="Pestañas del administrador">
-          <span class="admin-tab">General</span>
-          <span class="admin-tab">Modelo de IA</span>
-          <span class="admin-tab">Seguridad</span>
-          <span class="admin-tab">Estilo del chat</span>
-          <span class="admin-tab">Estadísticas</span>
-          <span class="admin-tab">Historial</span>
+        <div class="admin-tabs" data-i18n-aria="admin.tabsLabel" aria-label="Pestañas del administrador">
+          <span class="admin-tab" data-i18n="admin.tab.general">General</span>
+          <span class="admin-tab" data-i18n="admin.tab.model">Modelo de IA</span>
+          <span class="admin-tab" data-i18n="admin.tab.security">Seguridad</span>
+          <span class="admin-tab" data-i18n="admin.tab.style">Estilo del chat</span>
+          <span class="admin-tab" data-i18n="admin.tab.stats">Estadísticas</span>
+          <span class="admin-tab" data-i18n="admin.tab.history">Historial</span>
         </div>
 
         <div class="admin-desc">
           <div class="admin-desc-item">
-            <strong>General</strong>
-            <span>Widget global, mensaje de bienvenida, instrucciones del sistema, respuesta en streaming y guardar estadísticas e historial (desactivado por defecto).</span>
+            <strong data-i18n="admin.general.title">General</strong>
+            <span data-i18n="admin.general.desc">Widget global, mensaje de bienvenida, instrucciones del sistema, respuesta en streaming y guardar estadísticas e historial (desactivado por defecto).</span>
           </div>
           <div class="admin-desc-item">
-            <strong>Modelo de IA</strong>
-            <span>Proveedor, modelos principal y de respaldo, clave Gemini (Google IA) y URL de Ollama.</span>
+            <strong data-i18n="admin.model.title">Modelo de IA</strong>
+            <span data-i18n="admin.model.desc">Proveedor, modelos principal y de respaldo, clave Gemini (Google IA) y URL de Ollama.</span>
           </div>
           <div class="admin-desc-item">
-            <strong>Seguridad</strong>
-            <span>Orígenes permitidos, caché, telemetría, límites por IP y suspensión por abuso.</span>
+            <strong data-i18n="admin.security.title">Seguridad</strong>
+            <span data-i18n="admin.security.desc">Orígenes permitidos, caché, telemetría, límites por IP y suspensión por abuso.</span>
           </div>
           <div class="admin-desc-item">
-            <strong>Estilo del chat</strong>
-            <span>Plantillas visuales, colores personalizados, posición del widget y vista previa interactiva.</span>
+            <strong data-i18n="admin.style.title">Estilo del chat</strong>
+            <span data-i18n="admin.style.desc">Plantillas visuales, colores personalizados, posición del widget y vista previa interactiva.</span>
           </div>
           <div class="admin-desc-item">
-            <strong>Estadísticas</strong>
-            <span>Totales, desglose por proveedor, latencia y exportación CSV.</span>
+            <strong data-i18n="admin.stats.title">Estadísticas</strong>
+            <span data-i18n="admin.stats.desc">Totales, desglose por proveedor, latencia y exportación CSV.</span>
           </div>
           <div class="admin-desc-item">
-            <strong>Historial</strong>
-            <span>Conversaciones con ID <code>CB-AAAA-MM-DD-HH-MM-SS</code>, filtros y detalle de mensajes.</span>
+            <strong data-i18n="admin.history.title">Historial</strong>
+            <span data-i18n-html="admin.history.desc">Conversaciones con ID <code>CB-AAAA-MM-DD-HH-MM-SS</code>, filtros y detalle de mensajes.</span>
           </div>
         </div>
       </div>
@@ -1063,39 +1113,39 @@
     <section id="instalacion">
       <div class="container">
         <div class="section-header">
-          <h2>Cómo instalarlo</h2>
-          <p>Disponible gratis en el directorio oficial de plugins de WordPress. No necesitas clonar el repositorio ni generar archivos ZIP.</p>
+          <h2 data-i18n="install.title">Cómo instalarlo</h2>
+          <p data-i18n="install.subtitle">Disponible gratis en el directorio oficial de plugins de WordPress. No necesitas clonar el repositorio ni generar archivos ZIP.</p>
         </div>
 
         <div class="install-steps">
           <div>
             <ol class="steps-list">
-              <li>Entra en el panel de tu sitio WordPress y ve a <strong>Plugins → Añadir nuevo plugin</strong>.</li>
-              <li>Busca <strong>MultiAI ChatBot</strong> o abre la <a href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener">página del plugin en WordPress.org</a>.</li>
-              <li>Pulsa <strong>Instalar ahora</strong> y, cuando termine, <strong>Activar</strong>.</li>
-              <li>En el menú lateral aparecerá <strong>MultiAI ChatBot</strong>. En la pestaña <strong>Modelo de IA</strong>, elige tu proveedor (IA de WordPress, Google IA u Ollama).</li>
-              <li>Si usas <strong>IA de WordPress</strong>, conecta tus proveedores en <strong>Ajustes → Conectores</strong> (WordPress 7.0+).</li>
-              <li>En la pestaña <strong>General</strong>, activa el widget, personaliza el mensaje de bienvenida y guarda los cambios.</li>
-              <li>El chat aparecerá en tu sitio. También puedes insertarlo con el shortcode <code>[multch_widget]</code> en cualquier página.</li>
+              <li data-i18n-html="install.step1">Entra en el panel de tu sitio WordPress y ve a <strong>Plugins → Añadir nuevo plugin</strong>.</li>
+              <li data-i18n-html="install.step2">Busca <strong>MultiAI ChatBot</strong> o abre la <a href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener">página del plugin en WordPress.org</a>.</li>
+              <li data-i18n-html="install.step3">Pulsa <strong>Instalar ahora</strong> y, cuando termine, <strong>Activar</strong>.</li>
+              <li data-i18n-html="install.step4">En el menú lateral aparecerá <strong>MultiAI ChatBot</strong>. En la pestaña <strong>Modelo de IA</strong>, elige tu proveedor (IA de WordPress, Google IA u Ollama).</li>
+              <li data-i18n-html="install.step5">Si usas <strong>IA de WordPress</strong>, conecta tus proveedores en <strong>Ajustes → Conectores</strong> (WordPress 7.0+).</li>
+              <li data-i18n-html="install.step6">En la pestaña <strong>General</strong>, activa el widget, personaliza el mensaje de bienvenida y guarda los cambios.</li>
+              <li data-i18n-html="install.step7">El chat aparecerá en tu sitio. También puedes insertarlo con el shortcode <code>[multch_widget]</code> en cualquier página.</li>
             </ol>
-            <p style="margin-top:1.25rem;color:var(--muted);font-size:0.95rem;">
+            <p style="margin-top:1.25rem;color:var(--muted);font-size:0.95rem;" data-i18n-html="install.streamingTip">
               ¿Problemas con la respuesta en streaming? Ve a <strong>Ajustes → Enlaces permanentes</strong> y pulsa Guardar cambios una vez.
             </p>
           </div>
           <div>
             <div class="card" style="margin-bottom:1rem;">
-              <h3 style="margin:0 0 0.5rem;">Descargar desde WordPress.org</h3>
-              <p style="margin:0 0 1rem;color:var(--muted);font-size:0.925rem;">
+              <h3 style="margin:0 0 0.5rem;" data-i18n="install.card1.title">Descargar desde WordPress.org</h3>
+              <p style="margin:0 0 1rem;color:var(--muted);font-size:0.925rem;" data-i18n="install.card1.text">
                 Instalación en un clic, actualizaciones automáticas y soporte en el foro oficial del plugin.
               </p>
-              <a class="btn btn-primary" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener" style="width:100%;">Ir a WordPress.org</a>
+              <a class="btn btn-primary" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener" style="width:100%;" data-i18n="install.card1.btn">Ir a WordPress.org</a>
             </div>
             <div class="card">
-              <h3 style="margin:0 0 0.5rem;">¿Te resulta útil?</h3>
-              <p style="margin:0 0 1rem;color:var(--muted);font-size:0.925rem;">
+              <h3 style="margin:0 0 0.5rem;" data-i18n="install.card2.title">¿Te resulta útil?</h3>
+              <p style="margin:0 0 1rem;color:var(--muted);font-size:0.925rem;" data-i18n="install.card2.text">
                 MultiAI ChatBot es gratuito y de código abierto. Si puedes, apoya el desarrollo con GitHub Sponsors; si no, una reseña o compartir el plugin también ayuda mucho.
               </p>
-              <a class="btn btn-outline" href="#apoyo" style="width:100%;">Ver formas de apoyar</a>
+              <a class="btn btn-outline" href="#apoyo" style="width:100%;" data-i18n="install.card2.btn">Ver formas de apoyar</a>
             </div>
           </div>
         </div>
@@ -1105,9 +1155,9 @@
     <section id="apoyo" class="support-section" aria-labelledby="apoyo-heading">
       <div class="container">
         <div class="support-panel">
-          <span class="support-badge">♥ Código abierto · GPL-2.0+</span>
-          <h2 id="apoyo-heading">Ayuda a mantener MultiAI ChatBot</h2>
-          <p class="support-lead">
+          <span class="support-badge" data-i18n="support.badge">♥ Código abierto · GPL-2.0+</span>
+          <h2 id="apoyo-heading" data-i18n="support.title">Ayuda a mantener MultiAI ChatBot</h2>
+          <p class="support-lead" data-i18n-html="support.lead">
             Este plugin es <strong>gratuito</strong> y se desarrolla en tiempo libre. Si te aporta valor en tu sitio,
             <strong>para quien pueda, una donación vía GitHub Sponsors</strong> financia mejoras, correcciones y compatibilidad con nuevas versiones de WordPress.
             <strong>Si no puedes donar, no pasa nada:</strong> dejar una reseña en WordPress.org o compartir el enlace del plugin con tu comunidad también es una ayuda real.
@@ -1115,38 +1165,38 @@
 
           <div class="support-grid">
             <article class="support-card support-card--primary">
-              <span class="support-card-tag">Recomendado si puedes</span>
-              <h3>GitHub Sponsors</h3>
-              <p>
+              <span class="support-card-tag" data-i18n="support.sponsor.tag">Recomendado si puedes</span>
+              <h3 data-i18n="support.sponsor.title">GitHub Sponsors</h3>
+              <p data-i18n="support.sponsor.text">
                 Donación recurrente o puntual para sostener el desarrollo. Cada aporte, por pequeño que sea, permite dedicar más tiempo al plugin y responder antes en soporte.
               </p>
-              <a class="btn btn-sponsor" href="https://github.com/sponsors/JunniorRavelo" target="_blank" rel="noopener noreferrer">
+              <a class="btn btn-sponsor" href="https://github.com/sponsors/JunniorRavelo" target="_blank" rel="noopener noreferrer" data-i18n="support.sponsor.btn">
                 Hacer una donación
               </a>
             </article>
 
             <article class="support-card">
-              <h3>Escribir una reseña</h3>
-              <p>
+              <h3 data-i18n="support.review.title">Escribir una reseña</h3>
+              <p data-i18n="support.review.text">
                 Cuéntanos tu experiencia en el directorio oficial. Las reseñas ayudan a que otros administradores descubran y confíen en el plugin.
               </p>
-              <a class="btn btn-support-outline" href="https://wordpress.org/support/plugin/multiai-chatbot/reviews/#new-post" target="_blank" rel="noopener noreferrer">
+              <a class="btn btn-support-outline" href="https://wordpress.org/support/plugin/multiai-chatbot/reviews/#new-post" target="_blank" rel="noopener noreferrer" data-i18n="support.review.btn">
                 Dejar reseña en WordPress.org
               </a>
             </article>
 
             <article class="support-card">
-              <h3>Compartir el plugin</h3>
-              <p>
+              <h3 data-i18n="support.share.title">Compartir el plugin</h3>
+              <p data-i18n="support.share.text">
                 Recomiéndalo en tu blog, newsletter, redes o con colegas que gestionen WordPress. El enlace oficial del directorio es el más útil para instalarlo en un clic.
               </p>
-              <a class="btn btn-support-outline" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener noreferrer">
+              <a class="btn btn-support-outline" href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener noreferrer" data-i18n="support.share.btn">
                 Enlace oficial para compartir
               </a>
             </article>
           </div>
 
-          <p class="support-note">
+          <p class="support-note" data-i18n-html="support.note">
             Gracias por usar MultiAI ChatBot — sponsor, reseña o difusión, <strong>cualquier gesto cuenta</strong>.
             También puedes seguir el proyecto en <a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener noreferrer">GitHub</a>.
           </p>
@@ -1160,41 +1210,42 @@
       <div class="footer-grid">
         <div>
           <h3>MultiAI ChatBot</h3>
-          <p>
+          <p data-i18n="footer.about">
             Plugin de WordPress que añade un widget de chat con IA configurable.
             Compatible con WordPress.org, GPL-2.0-or-later.
             Las credenciales permanecen en el servidor; la interfaz pública solo usa el nonce de WordPress.
           </p>
         </div>
         <div>
-          <h3>Enlaces</h3>
+          <h3 data-i18n="footer.links">Enlaces</h3>
           <ul class="footer-links">
             <li><a href="https://wordpress.org/plugins/multiai-chatbot/" target="_blank" rel="noopener">WordPress.org</a></li>
-            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">Repositorio GitHub</a></li>
-            <li><a href="https://wordpress.org/support/plugin/multiai-chatbot/" target="_blank" rel="noopener">Foro de soporte</a></li>
-            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/README.md" target="_blank" rel="noopener">Documentación (README)</a></li>
-            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/docs/AI-PROVIDERS.md" target="_blank" rel="noopener">Guía de proveedores IA</a></li>
-            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener" data-i18n="footer.link.repo">Repositorio GitHub</a></li>
+            <li><a href="https://wordpress.org/support/plugin/multiai-chatbot/" target="_blank" rel="noopener" data-i18n="footer.link.forum">Foro de soporte</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/README.md" target="_blank" rel="noopener" data-i18n="footer.link.docs">Documentación (README)</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/docs/AI-PROVIDERS.md" target="_blank" rel="noopener" data-i18n="footer.link.providers">Guía de proveedores IA</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-i18n="footer.link.changelog">Changelog</a></li>
           </ul>
         </div>
         <div>
-          <h3>Apoyar el proyecto</h3>
+          <h3 data-i18n="footer.support">Apoyar el proyecto</h3>
           <ul class="footer-links">
-            <li><a href="#apoyo">Formas de colaborar</a></li>
-            <li><a href="https://github.com/sponsors/JunniorRavelo" target="_blank" rel="noopener noreferrer">Donar (GitHub Sponsors)</a></li>
-            <li><a href="https://wordpress.org/support/plugin/multiai-chatbot/reviews/#new-post" target="_blank" rel="noopener noreferrer">Escribir reseña</a></li>
+            <li><a href="#apoyo" data-i18n="footer.support.collaborate">Formas de colaborar</a></li>
+            <li><a href="https://github.com/sponsors/JunniorRavelo" target="_blank" rel="noopener noreferrer" data-i18n="footer.support.donate">Donar (GitHub Sponsors)</a></li>
+            <li><a href="https://wordpress.org/support/plugin/multiai-chatbot/reviews/#new-post" target="_blank" rel="noopener noreferrer" data-i18n="footer.support.review">Escribir reseña</a></li>
             <li><a href="https://github.com/JunniorRavelo" target="_blank" rel="noopener">J. Santiago Ravelo Velasco</a></li>
             <li><a href="https://www.linkedin.com/in/jsravelo/" target="_blank" rel="noopener">LinkedIn</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 J. Santiago Ravelo Velasco · Licencia GPL-2.0-or-later</span>
-        <span><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/LICENSE" target="_blank" rel="noopener">Ver licencia</a></span>
+        <span data-i18n="footer.copyright">© 2026 J. Santiago Ravelo Velasco · Licencia GPL-2.0-or-later</span>
+        <span><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">Ver licencia</a></span>
       </div>
     </div>
   </footer>
 
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/hero-widget.js"></script>
 </body>
 </html>
