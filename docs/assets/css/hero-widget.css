@@ -63,8 +63,9 @@
   position: absolute;
   inset: 0;
   --maicb-z-base: 2;
-  --maicb-offset: 0.65rem;
+  --maicb-offset: 0.5rem;
   --maicb-panel-width: 300px;
+  --maicb-radius: 0.875rem;
   font-size: 13px;
   line-height: 1.45;
   pointer-events: none;
@@ -74,6 +75,7 @@
   display: none !important;
 }
 
+/* Anular section { padding: 4rem 0 } de la landing (el panel es <section>) */
 .hero-widget-host #multch-style-preview .maicb-panel {
   position: absolute !important;
   display: flex !important;
@@ -89,6 +91,7 @@
   max-height: none !important;
   transform: none !important;
   margin: 0 !important;
+  padding: 0 !important;
   border-radius: var(--maicb-radius) !important;
   overflow: hidden;
 }
@@ -97,14 +100,56 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  padding: 0.55rem 0.65rem 0.5rem;
+  gap: 0.6rem;
+}
+
+/* Cabecera y pie más compactos (menos aire en bordes superior e inferior del panel) */
+.hero-widget-host #multch-style-preview .maicb-header {
+  padding: 0.45rem 0.65rem !important;
+  gap: 0.45rem;
+  border-radius: var(--maicb-radius) var(--maicb-radius) 0 0;
+}
+
+.hero-widget-host #multch-style-preview .maicb-header-brand {
+  gap: 0.5rem;
+}
+
+.hero-widget-host #multch-style-preview .maicb-header-avatar {
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.55rem;
+}
+
+.hero-widget-host #multch-style-preview .maicb-header-avatar svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
 .hero-widget-host #multch-style-preview .maicb-header .maicb-header-title {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.2;
 }
 
 .hero-widget-host #multch-style-preview .maicb-header .maicb-header-sub {
-  font-size: 0.7rem;
+  margin: 0.1rem 0 0;
+  font-size: 0.65rem;
+  line-height: 1.2;
+}
+
+.hero-widget-host #multch-style-preview .maicb-header-actions {
+  gap: 0.2rem;
+}
+
+.hero-widget-host #multch-style-preview .maicb-icon-btn {
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 0.45rem;
+}
+
+.hero-widget-host #multch-style-preview .maicb-icon-btn svg {
+  width: 0.8rem;
+  height: 0.8rem;
 }
 
 .hero-widget-host #multch-style-preview .maicb-msg {
@@ -117,10 +162,36 @@
 
 .hero-widget-host #multch-style-preview .maicb-composer {
   flex-shrink: 0;
+  margin: 0 !important;
+  padding: 0.4rem 0.6rem 0.42rem !important;
+  border-radius: 0 0 var(--maicb-radius) var(--maicb-radius);
+  box-shadow: none;
+}
+
+.hero-widget-host #multch-style-preview .maicb-composer-inner {
+  align-items: center;
+  padding: 0.2rem 0.28rem 0.2rem 0.6rem;
+  gap: 0.35rem;
 }
 
 .hero-widget-host #multch-style-preview .maicb-input {
-  font-size: 0.8125rem;
+  min-height: 1.5rem;
+  padding: 0.28rem 0 !important;
+  margin: 0 !important;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.hero-widget-host #multch-style-preview .maicb-send {
+  width: 1.875rem !important;
+  height: 1.875rem !important;
+  min-height: 1.875rem;
+  margin: 0 !important;
+}
+
+.hero-widget-host #multch-style-preview .maicb-send svg {
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
 .hero-widget-host #multch-style-preview .maicb-icon-btn,
