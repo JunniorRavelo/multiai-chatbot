@@ -1500,9 +1500,9 @@ class Multch_Admin_Settings {
 		$stats_history_on  = Multch_Plugin::is_stats_history_enabled();
 		$tabs              = array(
 			'general'  => __( 'General', 'multiai-chatbot' ),
+			'style'    => __( 'Chat style', 'multiai-chatbot' ),
 			'model'    => __( 'AI Model', 'multiai-chatbot' ),
 			'security' => __( 'Security', 'multiai-chatbot' ),
-			'style'    => __( 'Chat style', 'multiai-chatbot' ),
 		);
 
 		if ( $stats_history_on ) {
