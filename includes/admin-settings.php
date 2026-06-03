@@ -2886,7 +2886,7 @@ class Multch_Admin_Settings {
 
 		self::card_open(
 			__( 'AI provider', 'multiai-chatbot' ),
-			__( 'Use WordPress Connectors, your own Google AI API key, or a local Ollama server.', 'multiai-chatbot' )
+			__( 'Choose WordPress AI, Google IA with your own Gemini API key, or a local Ollama server.', 'multiai-chatbot' )
 		);
 
 		$constant_overrides = multch_ai_client_constant_overridden_keys();

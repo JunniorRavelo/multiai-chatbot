@@ -1976,6 +1976,10 @@ msgstr "Use el cliente de IA de WordPress (Conectores del sitio) o un servidor O
 msgid "Use WordPress Connectors, your own Google AI API key, or a local Ollama server."
 msgstr "Use Conectores de WordPress, su propia clave API de Google IA (Gemini) o un servidor Ollama local."
 
+#: includes/admin-settings.php:2889
+msgid "Choose WordPress AI, Google IA with your own Gemini API key, or a local Ollama server."
+msgstr "Elija IA de WordPress, Google IA con su propia clave API de Gemini o un servidor Ollama local."
+
 #: includes/admin-settings.php:2045
 msgid "WordPress AI (Connectors)"
 msgstr "IA de WordPress (Conectores)"
