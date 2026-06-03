@@ -485,7 +485,7 @@
       return message;
     }
     if (/<!doctype html/i.test(message) || /<html/i.test(message)) {
-      return "The server returned an error (502). Leave the internal chat URL empty and verify the DeepSeek API key.";
+      return "The server returned an error (502). Check your AI provider configuration under MultiAI ChatBot → AI Model or Settings → Connectors.";
     }
     if (
       /exceeded your (current )?quota|check your plan and billing|resource exhausted|quota exceeded/i.test(

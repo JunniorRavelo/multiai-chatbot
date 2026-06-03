@@ -18,7 +18,7 @@ If you want **Google Gemini**, you can use either path. Both can use the **same 
 
 ### WordPress AI (Connectors)
 
-- Connect Google (and optionally OpenAI, Anthropic, etc.) under **Settings → Connectors**.
+- Connect **OpenAI**, **Google (Gemini)**, or **Anthropic** under **Settings → Connectors** (the connectors currently supported by WordPress 7.0+).
 - In this plugin, select **WordPress AI** and pick primary/fallback models.
 - The plugin does **not** store your Gemini API key; WordPress core routes the request using Connectors credentials.
 - Best when you want **one central place** for AI keys shared across compatible plugins.
@@ -36,7 +36,7 @@ flowchart LR
   WP --> Choice{Provider setting}
   Choice -->|wordpress_ai| Client[WordPress AI Client]
   Client --> Conn[Settings → Connectors]
-  Conn --> Cloud[OpenAI / Google / Anthropic / …]
+  Conn --> Cloud[OpenAI / Google Gemini / Anthropic]
   Choice -->|google_ia| Google[generativelanguage.googleapis.com]
   Choice -->|ollama| Ollama[Your Ollama URL]
 ```
@@ -81,10 +81,14 @@ The **site administrator** is responsible for:
 
 Links (also in `readme.txt`):
 
-- Google Gemini API terms: https://ai.google.dev/gemini-api/terms  
-- Google privacy: https://policies.google.com/privacy  
-- Ollama (website): https://ollama.com/terms and https://ollama.com/privacy  
-- Connectors providers: use each provider’s documentation linked from **Settings → Connectors**.
+- **Google IA / Gemini API:** https://ai.google.dev/gemini-api/terms — https://policies.google.com/privacy  
+- **Ollama (website):** https://ollama.com/terms — https://ollama.com/privacy  
+- **WordPress AI (Connectors)** — OpenAI, Anthropic, and Google Gemini (only when connected under **Settings → Connectors**):
+  - OpenAI: https://openai.com/policies/terms-of-use — https://openai.com/policies/privacy-policy  
+  - Anthropic: https://www.anthropic.com/legal/terms — https://www.anthropic.com/legal/privacy  
+  - Google (Gemini via Connectors): same Gemini links as above  
+
+OpenAI and Anthropic are reached only through the WordPress AI Client when **WordPress AI** is selected. **Google IA** is a separate plugin provider that calls Google's API directly with your own Gemini API key.
 
 ## Configuration reference
 

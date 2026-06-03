@@ -61,7 +61,7 @@ You enable **one** provider at a time under **MultiAI ChatBot → AI Model**.
 
 | | **WordPress AI** | **Google IA** |
 |---|------------------|---------------|
-| **Best for** | Connectors already set up; multiple providers (OpenAI, Google, Anthropic, …) | Gemini only; key in this plugin or `wp-config.php` |
+| **Best for** | Connectors already set up; OpenAI, Google Gemini, or Anthropic | Gemini only; key in this plugin or `wp-config.php` |
 | **API key** | **Settings → Connectors** (not stored in this plugin) | **AI Model** tab or `MULTCH_GEMINI_API_KEY` |
 | **Request path** | WordPress AI Client → Connectors | Direct HTTPS to `generativelanguage.googleapis.com` |
 | **WP version** | 7.0+ recommended | 6.2+ (7.0+ recommended for model list from Connectors) |
@@ -77,7 +77,7 @@ You enable **one** provider at a time under **MultiAI ChatBot → AI Model**.
 
 - Provider ID: `wordpress_ai`
 - Requires WordPress 7.0+ with the built-in AI Client
-- Configure API keys and provider plugins under **Settings → Connectors**
+- Connect **OpenAI**, **Google (Gemini)**, or **Anthropic** under **Settings → Connectors** (the connectors currently supported by WordPress 7.0+)
 - Set a **primary model** and optional **fallback model** in **MultiAI ChatBot → AI Model**
 - Optional **Google automatic fallback** when the configured models fail
 - Optional `wp-config.php` overrides for model preference:
@@ -247,7 +247,7 @@ See [docs/env.example](docs/env.example) and [docs/AI-PROVIDERS.md](docs/AI-PROV
 Before uploading to the plugin directory:
 
 1. Run `./scripts/verify-plugin-package` and [Plugin Check](https://wordpress.org/plugins/plugin-check/) on the **unzipped ZIP**, not the full Git repo.
-2. Ensure `readme.txt` documents all optional external services (Connectors providers, Google IA, Ollama), when data is sent, and privacy links — see == External services == and == Privacy ==.
+2. Ensure `readme.txt` documents all optional external services (Connectors: OpenAI, Anthropic, Google Gemini; plus Google IA and Ollama), when data is sent, and privacy links — see == External services == and == Privacy ==.
 3. Confirm **Stable tag** and `Version` in `multiai-chatbot.php` match the release you submit.
 4. Set **Tested up to** in `readme.txt` to the latest stable WordPress major version (currently **7.0**). WordPress.org rejects values below the current minimum (for example, `6.8` when `6.9+` is required).
 
