@@ -1162,46 +1162,94 @@
 
 #multch-plugin-root .maicb-msg-pending,
 #multch-style-preview .maicb-msg-pending {
-  min-width: 3.5rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0.5rem 0.8rem;
 }
 
-#multch-plugin-root .maicb-msg-pending .maicb-thinking,
-#multch-style-preview .maicb-msg-pending .maicb-thinking {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
+#multch-plugin-root .maicb-msg-pending.maicb-msg-assistant,
+#multch-style-preview .maicb-msg-pending.maicb-msg-assistant {
+  position: relative;
+  overflow: hidden;
 }
 
-#multch-plugin-root .maicb-thinking-row,
-#multch-style-preview .maicb-thinking-row {
-  opacity: 0.92;
+#multch-plugin-root .maicb-msg-pending.maicb-msg-assistant::after,
+#multch-style-preview .maicb-msg-pending.maicb-msg-assistant::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    color-mix(in srgb, var(--maicb-primary) 6%, transparent) 50%,
+    transparent 62%
+  );
+  background-size: 220% 100%;
+  animation: maicb-pending-shimmer 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes maicb-pending-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+
+  100% {
+    background-position: -120% 0;
+  }
 }
 
 #multch-plugin-root .maicb-thinking,
 #multch-style-preview .maicb-thinking {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 1.25rem;
+}
+
+#multch-plugin-root .maicb-thinking-dots,
+#multch-style-preview .maicb-thinking-dots {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: 1.125rem;
-  border-bottom-left-radius: 0.35rem;
-  background: var(--maicb-assistant-bg, color-mix(in srgb, var(--maicb-fg) 6%, var(--maicb-card)));
-  border: 1px solid var(--maicb-border);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  height: 1.1rem;
+  color: color-mix(in srgb, var(--maicb-fg) 52%, var(--maicb-muted));
+}
+
+#multch-plugin-root .maicb-thinking-label,
+#multch-style-preview .maicb-thinking-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--maicb-fg) 58%, var(--maicb-muted));
+  animation: maicb-thinking-label-pulse 2s ease-in-out infinite;
+}
+
+@keyframes maicb-thinking-label-pulse {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .maicb-widget .maicb-thinking-dot,
 #multch-plugin-root .maicb-thinking-dot,
 #multch-style-preview .maicb-thinking-dot {
-  display: inline-block;
-  width: 0.52rem;
-  height: 0.52rem;
+  display: block;
+  flex-shrink: 0;
+  width: 0.4rem;
+  height: 0.4rem;
   border-radius: 50%;
-  background: var(--maicb-primary, #2563eb);
-  animation: maicb-thinking-bounce 1.15s ease-in-out infinite;
+  background: currentColor;
+  animation: maicb-typing-pulse 1.35s ease-in-out infinite;
   will-change: transform, opacity;
 }
 
@@ -1214,26 +1262,26 @@
 .maicb-widget .maicb-thinking-dot:nth-child(2),
 #multch-plugin-root .maicb-thinking-dot:nth-child(2),
 #multch-style-preview .maicb-thinking-dot:nth-child(2) {
-  animation-delay: 0.18s;
+  animation-delay: 0.2s;
 }
 
 .maicb-widget .maicb-thinking-dot:nth-child(3),
 #multch-plugin-root .maicb-thinking-dot:nth-child(3),
 #multch-style-preview .maicb-thinking-dot:nth-child(3) {
-  animation-delay: 0.36s;
+  animation-delay: 0.4s;
 }
 
-@keyframes maicb-thinking-bounce {
+@keyframes maicb-typing-pulse {
   0%,
-  55%,
+  70%,
   100% {
-    opacity: 0.35;
-    transform: translateY(0) scale(0.7);
+    opacity: 0.28;
+    transform: scale(0.82);
   }
 
-  28% {
+  35% {
     opacity: 1;
-    transform: translateY(-6px) scale(1.15);
+    transform: scale(1);
   }
 }
 
@@ -1631,10 +1679,24 @@
   opacity: 0;
 }
 
+#multch-plugin-root .maicb-reduce-motion .maicb-msg-pending.maicb-msg-assistant::after,
+#multch-style-preview .maicb-reduce-motion .maicb-msg-pending.maicb-msg-assistant::after,
+.maicb-widget.maicb-reduce-motion .maicb-msg-pending.maicb-msg-assistant::after {
+  animation: none;
+  opacity: 0;
+}
+
+#multch-plugin-root .maicb-reduce-motion .maicb-thinking-label,
+#multch-style-preview .maicb-reduce-motion .maicb-thinking-label,
+.maicb-widget.maicb-reduce-motion .maicb-thinking-label {
+  animation: none;
+  opacity: 0.85;
+}
+
 .maicb-widget.maicb-reduce-motion .maicb-thinking-dot,
 #multch-plugin-root .maicb-reduce-motion .maicb-thinking-dot,
 #multch-style-preview .maicb-reduce-motion .maicb-thinking-dot {
-  animation: maicb-thinking-fade 1.6s ease-in-out infinite;
+  animation: maicb-typing-fade 1.5s ease-in-out infinite;
   transform: none;
 }
 
@@ -1645,18 +1707,32 @@
     opacity: 0;
   }
 
+  #multch-plugin-root .maicb-msg-pending.maicb-msg-assistant::after,
+  #multch-style-preview .maicb-msg-pending.maicb-msg-assistant::after,
+  .maicb-widget .maicb-msg-pending.maicb-msg-assistant::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  #multch-plugin-root .maicb-thinking-label,
+  #multch-style-preview .maicb-thinking-label,
+  .maicb-widget .maicb-thinking-label {
+    animation: none;
+    opacity: 0.85;
+  }
+
   .maicb-widget .maicb-thinking-dot,
   #multch-plugin-root .maicb-thinking-dot,
   #multch-style-preview .maicb-thinking-dot {
-    animation: maicb-thinking-fade 1.6s ease-in-out infinite;
+    animation: maicb-typing-fade 1.5s ease-in-out infinite;
     transform: none;
   }
 }
 
-@keyframes maicb-thinking-fade {
+@keyframes maicb-typing-fade {
   0%,
   100% {
-    opacity: 0.35;
+    opacity: 0.3;
   }
 
   50% {

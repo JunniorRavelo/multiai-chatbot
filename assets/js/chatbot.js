@@ -19,24 +19,26 @@
     const style = document.createElement("style");
     style.id = "maicb-thinking-keyframes";
     style.textContent =
-      "@keyframes maicb-thinking-bounce{" +
-      "0%,55%,100%{opacity:.35;transform:translateY(0) scale(.7)}" +
-      "28%{opacity:1;transform:translateY(-6px) scale(1.15)}" +
+      "@keyframes maicb-typing-pulse{" +
+      "0%,70%,100%{opacity:.28;transform:scale(.82)}" +
+      "35%{opacity:1;transform:scale(1)}" +
       "}" +
-      "@keyframes maicb-thinking-fade{" +
-      "0%,100%{opacity:.35}50%{opacity:1}" +
+      "@keyframes maicb-typing-fade{" +
+      "0%,100%{opacity:.3}50%{opacity:1}" +
       "}" +
+      ".maicb-widget .maicb-thinking-dots{" +
+      "display:inline-flex;align-items:center;gap:.3rem;height:1.1rem}" +
       ".maicb-widget .maicb-thinking-dot{" +
-      "display:inline-block;width:.52rem;height:.52rem;border-radius:50%;" +
-      "background:var(--maicb-primary,#2563eb);" +
-      "animation:maicb-thinking-bounce 1.15s ease-in-out infinite;" +
-      "}" +
-      ".maicb-widget .maicb-thinking-dot:nth-child(2){animation-delay:.18s}" +
-      ".maicb-widget .maicb-thinking-dot:nth-child(3){animation-delay:.36s}" +
+      "display:block;width:.4rem;height:.4rem;border-radius:50%;" +
+      "background:currentColor;" +
+      "animation:maicb-typing-pulse 1.35s ease-in-out infinite}" +
+      ".maicb-widget .maicb-thinking-dot:nth-child(2){animation-delay:.2s}" +
+      ".maicb-widget .maicb-thinking-dot:nth-child(3){animation-delay:.4s}" +
       ".maicb-widget.maicb-reduce-motion .maicb-thinking-dot{" +
-      "animation:maicb-thinking-fade 1.6s ease-in-out infinite;transform:none}" +
+      "animation:maicb-typing-fade 1.5s ease-in-out infinite;transform:none}" +
       "@media (prefers-reduced-motion:reduce){" +
-      ".maicb-widget .maicb-thinking-dot{animation:maicb-thinking-fade 1.6s ease-in-out infinite;transform:none}" +
+      ".maicb-widget .maicb-thinking-dot{" +
+      "animation:maicb-typing-fade 1.5s ease-in-out infinite;transform:none}" +
       "}";
     document.head.appendChild(style);
   }
@@ -635,13 +637,30 @@
 
       if (showThinking) {
         bubble.classList.add("maicb-msg-pending");
-        bubble.setAttribute("aria-label", i18n.thinking || "Thinking…");
-        bubble.innerHTML =
-          '<div class="maicb-thinking" aria-hidden="true">' +
-          '<span class="maicb-thinking-dot"></span>' +
-          '<span class="maicb-thinking-dot"></span>' +
-          '<span class="maicb-thinking-dot"></span>' +
-          "</div>";
+        const thinkingLabel = i18n.thinking || "Thinking…";
+        bubble.setAttribute("aria-label", thinkingLabel);
+
+        const thinking = document.createElement("div");
+        thinking.className = "maicb-thinking";
+        thinking.setAttribute("role", "status");
+        thinking.setAttribute("aria-live", "polite");
+
+        const dotsWrap = document.createElement("span");
+        dotsWrap.className = "maicb-thinking-dots";
+        dotsWrap.setAttribute("aria-hidden", "true");
+        for (let i = 0; i < 3; i += 1) {
+          const dot = document.createElement("span");
+          dot.className = "maicb-thinking-dot";
+          dotsWrap.appendChild(dot);
+        }
+
+        const label = document.createElement("span");
+        label.className = "maicb-thinking-label";
+        label.textContent = thinkingLabel;
+
+        thinking.appendChild(dotsWrap);
+        thinking.appendChild(label);
+        bubble.appendChild(thinking);
       } else {
         bubble.textContent = msg.content || "";
         if (role === "assistant") {
