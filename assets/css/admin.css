@@ -800,18 +800,6 @@ button.multch-donation-footer__chip {
   }
 }
 
-/* Tablet / layout en una columna: más alto para que el panel del chat se lea bien */
-@media (max-width: 899px) {
-  .multch-admin-layout--split .multch-admin-preview-card {
-    order: -1;
-  }
-
-  .multch-admin-preview__viewport {
-    min-height: max(400px, 44vh);
-    height: min(520px, 58vh);
-  }
-}
-
 .multch-admin-preview__viewport[data-preview-panel-open="true"] .multch-admin-preview__page-mock {
   opacity: 0.12;
 }
@@ -1766,8 +1754,8 @@ button.multch-donation-footer__chip {
   }
 
   .multch-admin-preview__viewport {
-    min-height: max(420px, 50vh);
-    height: min(540px, 62vh);
+    min-height: 240px;
+    height: min(320px, 42vh);
   }
 
   .multch-admin-preview__hint {
@@ -1796,8 +1784,8 @@ button.multch-donation-footer__chip {
 
 @media (max-width: 480px) {
   .multch-admin-preview__viewport {
-    min-height: max(380px, 52vh);
-    height: min(500px, 68vh);
+    min-height: 200px;
+    height: min(280px, 38vh);
   }
 }
 
