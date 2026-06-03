@@ -522,6 +522,8 @@
       panelMaxHeight: base.panelMaxHeight,
       launcherLabel: base.launcherLabel,
       showCredit: !!base.showCredit,
+      showWelcomeLabel: base.showWelcomeLabel !== false,
+      showModelLabel: base.showModelLabel !== false,
       fontFamily: base.fontFamily,
       zIndex: base.zIndex,
       reduceMotion: base.reduceMotion,
@@ -830,12 +832,18 @@
         bubble.appendChild(thinking);
       } else if (role === "assistant") {
         setAssistantBubbleContent(bubble, msg.content || "");
-        const meta = document.createElement("span");
-        meta.className = "maicb-msg-meta";
-        if (msg.id === "welcome") {
+        if (msg.id === "welcome" && style.showWelcomeLabel !== false) {
+          const meta = document.createElement("span");
+          meta.className = "maicb-msg-meta";
           meta.textContent = i18n.welcomeLabel || "Welcome message";
           bubble.appendChild(meta);
-        } else if (msg.model && msg.model !== "system") {
+        } else if (
+          style.showModelLabel !== false &&
+          msg.model &&
+          msg.model !== "system"
+        ) {
+          const meta = document.createElement("span");
+          meta.className = "maicb-msg-meta";
           meta.textContent = msg.model;
           bubble.appendChild(meta);
         }

@@ -87,6 +87,8 @@
       var zIndexEl = field("style_z_index");
       var launcherLabelEl = checkboxField("style_launcher_label");
       var showCreditEl = checkboxField("style_show_credit");
+      var showWelcomeLabelEl = checkboxField("style_show_welcome_label");
+      var showModelLabelEl = checkboxField("style_show_model_label");
       var reduceMotionEl = checkboxField("style_reduce_motion");
       var presetAutoEl = checkboxField("style_preset_auto");
       var presetAutoDarkEl = field("style_preset_auto_dark");
@@ -106,6 +108,8 @@
         zIndex: zIndexEl ? parseInt(zIndexEl.value, 10) || 0 : 0,
         launcherLabel: launcherLabelEl ? launcherLabelEl.checked : true,
         showCredit: showCreditEl ? showCreditEl.checked : false,
+        showWelcomeLabel: showWelcomeLabelEl ? showWelcomeLabelEl.checked : true,
+        showModelLabel: showModelLabelEl ? showModelLabelEl.checked : true,
         reduceMotion: reduceMotionEl ? reduceMotionEl.checked : false,
         presetAuto: presetAutoEl ? presetAutoEl.checked : false,
         presetAutoDark: presetAutoDarkEl ? presetAutoDarkEl.value : "dark-glass",
@@ -128,6 +132,8 @@
         zIndex: savedStyle.zIndex || 0,
         launcherLabel: savedStyle.launcherLabel !== false,
         showCredit: !!savedStyle.showCredit,
+        showWelcomeLabel: savedStyle.showWelcomeLabel !== false,
+        showModelLabel: savedStyle.showModelLabel !== false,
         reduceMotion: !!savedStyle.reduceMotion,
         presetAuto: !!savedStyle.presetAuto,
         presetAutoDark: savedStyle.presetAutoDark || "dark-glass",
@@ -486,7 +492,9 @@
         createPreviewMessage(
           "assistant",
           welcomeText,
-          previewI18n("welcomeMessageLabel", "Welcome message")
+          settings.showWelcomeLabel !== false
+            ? previewI18n("welcomeMessageLabel", "Welcome message")
+            : ""
         )
       );
       messagesEl.appendChild(
@@ -501,7 +509,13 @@
           previewI18n(
             "previewSampleAssistant",
             "We are open Monday through Friday, 9:00 AM to 6:00 PM."
-          )
+          ),
+          settings.showModelLabel !== false
+            ? previewI18n(
+                "previewSampleModel",
+                "gemini-3.5-flash (API used this; configured fallback: gemini-3.1-flash-lite)"
+              )
+            : ""
         )
       );
     }

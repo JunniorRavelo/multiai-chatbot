@@ -70,6 +70,8 @@ class Multch_Admin_Settings {
 			'style_preset_auto'     => false,
 			'style_preset_auto_dark' => 'dark-glass',
 			'style_show_credit'     => false,
+			'style_show_welcome_label' => true,
+			'style_show_model_label'   => true,
 			'style_custom_css'      => '',
 			'widget_title'          => 'AI Agent',
 			'widget_subtitle'       => 'System online',
@@ -483,11 +485,13 @@ class Multch_Admin_Settings {
 			'panelMaxHeight' => trim( (string) ( $settings['style_panel_max_height'] ?? '' ) ),
 			'zIndex'         => $z > 0 ? $z : 0,
 			'fontFamily'     => sanitize_key( (string) ( $settings['style_font_family'] ?? 'system' ) ) ?: 'system',
-			'launcherLabel'  => ! empty( $settings['style_launcher_label'] ),
-			'showCredit'     => ! empty( $settings['style_show_credit'] ),
-			'reduceMotion'   => ! empty( $settings['style_reduce_motion'] ),
-			'presetAuto'     => ! empty( $settings['style_preset_auto'] ),
-			'presetAutoDark' => $preset_auto_dark,
+			'launcherLabel'    => ! empty( $settings['style_launcher_label'] ),
+			'showCredit'       => ! empty( $settings['style_show_credit'] ),
+			'showWelcomeLabel' => ! empty( $settings['style_show_welcome_label'] ),
+			'showModelLabel'   => ! empty( $settings['style_show_model_label'] ),
+			'reduceMotion'     => ! empty( $settings['style_reduce_motion'] ),
+			'presetAuto'       => ! empty( $settings['style_preset_auto'] ),
+			'presetAutoDark'   => $preset_auto_dark,
 		);
 	}
 
@@ -658,6 +662,8 @@ class Multch_Admin_Settings {
 
 		$out['style_launcher_label'] = self::sanitize_checkbox( $input, $current, 'style_launcher_label', (bool) $defaults['style_launcher_label'] );
 		$out['style_show_credit']    = self::sanitize_checkbox( $input, $current, 'style_show_credit', (bool) $defaults['style_show_credit'] );
+		$out['style_show_welcome_label'] = self::sanitize_checkbox( $input, $current, 'style_show_welcome_label', (bool) $defaults['style_show_welcome_label'] );
+		$out['style_show_model_label']   = self::sanitize_checkbox( $input, $current, 'style_show_model_label', (bool) $defaults['style_show_model_label'] );
 
 		$out['style_bg'] = sanitize_hex_color( $input['style_bg'] ?? $current['style_bg'] ?? '' ) ?: '';
 		$out['style_fg'] = sanitize_hex_color( $input['style_fg'] ?? $current['style_fg'] ?? '' ) ?: '';
@@ -735,6 +741,8 @@ class Multch_Admin_Settings {
 			'style_panel_width',
 			'style_launcher_label',
 			'style_show_credit',
+			'style_show_welcome_label',
+			'style_show_model_label',
 			'style_bg',
 			'style_fg',
 			'style_font_family',
@@ -785,7 +793,9 @@ class Multch_Admin_Settings {
 			'panelWidth'      => trim( (string) ( $merged['style_panel_width'] ?? '' ) ),
 			'panelMaxHeight'  => trim( (string) ( $merged['style_panel_max_height'] ?? '' ) ),
 			'launcherLabel'   => ! empty( $merged['style_launcher_label'] ),
-			'showCredit'      => ! empty( $merged['style_show_credit'] ),
+			'showCredit'       => ! empty( $merged['style_show_credit'] ),
+			'showWelcomeLabel' => ! empty( $merged['style_show_welcome_label'] ),
+			'showModelLabel'   => ! empty( $merged['style_show_model_label'] ),
 			'fontFamily'      => $font_family,
 			'zIndex'          => $z > 0 ? $z : 0,
 			'reduceMotion'    => ! empty( $merged['style_reduce_motion'] ),
@@ -3160,6 +3170,37 @@ class Multch_Admin_Settings {
 						<span><?php esc_html_e( 'Show title next to the 💬 icon', 'multiai-chatbot' ); ?></span>
 					</label>
 					<p class="description"><?php esc_html_e( 'The title is configured under General → Widget header.', 'multiai-chatbot' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php
+		self::card_close();
+
+		self::card_open(
+			__( 'Message labels', 'multiai-chatbot' ),
+			__( 'Optional labels under assistant messages in the visitor chat only.', 'multiai-chatbot' )
+		);
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Welcome message label', 'multiai-chatbot' ); ?></th>
+				<td>
+					<label class="multch-admin-toggle">
+						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_welcome_label]" value="0" />
+						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_welcome_label]" value="1" <?php checked( ! empty( $settings['style_show_welcome_label'] ) ); ?> />
+						<span><?php esc_html_e( 'Show “Welcome message” under the first assistant reply', 'multiai-chatbot' ); ?></span>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Model label', 'multiai-chatbot' ); ?></th>
+				<td>
+					<label class="multch-admin-toggle">
+						<input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_model_label]" value="0" />
+						<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[style_show_model_label]" value="1" <?php checked( ! empty( $settings['style_show_model_label'] ) ); ?> />
+						<span><?php esc_html_e( 'Show which AI model answered each reply', 'multiai-chatbot' ); ?></span>
+					</label>
+					<p class="description"><?php esc_html_e( 'These options only affect the public chat widget. Statistics and conversation history in the admin are unchanged.', 'multiai-chatbot' ); ?></p>
 				</td>
 			</tr>
 		</table>
