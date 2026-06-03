@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MultiAI ChatBot — Plugin de WordPress con widget de chat IA. Conectores, Google Gemini, Ollama, estilos personalizables, historial y telemetría.">
+  <meta name="author" content="J. Santiago Ravelo Velasco">
+  <meta property="og:title" content="MultiAI ChatBot — Plugin de WordPress">
+  <meta property="og:description" content="Asistente de IA para tu sitio WordPress con múltiples proveedores, temas visuales y panel de administración completo.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://junniorravelo.github.io/multiai-chatbot/">
+  <title>MultiAI ChatBot — Plugin de WordPress</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232563eb'/><path d='M28 52c0-12 10-22 22-22s22 10 22 22-10 22-22 22' fill='none' stroke='white' stroke-width='7' stroke-linecap='round'/><circle cx='72' cy='72' r='8' fill='%237c3aed'/></svg>">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #7c3aed;
+      --success: #059669;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --border: rgba(15, 23, 42, 0.1);
+      --radius: 1rem;
+      --shadow: 0 18px 44px -18px rgba(15, 23, 42, 0.25);
+      --max-width: 1120px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg);
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { color: var(--primary-dark); text-decoration: underline; }
+
+    .container {
+      width: min(100% - 2rem, var(--max-width));
+      margin-inline: auto;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-block: 0.85rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .brand:hover { text-decoration: none; color: var(--fg); }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.25rem;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .nav a:hover { color: var(--primary); text-decoration: none; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 0.65rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: #fff;
+      box-shadow: 0 8px 24px -8px rgba(37, 99, 235, 0.55);
+    }
+
+    .btn-primary:hover { color: #fff; box-shadow: 0 12px 28px -8px rgba(37, 99, 235, 0.65); }
+
+    .btn-outline {
+      background: var(--surface);
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover { color: var(--primary); border-color: rgba(37, 99, 235, 0.35); }
+
+    /* Hero */
+    .hero {
+      padding: 4.5rem 0 3.5rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37, 99, 235, 0.18), transparent),
+        radial-gradient(ellipse 50% 40% at 90% 20%, rgba(124, 58, 237, 0.1), transparent),
+        var(--bg);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary-dark);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      margin: 0 0 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-lead {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin: 0 0 1.75rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .hero-meta strong { color: var(--fg); }
+
+    /* Widget preview mockup */
+    .widget-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      max-width: 380px;
+      margin-inline: auto;
+    }
+
+    .widget-preview-header {
+      padding: 1rem 1.15rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.06));
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .widget-preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .widget-preview-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .widget-preview-body {
+      padding: 1.15rem;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 55%, #f1f5f9 100%);
+    }
+
+    .bubble {
+      max-width: 85%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .bubble-user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #fff;
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    .bubble-bot {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    .widget-preview-input {
+      margin: 0 1rem 1rem;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    /* Sections */
+    section {
+      padding: 4rem 0;
+    }
+
+    section:nth-child(even) {
+      background: var(--surface);
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 2.75rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    /* Feature grid */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    section:nth-child(even) .card {
+      background: var(--bg);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow);
+      border-color: rgba(37, 99, 235, 0.2);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.925rem;
+    }
+
+    /* Providers */
+    .providers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .provider-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: var(--surface);
+      position: relative;
+    }
+
+    section:nth-child(even) .provider-card {
+      background: var(--bg);
+    }
+
+    .provider-card.recommended {
+      border-color: rgba(37, 99, 235, 0.4);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+    }
+
+    .provider-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary-dark);
+    }
+
+    .provider-card h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1.1rem;
+    }
+
+    .provider-card .provider-id {
+      font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .provider-card ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .provider-card li { margin-bottom: 0.35rem; }
+
+    /* Themes */
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+    }
+
+    .theme-swatch {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.15s ease;
+    }
+
+    .theme-swatch:hover { transform: scale(1.03); }
+
+    .theme-color {
+      height: 64px;
+    }
+
+    .theme-label {
+      padding: 0.55rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--surface);
+      text-align: center;
+    }
+
+    section:nth-child(even) .theme-label {
+      background: var(--bg);
+    }
+
+    /* Admin tabs */
+    .admin-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-tab {
+      padding: 0.45rem 0.85rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--primary-dark);
+      border: 1px solid transparent;
+    }
+
+    .admin-desc {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .admin-desc-item {
+      padding: 1rem 1.15rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    section:nth-child(even) .admin-desc-item {
+      background: var(--surface);
+    }
+
+    .admin-desc-item strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .admin-desc-item span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Code */
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .code-block .comment { color: #64748b; }
+    .code-block .string { color: #86efac; }
+    .code-block .keyword { color: #93c5fd; }
+
+    .install-steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .steps-list {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .steps-list li {
+      margin-bottom: 0.65rem;
+      color: var(--muted);
+    }
+
+    .steps-list li strong { color: var(--fg); }
+
+    /* Requirements bar */
+    .req-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem 2rem;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(124, 58, 237, 0.04));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 2.5rem;
+    }
+
+    .req-item {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .req-item strong {
+      display: block;
+      font-size: 1.05rem;
+      color: var(--primary-dark);
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 3rem 0 2rem;
+      background: #0f172a;
+      color: #94a3b8;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .site-footer h3 {
+      color: #f1f5f9;
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+    }
+
+    .site-footer p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .footer-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-links li { margin-bottom: 0.45rem; }
+
+    .footer-links a {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover { color: #fff; text-decoration: underline; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .footer-bottom a { color: #94a3b8; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid,
+      .grid-3,
+      .providers-grid,
+      .themes-grid,
+      .install-steps,
+      .admin-desc,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero { padding-top: 3rem; }
+      .widget-preview { max-width: 100%; }
+
+      .nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="#">
+        <span class="brand-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
+        </span>
+        MultiAI ChatBot
+      </a>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#caracteristicas">Características</a>
+        <a href="#proveedores">Proveedores IA</a>
+        <a href="#estilos">Estilos</a>
+        <a href="#instalacion">Instalación</a>
+        <a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <a class="btn btn-primary" href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">Ver repositorio</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="badge">v1.0.4 · WordPress 6.2+ · PHP 8.0+</span>
+          <h1>Asistente de IA para <span>WordPress</span></h1>
+          <p class="hero-lead">
+            <strong>MultiAI ChatBot</strong> añade un widget de chat inteligente a tu sitio web.
+            Conecta modelos de IA mediante WordPress Connectors, tu propia clave de Google Gemini u Ollama local.
+            Personaliza la apariencia, revisa conversaciones y exporta estadísticas — todo desde el panel de WordPress.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              Descargar en GitHub
+            </a>
+            <a class="btn btn-outline" href="#instalacion">Guía de instalación</a>
+          </div>
+          <div class="hero-meta">
+            <span><strong>GPL-2.0+</strong> · Código abierto</span>
+            <span><strong>3</strong> proveedores de IA</span>
+            <span><strong>8</strong> temas visuales</span>
+            <span>Traducción <strong>ES</strong></span>
+          </div>
+        </div>
+
+        <div class="widget-preview" aria-hidden="true">
+          <div class="widget-preview-header">
+            <span class="widget-preview-dot"></span>
+            <span class="widget-preview-title">Asistente IA</span>
+          </div>
+          <div class="widget-preview-body">
+            <div class="bubble bubble-bot">¡Hola! Soy el asistente de tu sitio. ¿En qué puedo ayudarte hoy?</div>
+            <div class="bubble bubble-user">¿Qué plugins de IA recomiendas para WordPress?</div>
+            <div class="bubble bubble-bot">MultiAI ChatBot integra Connectors, Gemini y Ollama con un panel completo de administración.</div>
+          </div>
+          <div class="widget-preview-input">Escribe tu mensaje…</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="caracteristicas">
+      <div class="container">
+        <div class="section-header">
+          <h2>Todo lo que necesitas en un solo plugin</h2>
+          <p>Widget flotante o embebido, respuestas en streaming, historial opcional y telemetría — sin exponer credenciales al navegador.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-icon" style="background:rgba(37,99,235,0.12);">🤖</div>
+            <h3>Múltiples proveedores IA</h3>
+            <p>WordPress AI (Connectors), Google IA con tu clave Gemini, o modelos locales con Ollama. Un proveedor activo a la vez.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="background:rgba(124,58,237,0.12);">🎨</div>
+            <h3>8 temas visuales</h3>
+            <p>Sapphire, Midnight, Obsidian, Monochrome, Aqua, Ember, Emerald, Amethyst y Plum. Colores, posición y radio personalizables.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="background:rgba(5,150,105,0.12);">📊</div>
+            <h3>Estadísticas e historial</h3>
+            <p>Telemetría de latencia, errores y modelos usados. Historial de conversaciones con filtros y exportación CSV (opt-in).</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="background:rgba(217,119,6,0.12);">⚡</div>
+            <h3>Respuestas en streaming</h3>
+            <p>Respuestas progresivas para una experiencia más natural. Activable desde la pestaña General del panel de administración.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="background:rgba(220,38,38,0.1);">🔒</div>
+            <h3>Seguridad integrada</h3>
+            <p>Límite de peticiones por IP, orígenes permitidos, suspensión por abuso. Las claves API nunca llegan al frontend.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="background:rgba(99,102,241,0.12);">🧩</div>
+            <h3>Widget global o shortcode</h3>
+            <p>Activa el chat en todo el sitio o inserta <code>[multch_widget]</code> solo donde lo necesites, en modo flotante o inline.</p>
+          </article>
+        </div>
+
+        <div class="req-bar">
+          <div class="req-item"><strong>WordPress 6.2+</strong>Probado hasta 7.0</div>
+          <div class="req-item"><strong>PHP 8.0+</strong>Requerido</div>
+          <div class="req-item"><strong>REST API</strong><code>/multch/v1/</code></div>
+          <div class="req-item"><strong>i18n</strong>es_ES · es_CO</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="proveedores">
+      <div class="container">
+        <div class="section-header">
+          <h2>Elige tu proveedor de IA</h2>
+          <p>Configura un proveedor en <strong>MultiAI ChatBot → AI Model</strong>. Los datos del visitante solo se envían cuando alguien usa el chat.</p>
+        </div>
+
+        <div class="providers-grid">
+          <article class="provider-card recommended">
+            <span class="provider-tag">Recomendado</span>
+            <h3>WordPress AI</h3>
+            <p class="provider-id">wordpress_ai</p>
+            <ul>
+              <li>Usa el AI Client de WordPress 7.0+</li>
+              <li>OpenAI, Google Gemini o Anthropic vía Connectors</li>
+              <li>Claves en <strong>Ajustes → Connectors</strong></li>
+              <li>Modelo principal y fallback configurables</li>
+              <li>Fallback automático a Google si falla</li>
+            </ul>
+          </article>
+
+          <article class="provider-card">
+            <h3>Google IA</h3>
+            <p class="provider-id">google_ia</p>
+            <ul>
+              <li>Tu propia clave de Google Gemini</li>
+              <li>Llamadas directas a la API de Google</li>
+              <li>Modelos del catálogo Connectors</li>
+              <li>Clave en admin o <code>wp-config.php</code></li>
+              <li>Modelo principal y fallback</li>
+            </ul>
+          </article>
+
+          <article class="provider-card">
+            <h3>Ollama</h3>
+            <p class="provider-id">ollama</p>
+            <ul>
+              <li>Modelos locales en tu infraestructura</li>
+              <li>Sin claves API en el plugin</li>
+              <li>URL por defecto: <code>127.0.0.1:11434</code></li>
+              <li>Ideal para privacidad y desarrollo</li>
+              <li>Ej.: llama3, mistral, gemma…</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="estilos">
+      <div class="container">
+        <div class="section-header">
+          <h2>Personaliza la apariencia</h2>
+          <p>8 presets con vista previa en vivo en el admin. Exporta e importa temas JSON. Sobrescribe estilos por shortcode.</p>
+        </div>
+
+        <div class="themes-grid">
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#2563eb,#6366f1);"></div>
+            <div class="theme-label">Sapphire <small>(default)</small></div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#1e293b,#334155);"></div>
+            <div class="theme-label">Midnight</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#0f0f0f,#262626);"></div>
+            <div class="theme-label">Obsidian</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#fafafa,#e5e5e5);"></div>
+            <div class="theme-label">Monochrome</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#0891b2,#06b6d4);"></div>
+            <div class="theme-label">Aqua</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#ea580c,#f97316);"></div>
+            <div class="theme-label">Ember</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#059669,#10b981);"></div>
+            <div class="theme-label">Emerald</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);"></div>
+            <div class="theme-label">Amethyst</div>
+          </div>
+          <div class="theme-swatch">
+            <div class="theme-color" style="background:linear-gradient(135deg,#9333ea,#c026d3);"></div>
+            <div class="theme-label">Plum</div>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem;">
+          <pre class="code-block"><span class="comment">// Shortcode con estilo personalizado</span>
+[multch_widget preset=<span class="string">"ocean"</span> position=<span class="string">"bottom-left"</span>]
+[multch_widget mode=<span class="string">"inline"</span> primary=<span class="string">"#059669"</span>]</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="admin">
+      <div class="container">
+        <div class="section-header">
+          <h2>Panel de administración completo</h2>
+          <p>Gestiona todo desde el menú <strong>MultiAI ChatBot</strong> en el escritorio de WordPress.</p>
+        </div>
+
+        <div class="admin-tabs" aria-label="Pestañas del admin">
+          <span class="admin-tab">General</span>
+          <span class="admin-tab">AI Model</span>
+          <span class="admin-tab">Security</span>
+          <span class="admin-tab">Chat Style</span>
+          <span class="admin-tab">Statistics</span>
+          <span class="admin-tab">History</span>
+        </div>
+
+        <div class="admin-desc">
+          <div class="admin-desc-item">
+            <strong>General</strong>
+            <span>Widget global, mensaje de bienvenida, system prompt, streaming e historial/estadísticas (desactivado por defecto).</span>
+          </div>
+          <div class="admin-desc-item">
+            <strong>AI Model</strong>
+            <span>Proveedor, modelos principal/fallback, clave Gemini (Google IA) y URL de Ollama.</span>
+          </div>
+          <div class="admin-desc-item">
+            <strong>Security</strong>
+            <span>Orígenes permitidos, caché, telemetría, límites por IP y suspensión por abuso.</span>
+          </div>
+          <div class="admin-desc-item">
+            <strong>Chat Style</strong>
+            <span>Presets visuales, colores personalizados, posición del widget y vista previa interactiva.</span>
+          </div>
+          <div class="admin-desc-item">
+            <strong>Statistics</strong>
+            <span>Totales, desglose por proveedor, latencia y exportación CSV.</span>
+          </div>
+          <div class="admin-desc-item">
+            <strong>History</strong>
+            <span>Conversaciones con ID <code>CB-YYYY-MM-DD-HH-MM-SS</code>, filtros y detalle de mensajes.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="instalacion">
+      <div class="container">
+        <div class="section-header">
+          <h2>Instalación rápida</h2>
+          <p>Genera el ZIP de producción sin archivos de desarrollo y súbelo a WordPress.</p>
+        </div>
+
+        <div class="install-steps">
+          <div>
+            <ol class="steps-list">
+              <li><strong>Genera el paquete:</strong> ejecuta <code>./scripts/package-plugin</code> en el repositorio.</li>
+              <li><strong>Sube el ZIP</strong> en Plugins → Añadir nuevo → Subir plugin (<code>multiai-chatbot.zip</code>).</li>
+              <li><strong>Activa</strong> el plugin desde la lista de plugins.</li>
+              <li>Ve a <strong>MultiAI ChatBot</strong> y elige tu proveedor en la pestaña AI Model.</li>
+              <li>Para WordPress AI, conecta proveedores en <strong>Ajustes → Connectors</strong> primero.</li>
+              <li>Activa el widget en General y guarda. Si el streaming no responde, visita Ajustes → Enlaces permanentes y guarda de nuevo.</li>
+            </ol>
+          </div>
+          <div>
+            <pre class="code-block"><span class="comment"># Generar ZIP listo para WordPress</span>
+./scripts/package-plugin
+
+<span class="comment"># Verificar antes de publicar en WordPress.org</span>
+./scripts/verify-plugin-package
+
+<span class="comment"># Configuración opcional en wp-config.php</span>
+<span class="keyword">define</span>( <span class="string">'MULTCH_PROVIDER'</span>, <span class="string">'google_ia'</span> );
+<span class="keyword">define</span>( <span class="string">'MULTCH_GEMINI_API_KEY'</span>, <span class="string">'tu-clave'</span> );
+<span class="keyword">define</span>( <span class="string">'MULTCH_GEMINI_MODEL'</span>, <span class="string">'gemini-2.5-flash'</span> );</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3>MultiAI ChatBot</h3>
+          <p>
+            Plugin de WordPress que añade un widget de chat con IA configurable.
+            Compatible con WordPress.org, GPL-2.0-or-later.
+            Las credenciales permanecen en el servidor; el frontend solo usa el nonce de WordPress.
+          </p>
+        </div>
+        <div>
+          <h3>Enlaces</h3>
+          <ul class="footer-links">
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot" target="_blank" rel="noopener">Repositorio GitHub</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/README.md" target="_blank" rel="noopener">Documentación (README)</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/docs/AI-PROVIDERS.md" target="_blank" rel="noopener">Guía de proveedores IA</a></li>
+            <li><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Autor</h3>
+          <ul class="footer-links">
+            <li><a href="https://github.com/JunniorRavelo" target="_blank" rel="noopener">J. Santiago Ravelo Velasco</a></li>
+            <li><a href="https://www.linkedin.com/in/jsravelo/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://github.com/sponsors/JunniorRavelo" target="_blank" rel="noopener">GitHub Sponsors</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 J. Santiago Ravelo Velasco · Licencia GPL-2.0-or-later</span>
+        <span><a href="https://github.com/JunniorRavelo/multiai-chatbot/blob/main/LICENSE" target="_blank" rel="noopener">Ver licencia</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
