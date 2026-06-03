@@ -2213,6 +2213,15 @@ button.multch-donation-footer__chip {
   margin-bottom: 1.25rem;
 }
 
+.multch-admin-history-list.is-loading {
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.multch-admin-history-list.is-loading #multch-history-list-content {
+  min-height: 4rem;
+}
+
 .multch-admin-history-list__head {
   display: flex;
   flex-wrap: wrap;

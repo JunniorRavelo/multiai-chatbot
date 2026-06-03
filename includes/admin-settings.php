@@ -21,6 +21,7 @@ class Multch_Admin_Settings {
 		add_action( 'admin_post_multch_purge_history', array( __CLASS__, 'purge_history' ) );
 		add_action( 'admin_post_multch_purge_telemetry', array( __CLASS__, 'purge_telemetry' ) );
 		add_action( 'wp_ajax_multch_history_detail', array( __CLASS__, 'ajax_history_detail' ) );
+		add_action( 'wp_ajax_multch_history_list', array( __CLASS__, 'ajax_history_list' ) );
 		add_action( 'wp_ajax_multch_history_export_json', array( __CLASS__, 'ajax_history_export_json' ) );
 		add_action( 'wp_ajax_multch_delete_conversation', array( __CLASS__, 'ajax_delete_conversation' ) );
 		add_filter( 'wp_redirect', array( __CLASS__, 'preserve_tab_on_settings_redirect' ), 10, 2 );
@@ -1264,6 +1265,10 @@ class Multch_Admin_Settings {
 						'copyFailed'   => __( 'Could not copy.', 'multiai-chatbot' ),
 						'deleteConfirm' => __( 'Delete this conversation and all its messages?', 'multiai-chatbot' ),
 						'deleteFailed' => __( 'Could not delete the conversation.', 'multiai-chatbot' ),
+						'listLoading'  => __( 'Updating list…', 'multiai-chatbot' ),
+						'listFailed'   => __( 'Could not update the conversation list.', 'multiai-chatbot' ),
+						'clearFilters' => __( 'Clear filters', 'multiai-chatbot' ),
+						'pageOf'       => __( 'Page %1$d of %2$d', 'multiai-chatbot' ),
 					),
 				)
 			);
@@ -4026,6 +4031,149 @@ class Multch_Admin_Settings {
 		echo '</nav>';
 	}
 
+	/**
+	 * @return array{
+	 *   items: list<array<string, mixed>>,
+	 *   total: int,
+	 *   pages: int,
+	 *   page: int,
+	 *   filters: array<string, mixed>,
+	 *   previews: array<int, string>,
+	 *   expanded_id: int,
+	 *   has_filters: bool,
+	 *   days: int,
+	 *   count_label: string,
+	 * }
+	 */
+	private static function load_history_list_bundle( int $page, int $per, int $expanded_id ): array {
+		$filters = self::get_history_filters_from_request();
+		$days    = (int) $filters['days'];
+		$search  = (string) $filters['search'];
+		$provider = (string) $filters['provider'];
+		$status  = (string) $filters['status'];
+
+		$query_args = array_merge(
+			$filters,
+			array(
+				'per_page' => $per,
+				'offset'   => ( $page - 1 ) * $per,
+			)
+		);
+
+		$items = Multch_Chat_History::list_conversations( $query_args );
+		$total = Multch_Chat_History::count_conversations( $filters );
+		$pages = max( 1, (int) ceil( $total / $per ) );
+
+		if ( $expanded_id > 0 ) {
+			$ids_on_page = array_map(
+				static function ( $item ) {
+					return (int) ( $item['id'] ?? 0 );
+				},
+				$items
+			);
+			if ( ! in_array( $expanded_id, $ids_on_page, true ) ) {
+				$orphan = Multch_Chat_History::get_conversation( $expanded_id );
+				if ( $orphan ) {
+					array_unshift( $items, $orphan );
+				}
+			}
+		}
+
+		$previews = Multch_Chat_History::get_first_user_previews(
+			array_map(
+				static function ( $item ) {
+					return (int) ( $item['id'] ?? 0 );
+				},
+				$items
+			)
+		);
+
+		$has_filters = '' !== $search
+			|| 'all' !== $provider
+			|| 'all' !== $status
+			|| 'all' !== (string) $filters['page_path']
+			|| 'all' !== (string) $filters['search_in'];
+
+		$count_label = sprintf(
+			/* translators: %s: number of conversations */
+			_n( '%s conversation', '%s conversations', $total, 'multiai-chatbot' ),
+			number_format_i18n( $total )
+		);
+
+		return array(
+			'items'       => $items,
+			'total'       => $total,
+			'pages'       => $pages,
+			'page'        => $page,
+			'filters'     => $filters,
+			'previews'    => $previews,
+			'expanded_id' => $expanded_id,
+			'has_filters' => $has_filters,
+			'days'        => $days,
+			'count_label' => $count_label,
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $bundle
+	 */
+	private static function render_history_list_content( array $bundle ): void {
+		$items       = $bundle['items'];
+		$pages       = (int) $bundle['pages'];
+		$page        = (int) $bundle['page'];
+		$filters     = $bundle['filters'];
+		$previews    = $bundle['previews'];
+		$expanded_id = (int) $bundle['expanded_id'];
+		$has_filters = (bool) $bundle['has_filters'];
+		$days        = (int) $bundle['days'];
+
+		if ( empty( $items ) ) :
+			?>
+			<div class="multch-admin-card__body multch-admin-history-empty">
+				<span class="multch-admin-history-empty__icon dashicons dashicons-format-chat" aria-hidden="true"></span>
+				<?php if ( $has_filters ) : ?>
+					<p><?php esc_html_e( 'No results with these filters.', 'multiai-chatbot' ); ?></p>
+					<p><a class="button multch-admin-history-clear-filters" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a></p>
+				<?php else : ?>
+					<p><?php esc_html_e( 'No conversations in this period.', 'multiai-chatbot' ); ?></p>
+				<?php endif; ?>
+			</div>
+			<?php
+		else :
+			?>
+			<div class="multch-admin-history-table" role="table" aria-label="<?php esc_attr_e( 'Conversation list', 'multiai-chatbot' ); ?>">
+				<div class="multch-admin-history-table__head" role="row">
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--icon" role="columnheader" aria-hidden="true"></span>
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--title" role="columnheader"><?php esc_html_e( 'Conversation', 'multiai-chatbot' ); ?></span>
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--status" role="columnheader"><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></span>
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--provider" role="columnheader"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></span>
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--date" role="columnheader"><?php esc_html_e( 'Updated', 'multiai-chatbot' ); ?></span>
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--msgs" role="columnheader"><?php esc_html_e( 'Msgs', 'multiai-chatbot' ); ?></span>
+					<span class="multch-admin-history-table__cell multch-admin-history-table__cell--action" role="columnheader" aria-hidden="true"></span>
+				</div>
+				<div class="multch-admin-history-stack" id="multch-history-list" role="rowgroup">
+				<?php foreach ( $items as $item ) : ?>
+					<?php
+					$item_id = (int) ( $item['id'] ?? 0 );
+					self::render_history_card(
+						$item,
+						$expanded_id === $item_id,
+						(string) ( $previews[ $item_id ] ?? '' )
+					);
+					?>
+				<?php endforeach; ?>
+				</div>
+			</div>
+			<?php
+		endif;
+
+		$pagination_args = array_merge(
+			$filters,
+			$expanded_id > 0 ? array( 'conversation' => $expanded_id ) : array()
+		);
+		self::render_history_pagination( $page, $pages, $pagination_args );
+	}
+
 	private static function render_history_tab(): void {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only admin list/filter GET params.
 		$expanded_id = isset( $_GET['conversation'] ) ? (int) $_GET['conversation'] : 0;
@@ -4061,47 +4209,19 @@ class Multch_Admin_Settings {
 			}
 		}
 
-		$query_args = array_merge(
-			$filters,
-			array(
-				'per_page' => $per,
-				'offset'   => ( $page - 1 ) * $per,
-			)
-		);
+		$bundle      = self::load_history_list_bundle( $page, $per, $expanded_id );
+		$pages       = (int) $bundle['pages'];
+		$filters     = $bundle['filters'];
+		$has_filters = (bool) $bundle['has_filters'];
+		$days        = (int) $bundle['days'];
+		$search      = (string) $filters['search'];
+		$provider    = (string) $filters['provider'];
+		$status      = (string) $filters['status'];
+		$stats       = Multch_Chat_History::get_summary_stats( $filters );
+		$paths       = Multch_Chat_History::get_distinct_page_paths( $filters );
 
-		$items  = Multch_Chat_History::list_conversations( $query_args );
-		$total  = Multch_Chat_History::count_conversations( $filters );
-		$pages  = (int) ceil( $total / $per );
-		$stats  = Multch_Chat_History::get_summary_stats( $filters );
-		$paths  = Multch_Chat_History::get_distinct_page_paths( $filters );
-
-		if ( $expanded_id > 0 ) {
-			$ids_on_page = array_map(
-				static function ( $item ) {
-					return (int) ( $item['id'] ?? 0 );
-				},
-				$items
-			);
-			if ( ! in_array( $expanded_id, $ids_on_page, true ) ) {
-				$orphan = Multch_Chat_History::get_conversation( $expanded_id );
-				if ( $orphan ) {
-					array_unshift( $items, $orphan );
-				}
-			}
-		}
-
-		$previews = Multch_Chat_History::get_first_user_previews(
-			array_map(
-				static function ( $item ) {
-					return (int) ( $item['id'] ?? 0 );
-				},
-				$items
-			)
-		);
-
-		$settings    = Multch_Plugin::get_settings();
-		$retention   = (int) ( $settings['history_retention_days'] ?? 0 );
-		$has_filters = '' !== $search || 'all' !== $provider || 'all' !== $status || 'all' !== (string) $filters['page_path'] || 'all' !== (string) $filters['search_in'];
+		$settings  = Multch_Plugin::get_settings();
+		$retention = (int) ( $settings['history_retention_days'] ?? 0 );
 
 		$periods = array(
 			0   => __( 'All', 'multiai-chatbot' ),
@@ -4129,11 +4249,7 @@ class Multch_Admin_Settings {
 			);
 		}
 
-		$count_label = sprintf(
-			/* translators: %s: number of conversations */
-			_n( '%s conversation', '%s conversations', $total, 'multiai-chatbot' ),
-			number_format_i18n( $total )
-		);
+		$count_label   = (string) $bundle['count_label'];
 		$active_period = $periods[ $days ] ?? ( $days > 0 ? sprintf(
 			/* translators: %d: number of days */
 			__( '%d days', 'multiai-chatbot' ),
@@ -4225,7 +4341,7 @@ class Multch_Admin_Settings {
 				</div>
 			</div>
 			<div class="multch-admin-card__body multch-admin-history-panel__filters">
-				<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" class="multch-admin-history-filters">
+				<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" class="multch-admin-history-filters" id="multch-history-filters">
 					<input type="hidden" name="page" value="multch-plugin" />
 					<input type="hidden" name="tab" value="history" />
 					<input type="hidden" name="days" value="<?php echo esc_attr( (string) $days ); ?>" />
@@ -4270,20 +4386,20 @@ class Multch_Admin_Settings {
 						</select>
 					</div>
 					<?php if ( $has_filters ) : ?>
-						<div class="multch-admin-history-filters__actions">
-							<a class="button" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a>
+						<div class="multch-admin-history-filters__actions" id="multch-history-filter-actions">
+							<a class="button multch-admin-history-clear-filters" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a>
 						</div>
 					<?php endif; ?>
 				</form>
 			</div>
 		</div>
 
-		<div class="multch-admin-card multch-admin-history-list">
+		<div class="multch-admin-card multch-admin-history-list" id="multch-history-list-panel">
 			<div class="multch-admin-card__head multch-admin-history-list__head">
-				<h2><?php echo esc_html( $count_label ); ?></h2>
-				<?php if ( $pages > 1 ) : ?>
-					<p>
-						<?php
+				<h2 id="multch-history-count-label"><?php echo esc_html( $count_label ); ?></h2>
+				<p id="multch-history-page-meta"<?php echo $pages > 1 ? '' : ' hidden'; ?>>
+					<?php
+					if ( $pages > 1 ) {
 						echo esc_html(
 							sprintf(
 								/* translators: 1: current page, 2: total pages */
@@ -4292,51 +4408,59 @@ class Multch_Admin_Settings {
 								$pages
 							)
 						);
-						?>
-					</p>
-				<?php endif; ?>
+					}
+					?>
+				</p>
 			</div>
-
-			<?php if ( empty( $items ) ) : ?>
-				<div class="multch-admin-card__body multch-admin-history-empty">
-					<span class="multch-admin-history-empty__icon dashicons dashicons-format-chat" aria-hidden="true"></span>
-					<?php if ( $has_filters ) : ?>
-						<p><?php esc_html_e( 'No results with these filters.', 'multiai-chatbot' ); ?></p>
-						<p><a class="button" href="<?php echo esc_url( self::build_history_url( array( 'days' => $days ) ) ); ?>"><?php esc_html_e( 'Clear filters', 'multiai-chatbot' ); ?></a></p>
-					<?php else : ?>
-						<p><?php esc_html_e( 'No conversations in this period.', 'multiai-chatbot' ); ?></p>
-					<?php endif; ?>
-				</div>
-			<?php else : ?>
-				<div class="multch-admin-history-table" role="table" aria-label="<?php esc_attr_e( 'Conversation list', 'multiai-chatbot' ); ?>">
-					<div class="multch-admin-history-table__head" role="row">
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--icon" role="columnheader" aria-hidden="true"></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--title" role="columnheader"><?php esc_html_e( 'Conversation', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--status" role="columnheader"><?php esc_html_e( 'Status', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--provider" role="columnheader"><?php esc_html_e( 'Provider', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--date" role="columnheader"><?php esc_html_e( 'Updated', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--msgs" role="columnheader"><?php esc_html_e( 'Msgs', 'multiai-chatbot' ); ?></span>
-						<span class="multch-admin-history-table__cell multch-admin-history-table__cell--action" role="columnheader" aria-hidden="true"></span>
-					</div>
-					<div class="multch-admin-history-stack" id="multch-history-list" role="rowgroup">
-					<?php foreach ( $items as $item ) : ?>
-						<?php
-						$item_id = (int) ( $item['id'] ?? 0 );
-						self::render_history_card(
-							$item,
-							$expanded_id === $item_id,
-							(string) ( $previews[ $item_id ] ?? '' )
-						);
-						?>
-					<?php endforeach; ?>
-					</div>
-				</div>
-			<?php endif; ?>
-
-			<?php self::render_history_pagination( $page, $pages, array_merge( $filters, $expanded_id > 0 ? array( 'conversation' => $expanded_id ) : array() ) ); ?>
+			<div id="multch-history-list-content">
+				<?php self::render_history_list_content( $bundle ); ?>
+			</div>
 		</div>
 		<?php
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+	}
+
+	public static function ajax_history_list(): void {
+		check_ajax_referer( 'multch_history_detail', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'multiai-chatbot' ) ), 403 );
+		}
+
+		if ( ! Multch_Plugin::is_stats_history_enabled() ) {
+			wp_send_json_error( array( 'message' => __( 'Statistics and history are disabled.', 'multiai-chatbot' ) ), 403 );
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified via check_ajax_referer above.
+		$page = isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified via check_ajax_referer above.
+		$expanded_id = isset( $_GET['conversation'] ) ? (int) $_GET['conversation'] : 0;
+
+		$bundle = self::load_history_list_bundle( $page, 12, $expanded_id );
+
+		ob_start();
+		self::render_history_list_content( $bundle );
+		$content_html = (string) ob_get_clean();
+
+		$page_meta = '';
+		if ( (int) $bundle['pages'] > 1 ) {
+			$page_meta = sprintf(
+				/* translators: 1: current page, 2: total pages */
+				__( 'Page %1$d of %2$d', 'multiai-chatbot' ),
+				(int) $bundle['page'],
+				(int) $bundle['pages']
+			);
+		}
+
+		wp_send_json_success(
+			array(
+				'contentHtml'     => $content_html,
+				'countLabel'      => (string) $bundle['count_label'],
+				'pageMeta'        => $page_meta,
+				'hasFilters'      => (bool) $bundle['has_filters'],
+				'clearFiltersUrl' => self::build_history_url( array( 'days' => (int) $bundle['days'] ) ),
+			)
+		);
 	}
 
 	public static function ajax_history_detail(): void {
