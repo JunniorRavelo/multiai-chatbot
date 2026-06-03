@@ -511,10 +511,7 @@
             "We are open Monday through Friday, 9:00 AM to 6:00 PM."
           ),
           settings.showModelLabel !== false
-            ? previewI18n(
-                "previewSampleModel",
-                "gemini-3.5-flash (API used this; configured fallback: gemini-3.1-flash-lite)"
-              )
+            ? previewI18n("previewSampleModel", "gemini-3.5-flash")
             : ""
         )
       );

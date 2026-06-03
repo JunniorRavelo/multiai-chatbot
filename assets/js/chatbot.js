@@ -921,7 +921,7 @@
       try {
         return JSON.parse(text);
       } catch {
-        return { error: text || "Error desconocido" };
+        return { error: text || i18n.unknownError || "Unknown error." };
       }
     }
 

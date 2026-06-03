@@ -969,6 +969,38 @@ msgid "Low contrast between primary color and background; check accessibility."
 msgstr "Bajo contraste entre el color primario y el fondo; revise la accesibilidad."
 
 #: includes/admin-settings.php
+msgid "Message labels"
+msgstr "Etiquetas de mensajes"
+
+#: includes/admin-settings.php
+msgid "Optional labels under assistant messages in the visitor chat only."
+msgstr "Etiquetas opcionales bajo los mensajes del asistente, solo en el chat del visitante."
+
+#: includes/admin-settings.php
+msgid "Welcome message label"
+msgstr "Etiqueta de mensaje de bienvenida"
+
+#: includes/admin-settings.php
+msgid "Show “Welcome message” under the first assistant reply"
+msgstr "Mostrar «Mensaje de bienvenida» bajo la primera respuesta del asistente"
+
+#: includes/admin-settings.php
+msgid "Model label"
+msgstr "Etiqueta de modelo"
+
+#: includes/admin-settings.php
+msgid "Show which AI model answered each reply"
+msgstr "Mostrar qué modelo de IA respondió en cada mensaje"
+
+#: includes/admin-settings.php
+msgid "These options only affect the public chat widget. Statistics and conversation history in the admin are unchanged."
+msgstr "Estas opciones solo afectan al widget de chat público. Las estadísticas y el historial de conversaciones en el administrador no cambian."
+
+#: includes/admin-settings.php
+msgid "gemini-3.5-flash (API used this; configured fallback: gemini-3.1-flash-lite)"
+msgstr "gemini-3.5-flash (la API usó este; respaldo configurado: gemini-3.1-flash-lite)"
+
+#: includes/admin-settings.php
 msgid "Developer credit"
 msgstr "Crédito del desarrollador"
 
@@ -1709,6 +1741,10 @@ msgstr "Pensando…"
 #: includes/enqueue.php:131
 msgid "Could not send the message. Please try again."
 msgstr "No se pudo enviar el mensaje. Inténtalo de nuevo."
+
+#: includes/enqueue.php
+msgid "Unknown error."
+msgstr "Error desconocido."
 
 #. translators: %d: number of days
 #: includes/privacy.php:37

@@ -143,6 +143,7 @@ class Multch_Enqueue {
 					'thinking'      => __( 'Thinking…', 'multiai-chatbot' ),
 					'welcomeLabel'  => __( 'Welcome message', 'multiai-chatbot' ),
 					'errorGeneric'   => __( 'Could not send the message. Please try again.', 'multiai-chatbot' ),
+					'unknownError'   => __( 'Unknown error.', 'multiai-chatbot' ),
 					'quotaExhausted' => __( 'The AI provider quota was reached. The chat tried your configured models. Wait a few minutes or change models in MultiAI ChatBot → AI Model.', 'multiai-chatbot' ),
 				),
 			)

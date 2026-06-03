@@ -1526,6 +1526,10 @@ msgstr ""
 msgid "Could not send the message. Please try again."
 msgstr ""
 
+#: includes/enqueue.php
+msgid "Unknown error."
+msgstr ""
+
 #. translators: %d: number of days
 #: includes/privacy.php:37
 #, php-format
@@ -1808,6 +1812,38 @@ msgstr ""
 
 #: includes/admin-settings.php
 msgid "Low contrast between primary color and background; check accessibility."
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Message labels"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Optional labels under assistant messages in the visitor chat only."
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Welcome message label"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Show “Welcome message” under the first assistant reply"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Model label"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "Show which AI model answered each reply"
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "These options only affect the public chat widget. Statistics and conversation history in the admin are unchanged."
+msgstr ""
+
+#: includes/admin-settings.php
+msgid "gemini-3.5-flash (API used this; configured fallback: gemini-3.1-flash-lite)"
 msgstr ""
 
 #: includes/admin-settings.php

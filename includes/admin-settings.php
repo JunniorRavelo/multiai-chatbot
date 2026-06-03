@@ -342,6 +342,10 @@ class Multch_Admin_Settings {
 				'multiai-chatbot'
 			),
 			'welcomeMessageLabel'    => __( 'Welcome message', 'multiai-chatbot' ),
+			'previewSampleModel'     => __(
+				'gemini-3.5-flash (API used this; configured fallback: gemini-3.1-flash-lite)',
+				'multiai-chatbot'
+			),
 			'widgetDisabled'       => __(
 				'Global widget is disabled. The preview shows how copy would look if enabled.',
 				'multiai-chatbot'
