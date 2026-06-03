@@ -1221,12 +1221,17 @@ class Multch_Admin_Settings {
 						'copied'           => __( 'Copied', 'multiai-chatbot' ),
 						'copyFailed'       => __( 'Could not copy.', 'multiai-chatbot' ),
 						'cacheOff'         => __( 'Disabled', 'multiai-chatbot' ),
+						/* translators: %d: number of minutes */
 						'cacheMinutes'     => __( '%d min', 'multiai-chatbot' ),
+						/* translators: %d: number of hours */
 						'cacheHours'       => __( '%d h', 'multiai-chatbot' ),
+						/* translators: 1: hours, 2: minutes */
 						'suspendHours'     => __( '%1$d h %2$d min', 'multiai-chatbot' ),
+						/* translators: %d: number of days */
 						'cacheDays'        => __( '%d days', 'multiai-chatbot' ),
 						'cacheDay'         => __( '1 day', 'multiai-chatbot' ),
 						'originsDefaultHint' => __( 'Default: only this WordPress site can use the chat API.', 'multiai-chatbot' ),
+						/* translators: 1: violations count, 2: suspension duration */
 						'suspendSummary'   => __( 'After %1$d violations · %2$s', 'multiai-chatbot' ),
 					),
 				)
@@ -1268,6 +1273,7 @@ class Multch_Admin_Settings {
 						'listLoading'  => __( 'Updating list…', 'multiai-chatbot' ),
 						'listFailed'   => __( 'Could not update the conversation list.', 'multiai-chatbot' ),
 						'clearFilters' => __( 'Clear filters', 'multiai-chatbot' ),
+						/* translators: 1: current page number, 2: total page count */
 						'pageOf'       => __( 'Page %1$d of %2$d', 'multiai-chatbot' ),
 					),
 				)
