@@ -94,4 +94,68 @@
 	}
 
 	document.querySelectorAll('.multch-donation-footer__chip--share').forEach(initDonationFooterShare);
+
+	function initAdminSaveBars() {
+		var form = document.querySelector('form.multch-admin-form');
+		if (!form) {
+			return;
+		}
+
+		var dock = form.querySelector('.multch-admin-footer--dock');
+		var topStatus = form.querySelector('.multch-admin-save-bar--top .multch-admin-save-bar__status');
+
+		function markDirty() {
+			form.classList.add('is-dirty');
+			if (topStatus) {
+				topStatus.hidden = false;
+			}
+		}
+
+		form.addEventListener('input', markDirty);
+		form.addEventListener('change', markDirty);
+
+		form.addEventListener('keydown', function (event) {
+			if ((event.ctrlKey || event.metaKey) && 's' === event.key.toLowerCase()) {
+				event.preventDefault();
+				if (typeof form.requestSubmit === 'function') {
+					form.requestSubmit();
+				} else {
+					form.submit();
+				}
+			}
+		});
+
+		if (!dock) {
+			return;
+		}
+
+		var spacer = document.createElement('div');
+		spacer.className = 'multch-admin-footer-spacer';
+		spacer.setAttribute('aria-hidden', 'true');
+		dock.parentNode.insertBefore(spacer, dock);
+
+		function layoutDock() {
+			var anchor = document.getElementById('wpbody-content') || form.closest('.wrap') || form;
+			var rect = anchor.getBoundingClientRect();
+
+			dock.style.left = rect.left + 'px';
+			dock.style.width = rect.width + 'px';
+			spacer.style.height = dock.offsetHeight + 'px';
+		}
+
+		dock.classList.add('is-docked');
+		form.classList.add('is-dock-active');
+		layoutDock();
+
+		window.addEventListener('resize', layoutDock);
+		window.addEventListener('scroll', layoutDock, { passive: true });
+
+		if (typeof ResizeObserver !== 'undefined') {
+			var resizeTarget = document.getElementById('wpcontent') || document.body;
+			var observer = new ResizeObserver(layoutDock);
+			observer.observe(resizeTarget);
+		}
+	}
+
+	initAdminSaveBars();
 })();
